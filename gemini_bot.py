@@ -754,11 +754,16 @@ def generate_video_in_gemini(recover_only=False):
                     if video_saved:
                         break
 
-                # Wait patiently if network is slow and NO response bubble has appeared yet (up to 3 full minutes!)
+                # Wait patiently as long as NO final reply/video/limit has appeared yet!
                 current_bubbles = len(get_response_bubbles(driver))
-                if current_bubbles <= prev_bubbles and not is_video_currently_generating(driver):
-                    if tick < 36:  # 36 * 5s = 180s (3 mins) pure network wait for slow internet
-                        continue
+                latest_bubble_txt = get_latest_response_text(driver).strip()
+                if (current_bubbles <= prev_bubbles or not latest_bubble_txt) and not is_video_currently_generating(driver):
+                    reopen_chk, banner_chk = scan_entire_chat_for_quota_banner(driver)
+                    if reopen_chk:
+                        send_alert(f"⛔ *QUOTA LIMIT:* `{reopen_chk}`\n\n{banner_chk}")
+                        raise RuntimeError(f"⛔ QUOTA LIMIT: {banner_chk}")
+                    print(f"⏳ [Tick {tick}/180] Waiting for slow network / Gemini response to appear on screen...")
+                    continue
 
                 if is_video_currently_generating(driver):
                     response_appeared = True
