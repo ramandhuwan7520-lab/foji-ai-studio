@@ -772,10 +772,10 @@ def generate_video_in_gemini(recover_only=False):
                     f"Include soft Bollywood instrumental background music."
                 )
 
-            select_flash_lite_model(driver)
-            create_video_selected = click_plus_and_select_create_video(driver)
+        select_flash_lite_model(driver)
+        create_video_selected = click_plus_and_select_create_video(driver)
 
-            if not create_video_selected:
+        if not create_video_selected:
                 print("⚠️ '+' menu slow tha ya Create Video direct open nahi hua -> Direct Prompt bhej kar wait kar rahe hain...")
                 prev_bubbles = len(get_response_bubbles(driver))
                 initial_vids = len(driver.find_elements(By.TAG_NAME, "video"))
