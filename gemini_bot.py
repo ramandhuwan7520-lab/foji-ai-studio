@@ -488,6 +488,7 @@ def upload_character_images_strictly(driver, foji_img, fojan_img):
     return False
 
 def paste_and_send_prompt(driver, prompt_text):
+    update_3d_telemetry(5, "TRANSMITTING CINEMATIC PROMPT", "Sending 8-Sec Lip-Sync Script & Audio Cues", "active", 82)
     print("✍️ Step 5: Submitting Prompt in Background Chrome...")
     dismiss_annoying_popups(driver)
     chat_selectors = [
