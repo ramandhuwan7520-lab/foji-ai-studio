@@ -162,13 +162,39 @@ def send_telegram_approval_card(pkg):
     except Exception:
         pass
 
-def generate_single_reel_package(custom_topic=None, send_for_approval=True, force_track_id=None, replace_video_id=None):
+def trigger_github_7gb_worker(action_type="generate_only", custom_topic=""):
+    """Triggers GitHub Actions 7GB RAM Cloud Worker directly from Render Frontend!"""
+    gh_pat = os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN")
+    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio")
+    if not gh_pat:
+        return False
+    try:
+        r = requests.post(
+            f"https://api.github.com/repos/{repo}/actions/workflows/cloud_video_engine.yml/dispatches",
+            headers={
+                "Authorization": f"Bearer {gh_pat}",
+                "Accept": "application/vnd.github+json"
+            },
+            json={
+                "ref": "main",
+                "inputs": {
+                    "action_type": action_type,
+                    "custom_topic": custom_topic
+                }
+            },
+            timeout=12
+        )
+        return r.status_code in (200, 201, 204)
+    except Exception:
+        return False
+
+def generate_single_reel_package(custom_topic=None, send_for_approval=True, force_track_id=None, replace_video_id=None, batch_date=None):
     import gemini_bot
     hist = load_history()
+    today_str = batch_date or datetime.now(IST).strftime("%Y-%m-%d")
     used_lines = {item.get("dialogue_line_1_hinglish", "") for item in hist.get("history", [])}
 
     if replace_video_id is not None:
-        # Point 26: Regenerating existing item with fresh dialogues & prompt while keeping Part number!
         target_pkg = None
         for item in hist["history"]:
             if int(item.get("video_id", 0)) == int(replace_video_id):
@@ -178,6 +204,7 @@ def generate_single_reel_package(custom_topic=None, send_for_approval=True, forc
             tid = target_pkg.get("track_id", "romantic")
             track = next((t for t in SERIES_TRACKS if t["id"] == tid), SERIES_TRACKS[0])
             fresh = build_fresh_prompt_package(track, target_pkg.get("part_number", 1), replace_video_id, used_lines)
+            fresh["batch_date"] = today_str
             target_pkg.update(fresh)
             raw_p = os.path.abspath(f"output/raw_videos/raw_video_{replace_video_id}.mp4")
             if os.path.exists(raw_p):
@@ -191,6 +218,7 @@ def generate_single_reel_package(custom_topic=None, send_for_approval=True, forc
         new_id = int(hist.get("generated_count", 0)) + 1
         hist["generated_count"] = new_id
         pkg = build_fresh_prompt_package(track, next_part, new_id, used_lines)
+        pkg["batch_date"] = today_str
         hist["history"].append(pkg)
         save_history(hist)
 
@@ -198,6 +226,7 @@ def generate_single_reel_package(custom_topic=None, send_for_approval=True, forc
     hist = load_history()
     latest = hist["history"][-1]
     latest["video_completed"] = True
+    latest["batch_date"] = today_str
     latest["video_url"] = f"/videos/raw_video_{latest['video_id']}.mp4"
     tid = latest.get("track_id")
     if tid:
