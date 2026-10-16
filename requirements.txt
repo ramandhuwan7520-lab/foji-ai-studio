@@ -5,3 +5,4 @@ selenium
 imageio-ffmpeg
 instagrapi
 yt-dlp
+Pillow
