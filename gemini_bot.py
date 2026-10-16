@@ -456,6 +456,7 @@ def select_portrait_9_16_ratio(driver):
     return False
 
 def upload_character_images_strictly(driver, foji_img, fojan_img):
+    update_3d_telemetry(4, "INJECTING 3D CHARACTERS", "Uploading Foji Makra & Fojan Meera Reference DNA", "active", 66)
     print("📸 Step 4: Uploading Character Images (Foji Makra & Fojan Meera)...")
     dismiss_annoying_popups(driver)
     try:
