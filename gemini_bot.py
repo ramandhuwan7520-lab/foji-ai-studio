@@ -692,22 +692,22 @@ def generate_video_in_gemini(recover_only=False):
             create_video_selected = click_plus_and_select_create_video(driver)
 
             if not create_video_selected:
+                print("⚠️ '+' menu slow tha ya Create Video direct open nahi hua -> Direct Prompt bhej kar wait kar rahe hain...")
                 prev_bubbles = len(get_response_bubbles(driver))
+                initial_vids = len(driver.find_elements(By.TAG_NAME, "video"))
                 upload_character_images_strictly(driver, foji_img, fojan_img)
                 paste_and_send_prompt(driver, f"Generate a 9:16 portrait video using these character images: {active_prompt}")
-                full_reply = wait_for_complete_gemini_reply(driver, prev_bubbles, max_wait_sec=60)
-                reopen_time, clean_reply = extract_reopen_time_and_details(full_reply)
-                send_alert(f"⛔ *GEMINI VIDEO LIMIT / STATUS:*\n⏰ *Reopen:* `{reopen_time}`\n💬 {clean_reply}")
-                raise RuntimeError(f"⛔ GEMINI LIMIT -> {clean_reply}")
 
-            select_portrait_9_16_ratio(driver)
-            upload_character_images_strictly(driver, foji_img, fojan_img)
+                # Wait up to 5 minutes for slow network!
+                full_reply = wait_for_complete_gemini_reply(driver, prev_bubbles, max_wait_sec=300)
 
-            prev_bubbles = len(get_response_bubbles(driver))
-            initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
-            existing_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
-
-            paste_and_send_prompt(driver, active_prompt)
+                # Agar Gemini ne video bana di hai, toh error mat do — seedha main download loop mein aage badho!
+                if full_reply == "VIDEO_ELEMENT_DETECTED" or len(driver.find_elements(By.TAG_NAME, "video")) > initial_vids or is_video_currently_generating(driver):
+                    print("✅ Gemini ne video generation start/complete kar di hai! Continuing pipeline...")
+                else:
+                    reopen_time, clean_reply = extract_reopen_time_and_details(full_reply)
+                    send_alert(f"⛔ *GEMINI VIDEO LIMIT / STATUS:*\n⏰ *Reopen:* `{reopen_time}`\n💬 {clean_reply}")
+                    raise RuntimeError(f"⛔ GEMINI LIMIT -> {clean_reply}")
 
             # Save the exact chat URL into history.json as soon as Gemini assigns a conversation ID!
             time.sleep(6)
