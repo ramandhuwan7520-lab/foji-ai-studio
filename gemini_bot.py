@@ -99,6 +99,76 @@ def js_click(driver, element):
     except Exception:
         driver.execute_script("arguments[0].click();", element)
 
+def get_response_bubbles(driver):
+    """Returns all Gemini response message containers on the screen."""
+    selectors = [
+        "model-response",
+        "message-content",
+        ".model-response-text",
+        "[data-message-author-role='model']",
+        ".response-container-content"
+    ]
+    for sel in selectors:
+        try:
+            elems = driver.find_elements(By.CSS_SELECTOR, sel)
+            if elems:
+                return elems
+        except Exception:
+            pass
+    return []
+
+def get_latest_response_text(driver):
+    """Safely extracts the text of the latest Gemini reply bubble."""
+    bubbles = get_response_bubbles(driver)
+    if bubbles:
+        try:
+            return bubbles[-1].text.strip()
+        except Exception:
+            pass
+    return ""
+
+def extract_reopen_time_and_details(text):
+    """Extracts quota reset time or error details from Gemini's message."""
+    if not text:
+        return "Unknown Time", "Screen par abhi koi reply nahi aaya."
+    import re
+    clean = " ".join(text.split())
+    m = re.search(
+        r"(try again (?:after|at|in)\s+[^.!?\n]+|available (?:again )?(?:after|at|in)\s+[^.!?\n]+|\b\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)\b|\b\d+\s*(?:hours?|minutes?|mins?|days?)\b)",
+        clean,
+        re.IGNORECASE
+    )
+    reopen_time = m.group(1).strip() if m else "Check Gemini Quota / Try Later"
+    return reopen_time, clean[:300]
+
+def scan_entire_chat_for_quota_banner(driver):
+    """Scans the full screen and notification banners for any video generation limit/quota message."""
+    try:
+        body_text = driver.find_element(By.TAG_NAME, "body").text
+    except Exception:
+        return None, None
+
+    lower_body = body_text.lower()
+    quota_keywords = [
+        "you've reached your video generation limit",
+        "reached your limit",
+        "quota exceeded",
+        "too many requests",
+        "can't generate more videos right now",
+        "daily limit",
+        "try again tomorrow",
+        "limit for generating videos"
+    ]
+    for kw in quota_keywords:
+        if kw in lower_body:
+            idx = lower_body.find(kw)
+            start = max(0, idx - 60)
+            end = min(len(body_text), idx + 220)
+            snippet = " ".join(body_text[start:end].split())
+            reopen_t, _ = extract_reopen_time_and_details(snippet)
+            return reopen_t, snippet
+    return None, None
+
 def dismiss_annoying_popups(driver):
     """
     Scans the entire screen for any unexpected Google/Gemini popups, cookie banners,
