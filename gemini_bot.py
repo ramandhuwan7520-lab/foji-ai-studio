@@ -362,6 +362,7 @@ def find_strict_plus_button(driver):
     return None
 
 def click_plus_and_select_create_video(driver):
+    update_3d_telemetry(2, "CLICKING '+' & CREATE VIDEO", "Triggering Veo 3D Video Tool in Chat Box", "active", 34)
     print("➕ Step 1: Clicking strictly on the '+' Icon in the chat box...")
     dismiss_annoying_popups(driver)
     plus_btn = find_strict_plus_button(driver)
