@@ -1379,6 +1379,24 @@ def api_regenerate(vid_id):
 
     return jsonify({"message": f"🔄 Regenerating '{track_id} - Part {part_num}' with a brand new scene!"})
 
+@app.route("/api/telemetry_3d", methods=["GET"])
+def api_telemetry_3d():
+    t_path = "data/live_telemetry.json"
+    if os.path.exists(t_path):
+        try:
+            with open(t_path, "r", encoding="utf-8") as f:
+                return jsonify(json.load(f))
+        except Exception:
+            pass
+    return jsonify({
+        "step_num": 0,
+        "step_title": "STANDBY — 3D CLOUD CORE READY",
+        "sub_detail": "Waiting for Scheduled Slot or Manual Trigger...",
+        "status": "idle",
+        "progress": 0,
+        "timestamp": time.strftime("%H:%M:%S")
+    })
+
 @app.route("/api/remix_caption/<int:vid_id>", methods=["POST"])
 def api_remix_caption(vid_id):
     history_data = load_strict_clean_history()
