@@ -790,6 +790,10 @@ def generate_video_in_gemini(recover_only=False):
             video_saved = False
             response_appeared = False
 
+            existing_mp4s = set( glob.glob(os.path.join(RAW_VIDEOS_DIR, "*.mp4")) )
+            initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
+            prev_bubbles = len(get_response_bubbles(driver))
+
             # Wait up to 15 minutes (180 ticks * 5s) so slow network NEVER causes premature exit!
             for tick in range(180):
                 time.sleep(5)
