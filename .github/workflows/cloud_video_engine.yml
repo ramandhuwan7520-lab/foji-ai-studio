@@ -17,9 +17,13 @@ on:
 permissions:
   contents: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
+
 jobs:
   build-and-publish-reel:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
       - name: Checkout Latest Code & Schedule
@@ -32,17 +36,20 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Google Chrome, Xvfb & FFmpeg
+      - name: Install Hidden Headless Google Chrome & FFmpeg
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb ffmpeg google-chrome-stable || sudo apt-get install -y chromium-browser chromium-chromedriver
+          sudo apt-get install -y wget curl ffmpeg
+          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt-get install -y ./google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
+          rm -f google-chrome-stable_current_amd64.deb
 
       - name: Install Python Dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Execute 24/7 Autonomous Cloud Worker
+      - name: Execute 100% Hidden Cloud Chrome Worker
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -54,11 +61,11 @@ jobs:
           CLOUD_ACTION_TYPE: ${{ github.event.inputs.action_type }}
           CLOUD_CUSTOM_TOPIC: ${{ github.event.inputs.custom_topic }}
         run: |
-          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python cloud_worker.py
+          python cloud_worker.py
 
-      - name: Save Updated History & Schedule Permanently
+      - name: Save Updated History, Telemetry & Schedule Permanently
         run: |
           git config user.name "FojiCloudEngine"
           git config user.email "foji@studio.ai"
           git add data/*.json
-          git diff --staged --quiet || (git commit -m "Auto-update reel history & schedule from Cloud" && git push origin main)
+          git diff --staged --quiet || (git commit -m "Auto-update reel history & schedule from Cloud" && git push origin HEAD:main)
