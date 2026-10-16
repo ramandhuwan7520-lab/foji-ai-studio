@@ -608,10 +608,35 @@ def api_reel_action():
                 "progress": 15,
                 "timestamp": datetime.now(IST).strftime("%H:%M:%S IST")
             }, f)
-        threading.Thread(
-            target=lambda: generate_single_reel_package(send_for_approval=True, replace_video_id=vid_id),
-            daemon=True
-        ).start()
+
+        def _regen_bg():
+            if os.name != "nt" and not os.path.exists("/usr/bin/google-chrome"):
+                dispatched = trigger_github_7gb_worker(action_type="generate_only", custom_topic=f"REGEN_ID:{vid_id}")
+                if not dispatched:
+                    with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
+                        json.dump({
+                            "step_num": 0,
+                            "step_title": "CLOUD TRIGGER NOTICE",
+                            "sub_detail": "Render Environment mein GITHUB_PAT add karein taaki Regenerate button seedha 7GB GitHub Worker ko start kare!",
+                            "status": "error",
+                            "progress": 0,
+                            "timestamp": datetime.now(IST).strftime("%H:%M:%S IST")
+                        }, f)
+                return
+            try:
+                generate_single_reel_package(send_for_approval=True, replace_video_id=vid_id)
+            except Exception as e:
+                with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
+                    json.dump({
+                        "step_num": 0,
+                        "step_title": "REGENERATION STOPPED",
+                        "sub_detail": str(e)[:220],
+                        "status": "error",
+                        "progress": 0,
+                        "timestamp": datetime.now(IST).strftime("%H:%M:%S IST")
+                    }, f)
+
+        threading.Thread(target=_regen_bg, daemon=True).start()
         return jsonify({"ok": True})
 
     return jsonify({"ok": False}), 400
