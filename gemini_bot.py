@@ -100,121 +100,38 @@ def js_click(driver, element):
         driver.execute_script("arguments[0].click();", element)
 
 def dismiss_annoying_popups(driver):
+    """
+    Scans the entire screen for any unexpected Google/Gemini popups, cookie banners,
+    feature tours, or dialog boxes and closes them automatically without touching the chat!
+    """
     popup_xpaths = [
-        "//button[normalize-space(.)='Got it' or normalize-space(.)='Dismiss' or normalize-space(.)='No thanks' or normalize-space(.)='Not now' or normalize-space(.)='OK']",
-        "//div[@role='dialog' or contains(@class, 'mat-mdc-dialog') or contains(@class, 'popup')]//button[contains(@aria-label, 'Close') or contains(@aria-label, 'close') or .//mat-icon[text()='close']]"
+        "//button[normalize-space(.)='Got it' or normalize-space(.)='Dismiss' or normalize-space(.)='No thanks' or normalize-space(.)='Not now' or normalize-space(.)='OK' or normalize-space(.)='Accept all' or normalize-space(.)='Continue' or normalize-space(.)='Stay signed out']",
+        "//div[@role='dialog' or @role='alertdialog' or contains(@class, 'mat-mdc-dialog') or contains(@class, 'popup') or contains(@class, 'promo')]//button[contains(@aria-label, 'Close') or contains(@aria-label, 'close') or contains(@aria-label, 'Dismiss') or .//mat-icon[text()='close']]",
+        "//mat-snack-bar-container//button"
     ]
     for xp in popup_xpaths:
         try:
             btns = [b for b in driver.find_elements(By.XPATH, xp) if b.is_displayed()]
             for b in btns:
                 js_click(driver, b)
-                time.sleep(0.5)
+                time.sleep(0.3)
         except Exception:
             pass
 
-def get_response_bubbles(driver):
-    selectors = [
-        "message-content",
-        "model-response",
-        ".model-response-text",
-        "[data-message-author-role='model']"
-    ]
-    for sel in selectors:
-        els = driver.find_elements(By.CSS_SELECTOR, sel)
-        if els:
-            return els
-    return []
-
-def get_latest_response_text(driver):
-    els = get_response_bubbles(driver)
-    if els:
-        return els[-1].text.strip()
-    return ""
-
-def scan_entire_chat_for_quota_banner(driver):
-    texts_to_check = [get_latest_response_text(driver)]
-    banner_selectors = [
-        "[role='alert']",
-        ".quota-banner",
-        "mat-snack-bar-container",
-        ".notification-banner",
-        ".limit-message"
-    ]
-    for sel in banner_selectors:
-        for el in driver.find_elements(By.CSS_SELECTOR, sel):
-            if el.is_displayed() and el.text.strip():
-                texts_to_check.append(el.text.strip())
-
-    combined = "\n".join([t for t in texts_to_check if t])
-    low = combined.lower()
-    limit_keywords = [
-        "limit resets",
-        "reached your",
-        "video generation limit",
-        "you've reached your limit",
-        "can't generate more videos",
-        "cannot generate more videos",
-        "create more videos",
-        "try again after",
-        "try again tomorrow"
-    ]
-    if any(k in low for k in limit_keywords):
-        reopen_time, clean_details = extract_reopen_time_and_details(combined)
-        return reopen_time, clean_details
-    return None, None
-
-def wait_for_complete_gemini_reply(driver, previous_bubble_count, max_wait_sec=45):
-    start_time = time.time()
-    last_text = ""
-    stable_ticks = 0
-
-    while time.time() - start_time < max_wait_sec:
-        time.sleep(2)
-        dismiss_annoying_popups(driver)
-        bubbles = get_response_bubbles(driver)
-
-        if len(bubbles) > previous_bubble_count:
-            current_text = bubbles[-1].text.strip()
-            if current_text:
-                if current_text == last_text and len(current_text) > 10:
-                    stable_ticks += 1
-                    if stable_ticks >= 2:
-                        return current_text
-                else:
-                    last_text = current_text
-                    stable_ticks = 0
-
-    return get_latest_response_text(driver)
-
-def extract_reopen_time_and_details(reply_text):
-    if not reply_text:
-        return "Not specified", "Screen par Gemini ka koi text reply nahi aaya."
-
-    time_patterns = [
-        r"\b\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)\b",
-        r"\bafter\s+\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?\b",
-        r"\btomorrow(?:\s+at\s+\d{1,2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)?\b",
-        r"\bin\s+\d+\s+(?:hour|hours|minute|minutes|hr|hrs|min|mins)\b",
-        r"\b\d{1,2}\s*(?:AM|PM|am|pm)\b"
-    ]
-    detected_time = None
-    for pat in time_patterns:
-        match = re.search(pat, reply_text, re.IGNORECASE)
-        if match:
-            detected_time = match.group(0).strip()
-            break
-
-    clean_lines = [line.strip() for line in reply_text.split("\n") if line.strip()]
-    summary_text = "\n".join(clean_lines)[:600]
-
-    if not detected_time:
-        detected_time = "Exact time mention nahi hai (Niche exact screen message dekho)"
-
-    return detected_time, summary_text
-
 def is_video_currently_generating(driver):
+    """
+    DEEP FULL-SCREEN DETECTOR:
+    Detects if Gemini is still thinking, loading over a slow network, streaming a response,
+    or rendering a video anywhere on the page!
+    """
+    try:
+        body_text = driver.find_element(By.TAG_NAME, "body").text.lower()
+    except Exception:
+        body_text = ""
+
     latest_text = get_latest_response_text(driver).lower()
+    combined_text = latest_text + "\n" + body_text[-1500:]
+
     generating_phrases = [
         "generating video",
         "creating video",
@@ -223,26 +140,86 @@ def is_video_currently_generating(driver):
         "this may take a few minutes",
         "working on it",
         "hang tight",
+        "just a sec",
+        "thinking",
         "generating...",
         "loading"
     ]
-    if any(p in latest_text for p in generating_phrases):
+    if any(p in combined_text for p in generating_phrases):
         return True
 
+    # Check all possible loading bars, spinners, skeletons, and streaming indicators
     spinners = driver.find_elements(
         By.CSS_SELECTOR,
-        "mat-progress-bar, mat-spinner, .loading-spinner, [role='progressbar'], .video-loading, .generating-indicator"
+        "mat-progress-bar, mat-spinner, .loading-spinner, [role='progressbar'], "
+        ".video-loading, .generating-indicator, [aria-busy='true'], .skeleton-loader, "
+        "lottie-player, .thinking-indicator"
     )
     for sp in spinners:
-        if sp.is_displayed():
-            return True
+        try:
+            if sp.is_displayed():
+                return True
+        except Exception:
+            pass
 
-    stop_btns = driver.find_elements(By.XPATH, "//button[contains(@aria-label, 'Stop') or contains(@mattooltip, 'Stop')]")
+    # If the 'Stop generating' / 'Stop response' button is visible, Gemini is 100% still working!
+    stop_btns = driver.find_elements(
+        By.XPATH,
+        "//button[contains(@aria-label, 'Stop') or contains(@aria-label, 'stop') or contains(@mattooltip, 'Stop') or .//mat-icon[contains(text(), 'stop')]]"
+    )
     for sb in stop_btns:
-        if sb.is_displayed():
-            return True
+        try:
+            if sb.is_displayed():
+                return True
+        except Exception:
+            pass
 
     return False
+
+def wait_for_complete_gemini_reply(driver, previous_bubble_count, max_wait_sec=300):
+    """
+    Waits patiently (up to 5 full minutes on slow networks!) until Gemini ACTUALLY finishes
+    loading/thinking and produces either a complete text reply, a quota message, or a video!
+    NEVER exits early while network/Gemini is still loading!
+    """
+    start_time = time.time()
+    last_text = ""
+    stable_ticks = 0
+
+    while time.time() - start_time < max_wait_sec:
+        time.sleep(3)
+        dismiss_annoying_popups(driver)
+
+        # 1. If a <video> tag appeared on screen, return immediately!
+        if driver.find_elements(By.TAG_NAME, "video"):
+            return "VIDEO_ELEMENT_DETECTED"
+
+        # 2. Check if a quota banner appeared anywhere on screen
+        reopen_t, banner_txt = scan_entire_chat_for_quota_banner(driver)
+        if reopen_t and banner_txt:
+            return banner_txt
+
+        # 3. Check response bubbles
+        bubbles = get_response_bubbles(driver)
+        if len(bubbles) > previous_bubble_count:
+            current_text = bubbles[-1].text.strip()
+            if current_text:
+                # Make sure Gemini isn't still actively streaming/typing or showing a spinner
+                if current_text == last_text and len(current_text) > 8 and not is_video_currently_generating(driver):
+                    stable_ticks += 1
+                    if stable_ticks >= 2:
+                        return current_text
+                else:
+                    last_text = current_text
+                    stable_ticks = 0
+                    continue
+
+        # 4. If no text has appeared yet (or bubble is still empty), keep waiting patiently!
+        if is_video_currently_generating(driver):
+            print("⏳ Gemini abhi loading/thinking mode mein hai (Slow Network Wait Active)...")
+            continue
+
+    return get_latest_response_text(driver)
 
 def check_screen_error_or_limit(driver):
     if is_video_currently_generating(driver):
