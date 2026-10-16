@@ -724,23 +724,26 @@ def generate_video_in_gemini(recover_only=False):
         history_data = json.load(f)
 
     latest_pkg = history_data["history"][-1]
-    video_num = latest_pkg.get("video_id", history_data["generated_count"])
+    video_num = latest_pkg.get("video_id", history_data.get("generated_count", 1))
 
     foji_img = find_image("foji")
     fojan_img = find_image("fojan")
     if not foji_img or not fojan_img:
-        raise FileNotFoundError("❌ 'assets/characters/' folder mein 'foji' aur 'fojan' naam ki photos rakho!")
+        err = "❌ 'assets/characters/' folder mein 'foji' aur 'fojan' ki photos nahi mili!"
+        update_3d_telemetry(1, "CHARACTER PHOTO MISSING", err, "error", 0)
+        send_alert(err)
+        raise FileNotFoundError(err)
 
     raw_dir = os.path.abspath("output/raw_videos")
     os.makedirs(raw_dir, exist_ok=True)
     output_video_path = os.path.join(raw_dir, f"raw_video_{video_num}.mp4")
 
     if os.path.exists(output_video_path) and is_valid_mp4(output_video_path):
-        print(f"✅ Raw video already exists on disk: {output_video_path}")
         mark_episode_completed_in_history(history_data, latest_pkg)
+        update_3d_telemetry(6, "REEL READY FOR APPROVAL", "Video rendered & sent for approval!", "completed", 100)
         return output_video_path
 
-    print("🕵️ Launching Invisible Background Chrome Engine...")
+    update_3d_telemetry(1, "LAUNCHING HIDDEN CHROME", "Opening Gemini Workspace & clearing popups...", "active", 10)
     driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
 
     try:
@@ -748,140 +751,97 @@ def generate_video_in_gemini(recover_only=False):
         inject_cloud_cookies_if_present(driver)
         dismiss_annoying_popups(driver)
 
-        # STEP 0: First check if the video ALREADY finished rendering in an earlier chat!
-        if recover_rendered_video_from_past_chats(driver, latest_pkg, raw_dir, output_video_path):
-            mark_episode_completed_in_history(history_data, latest_pkg)
-            print(f"🎉 Recovered Already-Finished Video from Gemini Chat History: {output_video_path}")
-            return output_video_path
-
-        if recover_only:
-            raise RuntimeError("Pichli chat mein koi bani hui video nahi mili. Normal generation start karein.")
+        # Point 4 & 5: Strictly select 'Flash' model or stop immediately!
+        select_flash_lite_model(driver)
 
         base_video_prompt = generate_live_script_in_chrome_if_needed(driver, latest_pkg, history_data)
+        # Point 26: Ensure every prompt strictly includes background music instruction
+        if "music" not in base_video_prompt.lower():
+            base_video_prompt += " Include cinematic Indian instrumental background music matching the emotion."
 
-        # Auto-Retry Loop (Up to 2 attempts)
-        for attempt_idx in range(1, 3):
-            if attempt_idx == 1:
-                active_prompt = base_video_prompt
-            else:
-                print("🔄 Attempt 1 had a non-limit glitch -> Auto-Simplifying & Sanitizing Prompt for Attempt 2...")
-                driver.get("https://gemini.google.com/app")
+        existing_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
+        initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
+        prev_bubbles = len(get_response_bubbles(driver))
+
+        # Point 6: Plus Icon -> Create Video -> Portrait 9:16 -> Upload Photos -> Paste Prompt
+        update_3d_telemetry(2, "SELECTING CREATE VIDEO", "Clicking '+' Icon & selecting Create Video...", "active", 32)
+        create_video_selected = click_plus_and_select_create_video(driver)
+        if not create_video_selected:
+            err_msg = "❌ Gemini '+' Menu mein 'Create video' select nahi hua! (Video Quota/Limit Exhausted)"
+            update_3d_telemetry(2, "CREATE VIDEO UNAVAILABLE", err_msg, "error", 0)
+            send_alert(err_msg)
+            raise RuntimeError(err_msg)
+
+        update_3d_telemetry(3, "SETTING 9:16 PORTRAIT", "Locking vertical 9:16 reel ratio...", "active", 48)
+        select_portrait_9_16_ratio(driver)
+
+        update_3d_telemetry(4, "UPLOADING CHARACTERS", "Uploading Foji & Fojan reference photos...", "active", 64)
+        upload_character_images_strictly(driver, foji_img, fojan_img)
+
+        update_3d_telemetry(5, "SUBMITTING 3D SCRIPT", "Pasting fresh dialogue & music prompt...", "active", 80)
+        paste_and_send_prompt(driver, base_video_prompt)
+
+        time.sleep(5)
+        if "/app/" in driver.current_url:
+            latest_pkg["gemini_chat_url"] = driver.current_url
+            with open("data/history.json", "w", encoding="utf-8") as f:
+                json.dump(history_data, f, indent=4, ensure_ascii=False)
+
+        # Point 6, 7, 8: Wait patiently until result arrives (up to 25 mins / 300 ticks)
+        update_3d_telemetry(5, "RENDERING 3D VIDEO IN GEMINI", "Waiting for Gemini video engine output...", "active", 88)
+        video_saved = False
+
+        for tick in range(300):
+            time.sleep(5)
+            dismiss_annoying_popups(driver)
+
+            videos = driver.find_elements(By.TAG_NAME, "video")
+            if len(videos) > initial_videos:
+                update_3d_telemetry(6, "DOWNLOADING RENDERED MP4", "Video generated! Downloading MP4...", "active", 95)
                 time.sleep(4)
-                active_prompt = (
-                    f"Create a 9:16 Portrait 3D Pixar animated video using the two uploaded character images. "
-                    f"Image 1 is Foji Makra (Indian Army Soldier with plain shoulder straps, no stars) and Image 2 is Fojan Meera. "
-                    f"Scene: {latest_pkg.get('new_location', 'Cinematic Indian setting')}. "
-                    f"From 0 to 4 seconds, {latest_pkg.get('dialogue_speaker_1', 'Foji Makra')} says in Hindi: \"{latest_pkg.get('dialogue_line_1_hinglish', 'Kaisi ho Meera?')}\". "
-                    f"From 4 to 8 seconds, {latest_pkg.get('dialogue_speaker_2', 'Fojan Meera')} replies in Hindi: \"{latest_pkg.get('dialogue_line_2_hinglish', 'Bas aapka intezar tha!')}\". "
-                    f"Include soft Bollywood instrumental background music."
+                dl_btns = driver.find_elements(
+                    By.XPATH,
+                    "//button[contains(@aria-label, 'Download') or contains(@mattooltip, 'Download') or .//mat-icon[contains(text(), 'download')]]"
                 )
+                if dl_btns:
+                    js_click(driver, dl_btns[-1])
+                    time.sleep(8)
 
-            existing_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
-            initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
-            prev_bubbles = len(get_response_bubbles(driver))
-
-            select_flash_lite_model(driver)
-            create_video_selected = click_plus_and_select_create_video(driver)
-
-            if create_video_selected:
-                # Normal Exact 5-Step Flow!
-                select_portrait_9_16_ratio(driver)
-                upload_character_images_strictly(driver, foji_img, fojan_img)
-                paste_and_send_prompt(driver, active_prompt)
-            else:
-                print("⚠️ '+' menu slow tha ya Create Video direct open nahi hua -> Direct Prompt bhej kar wait kar rahe hain...")
-                upload_character_images_strictly(driver, foji_img, fojan_img)
-                paste_and_send_prompt(driver, f"Generate a 9:16 portrait video using these character images: {active_prompt}")
-
-                full_reply = wait_for_complete_gemini_reply(driver, prev_bubbles, max_wait_sec=300)
-                if full_reply == "VIDEO_ELEMENT_DETECTED" or len(driver.find_elements(By.TAG_NAME, "video")) > initial_videos or is_video_currently_generating(driver):
-                    print("✅ Gemini ne video generation start/complete kar di hai! Continuing pipeline...")
-                else:
-                    reopen_time, clean_reply = extract_reopen_time_and_details(full_reply)
-                    send_alert(f"⛔ *GEMINI VIDEO LIMIT / STATUS:*\n⏰ *Reopen:* `{reopen_time}`\n💬 {clean_reply}")
-                    raise RuntimeError(f"⛔ GEMINI LIMIT -> {clean_reply}")
-
-            # Save the exact chat URL into history.json as soon as Gemini assigns a conversation ID!
-            time.sleep(6)
-            if "/app/" in driver.current_url:
-                latest_pkg["gemini_chat_url"] = driver.current_url
-                with open("data/history.json", "w", encoding="utf-8") as f:
-                    json.dump(history_data, f, indent=4, ensure_ascii=False)
-
-            print(f"⏳ [Attempt {attempt_idx}] Waiting Patiently for Slow Network / Gemini Render...")
-            video_saved = False
-
-            # Wait up to 15 minutes (180 ticks * 5s) so slow network NEVER causes premature exit!
-            for tick in range(180):
-                time.sleep(5)
-                dismiss_annoying_popups(driver)
-
-                if "/app/" in driver.current_url and latest_pkg.get("gemini_chat_url") != driver.current_url:
-                    latest_pkg["gemini_chat_url"] = driver.current_url
-                    with open("data/history.json", "w", encoding="utf-8") as f:
-                        json.dump(history_data, f, indent=4, ensure_ascii=False)
-
-                # Check if <video> appeared
-                videos = driver.find_elements(By.TAG_NAME, "video")
-                if len(videos) > initial_videos:
-                    print("\n🎬 Video Rendered! Downloading MP4...")
-                    time.sleep(4)
-                    dl_btns = driver.find_elements(
-                        By.XPATH,
-                        "//button[contains(@aria-label, 'Download') or contains(@mattooltip, 'Download') or .//mat-icon[contains(text(), 'download')]]"
-                    )
-                    if dl_btns:
-                        js_click(driver, dl_btns[-1])
-                        time.sleep(8)
-
-                    current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
-                    new_files = list(current_mp4s - existing_mp4s) or list(current_mp4s)
-                    for fpath in sorted(new_files, key=os.path.getmtime, reverse=True):
-                        if is_valid_mp4(fpath):
-                            if os.path.abspath(fpath) != os.path.abspath(output_video_path):
-                                shutil.move(fpath, output_video_path)
-                            video_saved = True
-                            break
-                    if video_saved:
+                current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
+                new_files = list(current_mp4s - existing_mp4s) or list(current_mp4s)
+                for fpath in sorted(new_files, key=os.path.getmtime, reverse=True):
+                    if is_valid_mp4(fpath):
+                        if os.path.abspath(fpath) != os.path.abspath(output_video_path):
+                            shutil.move(fpath, output_video_path)
+                        video_saved = True
                         break
+                if video_saved:
+                    break
 
-                # Wait patiently as long as NO final reply/video/limit has appeared yet!
-                current_bubbles = len(get_response_bubbles(driver))
-                latest_bubble_txt = get_latest_response_text(driver).strip()
-                if (current_bubbles <= prev_bubbles or not latest_bubble_txt) and not is_video_currently_generating(driver):
-                    reopen_chk, banner_chk = scan_entire_chat_for_quota_banner(driver)
-                    if reopen_chk:
-                        send_alert(f"⛔ *QUOTA LIMIT:* `{reopen_chk}`\n\n{banner_chk}")
-                        raise RuntimeError(f"⛔ QUOTA LIMIT: {banner_chk}")
-                    print(f"⏳ [Tick {tick}/180] Waiting for slow network / Gemini response to appear on screen...")
+            if is_video_currently_generating(driver):
+                continue
+
+            # Point 7: If Gemini returned an error/message instead of video, send exact text to Frontend Popup & Telegram!
+            current_bubbles = len(get_response_bubbles(driver))
+            if current_bubbles > prev_bubbles and not is_video_currently_generating(driver):
+                time.sleep(4)
+                if len(driver.find_elements(By.TAG_NAME, "video")) > initial_videos:
                     continue
+                reply_txt = get_latest_response_text(driver).strip()
+                if reply_txt:
+                    update_3d_telemetry(5, "GEMINI MESSAGE / ERROR", reply_txt[:240], "error", 0)
+                    send_alert(f"⚠️ *GEMINI RESPONSE / ERROR:*\n\n{reply_txt}")
+                    raise RuntimeError(reply_txt)
 
-                if is_video_currently_generating(driver):
-                    continue
+        if video_saved and is_valid_mp4(output_video_path):
+            mark_episode_completed_in_history(history_data, latest_pkg)
+            update_3d_telemetry(6, "REEL SENT FOR APPROVAL", "3D Reel Rendered & Sent for Approval!", "completed", 100)
+            return output_video_path
 
-                if current_bubbles > prev_bubbles:
-                    screen_error = check_screen_error_or_limit(driver)
-                    if screen_error:
-                        time.sleep(3)
-                        screen_error = get_latest_response_text(driver)
-                        low_err = screen_error.lower()
-                        if any(k in low_err for k in ["limit", "resets", "quota", "tomorrow", "more videos"]):
-                            reopen_time, clean_err = extract_reopen_time_and_details(screen_error)
-                            send_alert(f"⛔ *QUOTA LIMIT:* `{reopen_time}`\n\n{clean_err}")
-                            raise RuntimeError(f"⛔ QUOTA LIMIT: {clean_err}")
-                        else:
-                            print(f"⚠️ Non-limit error detected: {screen_error[:120]} -> Retrying with modified prompt...")
-                            break
-
-            if video_saved and is_valid_mp4(output_video_path):
-                time.sleep(2)
-                reopen_time, _ = scan_entire_chat_for_quota_banner(driver)
-                post_limit_note = f"⏰ Next Limit Reopen: {reopen_time}" if reopen_time else None
-                mark_episode_completed_in_history(history_data, latest_pkg, post_limit_note)
-                update_3d_telemetry(6, "3D REEL RENDER COMPLETE", f"Saved MP4: {os.path.basename(output_video_path)}", "completed", 100)
-                return output_video_path
-
-        raise RuntimeError("❌ Both attempts finished without a rendered video.")
+        timeout_err = "❌ Gemini se video render hone mein timeout ho gaya."
+        update_3d_telemetry(5, "RENDER TIMEOUT", timeout_err, "error", 0)
+        send_alert(timeout_err)
+        raise RuntimeError(timeout_err)
 
     finally:
         try:
