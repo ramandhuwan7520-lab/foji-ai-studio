@@ -51,16 +51,20 @@ def cleanup_locks_and_old_ports():
                         pass
 
 def connect_selenium_to_chrome(options):
-    try:
-        return webdriver.Chrome(options=options)
-    except Exception:
-        wdm_exe_pattern = os.path.expanduser(r"~\.wdm\drivers\chromedriver\**\chromedriver.exe")
-        found_drivers = glob.glob(wdm_exe_pattern, recursive=True)
-        if found_drivers:
-            from selenium.webdriver.chrome.service import Service
-            latest_driver = sorted(found_drivers, key=os.path.getmtime, reverse=True)[0]
-            return webdriver.Chrome(service=Service(latest_driver), options=options)
-        raise
+    """Works on both Windows Laptop AND Ubuntu 24.04 Cloud Server without version mismatch!"""
+    for attempt in range(4):
+        try:
+            return webdriver.Chrome(options=options)
+        except Exception as e:
+            if attempt == 3:
+                wdm_exe_pattern = os.path.expanduser(r"~\.wdm\drivers\chromedriver\**\chromedriver*")
+                found_drivers = glob.glob(wdm_exe_pattern, recursive=True)
+                if found_drivers:
+                    from selenium.webdriver.chrome.service import Service
+                    latest_driver = sorted(found_drivers, key=os.path.getmtime, reverse=True)[0]
+                    return webdriver.Chrome(service=Service(latest_driver), options=options)
+                raise RuntimeError(f"Chrome connect failed after 4 tries: {e}")
+            time.sleep(2)
 
 def send_alert(message):
     print(f"\n🔔 [GEMINI BOT ALERT]:\n{message}\n")
