@@ -415,6 +415,7 @@ def click_plus_and_select_create_video(driver):
     return True
 
 def select_portrait_9_16_ratio(driver):
+    update_3d_telemetry(3, "LOCKING 9:16 PORTRAIT RATIO", "Setting Vertical Reel Dimension (1080x1920)", "active", 50)
     print("📐 Step 3: Selecting 'Portrait (9:16)' Video Size...")
     dismiss_annoying_popups(driver)
     try:
