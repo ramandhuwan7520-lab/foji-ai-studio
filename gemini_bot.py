@@ -16,6 +16,24 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 load_dotenv()
 
+def update_3d_telemetry(step_num, step_title, sub_detail, status="active", progress=10):
+    """Saves real-time hidden Chrome step state so the Frontend 3D HUD can animate every click live!"""
+    os.makedirs("data", exist_ok=True)
+    payload = {
+        "step_num": step_num,
+        "step_title": step_title,
+        "sub_detail": sub_detail,
+        "status": status,
+        "progress": progress,
+        "timestamp": time.strftime("%H:%M:%S")
+    }
+    try:
+        with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+    except Exception:
+        pass
+    print(f"🌐 [3D LIVE STEP {step_num}/6] {step_title} -> {sub_detail} ({progress}%)")
+
 def allowed_gai_family():
     return socket.AF_INET
 
