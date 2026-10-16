@@ -804,14 +804,14 @@ def generate_video_in_gemini(recover_only=False):
         video_saved = False
         response_appeared = False
 
-            raw_dir = os.path.abspath(os.path.join("output", "raw_videos"))
-            os.makedirs(raw_dir, exist_ok=True)
-            existing_mp4s = set(f for f in os.listdir(raw_dir) if f.endswith(".mp4"))
-            initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
-            prev_bubbles = len(get_response_bubbles(driver))
+        raw_dir = os.path.abspath(os.path.join("output", "raw_videos"))
+        os.makedirs(raw_dir, exist_ok=True)
+        existing_mp4s = set(f for f in os.listdir(raw_dir) if f.endswith(".mp4"))
+        initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
+        prev_bubbles = len(get_response_bubbles(driver))
 
             # Wait up to 15 minutes (180 ticks * 5s) so slow network NEVER causes premature exit!
-            for tick in range(180):
+        for tick in range(180):
                 time.sleep(5)
                 dismiss_annoying_popups(driver)
 
@@ -876,7 +876,7 @@ def generate_video_in_gemini(recover_only=False):
                             print(f"⚠️ Non-limit error detected: {screen_error[:120]} -> Retrying with modified prompt...")
                             break
 
-            if video_saved and is_valid_mp4(output_video_path):
+        if video_saved and is_valid_mp4(output_video_path):
                 time.sleep(2)
                 reopen_time, _ = scan_entire_chat_for_quota_banner(driver)
                 post_limit_note = f"⏰ Next Limit Reopen: {reopen_time}" if reopen_time else None
@@ -898,49 +898,3 @@ def generate_video_in_gemini(recover_only=False):
 if __name__ == "__main__":
     generate_video_in_gemini()
 
-def select_flash_lite_model(driver):
-    """Safely checks and selects Gemini Flash Lite / appropriate model if available."""
-    try:
-        model_selectors = [
-            "//button[contains(., 'Flash') or contains(., 'Lite')]",
-            "//div[contains(@class, 'model-selector')]"
-        ]
-        for sel in model_selectors:
-            elems = driver.find_elements(By.XPATH, sel)
-            for el in elems:
-                if el.is_displayed():
-                    js_click(driver, el)
-                    time.sleep(1)
-                    return True
-    except Exception:
-        pass
-    return False
-
-def click_plus_and_select_create_video(driver):
-    """Finds the '+' attachment button and clicks 'Create video' option."""
-    try:
-        plus_buttons = [
-            "//button[contains(@aria-label, 'Add') or contains(@aria-label, 'Upload') or contains(@aria-label, 'menu')]",
-            "//button[.//mat-icon[text()='add']]",
-            "//button[contains(@class, 'plus') or contains(@class, 'upload')]"
-        ]
-        for xp in plus_buttons:
-            btns = [b for b in driver.find_elements(By.XPATH, xp) if b.is_displayed()]
-            for b in btns:
-                js_click(driver, b)
-                time.sleep(2)
-                
-                # Look for 'Create video' option in menu
-                video_opts = [
-                    "//div[contains(text(), 'Create video') or contains(text(), 'Video') or contains(text(), 'Generate video')]",
-                    "//button[contains(., 'Create video') or contains(., 'Video')]"
-                ]
-                for v_xp in video_opts:
-                    opts = [o for o in driver.find_elements(By.XPATH, v_xp) if o.is_displayed()]
-                    for opt in opts:
-                        js_click(driver, opt)
-                        time.sleep(2)
-                        return True
-    except Exception:
-        pass
-    return False
