@@ -2,15 +2,15 @@ import os
 import sys
 import json
 import time
+from datetime import datetime, timedelta, timezone
+
+IST = timezone(timedelta(hours=5, minutes=30))
 
 def export_local_chrome_cookies():
-    """
-    Run ONCE on your laptop: `python cloud_worker.py --export-cookies`
-    Extracts your logged-in Google/Gemini cookies from `chrome_profile` so Cloud Chrome never asks for OTP!
-    """
+    """Run ONCE on laptop: `python cloud_worker.py --export-cookies`"""
     import gemini_bot
     print("🔐 Opening local Chrome profile to export Google/Gemini login cookies...")
-    driver = gemini_bot.get_chrome_driver( os.path.abspath("output/raw_videos") )
+    driver = gemini_bot.get_chrome_driver(os.path.abspath("output/raw_videos"))
     try:
         driver.get("https://gemini.google.com/app")
         time.sleep(6)
@@ -34,25 +34,77 @@ def export_local_chrome_cookies():
             driver.quit()
         except Exception:
             pass
+        try:
+            if hasattr(driver, "_chrome_proc"):
+                driver._chrome_proc.terminate()
+        except Exception:
+            pass
+
+def is_schedule_slot_due_now():
+    """
+    Checks `data/schedule_config.json` in Indian Standard Time (IST).
+    If a scheduled slot (e.g., 11:00 or 14:00) has arrived today and hasn't run yet, returns True!
+    """
+    cfg_path = "data/schedule_config.json"
+    if not os.path.exists(cfg_path):
+        return False, None
+
+    with open(cfg_path, "r", encoding="utf-8") as f:
+        cfg = json.load(f)
+
+    if not cfg.get("enabled", True):
+        print("⏸️ Auto-Scheduler is currently disabled in schedule_config.json.")
+        return False, None
+
+    now_ist = datetime.now(IST)
+    today_str = now_ist.strftime("%Y-%m-%d")
+    current_hm = now_ist.strftime("%H:%M")
+
+    # Supports both single `time` and multiple `times` list
+    slots = cfg.get("times") or ([cfg.get("time")] if cfg.get("time") else ["11:00", "14:00"])
+    completed_runs = cfg.get("completed_slots_log", {})
+    done_today = completed_runs.get(today_str, [])
+
+    for slot in sorted(slots):
+        if not slot or slot in done_today:
+            continue
+        # If current IST time is >= slot time (and within 90 mins window so missed slots still fire!)
+        slot_dt = datetime.strptime(f"{today_str} {slot}", "%Y-%m-%d %H:%M").replace(tzinfo=IST)
+        diff_mins = (now_ist - slot_dt).total_seconds() / 60.0
+        if 0 <= diff_mins <= 90:
+            done_today.append(slot)
+            completed_runs[today_str] = done_today
+            cfg["completed_slots_log"] = completed_runs
+            cfg["last_run_date"] = f"{today_str} {slot}"
+            with open(cfg_path, "w", encoding="utf-8") as f:
+                json.dump(cfg, f, indent=4)
+            return True, slot
+
+    print(f"⏰ [IST {current_hm}] Abhi kisi schedule slot ka time nahi hua hai. Slots: {slots} | Done Today: {done_today}")
+    return False, None
 
 def run_single_cloud_video_job():
-    """
-    Runs on GitHub 7GB RAM Server at the EXACT scheduled time.
-    Generates ONLY 1 video (NO extra/pre-buffer videos!).
-    """
-    import dashboard_app
-    action_type = os.environ.get("CLOUD_ACTION_TYPE", "generate_only")
+    event_name = os.environ.get("CLOUD_EVENT_NAME", "workflow_dispatch")
+    action_type = os.environ.get("CLOUD_ACTION_TYPE", "generate_and_publish")
     custom_topic = os.environ.get("CLOUD_CUSTOM_TOPIC", "").strip()
 
-    print(f"🚀 [7GB CLOUD ENGINE STARTED] Action: {action_type} | Custom Topic: {custom_topic or 'Auto Story'}")
-    # Strictly generate ONLY 1 live reel right now
+    if event_name == "schedule":
+        due, slot_name = is_schedule_slot_due_now()
+        if not due:
+            return
+        print(f"🎯 Scheduled Slot '{slot_name}' is DUE NOW! Starting 7GB Cloud Reel Generation...")
+        action_type = "generate_and_publish"
+
+    import dashboard_app
+    print(f"🚀 [7GB CLOUD ENGINE] Action: {action_type} | Custom Topic: {custom_topic or 'Auto Story'}")
     item = dashboard_app.generate_single_reel_package(custom_topic=custom_topic if custom_topic else None)
 
     if item and action_type == "generate_and_publish":
-        print(f"📤 Auto-Publishing Reel #{item.get('id')} to Instagram...")
-        dashboard_app.publish_reel_item_to_instagram(item.get("id"))
+        reel_id = item.get("id") or item.get("video_id")
+        print(f"📤 Auto-Publishing Reel #{reel_id} to Instagram...")
+        dashboard_app.publish_reel_item_to_instagram(reel_id)
 
-    print("✅ [7GB CLOUD ENGINE COMPLETE] Single video task finished cleanly!")
+    print("✅ [7GB CLOUD ENGINE COMPLETE] Task finished cleanly!")
 
 if __name__ == "__main__":
     if "--export-cookies" in sys.argv:
