@@ -107,38 +107,58 @@ def find_real_chrome():
     raise FileNotFoundError("❌ Chrome binary nahi mili!")
 
 def launch_chrome_and_connect(raw_dir, headless=True):
-    """Launches Chrome with profile & debugging port 9222 and returns (driver, chrome_proc)."""
+    """Launches 100% Invisible Chrome on both Linux Cloud (7GB RAM) & Windows Laptop."""
     cleanup_locks_and_old_ports()
     os.makedirs(raw_dir, exist_ok=True)
     chrome_exe = find_real_chrome()
     profile_path = os.path.abspath("chrome_profile")
     os.makedirs(profile_path, exist_ok=True)
 
+    # Remove stale SingletonLock left by any previous crash on Linux/Windows
+    for lock_file in ["SingletonLock", "SingletonCookie", "SingletonSocket"]:
+        lp = os.path.join(profile_path, lock_file)
+        if os.path.exists(lp) or os.path.islink(lp):
+            try:
+                os.unlink(lp)
+            except Exception:
+                pass
+
     cmd = [
         chrome_exe,
         f"--user-data-dir={profile_path}",
         "--remote-debugging-port=9222",
+        "--remote-allow-origins=*",
         "--no-sandbox",
+        "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--window-size=1920,1080",
         "--mute-audio",
         "--no-first-run",
         "--no-default-browser-check",
         "--disable-gpu",
+        "--disable-software-rasterizer",
+        "--disable-blink-features=AutomationControlled",
         "https://gemini.google.com/app"
     ]
     if headless:
-        cmd.insert(3, "--headless=new")
-        cmd.insert(4, "--window-position=-32000,-32000")
+        cmd.insert(4, "--headless=new")
 
     creation_flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
-    chrome_proc = subprocess.Popen(cmd, creationflags=creation_flags)
-    time.sleep(5)
+    chrome_proc = subprocess.Popen(
+        cmd,
+        creationflags=creation_flags,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+    time.sleep(6)
 
     options = webdriver.ChromeOptions()
     options.debugger_address = "127.0.0.1:9222"
     driver = connect_selenium_to_chrome(options)
-    driver.execute_cdp_cmd("Page.setDownloadBehavior", {"behavior": "allow", "downloadPath": raw_dir})
+    try:
+        driver.execute_cdp_cmd("Page.setDownloadBehavior", {"behavior": "allow", "downloadPath": raw_dir})
+    except Exception:
+        pass
     driver._chrome_proc = chrome_proc
     return driver, chrome_proc
 
