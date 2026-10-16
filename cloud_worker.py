@@ -9,19 +9,8 @@ IST = timezone(timedelta(hours=5, minutes=30))
 FIXED_SLOTS = ["08:00", "14:00", "20:00"]  # 8:00 AM, 2:00 PM, 8:00 PM
 
 def write_live_3d_state(step_num, title, detail, status="active", progress=10):
-    os.makedirs("data", exist_ok=True)
-    try:
-        with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
-            json.dump({
-                "step_num": step_num,
-                "step_title": title,
-                "sub_detail": detail,
-                "status": status,
-                "progress": progress,
-                "timestamp": datetime.now(IST).strftime("%H:%M:%S IST")
-            }, f, indent=2)
-    except Exception:
-        pass
+    import gemini_bot
+    gemini_bot.update_3d_telemetry(step_num, title, detail, status, progress)
 
 def ensure_required_folders_and_files():
     os.makedirs("data", exist_ok=True)
@@ -39,7 +28,7 @@ def ensure_required_folders_and_files():
                 "enabled": True,
                 "nightly_batch_time": "02:00",
                 "times": FIXED_SLOTS,
-                "last_nightly_batch_date": "",
+                "daily_progress": {},
                 "completed_slots_log": {}
             }, f, indent=4)
 
@@ -70,16 +59,23 @@ def export_local_chrome_cookies():
         except Exception:
             pass
 
+def get_today_completed_reels_count(hist, today_str):
+    """Counts how many reels have been successfully generated today (since 02:00 AM IST)."""
+    count = 0
+    for item in hist.get("history", []):
+        if item.get("batch_date") == today_str and item.get("video_completed"):
+            count += 1
+    return count
+
 def run_autonomous_schedule_cycle():
     """
-    Implements Points 10, 11, 12:
-    1. At 02:00 AM IST: Generates 3 reels one-by-one and sends them to Backend & Telegram for approval.
+    1. Starting at 02:00 AM IST: Checks if 3 reels are completed for today.
+       If fewer than 3 reels are built, automatically retries every hour/cycle until all 3 reels are ready!
     2. At 08:00 AM, 02:00 PM, 08:00 PM: Publishes reels queued via 'Approve & Schedule' in click order.
-    3. 1-Hour Pre-Slot Deficit Rule: If a slot is 1 hour away (07:00, 13:00, 19:00) and there is no
-       scheduled/ready reel left for that slot (e.g. user posted one immediately via Approve & Post),
-       automatically generates the missing 3rd reel 1 hour before its slot!
+    3. 1-Hour Pre-Slot Deficit Rule: If a slot is 1 hour away and has no reel, builds one immediately!
     """
     import dashboard_app
+    import gemini_bot
     now_ist = datetime.now(IST)
     today_str = now_ist.strftime("%Y-%m-%d")
 
@@ -90,27 +86,36 @@ def run_autonomous_schedule_cycle():
         print("⏸️ Auto-Scheduler is disabled.")
         return
 
-    # 1. NIGHTLY 02:00 AM BATCH (Generates 3 Daily Reels One-by-One)
-    if 2 <= now_ist.hour < 4 and cfg.get("last_nightly_batch_date") != today_str:
-        print("🌙 [02:00 AM NIGHTLY FACTORY] Generating 3 Daily Reels One-by-One for Approval...")
-        cfg["last_nightly_batch_date"] = today_str
-        with open("data/schedule_config.json", "w", encoding="utf-8") as f:
-            json.dump(cfg, f, indent=4)
-
-        for batch_i in range(1, 4):
-            print(f"🎬 Generating Daily Batch Reel {batch_i}/3...")
-            dashboard_app.generate_single_reel_package(send_for_approval=True)
-            time.sleep(5)
-        return
-
-    # 2. CHECK 1-HOUR PRE-SLOT DEFICIT BUILDER (Point 12: 07:00, 13:00, 19:00)
     with open("data/history.json", "r", encoding="utf-8") as f:
         hist = json.load(f)
 
+    # 1. 02:00 AM + HOURLY AUTO-RETRY UNTIL 3 REELS ARE GENERATED TODAY!
+    if now_ist.hour >= 2:
+        built_today = get_today_completed_reels_count(hist, today_str)
+        last_attempt_ts = cfg.get("last_batch_attempt_ts", 0)
+        mins_since_last_try = (time.time() - last_attempt_ts) / 60.0
+
+        # Run at 2 AM immediately, or retry every ~50-60 mins until built_today >= 3!
+        if built_today < 3 and (now_ist.hour == 2 or mins_since_last_try >= 50):
+            missing = 3 - built_today
+            cfg["last_batch_attempt_ts"] = time.time()
+            with open("data/schedule_config.json", "w", encoding="utf-8") as f:
+                json.dump(cfg, f, indent=4)
+
+            gemini_bot.send_alert(
+                f"🌙 *AUTO-FACTORY ACTIVE ({now_ist.strftime('%I:%M %p IST')}):*\n"
+                f"Aaj ki `{built_today}/3` reels bani hain. Baaki `{missing}` reels abhi banayi ja rahi hain..."
+            )
+            for i in range(missing):
+                print(f"🎬 Generating Daily Reel #{built_today + i + 1}/3 for {today_str}...")
+                item = dashboard_app.generate_single_reel_package(send_for_approval=True, batch_date=today_str)
+                time.sleep(4)
+            return
+
+    # 2. CHECK 1-HOUR PRE-SLOT DEFICIT BUILDER (07:00, 13:00, 19:00)
     for slot in FIXED_SLOTS:
         slot_dt = datetime.strptime(f"{today_str} {slot}", "%Y-%m-%d %H:%M").replace(tzinfo=IST)
         mins_until_slot = (slot_dt - now_ist).total_seconds() / 60.0
-        # Between 45 and 75 minutes before slot (1 hour prior)
         if 40 <= mins_until_slot <= 75:
             queued_for_slot = [
                 r for r in hist.get("history", [])
@@ -122,10 +127,10 @@ def run_autonomous_schedule_cycle():
             ]
             if not queued_for_slot and not unscheduled_ready:
                 print(f"⚡ [1-HOUR DEFICIT RULE] Slot {slot} has no reel ready! Generating replacement reel now...")
-                dashboard_app.generate_single_reel_package(send_for_approval=True)
+                dashboard_app.generate_single_reel_package(send_for_approval=True, batch_date=today_str)
                 return
 
-    # 3. EXECUTE SCHEDULED POSTING AT 08:00 AM, 02:00 PM, 08:00 PM (Point 11)
+    # 3. EXECUTE SCHEDULED POSTING AT 08:00 AM, 02:00 PM, 08:00 PM
     completed_runs = cfg.get("completed_slots_log", {})
     done_today = completed_runs.get(today_str, [])
 
@@ -135,7 +140,6 @@ def run_autonomous_schedule_cycle():
         slot_dt = datetime.strptime(f"{today_str} {slot}", "%Y-%m-%d %H:%M").replace(tzinfo=IST)
         diff_mins = (now_ist - slot_dt).total_seconds() / 60.0
         if 0 <= diff_mins <= 60:
-            # Find reel scheduled for this slot (or earliest scheduled reel by click order)
             candidates = [
                 r for r in hist.get("history", [])
                 if r.get("status") == "scheduled" and (r.get("scheduled_slot") == slot or not r.get("scheduled_slot"))
@@ -157,6 +161,7 @@ def run_single_cloud_video_job():
     event_name = os.environ.get("CLOUD_EVENT_NAME", "workflow_dispatch")
     action_type = os.environ.get("CLOUD_ACTION_TYPE", "generate_only")
     custom_topic = os.environ.get("CLOUD_CUSTOM_TOPIC", "").strip()
+    today_str = datetime.now(IST).strftime("%Y-%m-%d")
 
     try:
         import dashboard_app
@@ -164,10 +169,22 @@ def run_single_cloud_video_job():
             run_autonomous_schedule_cycle()
             return
 
+        # If custom_topic starts with REGEN_ID:, regenerate that specific video ID!
+        if custom_topic.startswith("REGEN_ID:"):
+            vid_id = int(custom_topic.split(":")[1])
+            print(f"🔄 [CLOUD REGENERATE] Regenerating Video ID #{vid_id} with fresh script...")
+            dashboard_app.generate_single_reel_package(
+                send_for_approval=True,
+                replace_video_id=vid_id,
+                batch_date=today_str
+            )
+            return
+
         print(f"🚀 [MANUAL CLOUD WORKER] Action: {action_type} | Topic: {custom_topic or 'Auto Next Episode'}")
         item = dashboard_app.generate_single_reel_package(
             custom_topic=custom_topic if custom_topic else None,
-            send_for_approval=True
+            send_for_approval=True,
+            batch_date=today_str
         )
         if item and action_type == "generate_and_publish":
             reel_id = item.get("video_id") or item.get("id")
