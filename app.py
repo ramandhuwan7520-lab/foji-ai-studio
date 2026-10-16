@@ -7,18 +7,20 @@ import importlib
 import urllib.request
 import dashboard_app
 
-# Enable Instant Frontend HTML/Template Auto-Reload
+# Instant Frontend HTML/Template Auto-Reload
 dashboard_app.app.config["TEMPLATES_AUTO_RELOAD"] = True
 dashboard_app.app.jinja_env.auto_reload = True
 
-def anti_sleep_48h_guardian():
-    """Pings the live space every 3 minutes so it never sleeps due to inactivity."""
-    urls = [
-        "https://raman17-foji-ai-studio.hf.space/api/live_status",
-        "http://127.0.0.1:7860/api/live_status"
-    ]
+def keep_alive_24_7_pinger():
+    """
+    Pings our live cloud URL every 4 minutes so the free server NEVER sleeps 24/7!
+    """
     while True:
-        time.sleep(180)
+        time.sleep(240)
+        render_url = os.environ.get("RENDER_EXTERNAL_URL", "")
+        urls = ["http://127.0.0.1:" + str(os.environ.get("PORT", 7860)) + "/api/live_status"]
+        if render_url:
+            urls.append(render_url.rstrip("/") + "/api/live_status")
         for url in urls:
             try:
                 req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -27,7 +29,9 @@ def anti_sleep_48h_guardian():
                 pass
 
 def hot_reload_vs_code_sync_loop():
-    """Pulls VS Code changes every 8 seconds and reloads modules live in-memory!"""
+    """
+    Checks every 8 seconds for VS Code changes and hot-reloads modules without restarting!
+    """
     while True:
         time.sleep(8)
         if os.path.exists(".git"):
@@ -49,7 +53,8 @@ def hot_reload_vs_code_sync_loop():
                 pass
 
 if __name__ == "__main__":
-    threading.Thread(target=anti_sleep_48h_guardian, daemon=True).start()
+    threading.Thread(target=keep_alive_24_7_pinger, daemon=True).start()
     threading.Thread(target=hot_reload_vs_code_sync_loop, daemon=True).start()
-    print("🚀 Starting Foji 3D Studio 24/7 on Free CPU-Basic (16GB RAM)...")
-    dashboard_app.app.run(host="0.0.0.0", port=7860, debug=False, use_reloader=False, threaded=True)
+    port = int(os.environ.get("PORT", 7860))
+    print(f"🚀 Starting Foji 3D Studio 24/7 on Port {port}...")
+    dashboard_app.app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False, threaded=True)
