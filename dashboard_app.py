@@ -1041,25 +1041,27 @@ LUXURY_3D_HTML = r"""
     </div>
   </section>
 
-  <!-- ==================== PAGE 4: PROFILE (POINT 38 — LIVE INSTAGRAM PROFILE ONLY) ==================== -->
+  <!-- ==================== PAGE 4: PROFILE (100% REAL INSTAGRAM PROFILE) ==================== -->
   <section id="page-profile" class="page-section">
     <div class="lux-card" style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
-      <div style="width:105px;height:105px;border-radius:50%;padding:4px;background:linear-gradient(45deg,#f59e0b,#ec4899,#10b981);">
-        <div style="width:100%;height:100%;border-radius:50%;background:#0f172a;display:flex;align-items:center;justify-content:center;font-size:2.4rem;">
-          🪖
-        </div>
+      <div style="width:112px;height:112px;border-radius:50%;padding:4px;background:linear-gradient(45deg,#f59e0b,#ec4899,#10b981);">
+        <img id="prof-avatar-img" src="/api/ig_avatar" alt="Profile DP"
+             style="width:100%;height:100%;border-radius:50%;object-fit:cover;background:#0f172a;"
+             onerror="this.src='https://ui-avatars.com/api/?name=IG&background=0f172a&color=10b981'">
       </div>
       <div style="flex:1;">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-          <h2 style="font-size:1.5rem;font-weight:800;" id="prof-username">@foji.fojan.3d.official</h2>
-          <span style="background:#10b981;color:#000;font-weight:800;font-size:0.72rem;padding:4px 10px;border-radius:99px;">LIVE CONNECTED</span>
+          <h2 style="font-size:1.5rem;font-weight:800;" id="prof-username">@loading...</h2>
+          <span style="background:#10b981;color:#000;font-weight:800;font-size:0.72rem;padding:4px 10px;border-radius:99px;">REAL IG LIVE</span>
+          <button class="btn-3d btn-glass" style="padding:6px 14px;font-size:0.78rem;" onclick="reloadEditsInsights(this)">🔄 Reload Profile</button>
         </div>
-        <div style="display:flex;gap:28px;margin:16px 0;font-size:1rem;">
+        <div style="display:flex;gap:28px;margin:14px 0;font-size:1rem;">
           <div><strong id="prof-posts">0</strong> <span style="color:#94a3b8;">Posts</span></div>
-          <div><strong id="prof-followers">4,280</strong> <span style="color:#94a3b8;">Followers</span></div>
-          <div><strong id="prof-following">18</strong> <span style="color:#94a3b8;">Following</span></div>
+          <div><strong id="prof-followers">0</strong> <span style="color:#94a3b8;">Followers</span></div>
+          <div><strong id="prof-following">0</strong> <span style="color:#94a3b8;">Following</span></div>
         </div>
-        <p style="color:#e2e8f0;font-size:0.9rem;">🇮🇳 Foji Makra & Fojan Meera Official 3D Series • Powered by Vanguard 3D Studio ✨</p>
+        <div style="font-weight:700;color:#fde68a;font-size:0.95rem;margin-bottom:4px;" id="prof-fullname"></div>
+        <p style="color:#e2e8f0;font-size:0.9rem;white-space:pre-line;line-height:1.45;" id="prof-bio"></p>
       </div>
     </div>
 
