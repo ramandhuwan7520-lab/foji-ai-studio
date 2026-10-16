@@ -71,12 +71,10 @@ def is_valid_mp4(file_path):
 def find_real_chrome():
     """Works on both your Windows Laptop AND 24/7 Free Linux Cloud Servers!"""
     paths = [
-        # Linux Cloud Server paths
         "/usr/bin/google-chrome",
         "/usr/bin/google-chrome-stable",
         "/usr/bin/chromium",
         "/usr/bin/chromium-browser",
-        # Windows Laptop paths
         r"C:\Program Files\Google\Chrome\Application\chrome.exe",
         r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
         os.path.expanduser(r"~\AppData\Local\Google\Chrome\Application\chrome.exe")
@@ -85,6 +83,68 @@ def find_real_chrome():
         if os.path.exists(p):
             return p
     raise FileNotFoundError("❌ Chrome binary nahi mili!")
+
+def launch_chrome_and_connect(raw_dir, headless=True):
+    """Launches Chrome with profile & debugging port 9222 and returns (driver, chrome_proc)."""
+    cleanup_locks_and_old_ports()
+    os.makedirs(raw_dir, exist_ok=True)
+    chrome_exe = find_real_chrome()
+    profile_path = os.path.abspath("chrome_profile")
+    os.makedirs(profile_path, exist_ok=True)
+
+    cmd = [
+        chrome_exe,
+        f"--user-data-dir={profile_path}",
+        "--remote-debugging-port=9222",
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
+        "--window-size=1920,1080",
+        "--mute-audio",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--disable-gpu",
+        "https://gemini.google.com/app"
+    ]
+    if headless:
+        cmd.insert(3, "--headless=new")
+        cmd.insert(4, "--window-position=-32000,-32000")
+
+    creation_flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    chrome_proc = subprocess.Popen(cmd, creationflags=creation_flags)
+    time.sleep(5)
+
+    options = webdriver.ChromeOptions()
+    options.debugger_address = "127.0.0.1:9222"
+    driver = connect_selenium_to_chrome(options)
+    driver.execute_cdp_cmd("Page.setDownloadBehavior", {"behavior": "allow", "downloadPath": raw_dir})
+    driver._chrome_proc = chrome_proc
+    return driver, chrome_proc
+
+def get_chrome_driver(raw_dir=None):
+    """Helper used by cloud_worker.py to export Google Login Cookies from local Chrome."""
+    if not raw_dir:
+        raw_dir = os.path.abspath("output/raw_videos")
+    driver, _ = launch_chrome_and_connect(raw_dir, headless=False)
+    return driver
+
+def inject_cloud_cookies_if_present(driver):
+    """Injects GEMINI_COOKIES_JSON into Cloud Chrome so Google never asks for OTP/Password!"""
+    cookies_env = os.environ.get("GEMINI_COOKIES_JSON", "").strip()
+    if not cookies_env:
+        return
+    try:
+        driver.get("https://gemini.google.com")
+        time.sleep(2)
+        for ck in json.loads(cookies_env):
+            try:
+                driver.add_cookie(ck)
+            except Exception:
+                pass
+        print("🔐 Cloud Google Login Cookies injected successfully!")
+        driver.get("https://gemini.google.com/app")
+        time.sleep(4)
+    except Exception as e:
+        print(f"⚠️ Cookie injection notice: {e}")
 
 def find_image(keyword):
     folder = os.path.abspath("assets/characters")
@@ -131,7 +191,6 @@ def extract_reopen_time_and_details(text):
     """Extracts quota reset time or error details from Gemini's message."""
     if not text:
         return "Unknown Time", "Screen par abhi koi reply nahi aaya."
-    import re
     clean = " ".join(text.split())
     m = re.search(
         r"(try again (?:after|at|in)\s+[^.!?\n]+|available (?:again )?(?:after|at|in)\s+[^.!?\n]+|\b\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)\b|\b\d+\s*(?:hours?|minutes?|mins?|days?)\b)",
@@ -218,7 +277,6 @@ def is_video_currently_generating(driver):
     if any(p in combined_text for p in generating_phrases):
         return True
 
-    # Check all possible loading bars, spinners, skeletons, and streaming indicators
     spinners = driver.find_elements(
         By.CSS_SELECTOR,
         "mat-progress-bar, mat-spinner, .loading-spinner, [role='progressbar'], "
@@ -232,7 +290,6 @@ def is_video_currently_generating(driver):
         except Exception:
             pass
 
-    # If the 'Stop generating' / 'Stop response' button is visible, Gemini is 100% still working!
     stop_btns = driver.find_elements(
         By.XPATH,
         "//button[contains(@aria-label, 'Stop') or contains(@aria-label, 'stop') or contains(@mattooltip, 'Stop') or .//mat-icon[contains(text(), 'stop')]]"
@@ -250,7 +307,6 @@ def wait_for_complete_gemini_reply(driver, previous_bubble_count, max_wait_sec=3
     """
     Waits patiently (up to 5 full minutes on slow networks!) until Gemini ACTUALLY finishes
     loading/thinking and produces either a complete text reply, a quota message, or a video!
-    NEVER exits early while network/Gemini is still loading!
     """
     start_time = time.time()
     last_text = ""
@@ -260,21 +316,17 @@ def wait_for_complete_gemini_reply(driver, previous_bubble_count, max_wait_sec=3
         time.sleep(3)
         dismiss_annoying_popups(driver)
 
-        # 1. If a <video> tag appeared on screen, return immediately!
         if driver.find_elements(By.TAG_NAME, "video"):
             return "VIDEO_ELEMENT_DETECTED"
 
-        # 2. Check if a quota banner appeared anywhere on screen
         reopen_t, banner_txt = scan_entire_chat_for_quota_banner(driver)
         if reopen_t and banner_txt:
             return banner_txt
 
-        # 3. Check response bubbles
         bubbles = get_response_bubbles(driver)
         if len(bubbles) > previous_bubble_count:
             current_text = bubbles[-1].text.strip()
             if current_text:
-                # Make sure Gemini isn't still actively streaming/typing or showing a spinner
                 if current_text == last_text and len(current_text) > 8 and not is_video_currently_generating(driver):
                     stable_ticks += 1
                     if stable_ticks >= 2:
@@ -284,7 +336,6 @@ def wait_for_complete_gemini_reply(driver, previous_bubble_count, max_wait_sec=3
                     stable_ticks = 0
                     continue
 
-        # 4. If no text has appeared yet (or bubble is still empty), keep waiting patiently!
         if is_video_currently_generating(driver):
             print("⏳ Gemini abhi loading/thinking mode mein hai (Slow Network Wait Active)...")
             continue
@@ -338,7 +389,6 @@ def select_flash_lite_model(driver):
             js_click(driver, btns[0])
             time.sleep(1.5)
 
-            # Priority 1: Flash Lite / Lite
             lite_options = driver.find_elements(
                 By.XPATH,
                 "//*[@role='menuitem' or @role='option' or self::button or self::div or self::span]"
@@ -351,7 +401,6 @@ def select_flash_lite_model(driver):
                     time.sleep(1.5)
                     return True
 
-            # Priority 2: Standard Flash (if Lite label is merged)
             flash_options = driver.find_elements(
                 By.XPATH,
                 "//*[@role='menuitem' or @role='option' or self::button or self::div or self::span]"
@@ -563,7 +612,7 @@ def generate_live_script_in_chrome_if_needed(driver, latest_pkg, history_data):
     brain_prompt = latest_pkg["browser_brain_prompt"] + "\n\nIMPORTANT: Return ONLY raw JSON object, no markdown explanation."
     paste_and_send_prompt(driver, brain_prompt)
 
-    resp_text = wait_for_complete_gemini_reply(driver, prev_count, max_wait_sec=40)
+    resp_text = wait_for_complete_gemini_reply(driver, prev_count, max_wait_sec=60)
     if "{" in resp_text and "}" in resp_text and "gemini_video_prompt" in resp_text:
         try:
             start_idx = resp_text.find("{")
@@ -615,9 +664,7 @@ def mark_episode_completed_in_history(history_data, latest_pkg, post_video_limit
 def recover_rendered_video_from_past_chats(driver, latest_pkg, raw_dir, output_video_path):
     """
     SMART CHAT HUNTER:
-    1. First checks if the exact `gemini_chat_url` was saved in history.json for this video.
-    2. If not, scans the Left Sidebar recent chats to find the conversation matching our prompt/characters!
-    3. If the <video> is already rendered inside that chat, downloads it immediately without re-generating!
+    Checks if the video was ALREADY rendered in a previous Gemini chat and downloads it!
     """
     print("🕵️ Checking if video was ALREADY rendered in a previous Gemini chat...")
     try:
@@ -627,7 +674,6 @@ def recover_rendered_video_from_past_chats(driver, latest_pkg, raw_dir, output_v
             driver.get(saved_url)
             time.sleep(6)
         else:
-            # Scan sidebar chat history items for keywords from our prompt/theme
             search_keywords = [
                 latest_pkg.get("dialogue_line_1_hinglish", "")[:18].lower(),
                 latest_pkg.get("emotion_name", "")[:15].lower(),
@@ -647,7 +693,6 @@ def recover_rendered_video_from_past_chats(driver, latest_pkg, raw_dir, output_v
                     time.sleep(6)
                     break
 
-        # Check if a rendered <video> exists in this opened chat!
         videos = driver.find_elements(By.TAG_NAME, "video")
         if videos:
             print("🎉 Found ALREADY RENDERED Video in Chat History! Downloading MP4 now...")
@@ -668,7 +713,6 @@ def recover_rendered_video_from_past_chats(driver, latest_pkg, raw_dir, output_v
                         shutil.move(fpath, output_video_path)
                     return True
 
-        # Reset back to main app screen if no finished video found
         driver.get("https://gemini.google.com/app")
         time.sleep(4)
     except Exception as e:
@@ -676,8 +720,6 @@ def recover_rendered_video_from_past_chats(driver, latest_pkg, raw_dir, output_v
     return False
 
 def generate_video_in_gemini(recover_only=False):
-    cleanup_locks_and_old_ports()
-
     with open("data/history.json", "r", encoding="utf-8") as f:
         history_data = json.load(f)
 
@@ -698,36 +740,12 @@ def generate_video_in_gemini(recover_only=False):
         mark_episode_completed_in_history(history_data, latest_pkg)
         return output_video_path
 
-    chrome_exe = find_real_chrome()
-    profile_path = os.path.abspath("chrome_profile")
-
     print("🕵️ Launching Invisible Background Chrome Engine...")
-    cmd = [
-        chrome_exe,
-        f"--user-data-dir={profile_path}",
-        "--remote-debugging-port=9222",
-        "--headless=new",
-        "--no-sandbox",
-        "--disable-dev-shm-usage",
-        "--window-size=1920,1080",
-        "--window-position=-32000,-32000",
-        "--mute-audio",
-        "--no-first-run",
-        "--no-default-browser-check",
-        "--disable-gpu",
-        "https://gemini.google.com/app"
-    ]
-    creation_flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
-    chrome_proc = subprocess.Popen(cmd, creationflags=creation_flags)
-    time.sleep(5)
-
-    options = webdriver.ChromeOptions()
-    options.debugger_address = "127.0.0.1:9222"
-    driver = connect_selenium_to_chrome(options)
-    driver.execute_cdp_cmd("Page.setDownloadBehavior", {"behavior": "allow", "downloadPath": raw_dir})
+    driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
 
     try:
-        time.sleep(4)
+        time.sleep(3)
+        inject_cloud_cookies_if_present(driver)
         dismiss_annoying_popups(driver)
 
         # STEP 0: First check if the video ALREADY finished rendering in an earlier chat!
@@ -739,31 +757,17 @@ def generate_video_in_gemini(recover_only=False):
         if recover_only:
             raise RuntimeError("Pichli chat mein koi bani hui video nahi mili. Normal generation start karein.")
 
-        # Auto-Retry Loop (Up to 2 attempts: if attempt 1 fails NOT due to quota limit, modifies prompt & retries!)
         base_video_prompt = generate_live_script_in_chrome_if_needed(driver, latest_pkg, history_data)
 
+        # Auto-Retry Loop (Up to 2 attempts)
         for attempt_idx in range(1, 3):
             if attempt_idx == 1:
                 active_prompt = base_video_prompt
             else:
                 print("🔄 Attempt 1 had a non-limit glitch -> Auto-Simplifying & Sanitizing Prompt for Attempt 2...")
-                driver.get("https://gemini.google.com")
-        time.sleep(2)
-        cookies_env = os.environ.get("GEMINI_COOKIES_JSON", "").strip()
-        if cookies_env:
-            try:
-                import json
-                for ck in json.loads(cookies_env):
-                    try:
-                        driver.add_cookie(ck)
-                    except Exception:
-                        pass
-                print("🔐 Cloud Google Login Cookies injected successfully!")
-            except Exception as e:
-                print(f"⚠️ Cookie injection notice: {e}")
-        driver.get("https://gemini.google.com/app")
-        time.sleep(4)
-        active_prompt = (
+                driver.get("https://gemini.google.com/app")
+                time.sleep(4)
+                active_prompt = (
                     f"Create a 9:16 Portrait 3D Pixar animated video using the two uploaded character images. "
                     f"Image 1 is Foji Makra (Indian Army Soldier with plain shoulder straps, no stars) and Image 2 is Fojan Meera. "
                     f"Scene: {latest_pkg.get('new_location', 'Cinematic Indian setting')}. "
@@ -772,21 +776,25 @@ def generate_video_in_gemini(recover_only=False):
                     f"Include soft Bollywood instrumental background music."
                 )
 
-        select_flash_lite_model(driver)
-        create_video_selected = click_plus_and_select_create_video(driver)
+            existing_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
+            initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
+            prev_bubbles = len(get_response_bubbles(driver))
 
-        if not create_video_selected:
+            select_flash_lite_model(driver)
+            create_video_selected = click_plus_and_select_create_video(driver)
+
+            if create_video_selected:
+                # Normal Exact 5-Step Flow!
+                select_portrait_9_16_ratio(driver)
+                upload_character_images_strictly(driver, foji_img, fojan_img)
+                paste_and_send_prompt(driver, active_prompt)
+            else:
                 print("⚠️ '+' menu slow tha ya Create Video direct open nahi hua -> Direct Prompt bhej kar wait kar rahe hain...")
-                prev_bubbles = len(get_response_bubbles(driver))
-                initial_vids = len(driver.find_elements(By.TAG_NAME, "video"))
                 upload_character_images_strictly(driver, foji_img, fojan_img)
                 paste_and_send_prompt(driver, f"Generate a 9:16 portrait video using these character images: {active_prompt}")
 
-                # Wait up to 5 minutes for slow network!
                 full_reply = wait_for_complete_gemini_reply(driver, prev_bubbles, max_wait_sec=300)
-
-                # Agar Gemini ne video bana di hai, toh error mat do — seedha main download loop mein aage badho!
-                if full_reply == "VIDEO_ELEMENT_DETECTED" or len(driver.find_elements(By.TAG_NAME, "video")) > initial_vids or is_video_currently_generating(driver):
+                if full_reply == "VIDEO_ELEMENT_DETECTED" or len(driver.find_elements(By.TAG_NAME, "video")) > initial_videos or is_video_currently_generating(driver):
                     print("✅ Gemini ne video generation start/complete kar di hai! Continuing pipeline...")
                 else:
                     reopen_time, clean_reply = extract_reopen_time_and_details(full_reply)
@@ -794,24 +802,17 @@ def generate_video_in_gemini(recover_only=False):
                     raise RuntimeError(f"⛔ GEMINI LIMIT -> {clean_reply}")
 
             # Save the exact chat URL into history.json as soon as Gemini assigns a conversation ID!
-        time.sleep(6)
-        if "/app/" in driver.current_url:
+            time.sleep(6)
+            if "/app/" in driver.current_url:
                 latest_pkg["gemini_chat_url"] = driver.current_url
                 with open("data/history.json", "w", encoding="utf-8") as f:
                     json.dump(history_data, f, indent=4, ensure_ascii=False)
 
-        print(f"⏳ [Attempt {attempt_idx}] Waiting Patiently for Slow Network / Gemini Render...")
-        video_saved = False
-        response_appeared = False
-
-        raw_dir = os.path.abspath(os.path.join("output", "raw_videos"))
-        os.makedirs(raw_dir, exist_ok=True)
-        existing_mp4s = set(f for f in os.listdir(raw_dir) if f.endswith(".mp4"))
-        initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
-        prev_bubbles = len(get_response_bubbles(driver))
+            print(f"⏳ [Attempt {attempt_idx}] Waiting Patiently for Slow Network / Gemini Render...")
+            video_saved = False
 
             # Wait up to 15 minutes (180 ticks * 5s) so slow network NEVER causes premature exit!
-        for tick in range(180):
+            for tick in range(180):
                 time.sleep(5)
                 dismiss_annoying_popups(driver)
 
@@ -856,27 +857,23 @@ def generate_video_in_gemini(recover_only=False):
                     continue
 
                 if is_video_currently_generating(driver):
-                    response_appeared = True
                     continue
 
                 if current_bubbles > prev_bubbles:
-                    response_appeared = True
                     screen_error = check_screen_error_or_limit(driver)
                     if screen_error:
                         time.sleep(3)
                         screen_error = get_latest_response_text(driver)
                         low_err = screen_error.lower()
-                        # If it's a strict Quota Limit, stop immediately and report time
                         if any(k in low_err for k in ["limit", "resets", "quota", "tomorrow", "more videos"]):
                             reopen_time, clean_err = extract_reopen_time_and_details(screen_error)
                             send_alert(f"⛔ *QUOTA LIMIT:* `{reopen_time}`\n\n{clean_err}")
                             raise RuntimeError(f"⛔ QUOTA LIMIT: {clean_err}")
                         else:
-                            # It's a prompt/generation glitch -> break inner loop to trigger Attempt 2 with modified prompt!
                             print(f"⚠️ Non-limit error detected: {screen_error[:120]} -> Retrying with modified prompt...")
                             break
 
-        if video_saved and is_valid_mp4(output_video_path):
+            if video_saved and is_valid_mp4(output_video_path):
                 time.sleep(2)
                 reopen_time, _ = scan_entire_chat_for_quota_banner(driver)
                 post_limit_note = f"⏰ Next Limit Reopen: {reopen_time}" if reopen_time else None
@@ -897,4 +894,3 @@ def generate_video_in_gemini(recover_only=False):
 
 if __name__ == "__main__":
     generate_video_in_gemini()
-
