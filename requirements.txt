@@ -1,5 +1,3 @@
-gradio
-spaces
 flask
 requests
 python-dotenv
