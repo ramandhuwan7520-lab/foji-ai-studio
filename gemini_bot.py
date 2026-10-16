@@ -17,7 +17,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 load_dotenv()
 
 def update_3d_telemetry(step_num, step_title, sub_detail, status="active", progress=10):
-    """Saves real-time hidden Chrome step state so the Frontend 3D HUD can animate every click live!"""
+    """Saves real-time hidden Chrome step state AND pushes it live so Render Frontend updates every step!"""
     os.makedirs("data", exist_ok=True)
     payload = {
         "step_num": step_num,
@@ -30,6 +30,13 @@ def update_3d_telemetry(step_num, step_title, sub_detail, status="active", progr
     try:
         with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
+        # If running on GitHub Actions 7GB Cloud Server, push telemetry immediately so Frontend sees every step!
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            subprocess.run(["git", "config", "user.name", "FojiCloudEngine"], check=False)
+            subprocess.run(["git", "config", "user.email", "foji@studio.ai"], check=False)
+            subprocess.run(["git", "add", "data/live_telemetry.json"], check=False)
+            subprocess.run(["git", "commit", "-m", f"Live Step {step_num}: {step_title}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(["git", "push", "origin", "HEAD:main", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         pass
     print(f"🌐 [3D LIVE STEP {step_num}/6] {step_title} -> {sub_detail} ({progress}%)")
