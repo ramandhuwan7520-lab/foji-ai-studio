@@ -747,7 +747,21 @@ def generate_video_in_gemini(recover_only=False):
                 active_prompt = base_video_prompt
             else:
                 print("🔄 Attempt 1 had a non-limit glitch -> Auto-Simplifying & Sanitizing Prompt for Attempt 2...")
-                driver.get("https://gemini.google.com/app")
+                driver.get("https://gemini.google.com")
+        time.sleep(2)
+        cookies_env = os.environ.get("GEMINI_COOKIES_JSON", "").strip()
+        if cookies_env:
+            try:
+                import json
+                for ck in json.loads(cookies_env):
+                    try:
+                        driver.add_cookie(ck)
+                    except Exception:
+                        pass
+                print("🔐 Cloud Google Login Cookies injected successfully!")
+            except Exception as e:
+                print(f"⚠️ Cookie injection notice: {e}")
+        driver.get("https://gemini.google.com/app")
                 time.sleep(4)
                 active_prompt = (
                     f"Create a 9:16 Portrait 3D Pixar animated video using the two uploaded character images. "
