@@ -1,0 +1,64 @@
+﻿name: Foji 3D Cloud Video Engine (7GB RAM 24/7)
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      action_type:
+        description: "generate_only, generate_and_publish, or check_schedule"
+        required: false
+        default: "generate_and_publish"
+      custom_topic:
+        description: "Optional custom story topic"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish-reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout Latest Code & Schedule
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Google Chrome, Xvfb & FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb ffmpeg google-chrome-stable || sudo apt-get install -y chromium-browser chromium-chromedriver
+
+      - name: Install Python Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Execute 24/7 Autonomous Cloud Worker
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          INSTAGRAM_USERNAME: ${{ secrets.INSTAGRAM_USERNAME }}
+          INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
+          GEMINI_COOKIES_JSON: ${{ secrets.GEMINI_COOKIES_JSON }}
+          CLOUD_EVENT_NAME: ${{ github.event_name }}
+          CLOUD_ACTION_TYPE: ${{ github.event.inputs.action_type }}
+          CLOUD_CUSTOM_TOPIC: ${{ github.event.inputs.custom_topic }}
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python cloud_worker.py
+
+      - name: Save Updated History & Schedule Permanently
+        run: |
+          git config user.name "FojiCloudEngine"
+          git config user.email "foji@studio.ai"
+          git add data/*.json
+          git diff --staged --quiet || (git commit -m "Auto-update reel history & schedule from Cloud" && git push origin main)
