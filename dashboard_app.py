@@ -1421,6 +1421,8 @@ LUXURY_3D_HTML = r"""
       document.getElementById('ins-avg').innerText = ins.avg_performance;
 
       document.getElementById('prof-username').innerText = '@' + ins.username;
+      document.getElementById('prof-fullname').innerText = ins.full_name || '';
+      document.getElementById('prof-bio').innerText = ins.biography || '';
       document.getElementById('prof-posts').innerText = ins.posts_count;
       document.getElementById('prof-followers').innerText = ins.followers.toLocaleString();
       document.getElementById('prof-following').innerText = ins.following;
