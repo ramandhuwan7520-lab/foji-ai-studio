@@ -16,26 +16,43 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 load_dotenv()
 
-def update_3d_telemetry(step_num, step_title, sub_detail, status="active", progress=10):
-    """Saves real-time hidden Chrome step state AND pushes it live so Render Frontend updates every step!"""
+LIVE_LOGS_BUFFER = []
+
+def update_3d_telemetry(step_num, step_title, sub_detail, status="active", progress=10, driver=None):
+    """Saves real-time step state, live console logs, AND a live screenshot of Hidden Chrome!"""
     os.makedirs("data", exist_ok=True)
+    ts = time.strftime("%H:%M:%S")
+    log_line = f"[{ts}] [STEP {step_num}] {step_title} -> {sub_detail}"
+    print(f"🌐 {log_line}")
+
+    LIVE_LOGS_BUFFER.append(log_line)
+    if len(LIVE_LOGS_BUFFER) > 25:
+        LIVE_LOGS_BUFFER.pop(0)
+
+    if driver is not None:
+        try:
+            driver.save_screenshot("data/live_screen.png")
+        except Exception:
+            pass
+
     payload = {
         "step_num": step_num,
         "step_title": step_title,
         "sub_detail": sub_detail,
         "status": status,
         "progress": progress,
-        "timestamp": time.strftime("%H:%M:%S")
+        "timestamp": ts,
+        "logs": LIVE_LOGS_BUFFER[-15:],
+        "has_screenshot": os.path.exists("data/live_screen.png")
     }
     try:
         with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
-        # If running on GitHub Actions 7GB Cloud Server, push telemetry immediately so Frontend sees every step!
         if os.environ.get("GITHUB_ACTIONS") == "true":
             subprocess.run(["git", "config", "user.name", "FojiCloudEngine"], check=False)
             subprocess.run(["git", "config", "user.email", "foji@studio.ai"], check=False)
-            subprocess.run(["git", "add", "data/live_telemetry.json"], check=False)
-            subprocess.run(["git", "commit", "-m", f"Live Step {step_num}: {step_title}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(["git", "add", "data/live_telemetry.json", "data/live_screen.png"], check=False)
+            subprocess.run(["git", "commit", "-m", f"Live Step {step_num}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(["git", "push", "origin", "HEAD:main", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         pass
