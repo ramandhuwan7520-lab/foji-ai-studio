@@ -790,7 +790,9 @@ def generate_video_in_gemini(recover_only=False):
             video_saved = False
             response_appeared = False
 
-            existing_mp4s = set( glob.glob(os.path.join(RAW_VIDEOS_DIR, "*.mp4")) )
+            raw_dir = os.path.abspath(os.path.join("output", "raw_videos"))
+            os.makedirs(raw_dir, exist_ok=True)
+            existing_mp4s = set(f for f in os.listdir(raw_dir) if f.endswith(".mp4"))
             initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
             prev_bubbles = len(get_response_bubbles(driver))
 
