@@ -774,7 +774,7 @@ def generate_video_in_gemini(recover_only=False):
         return output_video_path
 
     update_3d_telemetry(1, "LAUNCHING HIDDEN CHROME", "Opening Gemini Workspace & clearing popups...", "active", 10)
-    driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
+    driver=driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
 
     try:
         time.sleep(3)
