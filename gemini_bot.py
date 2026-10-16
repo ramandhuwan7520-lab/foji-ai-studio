@@ -762,7 +762,7 @@ def generate_video_in_gemini(recover_only=False):
             except Exception as e:
                 print(f"⚠️ Cookie injection notice: {e}")
         driver.get("https://gemini.google.com/app")
-        time.sleep(4)
+                time.sleep(4)
                 active_prompt = (
                     f"Create a 9:16 Portrait 3D Pixar animated video using the two uploaded character images. "
                     f"Image 1 is Foji Makra (Indian Army Soldier with plain shoulder straps, no stars) and Image 2 is Fojan Meera. "
@@ -897,3 +897,50 @@ def generate_video_in_gemini(recover_only=False):
 
 if __name__ == "__main__":
     generate_video_in_gemini()
+
+def select_flash_lite_model(driver):
+    """Safely checks and selects Gemini Flash Lite / appropriate model if available."""
+    try:
+        model_selectors = [
+            "//button[contains(., 'Flash') or contains(., 'Lite')]",
+            "//div[contains(@class, 'model-selector')]"
+        ]
+        for sel in model_selectors:
+            elems = driver.find_elements(By.XPATH, sel)
+            for el in elems:
+                if el.is_displayed():
+                    js_click(driver, el)
+                    time.sleep(1)
+                    return True
+    except Exception:
+        pass
+    return False
+
+def click_plus_and_select_create_video(driver):
+    """Finds the '+' attachment button and clicks 'Create video' option."""
+    try:
+        plus_buttons = [
+            "//button[contains(@aria-label, 'Add') or contains(@aria-label, 'Upload') or contains(@aria-label, 'menu')]",
+            "//button[.//mat-icon[text()='add']]",
+            "//button[contains(@class, 'plus') or contains(@class, 'upload')]"
+        ]
+        for xp in plus_buttons:
+            btns = [b for b in driver.find_elements(By.XPATH, xp) if b.is_displayed()]
+            for b in btns:
+                js_click(driver, b)
+                time.sleep(2)
+                
+                # Look for 'Create video' option in menu
+                video_opts = [
+                    "//div[contains(text(), 'Create video') or contains(text(), 'Video') or contains(text(), 'Generate video')]",
+                    "//button[contains(., 'Create video') or contains(., 'Video')]"
+                ]
+                for v_xp in video_opts:
+                    opts = [o for o in driver.find_elements(By.XPATH, v_xp) if o.is_displayed()]
+                    for opt in opts:
+                        js_click(driver, opt)
+                        time.sleep(2)
+                        return True
+    except Exception:
+        pass
+    return False
