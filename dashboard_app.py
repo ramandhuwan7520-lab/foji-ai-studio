@@ -1348,9 +1348,9 @@ LUXURY_3D_HTML = r"""
     }).then(() => fetchAppState());
   }
 
-  async function fetchAppState() {
+  async function fetchAppState(forceReload = false) {
     try {
-      const r = await fetch('/api/state');
+      const r = await fetch(forceReload ? '/api/state?reload_ig=1' : '/api/state');
       appState = await r.json();
       const ne = appState.next_episode;
       document.getElementById('next-ep-part').innerText = `NEXT EPISODE • PART ${ne.next_part}`;
