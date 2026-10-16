@@ -813,6 +813,7 @@ def generate_video_in_gemini(recover_only=False):
                 reopen_time, _ = scan_entire_chat_for_quota_banner(driver)
                 post_limit_note = f"⏰ Next Limit Reopen: {reopen_time}" if reopen_time else None
                 mark_episode_completed_in_history(history_data, latest_pkg, post_limit_note)
+                update_3d_telemetry(6, "3D REEL RENDER COMPLETE", f"Saved MP4: {os.path.basename(output_video_path)}", "completed", 100)
                 return output_video_path
 
         raise RuntimeError("❌ Both attempts finished without a rendered video.")
