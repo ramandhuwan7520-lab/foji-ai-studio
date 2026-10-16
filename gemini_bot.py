@@ -802,7 +802,7 @@ def generate_video_in_gemini(recover_only=False):
 
         print(f"⏳ [Attempt {attempt_idx}] Waiting Patiently for Slow Network / Gemini Render...")
         video_saved = False
-            response_appeared = False
+        response_appeared = False
 
             raw_dir = os.path.abspath(os.path.join("output", "raw_videos"))
             os.makedirs(raw_dir, exist_ok=True)
