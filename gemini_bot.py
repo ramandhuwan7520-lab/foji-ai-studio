@@ -763,7 +763,7 @@ def generate_video_in_gemini(recover_only=False):
                 print(f"⚠️ Cookie injection notice: {e}")
         driver.get("https://gemini.google.com/app")
         time.sleep(4)
-                active_prompt = (
+        active_prompt = (
                     f"Create a 9:16 Portrait 3D Pixar animated video using the two uploaded character images. "
                     f"Image 1 is Foji Makra (Indian Army Soldier with plain shoulder straps, no stars) and Image 2 is Fojan Meera. "
                     f"Scene: {latest_pkg.get('new_location', 'Cinematic Indian setting')}. "
