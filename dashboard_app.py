@@ -518,18 +518,40 @@ def api_generate_manual():
     with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
         json.dump({
             "step_num": 1,
-            "step_title": "LAUNCHING HIDDEN CHROME",
-            "sub_detail": "Selecting 'Flash' Model & clearing popups...",
+            "step_title": "INITIALIZING 7GB CLOUD CHROME",
+            "sub_detail": "Connecting to Gemini Flash Engine...",
             "status": "active",
             "progress": 15,
             "timestamp": datetime.now(IST).strftime("%H:%M:%S IST")
         }, f)
 
     def _bg():
+        # If running on Render (Linux without local Chrome), dispatch to GitHub 7GB Worker!
+        if os.name != "nt" and not os.path.exists("/usr/bin/google-chrome"):
+            dispatched = trigger_github_7gb_worker(action_type="generate_only")
+            if not dispatched:
+                with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
+                    json.dump({
+                        "step_num": 0,
+                        "step_title": "CLOUD TRIGGER NOTICE",
+                        "sub_detail": "Render Environment mein GITHUB_PAT token add karein ya GitHub Actions se Run Workflow dabayein!",
+                        "status": "error",
+                        "progress": 0,
+                        "timestamp": datetime.now(IST).strftime("%H:%M:%S IST")
+                    }, f)
+            return
         try:
             generate_single_reel_package(send_for_approval=True)
-        except Exception:
-            pass
+        except Exception as e:
+            with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
+                json.dump({
+                    "step_num": 0,
+                    "step_title": "GENERATION STOPPED",
+                    "sub_detail": str(e)[:220],
+                    "status": "error",
+                    "progress": 0,
+                    "timestamp": datetime.now(IST).strftime("%H:%M:%S IST")
+                }, f)
 
     threading.Thread(target=_bg, daemon=True).start()
     return jsonify({"ok": True})
