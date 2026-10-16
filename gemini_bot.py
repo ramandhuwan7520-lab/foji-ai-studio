@@ -219,42 +219,34 @@ def extract_reopen_time_and_details(text):
     return reopen_time, clean[:300]
 
 def scan_entire_chat_for_quota_banner(driver):
-    """Scans the full screen and notification banners for any video generation limit/quota message."""
-    try:
-        body_text = driver.find_element(By.TAG_NAME, "body").text
-    except Exception:
+    """
+    FIXED: Scans ONLY the active latest response bubble or active toast popup (NEVER the sidebar history!),
+    preventing false-positive Quota Limit alerts when your limit is already open!
+    """
+    latest_txt = get_latest_response_text(driver)
+    snackbars = driver.find_elements(By.CSS_SELECTOR, "mat-snack-bar-container, [role='alert']")
+    snack_txt = " ".join([s.text for s in snackbars if s.is_displayed()])
+    combined = f"{latest_txt}\n{snack_txt}".strip()
+    if not combined:
         return None, None
 
-    lower_body = body_text.lower()
-    quota_keywords = [
+    lower_comb = combined.lower()
+    strict_quota_keywords = [
         "you've reached your video generation limit",
-        "reached your limit",
-        "quota exceeded",
-        "too many requests",
+        "reached your limit for generating videos",
         "can't generate more videos right now",
-        "daily limit",
-        "try again tomorrow",
-        "limit for generating videos"
+        "video generation limit resets"
     ]
-    for kw in quota_keywords:
-        if kw in lower_body:
-            idx = lower_body.find(kw)
-            start = max(0, idx - 60)
-            end = min(len(body_text), idx + 220)
-            snippet = " ".join(body_text[start:end].split())
-            reopen_t, _ = extract_reopen_time_and_details(snippet)
-            return reopen_t, snippet
+    for kw in strict_quota_keywords:
+        if kw in lower_comb:
+            reopen_t, _ = extract_reopen_time_and_details(combined)
+            return reopen_t, combined[:260]
     return None, None
 
 def dismiss_annoying_popups(driver):
-    """
-    Scans the entire screen for any unexpected Google/Gemini popups, cookie banners,
-    feature tours, or dialog boxes and closes them automatically without touching the chat!
-    """
     popup_xpaths = [
-        "//button[normalize-space(.)='Got it' or normalize-space(.)='Dismiss' or normalize-space(.)='No thanks' or normalize-space(.)='Not now' or normalize-space(.)='OK' or normalize-space(.)='Accept all' or normalize-space(.)='Continue' or normalize-space(.)='Stay signed out']",
-        "//div[@role='dialog' or @role='alertdialog' or contains(@class, 'mat-mdc-dialog') or contains(@class, 'popup') or contains(@class, 'promo')]//button[contains(@aria-label, 'Close') or contains(@aria-label, 'close') or contains(@aria-label, 'Dismiss') or .//mat-icon[text()='close']]",
-        "//mat-snack-bar-container//button"
+        "//button[normalize-space(.)='Got it' or normalize-space(.)='Dismiss' or normalize-space(.)='No thanks' or normalize-space(.)='Not now' or normalize-space(.)='OK' or normalize-space(.)='Accept all' or normalize-space(.)='Continue']",
+        "//div[@role='dialog' or @role='alertdialog']//button[contains(@aria-label, 'Close') or contains(@aria-label, 'close') or .//mat-icon[text()='close']]"
     ]
     for xp in popup_xpaths:
         try:
@@ -266,40 +258,19 @@ def dismiss_annoying_popups(driver):
             pass
 
 def is_video_currently_generating(driver):
-    """
-    DEEP FULL-SCREEN DETECTOR:
-    Detects if Gemini is still thinking, loading over a slow network, streaming a response,
-    or rendering a video anywhere on the page!
-    """
-    try:
-        body_text = driver.find_element(By.TAG_NAME, "body").text.lower()
-    except Exception:
-        body_text = ""
-
     latest_text = get_latest_response_text(driver).lower()
-    combined_text = latest_text + "\n" + body_text[-1500:]
-
     generating_phrases = [
-        "generating video",
-        "creating video",
-        "creating your video",
-        "generating your video",
-        "this may take a few minutes",
-        "working on it",
-        "hang tight",
-        "just a sec",
-        "thinking",
-        "generating...",
-        "loading"
+        "generating video", "creating video", "creating your video",
+        "generating your video", "this may take a few minutes",
+        "working on it", "hang tight", "just a sec"
     ]
-    if any(p in combined_text for p in generating_phrases):
+    if any(p in latest_text for p in generating_phrases):
         return True
 
     spinners = driver.find_elements(
         By.CSS_SELECTOR,
         "mat-progress-bar, mat-spinner, .loading-spinner, [role='progressbar'], "
-        ".video-loading, .generating-indicator, [aria-busy='true'], .skeleton-loader, "
-        "lottie-player, .thinking-indicator"
+        ".video-loading, .generating-indicator, [aria-busy='true'], lottie-player"
     )
     for sp in spinners:
         try:
@@ -310,7 +281,7 @@ def is_video_currently_generating(driver):
 
     stop_btns = driver.find_elements(
         By.XPATH,
-        "//button[contains(@aria-label, 'Stop') or contains(@aria-label, 'stop') or contains(@mattooltip, 'Stop') or .//mat-icon[contains(text(), 'stop')]]"
+        "//button[contains(@aria-label, 'Stop') or contains(@aria-label, 'stop') or .//mat-icon[contains(text(), 'stop')]]"
     )
     for sb in stop_btns:
         try:
@@ -318,14 +289,9 @@ def is_video_currently_generating(driver):
                 return True
         except Exception:
             pass
-
     return False
 
 def wait_for_complete_gemini_reply(driver, previous_bubble_count, max_wait_sec=300):
-    """
-    Waits patiently (up to 5 full minutes on slow networks!) until Gemini ACTUALLY finishes
-    loading/thinking and produces either a complete text reply, a quota message, or a video!
-    """
     start_time = time.time()
     last_text = ""
     stable_ticks = 0
@@ -353,88 +319,35 @@ def wait_for_complete_gemini_reply(driver, previous_bubble_count, max_wait_sec=3
                     last_text = current_text
                     stable_ticks = 0
                     continue
-
-        if is_video_currently_generating(driver):
-            print("⏳ Gemini abhi loading/thinking mode mein hai (Slow Network Wait Active)...")
-            continue
-
     return get_latest_response_text(driver)
 
 def check_screen_error_or_limit(driver):
+    """FIXED: Checks ONLY strict quota/error phrases in the latest reply bubble."""
     if is_video_currently_generating(driver):
         return None
-
     latest_text = get_latest_response_text(driver)
     if not latest_text:
         return None
-
     low = latest_text.lower()
-    error_or_limit_phrases = [
-        "limit resets",
-        "reached your",
-        "video generation limit",
-        "you've reached your limit",
-        "can't generate",
-        "cannot generate",
-        "create more videos",
-        "try again",
-        "quota",
-        "something went wrong",
-        "unable to generate",
-        "unable to create",
-        "i can't create",
-        "i cannot create",
-        "sorry"
+    strict_phrases = [
+        "you've reached your video generation limit",
+        "reached your limit for generating videos",
+        "can't generate more videos right now",
+        "video generation limit resets",
+        "something went wrong"
     ]
-    if any(p in low for p in error_or_limit_phrases):
+    if any(p in low for p in strict_phrases):
         return latest_text
     return None
 
 def select_flash_lite_model(driver):
     """
-    STRICTLY selects 'Flash Lite' (3.5 Flash Lite / Flash-Lite) for ultra-fast video generation!
-    Falls back to Flash if Lite is not in dropdown.
+    FIXED: Does NOT switch to 'Flash Lite' because Flash Lite disables the 'Create video' tool!
+    Keeps Gemini on its default Video-Capable model and updates 3D Telemetry.
     """
-    print("⚙️ Locking 'Flash Lite' Model in Gemini Chat for Ultra-Fast Rendering...")
+    update_3d_telemetry(1, "INITIALIZING GEMINI ENGINE", "Connected to Hidden Chrome 1080p Matrix", "active", 18)
     dismiss_annoying_popups(driver)
-    try:
-        dropdown_xpath = (
-            "//button[contains(@aria-label, 'model') or contains(@aria-label, 'Model') or "
-            "contains(., 'Flash') or contains(., 'Pro') or contains(., 'Argon') or contains(., 'Lite') or contains(., '3.')]"
-        )
-        btns = [b for b in driver.find_elements(By.XPATH, dropdown_xpath) if b.is_displayed()]
-        if btns:
-            js_click(driver, btns[0])
-            time.sleep(1.5)
-
-            lite_options = driver.find_elements(
-                By.XPATH,
-                "//*[@role='menuitem' or @role='option' or self::button or self::div or self::span]"
-                "[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'lite')]"
-            )
-            for opt in lite_options:
-                if opt.is_displayed():
-                    js_click(driver, opt)
-                    print("✅ Model Strictly Locked to: 'Flash Lite'!")
-                    time.sleep(1.5)
-                    return True
-
-            flash_options = driver.find_elements(
-                By.XPATH,
-                "//*[@role='menuitem' or @role='option' or self::button or self::div or self::span]"
-                "[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'flash')]"
-            )
-            for opt in flash_options:
-                if opt.is_displayed():
-                    js_click(driver, opt)
-                    print("✅ Model Locked to: 'Flash'!")
-                    time.sleep(1.5)
-                    return True
-
-            ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-    except Exception as e:
-        print(f"⚠️ Model selector note: {e}")
-    return False
+    return True
 
 def find_strict_plus_button(driver):
     strict_plus_xpaths = [
