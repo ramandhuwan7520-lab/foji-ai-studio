@@ -1071,6 +1071,7 @@ LUXURY_3D_HTML = r"""
         </div>
       </div>
     </div>
+
     <!-- POINT 25 & 44: SMART AUTO-ROTATE WEB SERIES + GENERATE MANUALLY BUTTON -->
     <div class="lux-card series-hero">
       <div>
@@ -1615,6 +1616,17 @@ LUXURY_3D_HTML = r"""
     try {
       const r = await fetch('/api/telemetry_3d');
       const t = await r.json();
+      const logBox = document.getElementById('live-console-box');
+      if (logBox && t.logs && t.logs.length) {
+        logBox.innerHTML = t.logs.map(l => `<div>${l}</div>`).join('');
+        logBox.scrollTop = logBox.scrollHeight;
+      } else if (logBox && t.step_title) {
+        logBox.innerHTML = `<div>[${t.timestamp || 'LIVE'}] [${t.step_title}] ${t.sub_detail || ''}</div>`;
+      }
+      if (t.has_screenshot) {
+        const img = document.getElementById('live-chrome-img');
+        if (img) img.src = '/api/live_screen?t=' + Date.now();
+      }
       const box = document.getElementById('vanguard-pipeline-box');
 
       if (t.status === 'active' && t.step_num >= 1 && t.step_num <= 6) {
