@@ -366,12 +366,53 @@ def check_screen_error_or_limit(driver):
 
 def select_flash_lite_model(driver):
     """
-    FIXED: Does NOT switch to 'Flash Lite' because Flash Lite disables the 'Create video' tool!
-    Keeps Gemini on its default Video-Capable model and updates 3D Telemetry.
+    STRICT POINT 4 & 5:
+    Strictly opens Gemini model dropdown and selects 'Flash' (NOT Flash Lite).
+    If 'Flash' cannot be selected, immediately stops the pipeline and alerts Frontend + Telegram!
     """
-    update_3d_telemetry(1, "INITIALIZING GEMINI ENGINE", "Connected to Hidden Chrome 1080p Matrix", "active", 18)
+    update_3d_telemetry(1, "SELECTING 'FLASH' MODEL", "Clearing popups & locking Gemini Flash Engine...", "active", 16)
     dismiss_annoying_popups(driver)
-    return True
+    time.sleep(1.5)
+
+    try:
+        # Check if header/dropdown button already shows 'Flash' (and NOT 'Lite')
+        dropdown_xpath = (
+            "//button[contains(@aria-label, 'model') or contains(@aria-label, 'Model') or "
+            "contains(@class, 'model') or contains(., 'Flash') or contains(., 'Pro') or contains(., '2.') or contains(., '3.')]"
+        )
+        btns = [b for b in driver.find_elements(By.XPATH, dropdown_xpath) if b.is_displayed()]
+        if btns:
+            js_click(driver, btns[0])
+            time.sleep(2)
+
+            # Find 'Flash' option in menu (strictly excluding 'Lite')
+            menu_items = driver.find_elements(
+                By.XPATH,
+                "//*[@role='menuitem' or @role='option' or self::button or self::div or self::span]"
+                "[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'flash') and "
+                "not(contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'lite'))]"
+            )
+            for item in menu_items:
+                if item.is_displayed():
+                    js_click(driver, item)
+                    time.sleep(1.5)
+                    print("✅ Strictly Selected 'Flash' Model!")
+                    return True
+
+            # If menu didn't have separate item, check if button itself is already on Flash
+            btn_txt = (btns[0].text or "").lower()
+            if "flash" in btn_txt and "lite" not in btn_txt:
+                ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+                print("✅ 'Flash' Model is already active!")
+                return True
+    except Exception as e:
+        print(f"⚠️ Flash selection check error: {e}")
+
+    # STRICT POINT 5: Stop pipeline immediately if Flash could not be selected!
+    err_msg = "❌ Gemini mein 'Flash' Model select nahi ho paya! (Limit/Quota ya Session check karein — Pipeline Stopped)"
+    update_3d_telemetry(1, "FLASH MODEL SELECT FAILED", err_msg, "error", 0)
+    send_alert(err_msg)
+    raise RuntimeError(err_msg)
 
 def find_strict_plus_button(driver):
     strict_plus_xpaths = [
