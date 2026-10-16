@@ -794,14 +794,14 @@ def generate_video_in_gemini(recover_only=False):
                     raise RuntimeError(f"⛔ GEMINI LIMIT -> {clean_reply}")
 
             # Save the exact chat URL into history.json as soon as Gemini assigns a conversation ID!
-            time.sleep(6)
-            if "/app/" in driver.current_url:
+        time.sleep(6)
+        if "/app/" in driver.current_url:
                 latest_pkg["gemini_chat_url"] = driver.current_url
                 with open("data/history.json", "w", encoding="utf-8") as f:
                     json.dump(history_data, f, indent=4, ensure_ascii=False)
 
-            print(f"⏳ [Attempt {attempt_idx}] Waiting Patiently for Slow Network / Gemini Render...")
-            video_saved = False
+        print(f"⏳ [Attempt {attempt_idx}] Waiting Patiently for Slow Network / Gemini Render...")
+        video_saved = False
             response_appeared = False
 
             raw_dir = os.path.abspath(os.path.join("output", "raw_videos"))
