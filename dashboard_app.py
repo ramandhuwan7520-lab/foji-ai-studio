@@ -1290,14 +1290,15 @@ LUXURY_3D_HTML = r"""
   function reloadEditsInsights(btn) {
     pulseBtn(btn);
     show3DModal({
-      title: "🎖️ RELOADING LIVE INSTAGRAM EDITS...",
-      body: "Foji Reconnaissance fetching latest Reach, Likes, Comments & Shares...",
+      title: "🎖️ SYNCING REAL INSTAGRAM DATA...",
+      body: "Foji Reconnaissance fetching your live Profile, Bio, DP, Views, Likes & Comments from Instagram...",
       showLoader: true,
-      pctText: "SYNC",
+      pctText: "LIVE",
       buttons: []
     });
-    fetchAppState().then(() => {
-      setTimeout(() => close3DModal(), 900);
+    fetchAppState(true).then(() => {
+      document.getElementById('prof-avatar-img').src = '/api/ig_avatar?t=' + Date.now();
+      setTimeout(() => close3DModal(), 600);
     });
   }
 
