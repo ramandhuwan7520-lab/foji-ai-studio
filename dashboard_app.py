@@ -1510,14 +1510,17 @@ LUXURY_3D_HTML = r"""
 
       // 1. Render Posted Reels (Pure Instagram Grid - NO caption, NO buttons! Point 27 & 28)
       const postedHtml = (appState.posted_reels || []).map(item => `
-        <div class="ig-tile">
-          <video src="${item.video_url || ''}" loop muted playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>
+        <div class="ig-tile" onclick="window.open('${item.permalink || '#'}', '_blank')">
+          ${item.video_url
+            ? `<video src="${item.video_url}" poster="${item.thumb_url || ''}" loop muted playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>`
+            : `<img src="${item.thumb_url || ''}" style="width:100%;height:100%;object-fit:cover;">`
+          }
           <div class="ig-tile-overlay">
-            <span>▶️ ${item.views || 1840}</span>
-            <span>❤️ ${item.likes || 340}</span>
+            <span>▶️ ${(item.views || 0).toLocaleString()}</span>
+            <span>❤️ ${(item.likes || 0).toLocaleString()}</span>
           </div>
         </div>
-      `).join('') || `<div style="color:#94a3b8;padding:24px;">No posted reels yet. Approve a reel from the Daily Queue tab!</div>`;
+      `).join('') || `<div style="color:#94a3b8;padding:24px;">Click 'Reload' on Insta Edits or Profile to sync your live Instagram Reels!</div>`;
       document.getElementById('vault-posted-view').innerHTML = postedHtml;
       document.getElementById('profile-live-grid').innerHTML = postedHtml;
 
