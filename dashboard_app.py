@@ -1182,6 +1182,161 @@ PLAYSTORE_BRANDED_HTML = """
             showLuxModal({title: 'Instagram Connected!', desc: d.message, icon: '📸'});
         }
     </script>
+    <!-- 🌌 FOJI 3D HOLOGRAPHIC LIVE PIPELINE VISUALIZER -->
+<style>
+  .foji-3d-scene {
+    perspective: 1100px;
+    margin: 22px auto;
+    max-width: 980px;
+    padding: 10px 16px;
+  }
+  .foji-3d-deck {
+    background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.18), rgba(9, 13, 24, 0.96) 75%);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 20px;
+    padding: 24px;
+    transform-style: preserve-3d;
+    transform: rotateX(11deg) rotateY(-2deg);
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(16, 185, 129, 0.2);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .foji-3d-deck:hover {
+    transform: rotateX(4deg) rotateY(0deg) translateZ(8px);
+  }
+  .foji-3d-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    transform: translateZ(28px);
+  }
+  .foji-3d-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #ecfdf5;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .foji-3d-cube {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #10b981, #06b6d4);
+    border-radius: 6px;
+    animation: spin3dCube 3s infinite linear;
+    box-shadow: 0 0 15px #10b981;
+  }
+  @keyframes spin3dCube {
+    0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+  }
+  .foji-3d-nodes {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    transform-style: preserve-3d;
+  }
+  @media (max-width: 768px) {
+    .foji-3d-nodes { grid-template-columns: repeat(2, 1fr); }
+  }
+  .foji-3d-node {
+    background: rgba(17, 24, 39, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    transform: translateZ(16px);
+    transition: all 0.45s ease;
+  }
+  .foji-3d-node.active {
+    background: linear-gradient(160deg, rgba(16, 185, 129, 0.28), rgba(6, 182, 212, 0.18));
+    border-color: #10b981;
+    transform: translateZ(42px) scale(1.06);
+    box-shadow: 0 14px 28px rgba(16, 185, 129, 0.35), 0 0 20px rgba(16, 185, 129, 0.5);
+  }
+  .foji-3d-node.done {
+    border-color: rgba(16, 185, 129, 0.55);
+    background: rgba(6, 78, 59, 0.35);
+    transform: translateZ(24px);
+  }
+  .foji-3d-icon {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .foji-3d-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #d1fae5;
+    display: block;
+  }
+  .foji-3d-subbar {
+    margin-top: 18px;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    transform: translateZ(25px);
+  }
+  .foji-3d-status-text {
+    color: #6ee7b7;
+    font-family: monospace;
+    font-size: 0.88rem;
+  }
+</style>
+
+<div class="foji-3d-scene">
+  <div class="foji-3d-deck">
+    <div class="foji-3d-header">
+      <div class="foji-3d-title">
+        <div class="foji-3d-cube"></div>
+        <span>3D LIVE AUTONOMOUS CHROME MATRIX (HIDDEN ENGINE)</span>
+      </div>
+      <span id="foji-3d-pct" style="color:#10b981;font-weight:800;font-family:monospace;">0%</span>
+    </div>
+
+    <div class="foji-3d-nodes">
+      <div class="foji-3d-node" id="fnode-1"><span class="foji-3d-icon">🌐</span><span class="foji-3d-label">1. Open Gemini</span></div>
+      <div class="foji-3d-node" id="fnode-2"><span class="foji-3d-icon">➕</span><span class="foji-3d-label">2. Click + & Video</span></div>
+      <div class="foji-3d-node" id="fnode-3"><span class="foji-3d-icon">📐</span><span class="foji-3d-label">3. 9:16 Portrait</span></div>
+      <div class="foji-3d-node" id="fnode-4"><span class="foji-3d-icon">👫</span><span class="foji-3d-label">4. Foji & Fojan</span></div>
+      <div class="foji-3d-node" id="fnode-5"><span class="foji-3d-icon">⚡</span><span class="foji-3d-label">5. Send Script</span></div>
+      <div class="foji-3d-node" id="fnode-6"><span class="foji-3d-icon">🎬</span><span class="foji-3d-label">6. Render & Post</span></div>
+    </div>
+
+    <div class="foji-3d-subbar">
+      <div class="foji-3d-status-text" id="foji-3d-detail">STANDBY — Waiting for next execution...</div>
+      <div style="color:#9ca3af;font-size:0.78rem;font-family:monospace;" id="foji-3d-time">--:--:--</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function syncFoji3DTelemetry() {
+    try {
+      const res = await fetch('/api/telemetry_3d');
+      const data = await res.json();
+      const step = data.step_num || 0;
+      document.getElementById('foji-3d-pct').innerText = (data.progress || 0) + '%';
+      document.getElementById('foji-3d-detail').innerText = `[${data.step_title}] ${data.sub_detail}`;
+      document.getElementById('foji-3d-time').innerText = data.timestamp || '';
+      for (let i = 1; i <= 6; i++) {
+        const el = document.getElementById('fnode-' + i);
+        el.classList.remove('active', 'done');
+        if (i < step) el.classList.add('done');
+        else if (i === step) el.classList.add('active');
+      }
+    } catch (e) {}
+  }
+  setInterval(syncFoji3DTelemetry, 2500);
+  syncFoji3DTelemetry();
+</script>
+    
 </body>
 </html>
 """
