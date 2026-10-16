@@ -487,6 +487,13 @@ def api_ig_media_proxy():
 def serve_video(filename):
     return send_from_directory(os.path.abspath("output/raw_videos"), filename)
 
+@app.route("/api/live_screen")
+def api_live_screen():
+    scr_path = os.path.abspath("data/live_screen.png")
+    if os.path.exists(scr_path):
+        return send_from_directory(os.path.abspath("data"), "live_screen.png")
+    return "", 404
+
 @app.route("/api/telemetry_3d", methods=["GET"])
 def api_telemetry_3d():
     t_path = "data/live_telemetry.json"
