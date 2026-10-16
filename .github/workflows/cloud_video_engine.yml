@@ -17,37 +17,33 @@ on:
 permissions:
   contents: write
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
-
 jobs:
   build-and-publish-reel:
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
-      - name: Checkout Latest Code & Schedule
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+      - name: Clone Latest Code Directly (Zero Node.js Actions)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git init .
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --depth=1 origin main
+          git checkout -f FETCH_HEAD
 
       - name: Install Hidden Headless Google Chrome & FFmpeg
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget curl ffmpeg
+          sudo apt-get install -y wget curl ffmpeg python3-pip python3-venv
           wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt-get install -y ./google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
           rm -f google-chrome-stable_current_amd64.deb
 
-      - name: Install Python Dependencies
+      - name: Setup Virtualenv & Python Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python3 -m venv /tmp/foji_venv
+          /tmp/foji_venv/bin/pip install --upgrade pip
+          /tmp/foji_venv/bin/pip install -r requirements.txt
 
       - name: Execute 100% Hidden Cloud Chrome Worker
         env:
@@ -61,11 +57,11 @@ jobs:
           CLOUD_ACTION_TYPE: ${{ github.event.inputs.action_type }}
           CLOUD_CUSTOM_TOPIC: ${{ github.event.inputs.custom_topic }}
         run: |
-          python cloud_worker.py
+          /tmp/foji_venv/bin/python cloud_worker.py
 
-      - name: Save Updated History, Telemetry & Schedule Permanently
+      - name: Save Updated History, 3D Telemetry & Schedule Permanently
         run: |
           git config user.name "FojiCloudEngine"
           git config user.email "foji@studio.ai"
-          git add data/*.json
-          git diff --staged --quiet || (git commit -m "Auto-update reel history & schedule from Cloud" && git push origin HEAD:main)
+          git add data/*.json || true
+          git diff --staged --quiet || (git commit -m "Auto-update reel history & 3D telemetry from Cloud" && git push origin HEAD:main)
