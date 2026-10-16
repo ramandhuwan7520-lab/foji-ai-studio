@@ -1040,7 +1040,37 @@ LUXURY_3D_HTML = r"""
         </div>
       </div>
     </div>
+<!-- 🖥️ LIVE BACKEND HIDDEN CHROME & TERMINAL MONITOR WINDOW -->
+    <div class="lux-card" style="border-color:rgba(6,182,212,0.45);padding:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block;box-shadow:0 0 10px #10b981;"></span>
+          <strong style="font-size:0.95rem;color:#67e8f9;letter-spacing:0.5px;">🖥️ LIVE BACKEND ENGINE MONITOR (HIDDEN CHROME VIEW + LOGS)</strong>
+        </div>
+        <button class="btn-3d btn-glass" style="padding:6px 12px;font-size:0.75rem;"
+          onclick="const b=document.getElementById('live-mon-body');b.style.display=b.style.display==='none'?'grid':'none';">
+          👁️ Show / Hide Live Window
+        </button>
+      </div>
 
+      <div id="live-mon-body" style="display:grid;grid-template-columns:1fr 1.2fr;gap:16px;align-items:stretch;">
+        <!-- Live Hidden Chrome Screen Capture -->
+        <div style="background:#020617;border:1px solid rgba(255,255,255,0.12);border-radius:14px;overflow:hidden;position:relative;min-height:190px;display:flex;align-items:center;justify-content:center;">
+          <img id="live-chrome-img" src="/api/live_screen" alt="Waiting for Chrome..."
+               style="width:100%;height:100%;object-fit:contain;display:none;"
+               onload="this.style.display='block';document.getElementById('live-chrome-empty').style.display='none';"
+               onerror="this.style.display='none';document.getElementById('live-chrome-empty').style.display='block';">
+          <div id="live-chrome-empty" style="color:#64748b;font-size:0.8rem;text-align:center;padding:20px;">
+            🕵️ Hidden Chrome Screen Standby<br><small>(Live screen appears automatically when generating)</small>
+          </div>
+        </div>
+
+        <!-- Live Backend Console Logs -->
+        <div id="live-console-box" style="background:#020617;border:1px solid rgba(16,185,129,0.25);border-radius:14px;padding:12px;font-family:monospace;font-size:0.78rem;color:#34d399;height:195px;overflow-y:auto;line-height:1.5;">
+          <div>[SYSTEM] Vanguard 3D Live Monitor Initialized...</div>
+        </div>
+      </div>
+    </div>
     <!-- POINT 25 & 44: SMART AUTO-ROTATE WEB SERIES + GENERATE MANUALLY BUTTON -->
     <div class="lux-card series-hero">
       <div>
