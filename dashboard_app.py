@@ -1272,7 +1272,7 @@ LUXURY_3D_HTML = r"""
     --emerald: #10b981;
     --cyan: #06b6d4;
     --danger: #ef4444;
-    --glass: rgba(11, 16, 28, 0.82);
+    --glass: rgba(11, 16, 28, 0.84);
     --border: rgba(255, 255, 255, 0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
@@ -1305,7 +1305,7 @@ LUXURY_3D_HTML = r"""
   }
   .bg-orb {
     position: absolute; width: 420px; height: 420px; border-radius: 50%;
-    filter: blur(95px); opacity: 0.26; animation: floatOrb 14s ease-in-out infinite alternate;
+    filter: blur(95px); opacity: 0.25; animation: floatOrb 14s ease-in-out infinite alternate;
   }
   .bg-orb.one { background: #10b981; top: -80px; left: -60px; }
   .bg-orb.two { background: #f59e0b; bottom: -90px; right: -50px; animation-delay: -5s; }
@@ -1314,7 +1314,7 @@ LUXURY_3D_HTML = r"""
     100% { transform: translate(80px, 50px) scale(1.18); }
   }
 
-  /* Instant Tactile 3D Buttons */
+  /* Tactile 3D Buttons */
   .btn-3d {
     position: relative; cursor: pointer; border: none; outline: none;
     font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 0.88rem;
@@ -1330,8 +1330,8 @@ LUXURY_3D_HTML = r"""
     filter: brightness(1.22);
   }
   .btn-3d:disabled {
-    opacity: 0.45; cursor: not-allowed; filter: grayscale(0.4);
-    transform: translateY(3px); box-shadow: none;
+    opacity: 0.48 !important; cursor: not-allowed !important; filter: grayscale(0.45) !important;
+    transform: translateY(3px) !important; box-shadow: none !important;
   }
   .btn-gold {
     background: linear-gradient(135deg, #f59e0b, #d97706);
@@ -1347,7 +1347,7 @@ LUXURY_3D_HTML = r"""
     box-shadow: 0 4px 0 rgba(0,0,0,0.5);
   }
 
-  /* Luxury Navbar + 3D Animated Corner India IST Clock (Bug #18) */
+  /* Luxury Navbar + 3D Corner India Clock */
   .lux-navbar {
     max-width: 1220px; margin: 16px auto; padding: 14px 22px;
     background: var(--glass); backdrop-filter: blur(22px);
@@ -1382,19 +1382,18 @@ LUXURY_3D_HTML = r"""
     border-color: rgba(16, 185, 129, 0.5);
     box-shadow: 0 0 18px rgba(16, 185, 129, 0.22);
   }
-  .notif-dot {
-    position: absolute; top: 4px; right: 5px; width: 8px; height: 8px;
-    border-radius: 50%; background: #ef4444; box-shadow: 0 0 8px #ef4444; display: none;
+  .notif-badge-cnt {
+    background: #ef4444; color: #fff; font-size: 0.68rem; font-weight: 800;
+    padding: 2px 6px; border-radius: 99px; margin-left: 4px;
   }
 
-  /* 3D Animated Corner India Clock Widget (Bug #18) */
   .ist-clock-3d {
     padding: 8px 14px; border-radius: 14px;
     background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(6, 78, 59, 0.35));
     border: 1px solid rgba(245, 158, 11, 0.45);
     box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 12px rgba(16, 185, 129, 0.2);
     transform: perspective(500px) rotateY(-8deg);
-    text-align: right; min-width: 148px;
+    text-align: right; min-width: 152px;
   }
   .ist-clock-time {
     font-family: 'Space Grotesk', monospace; font-size: 0.98rem; font-weight: 800;
@@ -1404,10 +1403,9 @@ LUXURY_3D_HTML = r"""
 
   .container { max-width: 1220px; margin: 0 auto 60px; padding: 0 18px; }
   .page-section { display: none; }
-  .page-section.active { display: block; animation: fadeInPage 0.2s ease; }
-  @keyframes fadeInPage { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .page-section.active { display: block; animation: fadeInPage 0.18s ease; }
+  @keyframes fadeInPage { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* Live Reverse Schedule Countdown Banner on Homepage (Bug #16) */
   .countdown-hud {
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
     padding: 16px 22px; margin-bottom: 20px; border-radius: 18px;
@@ -1421,40 +1419,74 @@ LUXURY_3D_HTML = r"""
     border: 1px solid var(--gold); color: #fde68a; letter-spacing: 1px;
   }
 
-  /* Hidden-Until-Active 3D Pair Pipeline with Rifle-Firing Soldier */
+  /* ============================================================================
+     🪖 BUG #8 FIX: 3D FOJI CHARACTER WITH AK-47 RIFLE WALKING WITH PERCENTAGE!
+     ============================================================================ */
+  .foji-ak47-track-wrap {
+    position: relative; width: 100%; height: 92px; margin: 14px 0 8px;
+    background: linear-gradient(180deg, rgba(15,23,42,0.75) 0%, rgba(6,78,59,0.28) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 18px;
+    overflow: hidden; padding: 0 18px;
+    box-shadow: inset 0 0 25px rgba(0,0,0,0.7);
+  }
+  .foji-progress-floor {
+    position: absolute; bottom: 14px; left: 18px; right: 18px; height: 10px;
+    background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+  }
+  .foji-progress-fill {
+    height: 100%; width: 15%;
+    background: linear-gradient(90deg, #059669, #10b981, #f59e0b);
+    box-shadow: 0 0 16px #10b981;
+    transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .foji-walker-avatar {
+    position: absolute; bottom: 20px; left: 10%;
+    width: 96px; height: 66px;
+    transition: left 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.85));
+    animation: soldierBob 0.32s infinite alternate ease-in-out;
+  }
+  @keyframes soldierBob {
+    0% { transform: translateY(0px) rotate(-1deg); }
+    100% { transform: translateY(-4px) rotate(1.5deg); }
+  }
+  .foji-leg-left { transform-origin: 28px 46px; animation: walkLegL 0.32s infinite alternate; }
+  .foji-leg-right { transform-origin: 28px 46px; animation: walkLegR 0.32s infinite alternate; }
+  @keyframes walkLegL { 0% { transform: rotate(-18deg); } 100% { transform: rotate(18deg); } }
+  @keyframes walkLegR { 0% { transform: rotate(18deg); } 100% { transform: rotate(-18deg); } }
+  .ak47-muzzle-fire {
+    transform-origin: 84px 28px;
+    animation: akFireBlast 0.16s infinite alternate;
+  }
+  @keyframes akFireBlast {
+    0% { transform: scale(0.5); opacity: 0.35; }
+    100% { transform: scale(1.45); opacity: 1; }
+  }
+  .ak47-bullet-beam {
+    position: absolute; bottom: 47px; left: 0; right: 18px; height: 4px; pointer-events: none;
+    background: repeating-linear-gradient(90deg, transparent 0px, transparent 18px, #fde047 18px, #f97316 28px);
+    animation: shootTracer 0.25s linear infinite; opacity: 0.85;
+  }
+  @keyframes shootTracer { from { background-position: 0 0; } to { background-position: 46px 0; } }
+
+  /* Pipeline Box */
   #vanguard-pipeline-box {
     display: none; margin-bottom: 24px; padding: 24px;
     background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.22), rgba(10, 14, 26, 0.96));
     border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 24px;
     box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(16, 185, 129, 0.25);
   }
-  .pair-stage { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin: 20px 0; }
+  .pair-stage { display: grid; grid-template-columns: 1fr 1.6fr 1fr; align-items: center; gap: 16px; margin-top: 16px; }
+  @media (max-width: 768px) { .pair-stage { grid-template-columns: 1fr; } }
   .step-card-3d {
-    flex: 1; padding: 18px; border-radius: 18px;
-    background: rgba(17, 24, 39, 0.9); border: 1px solid rgba(255,255,255,0.12);
-    text-align: center; transition: all 0.3s;
+    padding: 18px; border-radius: 18px;
+    background: rgba(17, 24, 39, 0.92); border: 1px solid rgba(255,255,255,0.12);
+    text-align: center;
   }
   .step-card-3d.current {
-    border-color: var(--gold); box-shadow: 0 0 25px rgba(245, 158, 11, 0.35); transform: scale(1.03);
+    border-color: var(--gold); box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
   }
-  .rifle-bridge { flex: 1.2; display: flex; flex-direction: column; align-items: center; }
-  .soldier-3d-wrap { display: flex; align-items: center; width: 100%; height: 50px; }
-  .muzzle-flash {
-    width: 22px; height: 22px; border-radius: 50%;
-    background: radial-gradient(circle, #fff 10%, #fde047 45%, #f97316 80%, transparent 100%);
-    animation: flashPulse 0.2s infinite alternate; margin-left: -4px;
-  }
-  @keyframes flashPulse { 0% { transform: scale(0.6); opacity: 0.4; } 100% { transform: scale(1.45); opacity: 1; } }
-  .bullet-track {
-    flex: 1; height: 10px; background: rgba(255,255,255,0.08);
-    border-radius: 99px; overflow: hidden; position: relative; border: 1px solid rgba(245, 158, 11, 0.4);
-  }
-  .bullet-stream {
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(90deg, transparent 0px, transparent 14px, #f59e0b 14px, #fef08a 26px);
-    animation: fireBullets 0.32s linear infinite;
-  }
-  @keyframes fireBullets { from { background-position: 0 0; } to { background-position: 40px 0; } }
 
   .lux-card {
     background: var(--glass); backdrop-filter: blur(18px);
@@ -1467,7 +1499,6 @@ LUXURY_3D_HTML = r"""
     color: #fde68a; font-weight: 800; font-size: 0.78rem;
   }
 
-  /* Instagram 3-Column Live Reels Grid (Bug #4) */
   .ig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 15px; }
   .ig-tile {
     position: relative; aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden;
@@ -1490,12 +1521,11 @@ LUXURY_3D_HTML = r"""
   @media (max-width: 768px) { .daily-card { grid-template-columns: 1fr; } }
   .daily-card video { width: 100%; aspect-ratio: 9/16; border-radius: 14px; background: #000; object-fit: cover; }
 
-  /* Instagram-Style 3D Notification Feed (Bug #11) */
   .notif-item {
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
     padding: 16px 20px; border-radius: 16px; margin-bottom: 12px;
     background: rgba(17, 24, 39, 0.88); border: 1px solid var(--border);
-    transform: perspective(800px) translateZ(0); transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.2s, border-color 0.2s;
   }
   .notif-item:hover { transform: translateX(6px); border-color: var(--gold); }
   .notif-icon {
@@ -1504,15 +1534,14 @@ LUXURY_3D_HTML = r"""
     background: rgba(16, 185, 129, 0.18); border: 1px solid rgba(16, 185, 129, 0.45);
   }
 
-  /* 3D Modal */
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 9999;
-    background: rgba(3, 6, 14, 0.84); backdrop-filter: blur(12px);
+    background: rgba(3, 6, 14, 0.86); backdrop-filter: blur(12px);
     display: none; align-items: center; justify-content: center; padding: 16px;
   }
   .modal-backdrop.show { display: flex; }
   .modal-3d-card {
-    width: 100%; max-width: 480px; padding: 28px; border-radius: 26px;
+    width: 100%; max-width: 510px; padding: 28px; border-radius: 26px;
     background: linear-gradient(165deg, #0f172a, #070b14);
     border: 1.5px solid rgba(245, 158, 11, 0.5);
     box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 40px rgba(16, 185, 129, 0.25);
@@ -1536,7 +1565,51 @@ LUXURY_3D_HTML = r"""
   <div class="bg-orb two"></div>
 </div>
 
-<!-- NAVBAR WITH 3D LIVE INDIA IST CLOCK & NOTIFICATION HUB -->
+<!-- Reusable SVG Template for 3D Foji Commando with AK-47 Rifle -->
+<svg style="display:none;">
+  <symbol id="foji-ak47-commando" viewBox="0 0 110 72">
+    <!-- Walking Boots & Camo Legs -->
+    <g class="foji-leg-left">
+      <rect x="22" y="45" width="7" height="16" rx="3" fill="#065f46"/>
+      <rect x="20" y="58" width="11" height="6" rx="2" fill="#1e293b"/>
+    </g>
+    <g class="foji-leg-right">
+      <rect x="31" y="45" width="7" height="16" rx="3" fill="#047857"/>
+      <rect x="29" y="58" width="11" height="6" rx="2" fill="#0f172a"/>
+    </g>
+    <!-- Tactical Armored Torso & Backpack -->
+    <rect x="12" y="24" width="9" height="18" rx="3" fill="#064e3b" stroke="#10b981" stroke-width="1"/>
+    <rect x="20" y="22" width="19" height="25" rx="5" fill="#059669" stroke="#34d399" stroke-width="1.2"/>
+    <path d="M22 26H37V38H22V26Z" fill="#064e3b"/>
+    <!-- Indian Flag Shoulder Patch -->
+    <rect x="25" y="25" width="7" height="1.6" fill="#f97316"/>
+    <rect x="25" y="26.6" width="7" height="1.6" fill="#ffffff"/>
+    <rect x="25" y="28.2" width="7" height="1.6" fill="#10b981"/>
+    <!-- Head & 3D Camo Combat Helmet with Visor -->
+    <circle cx="30" cy="14" r="7.5" fill="#fcd34d"/>
+    <path d="M20 12C20 5 40 5 40 12L42 15H19L20 12Z" fill="#065f46" stroke="#10b981" stroke-width="1.2"/>
+    <rect x="31" y="11" width="7" height="3.2" rx="1.5" fill="#020617"/>
+    <!-- Detailed AK-47 Assault Rifle (Wooden Stock, Receiver, Curved Banana Mag, Barrel) -->
+    <polygon points="28,31 40,28 40,34 28,36" fill="#92400e"/>
+    <rect x="39" y="26" width="22" height="6" rx="1.5" fill="#1e293b" stroke="#94a3b8" stroke-width="0.8"/>
+    <rect x="44" y="31" width="4.5" height="8" rx="1" fill="#334155"/>
+    <!-- Iconic AK-47 Curved Banana Magazine -->
+    <path d="M52 32 Q55 42 61 44 L64 41 Q58 39 56 32 Z" fill="#b45309" stroke="#f59e0b" stroke-width="0.8"/>
+    <!-- AK-47 Wooden Handguard, Gas Tube & Rifled Barrel with Front Sight -->
+    <rect x="61" y="27" width="11" height="4.5" rx="1" fill="#b45309"/>
+    <rect x="72" y="27.5" width="14" height="2.4" fill="#cbd5e1"/>
+    <rect x="72" y="25.5" width="9" height="1.8" fill="#64748b"/>
+    <polygon points="83,24 85,24 85,28 83,28" fill="#cbd5e1"/>
+    <!-- Soldier Arms Holding AK-47 -->
+    <path d="M28 28 L43 32 L59 30" stroke="#10b981" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Explosive AK-47 Muzzle Flash -->
+    <g class="ak47-muzzle-fire">
+      <polygon points="86,28 96,21 93,27 105,28 93,30 96,36" fill="#fde047"/>
+      <circle cx="90" cy="28.5" r="3.5" fill="#ffffff"/>
+    </g>
+  </symbol>
+</svg>
+
 <nav class="lux-navbar">
   <div class="brand-wrap">
     <div class="brand-logo">
@@ -1555,13 +1628,12 @@ LUXURY_3D_HTML = r"""
     <button class="nav-tab active" onclick="switchPage('dashboard', this)">🏠 Dashboard</button>
     <button class="nav-tab" onclick="switchPage('edits', this)">📊 Insta Edits</button>
     <button class="nav-tab" onclick="switchPage('notifications', this)">
-      🔔 Activity <span class="notif-dot" id="nav-notif-dot"></span>
+      🔔 Activity <span class="notif-badge-cnt" id="nav-notif-cnt">0</span>
     </button>
     <button class="nav-tab" onclick="switchPage('schedule', this)">⏰ Schedule</button>
     <button class="nav-tab" onclick="switchPage('profile', this)">👤 Profile</button>
   </div>
 
-  <!-- BUG #18: Corner 3D Live India Time (IST) Clock -->
   <div class="ist-clock-3d">
     <div class="ist-clock-time" id="ist-live-clock">--:--:-- --</div>
     <div class="ist-clock-date" id="ist-live-date">🇮🇳 INDIA LIVE (IST)</div>
@@ -1573,7 +1645,6 @@ LUXURY_3D_HTML = r"""
   <!-- ==================== PAGE 1: DASHBOARD (HOME) ==================== -->
   <section id="page-dashboard" class="page-section active">
 
-    <!-- BUG #16: LIVE SCHEDULE STATUS & REVERSE COUNTDOWN TIMER -->
     <div class="countdown-hud">
       <div style="display:flex;align-items:center;gap:12px;">
         <span style="width:12px;height:12px;border-radius:50%;background:#10b981;box-shadow:0 0 12px #10b981;"></span>
@@ -1588,41 +1659,42 @@ LUXURY_3D_HTML = r"""
       </div>
     </div>
 
-    <!-- HIDDEN-UNTIL-ACTIVE 3D RIFLE-FIRING PIPELINE -->
+    <!-- HIDDEN-UNTIL-ACTIVE 3D PIPELINE WITH WALKING AK-47 FOJI -->
     <div id="vanguard-pipeline-box">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span style="font-family:'Space Grotesk';font-weight:700;font-size:1.1rem;color:#fde68a;">
           🎖️ VANGUARD AUTONOMOUS 3D PRODUCTION PIPELINE
         </span>
-        <span id="pipe-pct" style="font-weight:800;color:#10b981;font-size:1.1rem;">15%</span>
+        <span id="pipe-pct" style="font-weight:800;color:#10b981;font-size:1.2rem;">15%</span>
       </div>
+
       <div class="pair-stage">
         <div class="step-card-3d current">
           <div style="font-size:0.75rem;color:#f59e0b;font-weight:800;" id="pair-left-num">STEP 1</div>
-          <div style="font-size:1.02rem;font-weight:800;margin-top:6px;" id="pair-left-title">Selecting 'Flash' Model</div>
+          <div style="font-size:1rem;font-weight:800;margin-top:6px;" id="pair-left-title">Selecting 'Flash' Model</div>
         </div>
-        <div class="rifle-bridge">
-          <div class="soldier-3d-wrap">
-            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
-              <circle cx="18" cy="14" r="7" fill="#10b981"/>
-              <path d="M10 8C14 4 22 4 26 8L24 12H12L10 8Z" fill="#065f46"/>
-              <path d="M12 22H26L32 34H10L12 22Z" fill="#047857"/>
-              <rect x="24" y="18" width="34" height="5" rx="2" fill="#f59e0b"/>
-              <rect x="54" y="16" width="10" height="3" fill="#e2e8f0"/>
+
+        <!-- 3D Walking Foji Commando with AK-47 advancing by Percentage -->
+        <div>
+          <div class="foji-ak47-track-wrap">
+            <div class="ak47-bullet-beam"></div>
+            <svg class="foji-walker-avatar" id="pipe-foji-walker" style="left:10%;">
+              <use href="#foji-ak47-commando"></use>
             </svg>
-            <div class="muzzle-flash"></div>
-            <div class="bullet-track"><div class="bullet-stream"></div></div>
+            <div class="foji-progress-floor">
+              <div class="foji-progress-fill" id="pipe-foji-bar" style="width:15%;"></div>
+            </div>
           </div>
-          <span style="font-size:0.75rem;color:#6ee7b7;margin-top:6px;" id="pipe-subdetail">Firing 3D Render Core...</span>
+          <div style="text-align:center;font-size:0.78rem;color:#6ee7b7;font-weight:700;" id="pipe-subdetail">Firing 3D Render Core...</div>
         </div>
+
         <div class="step-card-3d">
           <div style="font-size:0.75rem;color:#94a3b8;font-weight:800;" id="pair-right-num">STEP 2</div>
-          <div style="font-size:1.02rem;font-weight:800;margin-top:6px;color:#cbd5e1;" id="pair-right-title">Clicking '+' & Create Video</div>
+          <div style="font-size:1rem;font-weight:800;margin-top:6px;color:#cbd5e1;" id="pair-right-title">Clicking '+' & Create Video</div>
         </div>
       </div>
     </div>
 
-    <!-- SMART AUTO-ROTATE WEB SERIES + GENERATE MANUALLY -->
     <div class="lux-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;">
       <div>
         <span class="part-badge" id="next-ep-part">NEXT EPISODE • PART 1</span>
@@ -1635,7 +1707,6 @@ LUXURY_3D_HTML = r"""
       </button>
     </div>
 
-    <!-- ZERO-LAG TABS: POSTED REELS (INSTAGRAM GRID) vs DAILY GENERATED QUEUE -->
     <div style="display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
       <button class="btn-3d" id="tab-btn-posted" onclick="switchHomeVault('posted', this)">
         📱 Posted Reels (Instagram Grid) <span id="badge-posted-cnt" style="background:rgba(0,0,0,0.35);padding:2px 8px;border-radius:99px;font-size:0.75rem;">0</span>
@@ -1649,26 +1720,33 @@ LUXURY_3D_HTML = r"""
     <div id="vault-daily-view" style="display:none;"></div>
   </section>
 
-  <!-- ==================== PAGE 2: INSTA EDITS + LIVE AI STRATEGIST ==================== -->
+  <!-- ==================== PAGE 2: INSTA EDITS + INTERACTIVE AI BRAIN ==================== -->
   <section id="page-edits" class="page-section">
     <div class="lux-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
       <div>
         <h2 style="font-size:1.4rem;font-weight:800;">📈 Instagram Edits Insights Hub</h2>
-        <p style="color:#94a3b8;font-size:0.84rem;">Auto-refreshes every 60s • Click any metric card for Live Graph</p>
+        <p style="color:#94a3b8;font-size:0.84rem;">Live Synced with <strong id="edits-ig-handle" style="color:#fde68a;">@instagram</strong> • Auto-refreshes every 60s</p>
       </div>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-3d btn-glass" onclick="askAiProStrategist(this)">🧠 Ask AI Pro Strategist</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn-3d btn-glass" onclick="toggleAiStrategistPanel(this)">🧠 Unscripted AI Pro Strategist</button>
         <button class="btn-3d btn-gold" onclick="reloadEditsInsights(this)">🔄 Reload</button>
       </div>
     </div>
 
-    <!-- UNSCRIPTED AI PRO STRATEGIST BOX -->
+    <!-- BUG #7 FIX: Interactive Live AI Brain Panel -->
     <div id="ai-advisor-box" class="lux-card" style="display:none;border-color:var(--gold);">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
         <strong style="color:#fde68a;">🧠 VANGUARD UNSCRIPTED AI PRO STRATEGIST (LIVE GEMINI BRAIN)</strong>
         <button class="btn-3d btn-glass" style="padding:5px 10px;font-size:0.75rem;" onclick="document.getElementById('ai-advisor-box').style.display='none'">✖ Close</button>
       </div>
-      <div id="ai-advisor-output" style="color:#e2e8f0;font-size:0.9rem;line-height:1.6;white-space:pre-line;background:rgba(0,0,0,0.4);padding:14px;border-radius:12px;"></div>
+      <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+        <input id="ai-custom-query" placeholder="Ask AI anything (e.g., Suggest next viral Foji dialogue, analyze my reach, or write a trending hook)..."
+               style="flex:1;min-width:240px;padding:11px 14px;border-radius:12px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:0.9rem;">
+        <button class="btn-3d btn-gold" onclick="askAiProStrategist(this)">⚡ Ask AI Brain</button>
+      </div>
+      <div id="ai-advisor-output" style="color:#e2e8f0;font-size:0.9rem;line-height:1.6;white-space:pre-line;background:rgba(0,0,0,0.45);padding:14px;border-radius:12px;">
+        Click 'Ask AI Brain' above for live unscripted analysis of your account and next episode strategy!
+      </div>
     </div>
 
     <div class="kpi-grid">
@@ -1714,19 +1792,19 @@ LUXURY_3D_HTML = r"""
     <div id="edits-live-reels-list"></div>
   </section>
 
-  <!-- ==================== PAGE 3: INSTAGRAM-STYLE 3D NOTIFICATION FEED (BUG #11) ==================== -->
+  <!-- ==================== PAGE 3: INSTAGRAM-STYLE 3D NOTIFICATION FEED (BUG #6) ==================== -->
   <section id="page-notifications" class="page-section">
     <div class="lux-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
       <div>
         <h2 style="font-size:1.4rem;font-weight:800;">🔔 Live Activity & Notifications</h2>
-        <p style="color:#94a3b8;font-size:0.85rem;">Real-time log of every Reel Generated, Scheduled, Posted, Deleted, or Slot Rollover in IST</p>
+        <p style="color:#94a3b8;font-size:0.85rem;">Every micro & macro event synced permanently to Cloud in IST (Newest on Top)</p>
       </div>
       <button class="btn-3d btn-glass" onclick="clearAllNotifications(this)">🧹 Clear History</button>
     </div>
     <div id="notif-feed-list"></div>
   </section>
 
-  <!-- ==================== PAGE 4: SCHEDULE (BUG #13, #14, #15, #17) ==================== -->
+  <!-- ==================== PAGE 4: SCHEDULE (BUG #5 REFRESH-PROOF LOCK) ==================== -->
   <section id="page-schedule" class="page-section">
     <div class="lux-card">
       <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:16px;">⏰ Daily Autonomous Posting Schedule (IST)</h2>
@@ -1747,13 +1825,11 @@ LUXURY_3D_HTML = r"""
                  style="width:100%;margin-top:8px;padding:12px;border-radius:10px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:1.1rem;font-weight:700;">
         </div>
       </div>
-      <!-- BUG #15: Disables after saving, re-enables only when user edits any time input! -->
-      <button class="btn-3d btn-gold" id="btn-save-schedule" onclick="saveScheduleConfig(this)" style="width:100%;font-size:1.02rem;padding:15px;">
-        Schedule
+      <button class="btn-3d btn-gold" id="btn-save-schedule" disabled onclick="saveScheduleConfig(this)" style="width:100%;font-size:1.02rem;padding:15px;">
+        ✅ Schedule Locked (Edit Time to Change)
       </button>
     </div>
 
-    <!-- BUG #13 & #17: Shows exact Created Date & Time; automatically disappears once posted! -->
     <div class="lux-card">
       <h3 style="font-size:1.18rem;margin-bottom:14px;">⏳ Pending Reels Scheduled for Auto-Post</h3>
       <div id="scheduled-pending-list"></div>
@@ -1766,7 +1842,7 @@ LUXURY_3D_HTML = r"""
       <div style="width:112px;height:112px;border-radius:50%;padding:4px;background:linear-gradient(45deg,#f59e0b,#ec4899,#10b981);">
         <img id="prof-avatar-img" src="/api/ig_avatar" alt="Profile DP"
              style="width:100%;height:100%;border-radius:50%;object-fit:cover;background:#0f172a;"
-             onerror="this.src='https://ui-avatars.com/api/?name=IG&background=0f172a&color=10b981'">
+             onerror="this.src='https://ui-avatars.com/api/?name=FOJI+3D&background=064e3b&color=fde68a'">
       </div>
       <div style="flex:1;">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -1788,21 +1864,20 @@ LUXURY_3D_HTML = r"""
 
 </div>
 
-<!-- 3D POPUP MODAL WITH FOJI RIFLE FIRING LOADER -->
+<!-- ==================== 3D POPUP MODAL WITH WALKING AK-47 FOJI LOADER (BUG #8) ==================== -->
 <div class="modal-backdrop" id="lux-modal">
   <div class="modal-3d-card">
     <div id="modal-foji-loader" style="display:none;margin-bottom:18px;">
-      <div class="soldier-3d-wrap" style="justify-content:center;">
-        <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
-          <circle cx="18" cy="14" r="7" fill="#10b981"/>
-          <path d="M10 8C14 4 22 4 26 8L24 12H12L10 8Z" fill="#065f46"/>
-          <path d="M12 22H26L32 34H10L12 22Z" fill="#047857"/>
-          <rect x="24" y="18" width="34" height="5" rx="2" fill="#f59e0b"/>
+      <div class="foji-ak47-track-wrap">
+        <div class="ak47-bullet-beam"></div>
+        <svg class="foji-walker-avatar" id="modal-foji-walker" style="left:8%;">
+          <use href="#foji-ak47-commando"></use>
         </svg>
-        <div class="muzzle-flash"></div>
-        <div class="bullet-track" style="max-width:170px;"><div class="bullet-stream"></div></div>
-        <span id="modal-pct-num" style="margin-left:12px;font-weight:800;font-size:1.22rem;color:#fde68a;">0%</span>
+        <div class="foji-progress-floor">
+          <div class="foji-progress-fill" id="modal-foji-bar" style="width:12%;"></div>
+        </div>
       </div>
+      <div id="modal-pct-num" style="font-family:'Space Grotesk';font-weight:800;font-size:1.3rem;color:#fde68a;margin-top:6px;">0%</div>
     </div>
     <h3 id="modal-title" style="font-size:1.35rem;font-weight:800;color:#fde68a;margin-bottom:10px;"></h3>
     <p id="modal-body" style="color:#cbd5e1;font-size:0.94rem;line-height:1.5;margin-bottom:22px;white-space:pre-line;"></p>
@@ -1812,10 +1887,10 @@ LUXURY_3D_HTML = r"""
 
 <script>
   let appState = null;
-  let lastPopupError = "";
-  let wasGenerating = false;
+  let lastHandledTelemetryEpoch = 0;
   let remainingCountdownSec = 0;
   let savedScheduleTimes = ["08:00", "14:00", "20:00"];
+  let scheduleInputsDirty = false;
 
   const STEP_META = {
     1: { title: "1. Selecting 'Flash' Model" },
@@ -1832,7 +1907,16 @@ LUXURY_3D_HTML = r"""
     setTimeout(() => btn.classList.remove('clicked-pulse'), 180);
   }
 
-  /* BUG #18 & #16: 1-Second Live Indian Standard Time (IST) Clock & Reverse Countdown */
+  /* Helper to move the 3D Foji with AK-47 across any loading bar according to percentage! */
+  function setFojiWalkerProgress(walkerId, barId, pctVal) {
+    const p = Math.max(6, Math.min(96, parseInt(pctVal) || 12));
+    const walker = document.getElementById(walkerId);
+    const bar = document.getElementById(barId);
+    if (walker) walker.style.left = `calc(${p}% - 44px)`;
+    if (bar) bar.style.width = `${p}%`;
+  }
+
+  /* 1-Second Live IST Clock & Reverse Countdown */
   setInterval(() => {
     const now = new Date();
     const istTime = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
@@ -1849,16 +1933,12 @@ LUXURY_3D_HTML = r"""
     }
   }, 1000);
 
-  /* BUG #5: Zero-Lag Instant Page & Tab Switching */
   function switchPage(pageId, btn) {
     pulseBtn(btn);
     document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     if (btn) btn.classList.add('active');
-    if (pageId === 'notifications') {
-      document.getElementById('nav-notif-dot').style.display = 'none';
-    }
   }
 
   function switchHomeVault(mode, btn) {
@@ -1869,11 +1949,14 @@ LUXURY_3D_HTML = r"""
     document.getElementById('tab-btn-daily').className = (mode === 'daily') ? 'btn-3d' : 'btn-3d btn-glass';
   }
 
-  function show3DModal({ title, body, showLoader = false, pctText = "", buttons = [] }) {
+  function show3DModal({ title, body, showLoader = false, pctNum = 15, pctText = "", buttons = [] }) {
     document.getElementById('modal-title').innerText = title;
     document.getElementById('modal-body').innerText = body;
     document.getElementById('modal-foji-loader').style.display = showLoader ? 'block' : 'none';
-    document.getElementById('modal-pct-num').innerText = pctText;
+    if (showLoader) {
+      setFojiWalkerProgress('modal-foji-walker', 'modal-foji-bar', pctNum);
+      document.getElementById('modal-pct-num').innerText = pctText || (pctNum + "%");
+    }
     const act = document.getElementById('modal-actions');
     act.innerHTML = '';
     buttons.forEach(b => {
@@ -1890,14 +1973,14 @@ LUXURY_3D_HTML = r"""
     document.getElementById('lux-modal').classList.remove('show');
   }
 
-  /* BUG #7: Real Live Upload Progress Polling (Never Fakes Success!) */
   function handleApproveAndPost(videoId, btn) {
     pulseBtn(btn);
     show3DModal({
       title: "📤 UPLOADING REEL TO INSTAGRAM...",
       body: "Starting live upload pipeline...",
       showLoader: true,
-      pctText: "8%",
+      pctNum: 10,
+      pctText: "10%",
       buttons: []
     });
 
@@ -1910,7 +1993,9 @@ LUXURY_3D_HTML = r"""
         try {
           const r = await fetch('/api/upload_status/' + videoId);
           const st = await r.json();
-          document.getElementById('modal-pct-num').innerText = (st.pct || 0) + "%";
+          const curPct = st.pct || 12;
+          setFojiWalkerProgress('modal-foji-walker', 'modal-foji-bar', curPct);
+          document.getElementById('modal-pct-num').innerText = curPct + "%";
           document.getElementById('modal-body').innerText = st.stage || "Uploading...";
 
           if (st.status === 'done') {
@@ -1937,7 +2022,6 @@ LUXURY_3D_HTML = r"""
     });
   }
 
-  /* BUG #6 & #10: Approve & Schedule locks buttons immediately & leaves only Delete active */
   function handleApproveAndSchedule(videoId, btn) {
     pulseBtn(btn);
     fetch('/api/reel_action', {
@@ -1948,19 +2032,19 @@ LUXURY_3D_HTML = r"""
       fetchAppState();
       show3DModal({
         title: "⏰ SCHEDULED DONE!",
-        body: `Reel locked for auto-upload at ${res.slot_time || 'Scheduled Slot'} IST.\n Approval buttons are now locked.`,
+        body: `Reel locked for auto-upload at ${res.slot_time || 'Scheduled Slot'} IST.\nApproval buttons are now locked.`,
         showLoader: false,
         buttons: [{ label: "OK", cls: "btn-gold", onClick: () => close3DModal() }]
       });
     });
   }
 
-  /* BUG #8: Instant DOM Removal + Permanent Backend/GitHub Delete */
+  /* BUG #3 FIX: Permanent Delete with Cloud Sync */
   function handleDeleteReel(videoId, btn) {
     pulseBtn(btn);
     show3DModal({
       title: "⚠️ CONFIRM PERMANENT DELETE",
-      body: "Are you sure to delete this post permanently from your queue and history?",
+      body: "Are you sure to delete this post permanently from your queue and cloud history?",
       showLoader: false,
       buttons: [
         {
@@ -1977,7 +2061,7 @@ LUXURY_3D_HTML = r"""
               fetchAppState();
               show3DModal({
                 title: "🗑️ POST DELETED",
-                body: "Permanently deleted from history and dashboard.",
+                body: "Permanently removed from dashboard and GitHub cloud history.",
                 buttons: [{ label: "OK", cls: "btn-gold", onClick: () => close3DModal() }]
               });
             });
@@ -1999,7 +2083,8 @@ LUXURY_3D_HTML = r"""
         title: "🔄 REEL REGENERATION STARTED..",
         body: "Live Gemini AI Brain is inventing fresh unscripted dialogues & rendering your 3D video...",
         showLoader: true,
-        pctText: "15%",
+        pctNum: 18,
+        pctText: "18%",
         buttons: [{ label: "OK", cls: "btn-gold", onClick: () => close3DModal() }]
       });
       pollTelemetryLoop();
@@ -2011,22 +2096,24 @@ LUXURY_3D_HTML = r"""
     fetch('/api/generate_manual', { method: 'POST' }).then(() => {
       show3DModal({
         title: "🚀 REEL GENERATE START..",
-        body: "Hidden Chrome engine initialized! Watch the 3D Rifle-Firing Pipeline on your dashboard.",
+        body: "Hidden Chrome engine initialized! Watch the 3D AK-47 Commando Pipeline on your dashboard.",
         showLoader: true,
-        pctText: "14%",
+        pctNum: 15,
+        pctText: "15%",
         buttons: [{ label: "OK", cls: "btn-gold", onClick: () => close3DModal() }]
       });
       pollTelemetryLoop();
     });
   }
 
-  /* BUG #15: Schedule Button Disables Once Saved, Re-enables When Inputs Change */
+  /* BUG #5 FIX: Schedule Button stays disabled across page refreshes until user edits a time input! */
   function onScheduleTimeInputChanged() {
     const t1 = document.getElementById('slot-1').value;
     const t2 = document.getElementById('slot-2').value;
     const t3 = document.getElementById('slot-3').value;
     const btn = document.getElementById('btn-save-schedule');
     const changed = (t1 !== savedScheduleTimes[0] || t2 !== savedScheduleTimes[1] || t3 !== savedScheduleTimes[2]);
+    scheduleInputsDirty = changed;
     btn.disabled = !changed;
     btn.innerText = changed ? "Schedule" : "✅ Schedule Locked (Edit Time to Change)";
   }
@@ -2042,6 +2129,8 @@ LUXURY_3D_HTML = r"""
       body: JSON.stringify({ times: [t1, t2, t3] })
     }).then(() => {
       savedScheduleTimes = [t1, t2, t3];
+      scheduleInputsDirty = false;
+      localStorage.setItem("vanguard_locked_slots", JSON.stringify(savedScheduleTimes));
       const sBtn = document.getElementById('btn-save-schedule');
       sBtn.disabled = true;
       sBtn.innerText = "✅ Schedule Locked (Edit Time to Change)";
@@ -2056,16 +2145,27 @@ LUXURY_3D_HTML = r"""
 
   function reloadEditsInsights(btn) {
     pulseBtn(btn);
+    let animPct = 20;
     show3DModal({
       title: "🎖️ SYNCING REAL INSTAGRAM DATA...",
-      body: "Foji Reconnaissance fetching your live Profile, Bio, DP, Views, Likes & Comments...",
+      body: "3D Foji Commando fetching your live Profile, Bio, DP, Views, Likes & Reels...",
       showLoader: true,
-      pctText: "LIVE",
+      pctNum: 20,
+      pctText: "20%",
       buttons: []
     });
+    const iv = setInterval(() => {
+      animPct = Math.min(92, animPct + 18);
+      setFojiWalkerProgress('modal-foji-walker', 'modal-foji-bar', animPct);
+      document.getElementById('modal-pct-num').innerText = animPct + "%";
+    }, 180);
+
     fetchAppState(true).then(() => {
+      clearInterval(iv);
+      setFojiWalkerProgress('modal-foji-walker', 'modal-foji-bar', 100);
+      document.getElementById('modal-pct-num').innerText = "100%";
       document.getElementById('prof-avatar-img').src = '/api/ig_avatar?t=' + Date.now();
-      setTimeout(() => close3DModal(), 500);
+      setTimeout(() => close3DModal(), 350);
     });
   }
 
@@ -2109,18 +2209,24 @@ LUXURY_3D_HTML = r"""
     }).then(() => fetchAppState());
   }
 
-  function askAiProStrategist(btn) {
+  function toggleAiStrategistPanel(btn) {
     pulseBtn(btn);
     const box = document.getElementById('ai-advisor-box');
+    box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+  }
+
+  function askAiProStrategist(btn) {
+    pulseBtn(btn);
     const out = document.getElementById('ai-advisor-output');
-    box.style.display = 'block';
-    out.innerText = "🧠 Live Gemini AI Brain is analyzing your real Instagram metrics & episode history...";
+    const q = document.getElementById('ai-custom-query').value.trim();
+    out.innerText = "🧠 Live Unscripted AI Brain is thinking & analyzing your real Instagram data...";
     fetch('/api/ai_pro_advisor', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({})
+      body: JSON.stringify({ query: q })
     }).then(r => r.json()).then(res => {
       out.innerText = res.advice || "Analysis complete.";
+      fetchAppState();
     });
   }
 
@@ -2138,14 +2244,12 @@ LUXURY_3D_HTML = r"""
       const r = await fetch(forceReload ? '/api/state?reload_ig=1' : '/api/state');
       appState = await r.json();
 
-      // Update Live Countdown Banner (Bug #16)
       if (appState.countdown) {
         remainingCountdownSec = appState.countdown.remaining_seconds || 0;
         document.getElementById('cd-status-banner').innerText = appState.countdown.status_banner;
         document.getElementById('cd-next-slot-txt').innerText = `Next Auto-Upload Slot: ${appState.countdown.next_slot_label} • Queued Reels: ${appState.countdown.queued_count}`;
       }
 
-      // Update Series Next Episode Info
       const ne = appState.next_episode;
       document.getElementById('next-ep-part').innerText = `NEXT EPISODE • PART ${ne.next_part}`;
       document.getElementById('next-ep-title').innerText = ne.series_name;
@@ -2161,23 +2265,23 @@ LUXURY_3D_HTML = r"""
       document.getElementById('badge-posted-cnt').innerText = postedList.length;
       document.getElementById('badge-daily-cnt').innerText = dailyList.length;
 
-      // 1. Render Posted Reels Grid (Pure Instagram Reels Tab Look - Bug #4, #27, #28)
+      // 1. Render Posted Reels Grid
       const postedHtml = postedList.map(item => `
         <div class="ig-tile" onclick="if('${item.permalink || ''}') window.open('${item.permalink}', '_blank')">
           ${item.video_url
             ? `<video src="${item.video_url}" poster="${item.thumb_url || ''}" loop muted playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>`
-            : `<img src="${item.thumb_url || '/api/ig_avatar'}" alt="Reel">`
+            : `<img src="${item.thumb_url || '/api/ig_avatar'}" alt="Reel" onerror="this.src='/api/ig_avatar'">`
           }
           <div class="ig-tile-overlay">
             <span>▶️ ${(item.views || 0).toLocaleString()}</span>
             <span>❤️ ${(item.likes || 0).toLocaleString()}</span>
           </div>
         </div>
-      `).join('') || `<div class="lux-card" style="grid-column:1/-1;text-align:center;color:#94a3b8;">No live reels found yet. Click 'Reload' on Insta Edits or publish a reel!</div>`;
+      `).join('') || `<div class="lux-card" style="grid-column:1/-1;text-align:center;color:#94a3b8;">Click 'Reload' on Insta Edits or Profile to sync your live Instagram Reels!</div>`;
       document.getElementById('vault-posted-view').innerHTML = postedHtml;
       document.getElementById('profile-live-grid').innerHTML = postedHtml;
 
-      // 2. Render Daily Generated Queue (Bug #1, #6, #10: Verified Video + Smart Button Lock!)
+      // 2. Render Daily Queue
       document.getElementById('vault-daily-view').innerHTML = dailyList.map(item => {
         const isScheduled = (item.status === 'scheduled');
         const isPosted = (item.status === 'posted');
@@ -2200,8 +2304,6 @@ LUXURY_3D_HTML = r"""
               </div>
               <p style="margin-top:12px;background:rgba(0,0,0,0.45);padding:14px;border-radius:12px;font-size:0.88rem;color:#e2e8f0;white-space:pre-line;">${item.caption || ''}</p>
             </div>
-
-            <!-- BUG #6 & #10: Hide Approve/Schedule/Regenerate once Scheduled; keep ONLY Delete active until Posted! -->
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
               ${(!isScheduled && !isPosted) ? `
                 <button class="btn-3d" onclick="handleApproveAndPost('${item.video_id}', this)">✅ Approve & Post</button>
@@ -2216,8 +2318,8 @@ LUXURY_3D_HTML = r"""
         </div>`;
       }).join('') || `<div class="lux-card" style="color:#94a3b8;text-align:center;">No unposted reels in Daily Queue right now. Click 'Generate Manually' or wait for 02:00 AM IST Factory!</div>`;
 
-      // 3. Render Schedule Inputs & Pending Queue (Bug #13, #15, #17)
-      if (appState.schedule_config && appState.schedule_config.times) {
+      // 3. Render Schedule Inputs (Only if user isn't currently editing them — Bug #5 Fix!)
+      if (!scheduleInputsDirty && appState.schedule_config && appState.schedule_config.times) {
         savedScheduleTimes = appState.schedule_config.times;
         document.getElementById('slot-1').value = savedScheduleTimes[0] || "08:00";
         document.getElementById('slot-2').value = savedScheduleTimes[1] || "14:00";
@@ -2239,8 +2341,9 @@ LUXURY_3D_HTML = r"""
         </div>
       `).join('') || `<p style="color:#94a3b8;">No reels currently waiting in scheduled queue.</p>`;
 
-      // 4. Render Notifications Page (Bug #11)
+      // 4. Render Instagram-Style Activity Notifications Feed (Bug #6)
       const notifs = appState.notifications || [];
+      document.getElementById('nav-notif-cnt').innerText = notifs.length;
       const iconMap = { generated: "🎬", posted: "🚀", scheduled: "⏰", deleted: "🗑️", slot_missed: "⚠️", error: "❌" };
       document.getElementById('notif-feed-list').innerHTML = notifs.map(n => `
         <div class="notif-item">
@@ -2251,15 +2354,16 @@ LUXURY_3D_HTML = r"""
               <p style="font-size:0.85rem;color:#cbd5e1;margin-top:3px;">${n.message}</p>
             </div>
           </div>
-          <div style="text-align:right;min-width:120px;">
+          <div style="text-align:right;min-width:125px;">
             <div style="font-size:0.8rem;font-weight:800;color:#fde68a;">${n.time_str || ''}</div>
             <div style="font-size:0.72rem;color:#94a3b8;">${n.date_str || ''}</div>
           </div>
         </div>
       `).join('') || `<div class="lux-card" style="text-align:center;color:#94a3b8;">No activity notifications yet.</div>`;
 
-      // 5. Render Real Instagram Profile & Edits Insights (Bug #3, #19)
+      // 5. Render Real Instagram Profile & Edits Insights (Bug #2)
       const ins = appState.insights;
+      document.getElementById('edits-ig-handle').innerText = '@' + (ins.username || 'instagram');
       document.getElementById('ins-reach').innerText = (ins.total_reach || 0).toLocaleString();
       document.getElementById('ins-likes').innerText = (ins.total_likes || 0).toLocaleString();
       document.getElementById('ins-comments').innerText = (ins.total_comments || 0).toLocaleString();
@@ -2278,7 +2382,7 @@ LUXURY_3D_HTML = r"""
         <div class="daily-card">
           ${item.video_url
             ? `<video src="${item.video_url}" poster="${item.thumb_url || ''}" controls playsinline preload="metadata"></video>`
-            : `<img src="${item.thumb_url || '/api/ig_avatar'}" style="width:100%;aspect-ratio:9/16;border-radius:14px;object-fit:cover;">`
+            : `<img src="${item.thumb_url || '/api/ig_avatar'}" style="width:100%;aspect-ratio:9/16;border-radius:14px;object-fit:cover;" onerror="this.src='/api/ig_avatar'">`
           }
           <div>
             <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -2317,41 +2421,43 @@ LUXURY_3D_HTML = r"""
     } catch (e) {}
   }
 
+  /* BUG #4 & #8 FIX: Moves 3D AK-47 Soldier with Percentage & Auto-Resets on Error/Completion so it NEVER stays stuck! */
   async function pollTelemetryLoop() {
     try {
       const r = await fetch('/api/telemetry_3d');
       const t = await r.json();
       const box = document.getElementById('vanguard-pipeline-box');
+      const tEpoch = parseFloat(t.epoch || 0);
 
       if (t.status === 'active' && t.step_num >= 1 && t.step_num <= 6) {
-        wasGenerating = true;
         box.style.display = 'block';
         const cur = Math.min(5, t.step_num);
         const nxt = cur + 1;
+        const pct = t.progress || 15;
         document.getElementById('pair-left-num').innerText = `ACTIVE • STEP ${cur}`;
         document.getElementById('pair-left-title').innerText = STEP_META[cur].title;
         document.getElementById('pair-right-num').innerText = `NEXT • STEP ${nxt}`;
         document.getElementById('pair-right-title').innerText = STEP_META[nxt].title;
-        document.getElementById('pipe-pct').innerText = (t.progress || 15) + '%';
+        document.getElementById('pipe-pct').innerText = pct + '%';
         document.getElementById('pipe-subdetail').innerText = t.sub_detail || '';
+        setFojiWalkerProgress('pipe-foji-walker', 'pipe-foji-bar', pct);
       } else {
         box.style.display = 'none';
-        if (wasGenerating && t.status === 'completed') {
-          wasGenerating = false;
-          document.getElementById('nav-notif-dot').style.display = 'block';
+        if (t.status === 'completed' && tEpoch > lastHandledTelemetryEpoch) {
+          lastHandledTelemetryEpoch = tEpoch;
+          fetch('/api/reset_telemetry', { method: 'POST' });
           fetchAppState();
           show3DModal({
             title: "🎖️ REEL SENT FOR APPROVAL!",
             body: "3D Video verified & added to your Daily Generated Queue and Telegram!",
             buttons: [{ label: "View Reel", cls: "btn-gold", onClick: () => { close3DModal(); switchHomeVault('daily'); } }]
           });
-        } else if (t.status === 'error' && t.sub_detail && t.sub_detail !== lastPopupError) {
-          wasGenerating = false;
-          lastPopupError = t.sub_detail;
-          document.getElementById('nav-notif-dot').style.display = 'block';
+        } else if (t.status === 'error' && t.sub_detail && tEpoch > lastHandledTelemetryEpoch) {
+          lastHandledTelemetryEpoch = tEpoch;
+          fetch('/api/reset_telemetry', { method: 'POST' });
           fetchAppState();
           show3DModal({
-            title: "⚠️ PIPELINE NOTICE",
+            title: "⚠️ PIPELINE STOPPED / LIMIT NOTICE",
             body: t.sub_detail,
             buttons: [{ label: "Dismiss", cls: "btn-danger", onClick: () => close3DModal() }]
           });
@@ -2360,7 +2466,6 @@ LUXURY_3D_HTML = r"""
     } catch (e) {}
   }
 
-  // Poll 3D pipeline every 2.5s and auto-refresh Real Instagram & App State every 60s (Bug #3)
   setInterval(pollTelemetryLoop, 2500);
   setInterval(() => fetchAppState(true), 60000);
   fetchAppState();
