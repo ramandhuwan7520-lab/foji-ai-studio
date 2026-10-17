@@ -37,48 +37,12 @@
             "comments_count": 0,
             "shares_count": 0,
             "insta_url": "https://www.instagram.com/reel/DegzUG5sfwV/"
-        },
-        {
-            "track_id": "fighting",
-            "emotion_id": "fighting",
-            "emotion_name": "Foji & Fojan: Shaq aur Haq (Part 1)",
-            "part_number": 1,
-            "bgm_folder": "fighting",
-            "story_summary": "Meera catches Makra red-handed taking a suspicious late-night phone call, sparking an instant cute possessive showdown.",
-            "next_part_hook": "Meera grabs Makra's phone to check the caller ID, leaving a jaw-dropping cliffhanger for Part 2!",
-            "new_location": "A cozy, warmly lit Punjabi courtyard at twilight with fairy lights glowing in the background.",
-            "foji_new_dress": "Crisp Indian Army olive-green uniform with plain soldier shoulder straps and epaulettes having NO stars whatsoever.",
-            "fojan_new_dress": "A gorgeous vibrant red ethnic Punjabi suit with delicate embroidery and jhumkas.",
-            "dialogue_speaker_1": "Fojan Meera",
-            "dialogue_line_1_hinglish": "Raat ko kiska phone aa raha hai?",
-            "dialogue_line_1_hindi": "रात को किसका फोन आ रहा है?",
-            "dialogue_speaker_2": "Foji Makra",
-            "dialogue_line_2_hinglish": "Arey... woh toh bas department ka kaam hai!",
-            "dialogue_line_2_hindi": "अरे... वो तो बस डिपार्टमेंट का काम है!",
-            "gemini_video_prompt": "Create a 9:16 Portrait 3D Pixar Disney style 8k cinematic animated video using the uploaded character reference images. Image 1 is Foji Makra (Indian Army Jawan/Soldier — strictly NO stars on his shoulders, plain soldier shoulder straps only). Image 2 is Fojan Meera. Strictly maintain their exact 3D Pixar facial features. Set in a cozy Punjabi courtyard at twilight. Foji Makra wears a crisp Indian Army olive-green uniform with plain soldier shoulder straps and NO stars. Fojan Meera wears a vibrant red ethnic Punjabi suit. [0.0s - 4.0s]: Fojan Meera looks with narrowed possessive eyes and speaks clearly in Hindi at natural brisk pace: 'रात को किसका फोन आ रहा है?'. [4.0s - 8.0s]: Foji Makra acts nervously, hiding his phone behind his back, and replies clearly in Hindi before the video ends: 'अरे... वो तो बस डिपार्टमेंट का काम है!'. [8.0s - 10.0s]: Both hold an expressive cinematic reaction so the audio never cuts off abruptly. Add subtle Bollywood fighting background instrumental music beneath the clear Hindi character voices.",
-            "insta_title": "Foji & Fojan: Shaq aur Haq ❤️ (Part 1)",
-            "insta_caption": "Foji sahab ki khufiya call par fojan ki pehli nazar! 🚨❤️ Part 2 ke liye Follow kar lo! 👇",
-            "insta_hashtags": "#foji #indianarmy #faujilove #reelsindia #trendingreels #pixaranimation #desilove #faujidil #viralreels #part1",
-            "video_id": 4,
-            "timestamp": "2026-10-15 15:49:55",
-            "needs_browser_brain": false,
-            "video_completed": true,
-            "post_status": "POSTED LIVE ✅",
-            "views_count": 92,
-            "likes_count": 1,
-            "comments_count": 0,
-            "shares_count": 0,
-            "insta_url": "https://www.instagram.com/reel/DehJY1es06N/",
-            "needs_cloud_sync": false,
-            "status": "scheduled",
-            "scheduled_slot": "08:00",
-            "scheduled_label": "08:00 AM",
-            "schedule_click_order": 1792255625
         }
     ],
-    "deleted_ids": [],
+    "deleted_ids": [
+        "4"
+    ],
     "track_parts": {
-        "funny": 1,
-        "fighting": 1
+        "funny": 1
     }
 }
