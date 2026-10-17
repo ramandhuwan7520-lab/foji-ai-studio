@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1792255915942_172",
+    "type": "deleted",
+    "title": "Post Deleted",
+    "message": "Foji & Fojan: Shaq aur Haq (Part 1) removed. Episode part reset for fresh creation.",
+    "status": "warning",
+    "time_str": "10:21 PM",
+    "date_str": "17 Oct 2026",
+    "timestamp": 1792255915.9428027
+  },
+  {
     "id": "notif_1792255761520_256",
     "type": "error",
     "title": "Video Limit Active",
