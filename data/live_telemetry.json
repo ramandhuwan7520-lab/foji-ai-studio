@@ -1,10 +1,10 @@
 {
   "step_num": 1,
   "raw_step": 1,
-  "step_title": "CHECKING GEMINI & FLASH MODEL",
-  "sub_detail": "Capturing live Chrome screen & checking model dropdown...",
+  "step_title": "MODEL MENU OPENED",
+  "sub_detail": "Selecting 'Flash' from dropdown...",
   "status": "active",
-  "progress": 18,
-  "timestamp": "10:19:07 PM IST",
-  "epoch": 1792255747.6419003
+  "progress": 22,
+  "timestamp": "10:19:10 PM IST",
+  "epoch": 1792255750.9846137
 }
