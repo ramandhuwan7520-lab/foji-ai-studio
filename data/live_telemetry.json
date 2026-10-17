@@ -1,8 +1,10 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1792255200.400456
+  "step_num": 1,
+  "raw_step": 1,
+  "step_title": "Opening Studio Core",
+  "sub_detail": "Connecting to Gemini Flash...",
+  "status": "active",
+  "progress": 14,
+  "timestamp": "10:14:09 PM IST",
+  "epoch": 1792255449.264431
 }
