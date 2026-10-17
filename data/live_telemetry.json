@@ -1,10 +1,10 @@
 {
   "step_num": 0,
-  "raw_step": 2,
-  "step_title": "Limit Active",
+  "raw_step": 0,
+  "step_title": "Paused",
   "sub_detail": "Daily video limit active on Gemini.",
   "status": "error",
   "progress": 0,
-  "timestamp": "10:14:43 PM IST",
-  "epoch": 1792255483.7919545
+  "timestamp": "10:14:46 PM IST",
+  "epoch": 1792255486.481826
 }
