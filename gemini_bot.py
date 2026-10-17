@@ -838,18 +838,19 @@ def recover_rendered_video_from_past_chats(driver, latest_pkg, raw_dir, output_v
         print(f"⚠️ Past chat recovery check note: {e}")
     return False
 
-def generate_video_in_gemini(recover_only=False):
+def generate_video_in_gemini(pending_pkg=None):
     with open("data/history.json", "r", encoding="utf-8") as f:
         history_data = json.load(f)
 
-    latest_pkg = history_data["history"][-1]
-    video_num = latest_pkg.get("video_id", history_data.get("generated_count", 1))
+    latest_pkg = pending_pkg or (history_data["history"][-1] if history_data.get("history") else {})
+    video_num = latest_pkg.get("video_id", int(history_data.get("generated_count", 0)) + 1)
 
     foji_img = find_image("foji")
     fojan_img = find_image("fojan")
     if not foji_img or not fojan_img:
         err = "❌ 'assets/characters/' folder mein 'foji' aur 'fojan' ki photos nahi mili!"
         update_3d_telemetry(1, "CHARACTER PHOTO MISSING", err, "error", 0)
+        push_app_notification("error", "Character Photos Missing", err, "error")
         send_alert(err)
         raise FileNotFoundError(err)
 
@@ -857,24 +858,17 @@ def generate_video_in_gemini(recover_only=False):
     os.makedirs(raw_dir, exist_ok=True)
     output_video_path = os.path.join(raw_dir, f"raw_video_{video_num}.mp4")
 
-    if os.path.exists(output_video_path) and is_valid_mp4(output_video_path):
-        mark_episode_completed_in_history(history_data, latest_pkg)
-        update_3d_telemetry(6, "REEL READY FOR APPROVAL", "Video rendered & sent for approval!", "completed", 100)
-        return output_video_path
-
-    update_3d_telemetry(1, "LAUNCHING HIDDEN CHROME", "Opening Gemini Workspace & clearing popups...", "active", 10)
-    driver=driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
+    update_3d_telemetry(1, "LAUNCHING HIDDEN CHROME", "Opening Gemini Workspace & clearing popups...", "active", 12)
+    driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
 
     try:
         time.sleep(3)
         inject_cloud_cookies_if_present(driver)
         dismiss_annoying_popups(driver)
 
-        # Point 4 & 5: Strictly select 'Flash' model or stop immediately!
         select_flash_lite_model(driver)
 
-        base_video_prompt = generate_live_script_in_chrome_if_needed(driver, latest_pkg, history_data)
-        # Point 26: Ensure every prompt strictly includes background music instruction
+        base_video_prompt = latest_pkg.get("gemini_video_prompt", "")
         if "music" not in base_video_prompt.lower():
             base_video_prompt += " Include cinematic Indian instrumental background music matching the emotion."
 
@@ -882,12 +876,12 @@ def generate_video_in_gemini(recover_only=False):
         initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
         prev_bubbles = len(get_response_bubbles(driver))
 
-        # Point 6: Plus Icon -> Create Video -> Portrait 9:16 -> Upload Photos -> Paste Prompt
         update_3d_telemetry(2, "SELECTING CREATE VIDEO", "Clicking '+' Icon & selecting Create Video...", "active", 32)
         create_video_selected = click_plus_and_select_create_video(driver)
         if not create_video_selected:
             err_msg = "❌ Gemini '+' Menu mein 'Create video' select nahi hua! (Video Quota/Limit Exhausted)"
             update_3d_telemetry(2, "CREATE VIDEO UNAVAILABLE", err_msg, "error", 0)
+            push_app_notification("error", "Gemini Video Limit Reached", err_msg, "error")
             send_alert(err_msg)
             raise RuntimeError(err_msg)
 
@@ -901,13 +895,7 @@ def generate_video_in_gemini(recover_only=False):
         paste_and_send_prompt(driver, base_video_prompt)
 
         time.sleep(5)
-        if "/app/" in driver.current_url:
-            latest_pkg["gemini_chat_url"] = driver.current_url
-            with open("data/history.json", "w", encoding="utf-8") as f:
-                json.dump(history_data, f, indent=4, ensure_ascii=False)
-
-        # Point 6, 7, 8: Wait patiently until result arrives (up to 25 mins / 300 ticks)
-        update_3d_telemetry(5, "RENDERING 3D VIDEO IN GEMINI", "Waiting for Gemini video engine output...", "active", 88)
+        update_3d_telemetry(5, "RENDERING 3D VIDEO IN GEMINI", "Waiting patiently for Gemini video output...", "active", 88)
         video_saved = False
 
         for tick in range(300):
@@ -916,31 +904,14 @@ def generate_video_in_gemini(recover_only=False):
 
             videos = driver.find_elements(By.TAG_NAME, "video")
             if len(videos) > initial_videos:
-                update_3d_telemetry(6, "DOWNLOADING RENDERED MP4", "Video generated! Downloading MP4...", "active", 95)
-                time.sleep(4)
-                dl_btns = driver.find_elements(
-                    By.XPATH,
-                    "//button[contains(@aria-label, 'Download') or contains(@mattooltip, 'Download') or .//mat-icon[contains(text(), 'download')]]"
-                )
-                if dl_btns:
-                    js_click(driver, dl_btns[-1])
-                    time.sleep(8)
-
-                current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
-                new_files = list(current_mp4s - existing_mp4s) or list(current_mp4s)
-                for fpath in sorted(new_files, key=os.path.getmtime, reverse=True):
-                    if is_valid_mp4(fpath):
-                        if os.path.abspath(fpath) != os.path.abspath(output_video_path):
-                            shutil.move(fpath, output_video_path)
-                        video_saved = True
-                        break
-                if video_saved:
+                update_3d_telemetry(6, "DOWNLOADING RENDERED MP4", "Video generated! Extracting & verifying MP4...", "active", 95)
+                if extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_path):
+                    video_saved = True
                     break
 
             if is_video_currently_generating(driver):
                 continue
 
-            # Point 7: If Gemini returned an error/message instead of video, send exact text to Frontend Popup & Telegram!
             current_bubbles = len(get_response_bubbles(driver))
             if current_bubbles > prev_bubbles and not is_video_currently_generating(driver):
                 time.sleep(4)
@@ -949,16 +920,17 @@ def generate_video_in_gemini(recover_only=False):
                 reply_txt = get_latest_response_text(driver).strip()
                 if reply_txt:
                     update_3d_telemetry(5, "GEMINI MESSAGE / ERROR", reply_txt[:240], "error", 0)
+                    push_app_notification("error", "Gemini Generation Stopped", reply_txt[:200], "error")
                     send_alert(f"⚠️ *GEMINI RESPONSE / ERROR:*\n\n{reply_txt}")
                     raise RuntimeError(reply_txt)
 
         if video_saved and is_valid_mp4(output_video_path):
-            mark_episode_completed_in_history(history_data, latest_pkg)
-            update_3d_telemetry(6, "REEL SENT FOR APPROVAL", "3D Reel Rendered & Sent for Approval!", "completed", 100)
+            update_3d_telemetry(6, "REEL SENT FOR APPROVAL", "3D Video Verified & Sent for Approval!", "completed", 100)
             return output_video_path
 
-        timeout_err = "❌ Gemini se video render hone mein timeout ho gaya."
-        update_3d_telemetry(5, "RENDER TIMEOUT", timeout_err, "error", 0)
+        timeout_err = "❌ Video render ya MP4 verification પૂरा nahi ho paya."
+        update_3d_telemetry(5, "RENDER / MP4 ERROR", timeout_err, "error", 0)
+        push_app_notification("error", "Video Render Incomplete", timeout_err, "error")
         send_alert(timeout_err)
         raise RuntimeError(timeout_err)
 
