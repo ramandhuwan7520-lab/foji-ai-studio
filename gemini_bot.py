@@ -851,6 +851,21 @@ def recover_rendered_video_from_past_chats(driver, latest_pkg, raw_dir, output_v
         print(f"⚠️ Past chat recovery check note: {e}")
     return False
 
+def save_detected_quota_reopen_time(raw_error_text):
+    """Point #7: Extracts exact limit reopen time from Gemini and saves it for precision retry!"""
+    try:
+        reopen_t, _ = extract_reopen_time_and_details(raw_error_text)
+        cfg_path = "data/schedule_config.json"
+        if os.path.exists(cfg_path):
+            with open(cfg_path, "r", encoding="utf-8") as f:
+                cfg = json.load(f)
+            cfg["quota_reopen_time_str"] = reopen_t or ""
+            cfg["last_quota_detected_at"] = datetime.now(IST).strftime("%Y-%m-%d %H:%M")
+            with open(cfg_path, "w", encoding="utf-8") as f:
+                json.dump(cfg, f, indent=4)
+    except Exception:
+        pass
+
 def generate_video_in_gemini(pending_pkg=None):
     with open("data/history.json", "r", encoding="utf-8") as f:
         history_data = json.load(f)
@@ -861,17 +876,17 @@ def generate_video_in_gemini(pending_pkg=None):
     foji_img = find_image("foji")
     fojan_img = find_image("fojan")
     if not foji_img or not fojan_img:
-        err = "❌ 'assets/characters/' folder mein 'foji' aur 'fojan' ki photos nahi mili!"
-        update_3d_telemetry(1, "CHARACTER PHOTO MISSING", err, "error", 0)
+        err = "Character photos missing in assets/characters."
+        update_3d_telemetry(1, "Assets Missing", err, "error", 0)
         push_app_notification("error", "Character Photos Missing", err, "error")
-        send_alert(err)
+        send_alert(f"⚠️ * Character Photos Missing*\n`assets/characters/` check karein.")
         raise FileNotFoundError(err)
 
     raw_dir = os.path.abspath("output/raw_videos")
     os.makedirs(raw_dir, exist_ok=True)
     output_video_path = os.path.join(raw_dir, f"raw_video_{video_num}.mp4")
 
-    update_3d_telemetry(1, "LAUNCHING HIDDEN CHROME", "Opening Gemini Workspace & clearing popups...", "active", 12)
+    update_3d_telemetry(1, "Opening Studio Core", "Connecting to Gemini Flash...", "active", 14)
     driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
 
     try:
@@ -889,26 +904,27 @@ def generate_video_in_gemini(pending_pkg=None):
         initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
         prev_bubbles = len(get_response_bubbles(driver))
 
-        update_3d_telemetry(2, "SELECTING CREATE VIDEO", "Clicking '+' Icon & selecting Create Video...", "active", 32)
+        update_3d_telemetry(2, "Enabling Video Tool", "Selecting Create Video...", "active", 32)
         create_video_selected = click_plus_and_select_create_video(driver)
         if not create_video_selected:
-            err_msg = "❌ Gemini '+' Menu mein 'Create video' select nahi hua! (Video Quota/Limit Exhausted)"
-            update_3d_telemetry(2, "CREATE VIDEO UNAVAILABLE", err_msg, "error", 0)
-            push_app_notification("error", "Gemini Video Limit Reached", err_msg, "error")
-            send_alert(err_msg)
+            err_msg = "Daily video limit active on Gemini."
+            save_detected_quota_reopen_time(get_latest_response_text(driver))
+            update_3d_telemetry(2, "Limit Active", err_msg, "error", 0)
+            push_app_notification("error", "Video Limit Active", "Will retry automatically at next window.", "error")
+            send_alert("⏳ *Video Limit Active*\nNext scheduled window par auto-retry hoga.")
             raise RuntimeError(err_msg)
 
-        update_3d_telemetry(3, "SETTING 9:16 PORTRAIT", "Locking vertical 9:16 reel ratio...", "active", 48)
+        update_3d_telemetry(3, "9:16 Portrait Mode", "Setting vertical reel ratio...", "active", 48)
         select_portrait_9_16_ratio(driver)
 
-        update_3d_telemetry(4, "UPLOADING CHARACTERS", "Uploading Foji & Fojan reference photos...", "active", 64)
+        update_3d_telemetry(4, "Uploading Characters", "Attaching Foji & Fojan references...", "active", 64)
         upload_character_images_strictly(driver, foji_img, fojan_img)
 
-        update_3d_telemetry(5, "SUBMITTING 3D SCRIPT", "Pasting fresh dialogue & music prompt...", "active", 80)
+        update_3d_telemetry(5, "Sending Script", "Submitting dialogue & music prompt...", "active", 80)
         paste_and_send_prompt(driver, base_video_prompt)
 
         time.sleep(5)
-        update_3d_telemetry(5, "RENDERING 3D VIDEO IN GEMINI", "Waiting patiently for Gemini video output...", "active", 88)
+        update_3d_telemetry(5, "Rendering 3D Reel", "Generating 8K 3D animation...", "active", 88)
         video_saved = False
 
         for tick in range(300):
@@ -917,7 +933,7 @@ def generate_video_in_gemini(pending_pkg=None):
 
             videos = driver.find_elements(By.TAG_NAME, "video")
             if len(videos) > initial_videos:
-                update_3d_telemetry(6, "DOWNLOADING RENDERED MP4", "Video generated! Extracting & verifying MP4...", "active", 95)
+                update_3d_telemetry(6, "Saving Video", "Downloading & verifying MP4...", "active", 96)
                 if extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_path):
                     video_saved = True
                     break
@@ -932,19 +948,21 @@ def generate_video_in_gemini(pending_pkg=None):
                     continue
                 reply_txt = get_latest_response_text(driver).strip()
                 if reply_txt:
-                    update_3d_telemetry(5, "GEMINI MESSAGE / ERROR", reply_txt[:240], "error", 0)
-                    push_app_notification("error", "Gemini Generation Stopped", reply_txt[:200], "error")
-                    send_alert(f"⚠️ *GEMINI RESPONSE / ERROR:*\n\n{reply_txt}")
-                    raise RuntimeError(reply_txt)
+                    save_detected_quota_reopen_time(reply_txt)
+                    reopen_t, _ = extract_reopen_time_and_details(reply_txt)
+                    short_notice = f"Limit active. Reopens at {reopen_t}." if reopen_t else reply_txt[:110]
+                    update_3d_telemetry(5, "Generation Paused", short_notice, "error", 0)
+                    push_app_notification("error", "Generation Paused", short_notice, "error")
+                    send_alert(f"⏳ *Generation Paused*\n{short_notice}")
+                    raise RuntimeError(short_notice)
 
         if video_saved and is_valid_mp4(output_video_path):
-            update_3d_telemetry(6, "REEL SENT FOR APPROVAL", "3D Video Verified & Sent for Approval!", "completed", 100)
+            update_3d_telemetry(6, "Reel Ready", "Sent for approval!", "completed", 100)
             return output_video_path
 
-        timeout_err = "❌ Video render ya MP4 verification પૂरा nahi ho paya."
-        update_3d_telemetry(5, "RENDER / MP4 ERROR", timeout_err, "error", 0)
-        push_app_notification("error", "Video Render Incomplete", timeout_err, "error")
-        send_alert(timeout_err)
+        timeout_err = "Video render timed out."
+        update_3d_telemetry(5, "Render Timeout", timeout_err, "error", 0)
+        push_app_notification("error", "Render Timeout", "Will retry at next pre-slot window.", "error")
         raise RuntimeError(timeout_err)
 
     finally:
