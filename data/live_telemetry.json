@@ -1,10 +1,10 @@
 {
-  "step_num": 2,
+  "step_num": 0,
   "raw_step": 2,
-  "step_title": "CLICKING '+' & CREATE VIDEO",
-  "sub_detail": "Triggering Veo 3D Video Tool in Chat Box",
-  "status": "active",
-  "progress": 34,
-  "timestamp": "10:19:15 PM IST",
-  "epoch": 1792255755.7544584
+  "step_title": "Limit Active",
+  "sub_detail": "Daily video limit active on Gemini.",
+  "status": "error",
+  "progress": 0,
+  "timestamp": "10:19:20 PM IST",
+  "epoch": 1792255760.2499273
 }
