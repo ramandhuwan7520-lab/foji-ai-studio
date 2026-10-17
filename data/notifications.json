@@ -1,13 +1,13 @@
 [
   {
-    "id": "notif_1792255629138_312",
-    "type": "scheduled",
-    "title": "Scheduled • 08:00 AM",
-    "message": "Foji & Fojan: Shaq aur Haq (Part 1) queued for auto-post.",
-    "status": "info",
+    "id": "notif_1792255657088_309",
+    "type": "error",
+    "title": "Upload Failed",
+    "message": "Video file missing on server. Click Regenerate.",
+    "status": "error",
     "time_str": "10:17 PM",
     "date_str": "17 Oct 2026",
-    "timestamp": 1792255629.1385849
+    "timestamp": 1792255657.0883205
   },
   {
     "id": "notif_1792255484854_616",
