@@ -69,7 +69,16 @@
             "comments_count": 0,
             "shares_count": 0,
             "insta_url": "https://www.instagram.com/reel/DehJY1es06N/",
-            "needs_cloud_sync": false
+            "needs_cloud_sync": false,
+            "status": "scheduled",
+            "scheduled_slot": "08:00",
+            "scheduled_label": "08:00 AM",
+            "schedule_click_order": 1792255625
         }
-    ]
+    ],
+    "deleted_ids": [],
+    "track_parts": {
+        "funny": 1,
+        "fighting": 1
+    }
 }
