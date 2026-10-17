@@ -1378,7 +1378,7 @@ LUXURY_3D_HTML = r"""
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VANGUARD 3D STUDIO — Autonomous Cinema</title>
+<title>AutoReels 3D AI — Autonomous 3D Reel Creator</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1386,7 +1386,7 @@ LUXURY_3D_HTML = r"""
     --emerald: #10b981;
     --cyan: #06b6d4;
     --danger: #ef4444;
-    --glass: rgba(11, 16, 28, 0.84);
+    --glass: rgba(11, 16, 28, 0.85);
     --border: rgba(255, 255, 255, 0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
@@ -1398,7 +1398,7 @@ LUXURY_3D_HTML = r"""
     overflow-x: hidden;
   }
 
-  /* 3D Animated Live Matrix Background Across All Pages */
+  /* 3D Animated Live Matrix Background */
   .bg-3d-canvas {
     position: fixed; inset: 0; z-index: -2; overflow: hidden;
     background: radial-gradient(circle at 18% 15%, rgba(16, 185, 129, 0.16), transparent 45%),
@@ -1461,7 +1461,7 @@ LUXURY_3D_HTML = r"""
     box-shadow: 0 4px 0 rgba(0,0,0,0.5);
   }
 
-  /* Luxury Navbar + 3D Corner India Clock */
+  /* Point #9 & #10: New Brand Header & 3D Isometric Cinema Logo */
   .lux-navbar {
     max-width: 1220px; margin: 16px auto; padding: 14px 22px;
     background: var(--glass); backdrop-filter: blur(22px);
@@ -1470,20 +1470,25 @@ LUXURY_3D_HTML = r"""
     box-shadow: 0 20px 50px rgba(0,0,0,0.65);
   }
   .brand-wrap { display: flex; align-items: center; gap: 14px; }
-  .brand-logo {
-    width: 46px; height: 46px; border-radius: 14px;
-    background: linear-gradient(135deg, #064e3b, #0f172a);
-    border: 1.5px solid var(--gold);
+  .brand-logo-3d {
+    width: 50px; height: 50px; border-radius: 16px;
+    background: radial-gradient(circle at 30% 25%, #10b981 0%, #064e3b 45%, #020617 100%);
+    border: 1.5px solid rgba(245, 158, 11, 0.7);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35), inset 0 0 15px rgba(245, 158, 11, 0.35);
+    transform: perspective(400px) rotateY(10deg) rotateX(6deg);
+    transition: transform 0.3s ease;
+  }
+  .brand-logo-3d:hover {
+    transform: perspective(400px) rotateY(-8deg) rotateX(-4deg) scale(1.06);
   }
   .brand-title {
-    font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 800;
-    background: linear-gradient(90deg, #fff, #fde68a, #34d399);
+    font-family: 'Space Grotesk', sans-serif; font-size: 1.32rem; font-weight: 800;
+    background: linear-gradient(90deg, #ffffff 0%, #fde68a 50%, #34d399 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.6px;
   }
-  .brand-sub { font-size: 0.7rem; color: #94a3b8; letter-spacing: 1.4px; text-transform: uppercase; }
+  .brand-sub { font-size: 0.7rem; color: #94a3b8; letter-spacing: 1.3px; text-transform: uppercase; font-weight: 700; }
 
   .nav-tabs { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .nav-tab {
@@ -1522,22 +1527,20 @@ LUXURY_3D_HTML = r"""
 
   .countdown-hud {
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
-    padding: 16px 22px; margin-bottom: 20px; border-radius: 18px;
+    padding: 15px 22px; margin-bottom: 20px; border-radius: 18px;
     background: linear-gradient(90deg, rgba(6, 78, 59, 0.45), rgba(15, 23, 42, 0.9));
     border: 1px solid rgba(16, 185, 129, 0.45);
     box-shadow: 0 12px 30px rgba(0,0,0,0.45);
   }
   .cd-timer-pill {
-    font-family: 'Space Grotesk', monospace; font-size: 1.15rem; font-weight: 800;
-    padding: 8px 16px; border-radius: 12px; background: rgba(0,0,0,0.55);
+    font-family: 'Space Grotesk', monospace; font-size: 1.12rem; font-weight: 800;
+    padding: 7px 15px; border-radius: 12px; background: rgba(0,0,0,0.55);
     border: 1px solid var(--gold); color: #fde68a; letter-spacing: 1px;
   }
 
-  /* ============================================================================
-     🪖 BUG #8 FIX: 3D FOJI CHARACTER WITH AK-47 RIFLE WALKING WITH PERCENTAGE!
-     ============================================================================ */
+  /* 3D Walking Soldier with AK-47 Advancing by Percentage */
   .foji-ak47-track-wrap {
-    position: relative; width: 100%; height: 92px; margin: 14px 0 8px;
+    position: relative; width: 100%; height: 92px; margin: 12px 0 8px;
     background: linear-gradient(180deg, rgba(15,23,42,0.75) 0%, rgba(6,78,59,0.28) 100%);
     border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 18px;
     overflow: hidden; padding: 0 18px;
@@ -1569,14 +1572,8 @@ LUXURY_3D_HTML = r"""
   .foji-leg-right { transform-origin: 28px 46px; animation: walkLegR 0.32s infinite alternate; }
   @keyframes walkLegL { 0% { transform: rotate(-18deg); } 100% { transform: rotate(18deg); } }
   @keyframes walkLegR { 0% { transform: rotate(18deg); } 100% { transform: rotate(-18deg); } }
-  .ak47-muzzle-fire {
-    transform-origin: 84px 28px;
-    animation: akFireBlast 0.16s infinite alternate;
-  }
-  @keyframes akFireBlast {
-    0% { transform: scale(0.5); opacity: 0.35; }
-    100% { transform: scale(1.45); opacity: 1; }
-  }
+  .ak47-muzzle-fire { transform-origin: 84px 28px; animation: akFireBlast 0.16s infinite alternate; }
+  @keyframes akFireBlast { 0% { transform: scale(0.5); opacity: 0.35; } 100% { transform: scale(1.45); opacity: 1; } }
   .ak47-bullet-beam {
     position: absolute; bottom: 47px; left: 0; right: 18px; height: 4px; pointer-events: none;
     background: repeating-linear-gradient(90deg, transparent 0px, transparent 18px, #fde047 18px, #f97316 28px);
@@ -1584,23 +1581,20 @@ LUXURY_3D_HTML = r"""
   }
   @keyframes shootTracer { from { background-position: 0 0; } to { background-position: 46px 0; } }
 
-  /* Pipeline Box */
   #vanguard-pipeline-box {
-    display: none; margin-bottom: 24px; padding: 24px;
+    display: none; margin-bottom: 24px; padding: 22px;
     background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.22), rgba(10, 14, 26, 0.96));
     border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 24px;
     box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(16, 185, 129, 0.25);
   }
-  .pair-stage { display: grid; grid-template-columns: 1fr 1.6fr 1fr; align-items: center; gap: 16px; margin-top: 16px; }
+  .pair-stage { display: grid; grid-template-columns: 1fr 1.6fr 1fr; align-items: center; gap: 16px; margin-top: 14px; }
   @media (max-width: 768px) { .pair-stage { grid-template-columns: 1fr; } }
   .step-card-3d {
-    padding: 18px; border-radius: 18px;
+    padding: 16px; border-radius: 18px;
     background: rgba(17, 24, 39, 0.92); border: 1px solid rgba(255,255,255,0.12);
     text-align: center;
   }
-  .step-card-3d.current {
-    border-color: var(--gold); box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
-  }
+  .step-card-3d.current { border-color: var(--gold); box-shadow: 0 0 25px rgba(245, 158, 11, 0.35); }
 
   .lux-card {
     background: var(--glass); backdrop-filter: blur(18px);
@@ -1613,7 +1607,7 @@ LUXURY_3D_HTML = r"""
     color: #fde68a; font-weight: 800; font-size: 0.78rem;
   }
 
-  .ig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 15px; }
+  .ig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 15px; }
   .ig-tile {
     position: relative; aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden;
     background: #0f172a; border: 1px solid rgba(255,255,255,0.14); cursor: pointer;
@@ -1628,7 +1622,7 @@ LUXURY_3D_HTML = r"""
   }
 
   .daily-card {
-    display: grid; grid-template-columns: 240px 1fr; gap: 22px;
+    display: grid; grid-template-columns: 235px 1fr; gap: 22px;
     background: rgba(15, 23, 42, 0.88); border: 1px solid var(--border);
     border-radius: 20px; padding: 18px; margin-bottom: 16px;
   }
@@ -1637,28 +1631,29 @@ LUXURY_3D_HTML = r"""
 
   .notif-item {
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    padding: 16px 20px; border-radius: 16px; margin-bottom: 12px;
+    padding: 14px 18px; border-radius: 16px; margin-bottom: 10px;
     background: rgba(17, 24, 39, 0.88); border: 1px solid var(--border);
     transition: transform 0.2s, border-color 0.2s;
   }
-  .notif-item:hover { transform: translateX(6px); border-color: var(--gold); }
+  .notif-item:hover { transform: translateX(5px); border-color: var(--gold); }
   .notif-icon {
-    width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
     background: rgba(16, 185, 129, 0.18); border: 1px solid rgba(16, 185, 129, 0.45);
   }
 
+  /* Crisp Commercial App Modal (Point #6) */
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 9999;
-    background: rgba(3, 6, 14, 0.86); backdrop-filter: blur(12px);
+    background: rgba(3, 6, 14, 0.84); backdrop-filter: blur(12px);
     display: none; align-items: center; justify-content: center; padding: 16px;
   }
   .modal-backdrop.show { display: flex; }
   .modal-3d-card {
-    width: 100%; max-width: 510px; padding: 28px; border-radius: 26px;
+    width: 100%; max-width: 440px; padding: 26px; border-radius: 24px;
     background: linear-gradient(165deg, #0f172a, #070b14);
     border: 1.5px solid rgba(245, 158, 11, 0.5);
-    box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 40px rgba(16, 185, 129, 0.25);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.9), 0 0 35px rgba(16, 185, 129, 0.22);
     text-align: center;
   }
 
@@ -1679,10 +1674,9 @@ LUXURY_3D_HTML = r"""
   <div class="bg-orb two"></div>
 </div>
 
-<!-- Reusable SVG Template for 3D Foji Commando with AK-47 Rifle -->
+<!-- 3D Foji Commando with AK-47 SVG Definition -->
 <svg style="display:none;">
   <symbol id="foji-ak47-commando" viewBox="0 0 110 72">
-    <!-- Walking Boots & Camo Legs -->
     <g class="foji-leg-left">
       <rect x="22" y="45" width="7" height="16" rx="3" fill="#065f46"/>
       <rect x="20" y="58" width="11" height="6" rx="2" fill="#1e293b"/>
@@ -1691,32 +1685,25 @@ LUXURY_3D_HTML = r"""
       <rect x="31" y="45" width="7" height="16" rx="3" fill="#047857"/>
       <rect x="29" y="58" width="11" height="6" rx="2" fill="#0f172a"/>
     </g>
-    <!-- Tactical Armored Torso & Backpack -->
     <rect x="12" y="24" width="9" height="18" rx="3" fill="#064e3b" stroke="#10b981" stroke-width="1"/>
     <rect x="20" y="22" width="19" height="25" rx="5" fill="#059669" stroke="#34d399" stroke-width="1.2"/>
     <path d="M22 26H37V38H22V26Z" fill="#064e3b"/>
-    <!-- Indian Flag Shoulder Patch -->
     <rect x="25" y="25" width="7" height="1.6" fill="#f97316"/>
     <rect x="25" y="26.6" width="7" height="1.6" fill="#ffffff"/>
     <rect x="25" y="28.2" width="7" height="1.6" fill="#10b981"/>
-    <!-- Head & 3D Camo Combat Helmet with Visor -->
     <circle cx="30" cy="14" r="7.5" fill="#fcd34d"/>
     <path d="M20 12C20 5 40 5 40 12L42 15H19L20 12Z" fill="#065f46" stroke="#10b981" stroke-width="1.2"/>
     <rect x="31" y="11" width="7" height="3.2" rx="1.5" fill="#020617"/>
-    <!-- Detailed AK-47 Assault Rifle (Wooden Stock, Receiver, Curved Banana Mag, Barrel) -->
+    <!-- AK-47 Rifle -->
     <polygon points="28,31 40,28 40,34 28,36" fill="#92400e"/>
     <rect x="39" y="26" width="22" height="6" rx="1.5" fill="#1e293b" stroke="#94a3b8" stroke-width="0.8"/>
     <rect x="44" y="31" width="4.5" height="8" rx="1" fill="#334155"/>
-    <!-- Iconic AK-47 Curved Banana Magazine -->
     <path d="M52 32 Q55 42 61 44 L64 41 Q58 39 56 32 Z" fill="#b45309" stroke="#f59e0b" stroke-width="0.8"/>
-    <!-- AK-47 Wooden Handguard, Gas Tube & Rifled Barrel with Front Sight -->
     <rect x="61" y="27" width="11" height="4.5" rx="1" fill="#b45309"/>
     <rect x="72" y="27.5" width="14" height="2.4" fill="#cbd5e1"/>
     <rect x="72" y="25.5" width="9" height="1.8" fill="#64748b"/>
     <polygon points="83,24 85,24 85,28 83,28" fill="#cbd5e1"/>
-    <!-- Soldier Arms Holding AK-47 -->
     <path d="M28 28 L43 32 L59 30" stroke="#10b981" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- Explosive AK-47 Muzzle Flash -->
     <g class="ak47-muzzle-fire">
       <polygon points="86,28 96,21 93,27 105,28 93,30 96,36" fill="#fde047"/>
       <circle cx="90" cy="28.5" r="3.5" fill="#ffffff"/>
@@ -1724,17 +1711,32 @@ LUXURY_3D_HTML = r"""
   </symbol>
 </svg>
 
+<!-- POINT #9 & #10: AUTOREELS 3D AI BRANDING + NEW 3D CINEMA CUBE LOGO -->
 <nav class="lux-navbar">
   <div class="brand-wrap">
-    <div class="brand-logo">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-        <path d="M12 2L3 7V12C3 17.5 6.8 22.6 12 24C17.2 22.6 21 17.5 21 12V7L12 2Z" stroke="#f59e0b" stroke-width="2"/>
-        <path d="M8 13L11 16L16 9" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+    <div class="brand-logo-3d">
+      <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+        <defs>
+          <linearGradient id="arGold" x1="0" y1="0" x2="36" y2="36">
+            <stop offset="0%" stop-color="#fde047"/>
+            <stop offset="100%" stop-color="#f59e0b"/>
+          </linearGradient>
+          <linearGradient id="arEmerald" x1="0" y1="0" x2="36" y2="36">
+            <stop offset="0%" stop-color="#34d399"/>
+            <stop offset="100%" stop-color="#059669"/>
+          </linearGradient>
+        </defs>
+        <!-- 3D Isometric Reel Frame -->
+        <rect x="5" y="4" width="26" height="28" rx="7" stroke="url(#arGold)" stroke-width="2.2" fill="rgba(6,78,59,0.4)"/>
+        <!-- 3D Play Prism -->
+        <polygon points="15,11 25,18 15,25" fill="url(#arEmerald)" stroke="#ffffff" stroke-width="1"/>
+        <!-- AI Spark Star -->
+        <path d="M27 5L28.2 8.2L31.5 9.5L28.2 10.8L27 14L25.8 10.8L22.5 9.5L25.8 8.2L27 5Z" fill="#fde047"/>
       </svg>
     </div>
     <div>
-      <div class="brand-title">VANGUARD 3D STUDIO</div>
-      <div class="brand-sub">Autonomous 3D Cinema & Reel Engine</div>
+      <div class="brand-title">AutoReels 3D AI</div>
+      <div class="brand-sub">Autonomous 3D Reel Creator & Publisher</div>
     </div>
   </div>
 
@@ -1756,39 +1758,38 @@ LUXURY_3D_HTML = r"""
 
 <div class="container">
 
-  <!-- ==================== PAGE 1: DASHBOARD (HOME) ==================== -->
+  <!-- ==================== PAGE 1: DASHBOARD ==================== -->
   <section id="page-dashboard" class="page-section active">
 
     <div class="countdown-hud">
       <div style="display:flex;align-items:center;gap:12px;">
-        <span style="width:12px;height:12px;border-radius:50%;background:#10b981;box-shadow:0 0 12px #10b981;"></span>
+        <span style="width:11px;height:11px;border-radius:50%;background:#10b981;box-shadow:0 0 12px #10b981;"></span>
         <div>
-          <div style="font-weight:800;font-size:0.95rem;color:#34d399;" id="cd-status-banner">AUTO-SCHEDULE RUNNING (24/7 IST)</div>
-          <div style="font-size:0.8rem;color:#cbd5e1;" id="cd-next-slot-txt">Next Auto-Upload Slot: 08:00 AM IST</div>
+          <div style="font-weight:800;font-size:0.92rem;color:#34d399;" id="cd-status-banner">AUTO-PILOT ACTIVE</div>
+          <div style="font-size:0.8rem;color:#cbd5e1;" id="cd-next-slot-txt">Next Slot: 08:00 AM IST</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-size:0.78rem;color:#94a3b8;font-weight:700;">⏳ NEXT REEL IN:</span>
+        <span style="font-size:0.76rem;color:#94a3b8;font-weight:700;">NEXT POST IN:</span>
         <div class="cd-timer-pill" id="cd-reverse-timer">00h : 00m : 00s</div>
       </div>
     </div>
 
-    <!-- HIDDEN-UNTIL-ACTIVE 3D PIPELINE WITH WALKING AK-47 FOJI -->
+    <!-- 3D PRODUCTION PIPELINE (VISIBLE ONLY WHILE RENDERING) -->
     <div id="vanguard-pipeline-box">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-family:'Space Grotesk';font-weight:700;font-size:1.1rem;color:#fde68a;">
-          🎖️ VANGUARD AUTONOMOUS 3D PRODUCTION PIPELINE
+        <span style="font-family:'Space Grotesk';font-weight:700;font-size:1.05rem;color:#fde68a;">
+          🎬 LIVE 3D RENDER PIPELINE
         </span>
-        <span id="pipe-pct" style="font-weight:800;color:#10b981;font-size:1.2rem;">15%</span>
+        <span id="pipe-pct" style="font-weight:800;color:#10b981;font-size:1.15rem;">15%</span>
       </div>
 
       <div class="pair-stage">
         <div class="step-card-3d current">
-          <div style="font-size:0.75rem;color:#f59e0b;font-weight:800;" id="pair-left-num">STEP 1</div>
-          <div style="font-size:1rem;font-weight:800;margin-top:6px;" id="pair-left-title">Selecting 'Flash' Model</div>
+          <div style="font-size:0.72rem;color:#f59e0b;font-weight:800;" id="pair-left-num">STEP 1</div>
+          <div style="font-size:0.98rem;font-weight:800;margin-top:5px;" id="pair-left-title">Opening Gemini Flash</div>
         </div>
 
-        <!-- 3D Walking Foji Commando with AK-47 advancing by Percentage -->
         <div>
           <div class="foji-ak47-track-wrap">
             <div class="ak47-bullet-beam"></div>
@@ -1799,12 +1800,12 @@ LUXURY_3D_HTML = r"""
               <div class="foji-progress-fill" id="pipe-foji-bar" style="width:15%;"></div>
             </div>
           </div>
-          <div style="text-align:center;font-size:0.78rem;color:#6ee7b7;font-weight:700;" id="pipe-subdetail">Firing 3D Render Core...</div>
+          <div style="text-align:center;font-size:0.76rem;color:#6ee7b7;font-weight:700;" id="pipe-subdetail">Initializing...</div>
         </div>
 
         <div class="step-card-3d">
-          <div style="font-size:0.75rem;color:#94a3b8;font-weight:800;" id="pair-right-num">STEP 2</div>
-          <div style="font-size:1rem;font-weight:800;margin-top:6px;color:#cbd5e1;" id="pair-right-title">Clicking '+' & Create Video</div>
+          <div style="font-size:0.72rem;color:#94a3b8;font-weight:800;" id="pair-right-num">STEP 2</div>
+          <div style="font-size:0.98rem;font-weight:800;margin-top:5px;color:#cbd5e1;" id="pair-right-title">Enabling Video Tool</div>
         </div>
       </div>
     </div>
@@ -1812,21 +1813,21 @@ LUXURY_3D_HTML = r"""
     <div class="lux-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;">
       <div>
         <span class="part-badge" id="next-ep-part">NEXT EPISODE • PART 1</span>
-        <h2 style="font-size:1.5rem;font-weight:800;margin-top:8px;" id="next-ep-title">Foji & Fojan Love Saga</h2>
-        <p style="color:#94a3b8;font-size:0.88rem;margin-top:4px;" id="next-ep-loc">📍 Snowy Kashmir Valley & Army Cantt</p>
+        <h2 style="font-size:1.45rem;font-weight:800;margin-top:8px;" id="next-ep-title">Foji & Fojan Love Saga</h2>
+        <p style="color:#94a3b8;font-size:0.86rem;margin-top:4px;" id="next-ep-loc">📍 Snowy Kashmir Valley & Army Cantt</p>
         <div id="all-tracks-pills" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;"></div>
       </div>
-      <button class="btn-3d btn-gold" onclick="triggerManualGenerate(this)" style="font-size:1rem;padding:15px 26px;">
+      <button class="btn-3d btn-gold" onclick="triggerManualGenerate(this)" style="font-size:0.96rem;padding:14px 24px;">
         ⚡ Generate Manually
       </button>
     </div>
 
     <div style="display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
       <button class="btn-3d" id="tab-btn-posted" onclick="switchHomeVault('posted', this)">
-        📱 Posted Reels (Instagram Grid) <span id="badge-posted-cnt" style="background:rgba(0,0,0,0.35);padding:2px 8px;border-radius:99px;font-size:0.75rem;">0</span>
+        📱 Posted Reels <span id="badge-posted-cnt" style="background:rgba(0,0,0,0.35);padding:2px 8px;border-radius:99px;font-size:0.75rem;">0</span>
       </button>
       <button class="btn-3d btn-glass" id="tab-btn-daily" onclick="switchHomeVault('daily', this)">
-        🎬 Daily Generated Queue & Approval <span id="badge-daily-cnt" style="background:rgba(245,158,11,0.3);padding:2px 8px;border-radius:99px;font-size:0.75rem;">0</span>
+        🎬 Daily Queue <span id="badge-daily-cnt" style="background:rgba(245,158,11,0.3);padding:2px 8px;border-radius:99px;font-size:0.75rem;">0</span>
       </button>
     </div>
 
@@ -1834,143 +1835,144 @@ LUXURY_3D_HTML = r"""
     <div id="vault-daily-view" style="display:none;"></div>
   </section>
 
-  <!-- ==================== PAGE 2: INSTA EDITS + INTERACTIVE AI BRAIN ==================== -->
+  <!-- ==================== PAGE 2: INSTA EDITS + WORKING AI DIRECTOR ==================== -->
   <section id="page-edits" class="page-section">
     <div class="lux-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
       <div>
-        <h2 style="font-size:1.4rem;font-weight:800;">📈 Instagram Edits Insights Hub</h2>
-        <p style="color:#94a3b8;font-size:0.84rem;">Live Synced with <strong id="edits-ig-handle" style="color:#fde68a;">@instagram</strong> • Auto-refreshes every 60s</p>
+        <h2 style="font-size:1.38rem;font-weight:800;">📈 Instagram Edits Insights</h2>
+        <p style="color:#94a3b8;font-size:0.84rem;">Connected: <strong id="edits-ig-handle" style="color:#fde68a;">@instagram</strong> • Auto-Sync Active</p>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn-3d btn-glass" onclick="toggleAiStrategistPanel(this)">🧠 Unscripted AI Pro Strategist</button>
+        <button class="btn-3d btn-glass" onclick="toggleAiStrategistPanel(this)">🧠 AI Director</button>
         <button class="btn-3d btn-gold" onclick="reloadEditsInsights(this)">🔄 Reload</button>
       </div>
     </div>
 
-    <!-- BUG #7 FIX: Interactive Live AI Brain Panel -->
+    <!-- POINT #4: 100% Working Live AI Brain Panel -->
     <div id="ai-advisor-box" class="lux-card" style="display:none;border-color:var(--gold);">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <strong style="color:#fde68a;">🧠 VANGUARD UNSCRIPTED AI PRO STRATEGIST (LIVE GEMINI BRAIN)</strong>
-        <button class="btn-3d btn-glass" style="padding:5px 10px;font-size:0.75rem;" onclick="document.getElementById('ai-advisor-box').style.display='none'">✖ Close</button>
+        <strong style="color:#fde68a;">🧠 LIVE AI CREATIVE DIRECTOR</strong>
+        <button class="btn-3d btn-glass" style="padding:5px 10px;font-size:0.75rem;" onclick="document.getElementById('ai-advisor-box').style.display='none'">✖</button>
       </div>
       <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
-        <input id="ai-custom-query" placeholder="Ask AI anything (e.g., Suggest next viral Foji dialogue, analyze my reach, or write a trending hook)..."
+        <input id="ai-custom-query" placeholder="Ask anything (e.g., Write next viral Foji dialogue, or suggest reel hook)..."
+               onkeydown="if(event.key==='Enter') askAiProStrategist(document.getElementById('btn-ask-ai'))"
                style="flex:1;min-width:240px;padding:11px 14px;border-radius:12px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:0.9rem;">
-        <button class="btn-3d btn-gold" onclick="askAiProStrategist(this)">⚡ Ask AI Brain</button>
+        <button class="btn-3d btn-gold" id="btn-ask-ai" onclick="askAiProStrategist(this)">⚡ Ask AI</button>
       </div>
       <div id="ai-advisor-output" style="color:#e2e8f0;font-size:0.9rem;line-height:1.6;white-space:pre-line;background:rgba(0,0,0,0.45);padding:14px;border-radius:12px;">
-        Click 'Ask AI Brain' above for live unscripted analysis of your account and next episode strategy!
+        Type any prompt above or click 'Ask AI' for instant strategy!
       </div>
     </div>
 
     <div class="kpi-grid">
-      <div class="kpi-btn" onclick="openMetricGraphPage('views', 'Total Reach & Views', this)">
-        <div style="color:#94a3b8;font-size:0.78rem;">👁️ TOTAL REACH (CLICK FOR GRAPH)</div>
+      <div class="kpi-btn" onclick="openMetricGraphPage('views', 'Total Reach', this)">
+        <div style="color:#94a3b8;font-size:0.76rem;">👁️ TOTAL REACH</div>
         <div style="font-size:1.75rem;font-weight:800;color:#34d399;margin-top:6px;" id="ins-reach">0</div>
       </div>
-      <div class="kpi-btn" onclick="openMetricGraphPage('likes', 'Total Likes Performance', this)">
-        <div style="color:#94a3b8;font-size:0.78rem;">❤️ TOTAL LIKES (CLICK FOR GRAPH)</div>
+      <div class="kpi-btn" onclick="openMetricGraphPage('likes', 'Total Likes', this)">
+        <div style="color:#94a3b8;font-size:0.76rem;">❤️ TOTAL LIKES</div>
         <div style="font-size:1.75rem;font-weight:800;color:#f43f5e;margin-top:6px;" id="ins-likes">0</div>
       </div>
-      <div class="kpi-btn" onclick="openMetricGraphPage('comments_count', 'Total Comments Analytics', this)">
-        <div style="color:#94a3b8;font-size:0.78rem;">💬 COMMENTS (CLICK FOR GRAPH)</div>
+      <div class="kpi-btn" onclick="openMetricGraphPage('comments_count', 'Comments', this)">
+        <div style="color:#94a3b8;font-size:0.76rem;">💬 COMMENTS</div>
         <div style="font-size:1.75rem;font-weight:800;color:#38bdf8;margin-top:6px;" id="ins-comments">0</div>
       </div>
-      <div class="kpi-btn" onclick="openMetricGraphPage('shares', 'Total Shares & Virality', this)">
-        <div style="color:#94a3b8;font-size:0.78rem;">🚀 SHARES (CLICK FOR GRAPH)</div>
+      <div class="kpi-btn" onclick="openMetricGraphPage('shares', 'Shares', this)">
+        <div style="color:#94a3b8;font-size:0.76rem;">🚀 SHARES</div>
         <div style="font-size:1.75rem;font-weight:800;color:#fbbf24;margin-top:6px;" id="ins-shares">0</div>
       </div>
     </div>
 
     <div id="edits-graph-subpage" class="lux-card" style="display:none;border-color:var(--gold);">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h3 id="graph-title" style="font-size:1.2rem;color:#fde68a;">📊 Live Metric Graph</h3>
+        <h3 id="graph-title" style="font-size:1.15rem;color:#fde68a;">📊 Metric Breakdown</h3>
         <button class="btn-3d btn-glass" onclick="document.getElementById('edits-graph-subpage').style.display='none'">⬅️ Back</button>
       </div>
-      <div id="graph-bars-container" style="display:flex;align-items:flex-end;gap:14px;height:190px;padding:18px;background:rgba(0,0,0,0.45);border-radius:16px;margin-bottom:16px;overflow-x:auto;"></div>
+      <div id="graph-bars-container" style="display:flex;align-items:flex-end;gap:14px;height:185px;padding:18px;background:rgba(0,0,0,0.45);border-radius:16px;margin-bottom:16px;overflow-x:auto;"></div>
       <div id="graph-reels-list"></div>
     </div>
 
     <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
       <div class="lux-card" style="margin:0;">
-        <div style="color:#94a3b8;font-size:0.8rem;">👥 LIVE FOLLOWERS</div>
+        <div style="color:#94a3b8;font-size:0.78rem;">👥 FOLLOWERS</div>
         <div style="font-size:1.6rem;font-weight:800;margin-top:4px;" id="ins-followers">0</div>
       </div>
       <div class="lux-card" style="margin:0;">
-        <div style="color:#94a3b8;font-size:0.8rem;">⚡ AVG. PERFORMANCE</div>
+        <div style="color:#94a3b8;font-size:0.78rem;">⚡ AVG. PERFORMANCE</div>
         <div style="font-size:1.6rem;font-weight:800;color:#10b981;margin-top:4px;" id="ins-avg">Live Connected</div>
       </div>
     </div>
 
-    <h3 style="margin:22px 0 14px;font-size:1.18rem;">🎬 Live Reels Performance & AI Smart Comment Replies</h3>
+    <h3 style="margin:22px 0 14px;font-size:1.15rem;">🎬 Published Reels & Smart Replies</h3>
     <div id="edits-live-reels-list"></div>
   </section>
 
-  <!-- ==================== PAGE 3: INSTAGRAM-STYLE 3D NOTIFICATION FEED (BUG #6) ==================== -->
+  <!-- ==================== PAGE 3: ACTIVITY NOTIFICATIONS ==================== -->
   <section id="page-notifications" class="page-section">
     <div class="lux-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
       <div>
-        <h2 style="font-size:1.4rem;font-weight:800;">🔔 Live Activity & Notifications</h2>
-        <p style="color:#94a3b8;font-size:0.85rem;">Every micro & macro event synced permanently to Cloud in IST (Newest on Top)</p>
+        <h2 style="font-size:1.35rem;font-weight:800;">🔔 Activity</h2>
+        <p style="color:#94a3b8;font-size:0.84rem;">Real-time log of all creations, schedules, and posts</p>
       </div>
-      <button class="btn-3d btn-glass" onclick="clearAllNotifications(this)">🧹 Clear History</button>
+      <button class="btn-3d btn-glass" onclick="clearAllNotifications(this)">Clear</button>
     </div>
     <div id="notif-feed-list"></div>
   </section>
 
-  <!-- ==================== PAGE 4: SCHEDULE (BUG #5 REFRESH-PROOF LOCK) ==================== -->
+  <!-- ==================== PAGE 4: SCHEDULE ==================== -->
   <section id="page-schedule" class="page-section">
     <div class="lux-card">
-      <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:16px;">⏰ Daily Autonomous Posting Schedule (IST)</h2>
+      <h2 style="font-size:1.35rem;font-weight:800;margin-bottom:16px;">⏰ Daily Auto-Post Schedule (IST)</h2>
       <div class="kpi-grid">
         <div style="background:rgba(0,0,0,0.38);padding:18px;border-radius:16px;border:1px solid var(--border);">
-          <label style="color:#fde68a;font-weight:700;font-size:0.84rem;">🌅 1st POST SLOT (MORNING)</label>
+          <label style="color:#fde68a;font-weight:700;font-size:0.82rem;">🌅 SLOT 1 (MORNING)</label>
           <input type="time" id="slot-1" value="08:00" oninput="onScheduleTimeInputChanged()"
                  style="width:100%;margin-top:8px;padding:12px;border-radius:10px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:1.1rem;font-weight:700;">
         </div>
         <div style="background:rgba(0,0,0,0.38);padding:18px;border-radius:16px;border:1px solid var(--border);">
-          <label style="color:#fde68a;font-weight:700;font-size:0.84rem;">☀️ 2nd POST SLOT (AFTERNOON)</label>
+          <label style="color:#fde68a;font-weight:700;font-size:0.82rem;">☀️ SLOT 2 (AFTERNOON)</label>
           <input type="time" id="slot-2" value="14:00" oninput="onScheduleTimeInputChanged()"
                  style="width:100%;margin-top:8px;padding:12px;border-radius:10px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:1.1rem;font-weight:700;">
         </div>
         <div style="background:rgba(0,0,0,0.38);padding:18px;border-radius:16px;border:1px solid var(--border);">
-          <label style="color:#fde68a;font-weight:700;font-size:0.84rem;">🌙 3rd POST SLOT (NIGHT)</label>
+          <label style="color:#fde68a;font-weight:700;font-size:0.82rem;">🌙 SLOT 3 (NIGHT)</label>
           <input type="time" id="slot-3" value="20:00" oninput="onScheduleTimeInputChanged()"
                  style="width:100%;margin-top:8px;padding:12px;border-radius:10px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:1.1rem;font-weight:700;">
         </div>
       </div>
-      <button class="btn-3d btn-gold" id="btn-save-schedule" disabled onclick="saveScheduleConfig(this)" style="width:100%;font-size:1.02rem;padding:15px;">
-        ✅ Schedule Locked (Edit Time to Change)
+      <button class="btn-3d btn-gold" id="btn-save-schedule" disabled onclick="saveScheduleConfig(this)" style="width:100%;font-size:1rem;padding:14px;">
+        Schedule Saved
       </button>
     </div>
 
     <div class="lux-card">
-      <h3 style="font-size:1.18rem;margin-bottom:14px;">⏳ Pending Reels Scheduled for Auto-Post</h3>
+      <h3 style="font-size:1.12rem;margin-bottom:14px;">⏳ Scheduled Queue</h3>
       <div id="scheduled-pending-list"></div>
     </div>
   </section>
 
-  <!-- ==================== PAGE 5: PROFILE (100% REAL INSTAGRAM PROFILE) ==================== -->
+  <!-- ==================== PAGE 5: PROFILE ==================== -->
   <section id="page-profile" class="page-section">
     <div class="lux-card" style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
-      <div style="width:112px;height:112px;border-radius:50%;padding:4px;background:linear-gradient(45deg,#f59e0b,#ec4899,#10b981);">
+      <div style="width:108px;height:108px;border-radius:50%;padding:4px;background:linear-gradient(45deg,#f59e0b,#ec4899,#10b981);">
         <img id="prof-avatar-img" src="/api/ig_avatar" alt="Profile DP"
              style="width:100%;height:100%;border-radius:50%;object-fit:cover;background:#0f172a;"
-             onerror="this.src='https://ui-avatars.com/api/?name=FOJI+3D&background=064e3b&color=fde68a'">
+             onerror="this.src='https://ui-avatars.com/api/?name=AR&background=064e3b&color=fde68a'">
       </div>
       <div style="flex:1;">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-          <h2 style="font-size:1.5rem;font-weight:800;" id="prof-username">@loading...</h2>
-          <span style="background:#10b981;color:#000;font-weight:800;font-size:0.72rem;padding:4px 10px;border-radius:99px;">REAL IG LIVE</span>
+          <h2 style="font-size:1.45rem;font-weight:800;" id="prof-username">@loading...</h2>
+          <span style="background:#10b981;color:#000;font-weight:800;font-size:0.7rem;padding:4px 10px;border-radius:99px;">CONNECTED</span>
           <button class="btn-3d btn-glass" style="padding:6px 14px;font-size:0.78rem;" onclick="reloadEditsInsights(this)">🔄 Reload</button>
         </div>
-        <div style="display:flex;gap:28px;margin:14px 0;font-size:1rem;">
+        <div style="display:flex;gap:28px;margin:14px 0;font-size:0.98rem;">
           <div><strong id="prof-posts">0</strong> <span style="color:#94a3b8;">Posts</span></div>
           <div><strong id="prof-followers">0</strong> <span style="color:#94a3b8;">Followers</span></div>
           <div><strong id="prof-following">0</strong> <span style="color:#94a3b8;">Following</span></div>
         </div>
-        <div style="font-weight:700;color:#fde68a;font-size:0.95rem;margin-bottom:4px;" id="prof-fullname"></div>
-        <p style="color:#e2e8f0;font-size:0.9rem;white-space:pre-line;line-height:1.45;" id="prof-bio"></p>
+        <div style="font-weight:700;color:#fde68a;font-size:0.94rem;margin-bottom:4px;" id="prof-fullname"></div>
+        <p style="color:#e2e8f0;font-size:0.88rem;white-space:pre-line;line-height:1.45;" id="prof-bio"></p>
       </div>
     </div>
     <div id="profile-live-grid" class="ig-grid"></div>
@@ -1978,10 +1980,10 @@ LUXURY_3D_HTML = r"""
 
 </div>
 
-<!-- ==================== 3D POPUP MODAL WITH WALKING AK-47 FOJI LOADER (BUG #8) ==================== -->
+<!-- ==================== CRISP REAL-APP 3D POPUP MODAL (POINT #6) ==================== -->
 <div class="modal-backdrop" id="lux-modal">
   <div class="modal-3d-card">
-    <div id="modal-foji-loader" style="display:none;margin-bottom:18px;">
+    <div id="modal-foji-loader" style="display:none;margin-bottom:16px;">
       <div class="foji-ak47-track-wrap">
         <div class="ak47-bullet-beam"></div>
         <svg class="foji-walker-avatar" id="modal-foji-walker" style="left:8%;">
@@ -1991,11 +1993,11 @@ LUXURY_3D_HTML = r"""
           <div class="foji-progress-fill" id="modal-foji-bar" style="width:12%;"></div>
         </div>
       </div>
-      <div id="modal-pct-num" style="font-family:'Space Grotesk';font-weight:800;font-size:1.3rem;color:#fde68a;margin-top:6px;">0%</div>
+      <div id="modal-pct-num" style="font-family:'Space Grotesk';font-weight:800;font-size:1.25rem;color:#fde68a;margin-top:6px;">0%</div>
     </div>
-    <h3 id="modal-title" style="font-size:1.35rem;font-weight:800;color:#fde68a;margin-bottom:10px;"></h3>
-    <p id="modal-body" style="color:#cbd5e1;font-size:0.94rem;line-height:1.5;margin-bottom:22px;white-space:pre-line;"></p>
-    <div id="modal-actions" style="display:flex;justify-content:center;gap:14px;"></div>
+    <h3 id="modal-title" style="font-size:1.28rem;font-weight:800;color:#fde68a;margin-bottom:8px;"></h3>
+    <p id="modal-body" style="color:#cbd5e1;font-size:0.92rem;line-height:1.45;margin-bottom:20px;white-space:pre-line;"></p>
+    <div id="modal-actions" style="display:flex;justify-content:center;gap:12px;"></div>
   </div>
 </div>
 
@@ -2007,12 +2009,12 @@ LUXURY_3D_HTML = r"""
   let scheduleInputsDirty = false;
 
   const STEP_META = {
-    1: { title: "1. Selecting 'Flash' Model" },
-    2: { title: "2. Clicking '+' & Create Video" },
-    3: { title: "3. Locking 9:16 Portrait Ratio" },
-    4: { title: "4. Uploading Foji & Fojan Photos" },
-    5: { title: "5. Sending Script & Rendering" },
-    6: { title: "6. Downloading & Verifying MP4" }
+    1: { title: "1. Opening Studio" },
+    2: { title: "2. Video Mode" },
+    3: { title: "3. 9:16 Ratio" },
+    4: { title: "4. Characters" },
+    5: { title: "5. Rendering 3D" },
+    6: { title: "6. Saving MP4" }
   };
 
   function pulseBtn(btn) {
@@ -2021,7 +2023,6 @@ LUXURY_3D_HTML = r"""
     setTimeout(() => btn.classList.remove('clicked-pulse'), 180);
   }
 
-  /* Helper to move the 3D Foji with AK-47 across any loading bar according to percentage! */
   function setFojiWalkerProgress(walkerId, barId, pctVal) {
     const p = Math.max(6, Math.min(96, parseInt(pctVal) || 12));
     const walker = document.getElementById(walkerId);
@@ -2030,7 +2031,6 @@ LUXURY_3D_HTML = r"""
     if (bar) bar.style.width = `${p}%`;
   }
 
-  /* 1-Second Live IST Clock & Reverse Countdown */
   setInterval(() => {
     const now = new Date();
     const istTime = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
@@ -2087,14 +2087,15 @@ LUXURY_3D_HTML = r"""
     document.getElementById('lux-modal').classList.remove('show');
   }
 
+  /* POINT #6: Crisp Real-App Popups for Publish, Schedule, Delete & Generate */
   function handleApproveAndPost(videoId, btn) {
     pulseBtn(btn);
     show3DModal({
-      title: "📤 UPLOADING REEL TO INSTAGRAM...",
-      body: "Starting live upload pipeline...",
+      title: "Publishing...",
+      body: "Uploading to Instagram",
       showLoader: true,
-      pctNum: 10,
-      pctText: "10%",
+      pctNum: 12,
+      pctText: "12%",
       buttons: []
     });
 
@@ -2107,7 +2108,7 @@ LUXURY_3D_HTML = r"""
         try {
           const r = await fetch('/api/upload_status/' + videoId);
           const st = await r.json();
-          const curPct = st.pct || 12;
+          const curPct = st.pct || 15;
           setFojiWalkerProgress('modal-foji-walker', 'modal-foji-bar', curPct);
           document.getElementById('modal-pct-num').innerText = curPct + "%";
           document.getElementById('modal-body').innerText = st.stage || "Uploading...";
@@ -2116,8 +2117,8 @@ LUXURY_3D_HTML = r"""
             clearInterval(pollIv);
             fetchAppState();
             show3DModal({
-              title: "✅ POSTED DONE!",
-              body: "Reel has been successfully uploaded and is now LIVE on your Instagram!",
+              title: "✅ Published",
+              body: "Reel is now live on Instagram.",
               showLoader: false,
               buttons: [{ label: "OK", cls: "btn-gold", onClick: () => close3DModal() }]
             });
@@ -2125,10 +2126,10 @@ LUXURY_3D_HTML = r"""
             clearInterval(pollIv);
             fetchAppState();
             show3DModal({
-              title: "❌ INSTAGRAM UPLOAD FAILED",
-              body: st.error || "Upload could not be completed.",
+              title: "Upload Failed",
+              body: st.error || "Could not publish reel.",
               showLoader: false,
-              buttons: [{ label: "Close", cls: "btn-danger", onClick: () => close3DModal() }]
+              buttons: [{ label: "OK", cls: "btn-danger", onClick: () => close3DModal() }]
             });
           }
         } catch (e) {}
@@ -2145,20 +2146,19 @@ LUXURY_3D_HTML = r"""
     }).then(r => r.json()).then(res => {
       fetchAppState();
       show3DModal({
-        title: "⏰ SCHEDULED DONE!",
-        body: `Reel locked for auto-upload at ${res.slot_time || 'Scheduled Slot'} IST.\nApproval buttons are now locked.`,
+        title: "⏰ Scheduled",
+        body: `Auto-Post Time: ${res.slot_time || 'Next Slot'} IST`,
         showLoader: false,
         buttons: [{ label: "OK", cls: "btn-gold", onClick: () => close3DModal() }]
       });
     });
   }
 
-  /* BUG #3 FIX: Permanent Delete with Cloud Sync */
   function handleDeleteReel(videoId, btn) {
     pulseBtn(btn);
     show3DModal({
-      title: "⚠️ CONFIRM PERMANENT DELETE",
-      body: "Are you sure to delete this post permanently from your queue and cloud history?",
+      title: "Delete Reel?",
+      body: "This will permanently remove the reel.",
       showLoader: false,
       buttons: [
         {
@@ -2167,6 +2167,14 @@ LUXURY_3D_HTML = r"""
           onClick: () => {
             const cardEl = document.getElementById('daily-reel-card-' + videoId);
             if (cardEl) cardEl.remove();
+            show3DModal({
+              title: "Deleting...",
+              body: "Updating cloud history...",
+              showLoader: true,
+              pctNum: 65,
+              pctText: "65%",
+              buttons: []
+            });
             fetch('/api/reel_action', {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
@@ -2174,8 +2182,9 @@ LUXURY_3D_HTML = r"""
             }).then(() => {
               fetchAppState();
               show3DModal({
-                title: "🗑️ POST DELETED",
-                body: "Permanently removed from dashboard and GitHub cloud history.",
+                title: "🗑️ Post Deleted",
+                body: "Removed permanently.",
+                showLoader: false,
                 buttons: [{ label: "OK", cls: "btn-gold", onClick: () => close3DModal() }]
               });
             });
@@ -2194,8 +2203,8 @@ LUXURY_3D_HTML = r"""
       body: JSON.stringify({ action: 'regenerate', video_id: videoId })
     }).then(() => {
       show3DModal({
-        title: "🔄 REEL REGENERATION STARTED..",
-        body: "Live Gemini AI Brain is inventing fresh unscripted dialogues & rendering your 3D video...",
+        title: "🔄 Regenerating...",
+        body: "Creating fresh script & 3D video.",
         showLoader: true,
         pctNum: 18,
         pctText: "18%",
@@ -2209,8 +2218,8 @@ LUXURY_3D_HTML = r"""
     pulseBtn(btn);
     fetch('/api/generate_manual', { method: 'POST' }).then(() => {
       show3DModal({
-        title: "🚀 REEL GENERATE START..",
-        body: "Hidden Chrome engine initialized! Watch the 3D AK-47 Commando Pipeline on your dashboard.",
+        title: "🚀 Starting Render...",
+        body: "3D Pipeline is now running.",
         showLoader: true,
         pctNum: 15,
         pctText: "15%",
@@ -2220,7 +2229,6 @@ LUXURY_3D_HTML = r"""
     });
   }
 
-  /* BUG #5 FIX: Schedule Button stays disabled across page refreshes until user edits a time input! */
   function onScheduleTimeInputChanged() {
     const t1 = document.getElementById('slot-1').value;
     const t2 = document.getElementById('slot-2').value;
@@ -2229,7 +2237,7 @@ LUXURY_3D_HTML = r"""
     const changed = (t1 !== savedScheduleTimes[0] || t2 !== savedScheduleTimes[1] || t3 !== savedScheduleTimes[2]);
     scheduleInputsDirty = changed;
     btn.disabled = !changed;
-    btn.innerText = changed ? "Schedule" : "✅ Schedule Locked (Edit Time to Change)";
+    btn.innerText = changed ? "Schedule" : "Schedule Saved";
   }
 
   function saveScheduleConfig(btn) {
@@ -2244,14 +2252,13 @@ LUXURY_3D_HTML = r"""
     }).then(() => {
       savedScheduleTimes = [t1, t2, t3];
       scheduleInputsDirty = false;
-      localStorage.setItem("vanguard_locked_slots", JSON.stringify(savedScheduleTimes));
       const sBtn = document.getElementById('btn-save-schedule');
       sBtn.disabled = true;
-      sBtn.innerText = "✅ Schedule Locked (Edit Time to Change)";
+      sBtn.innerText = "Schedule Saved";
       fetchAppState();
       show3DModal({
-        title: "✅ AUTO SCHEDULE DONE",
-        body: `Daily posting slots locked at ${t1}, ${t2}, and ${t3} IST.`,
+        title: "✅ Schedule Saved",
+        body: `${t1} • ${t2} • ${t3} IST`,
         buttons: [{ label: "OK", cls: "btn-gold", onClick: () => close3DModal() }]
       });
     });
@@ -2259,27 +2266,27 @@ LUXURY_3D_HTML = r"""
 
   function reloadEditsInsights(btn) {
     pulseBtn(btn);
-    let animPct = 20;
+    let animPct = 25;
     show3DModal({
-      title: "🎖️ SYNCING REAL INSTAGRAM DATA...",
-      body: "3D Foji Commando fetching your live Profile, Bio, DP, Views, Likes & Reels...",
+      title: "Syncing Instagram...",
+      body: "Updating profile & reels",
       showLoader: true,
-      pctNum: 20,
-      pctText: "20%",
+      pctNum: 25,
+      pctText: "25%",
       buttons: []
     });
     const iv = setInterval(() => {
-      animPct = Math.min(92, animPct + 18);
+      animPct = Math.min(92, animPct + 20);
       setFojiWalkerProgress('modal-foji-walker', 'modal-foji-bar', animPct);
       document.getElementById('modal-pct-num').innerText = animPct + "%";
-    }, 180);
+    }, 160);
 
     fetchAppState(true).then(() => {
       clearInterval(iv);
       setFojiWalkerProgress('modal-foji-walker', 'modal-foji-bar', 100);
       document.getElementById('modal-pct-num').innerText = "100%";
       document.getElementById('prof-avatar-img').src = '/api/ig_avatar?t=' + Date.now();
-      setTimeout(() => close3DModal(), 350);
+      setTimeout(() => close3DModal(), 300);
     });
   }
 
@@ -2333,14 +2340,15 @@ LUXURY_3D_HTML = r"""
     pulseBtn(btn);
     const out = document.getElementById('ai-advisor-output');
     const q = document.getElementById('ai-custom-query').value.trim();
-    out.innerText = "🧠 Live Unscripted AI Brain is thinking & analyzing your real Instagram data...";
+    out.innerText = "🧠 Thinking...";
     fetch('/api/ai_pro_advisor', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ query: q })
     }).then(r => r.json()).then(res => {
-      out.innerText = res.advice || "Analysis complete.";
-      fetchAppState();
+      out.innerText = res.advice || "Done.";
+    }).catch(() => {
+      out.innerText = "Could not reach AI right now. Try again.";
     });
   }
 
@@ -2361,7 +2369,7 @@ LUXURY_3D_HTML = r"""
       if (appState.countdown) {
         remainingCountdownSec = appState.countdown.remaining_seconds || 0;
         document.getElementById('cd-status-banner').innerText = appState.countdown.status_banner;
-        document.getElementById('cd-next-slot-txt').innerText = `Next Auto-Upload Slot: ${appState.countdown.next_slot_label} • Queued Reels: ${appState.countdown.queued_count}`;
+        document.getElementById('cd-next-slot-txt').innerText = `Next Slot: ${appState.countdown.next_slot_label} • Queued: ${appState.countdown.queued_count}`;
       }
 
       const ne = appState.next_episode;
@@ -2379,7 +2387,7 @@ LUXURY_3D_HTML = r"""
       document.getElementById('badge-posted-cnt').innerText = postedList.length;
       document.getElementById('badge-daily-cnt').innerText = dailyList.length;
 
-      // 1. Render Posted Reels Grid
+      // 1. Render Posted Reels Grid (All 7 Instagram Reels)
       const postedHtml = postedList.map(item => `
         <div class="ig-tile" onclick="if('${item.permalink || ''}') window.open('${item.permalink}', '_blank')">
           ${item.video_url
@@ -2391,7 +2399,7 @@ LUXURY_3D_HTML = r"""
             <span>❤️ ${(item.likes || 0).toLocaleString()}</span>
           </div>
         </div>
-      `).join('') || `<div class="lux-card" style="grid-column:1/-1;text-align:center;color:#94a3b8;">Click 'Reload' on Insta Edits or Profile to sync your live Instagram Reels!</div>`;
+      `).join('') || `<div class="lux-card" style="grid-column:1/-1;text-align:center;color:#94a3b8;">No reels synced yet. Click 'Reload' on Profile or Insta Edits!</div>`;
       document.getElementById('vault-posted-view').innerHTML = postedHtml;
       document.getElementById('profile-live-grid').innerHTML = postedHtml;
 
@@ -2405,14 +2413,14 @@ LUXURY_3D_HTML = r"""
           <div style="display:flex;flex-direction:column;justify-content:space-between;">
             <div>
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <span class="part-badge">${item.emotion_name || '3D Episode'}</span>
-                <span style="font-size:0.78rem;color:#94a3b8;">🕒 Created: ${item.created_at || ''}</span>
+                <span class="part-badge">${item.emotion_name || 'Episode'}</span>
+                <span style="font-size:0.78rem;color:#94a3b8;">🕒 ${item.created_at || ''}</span>
                 ${isScheduled
-                  ? `<span style="background:rgba(16,185,129,0.2);border:1px solid #10b981;color:#6ee7b7;padding:4px 12px;border-radius:99px;font-weight:800;font-size:0.78rem;">
-                       ⏰ SCHEDULED AT ${item.scheduled_label || item.scheduled_slot} IST
+                  ? `<span style="background:rgba(16,185,129,0.2);border:1px solid #10b981;color:#6ee7b7;padding:4px 12px;border-radius:99px;font-weight:800;font-size:0.76rem;">
+                       ⏰ Scheduled • ${item.scheduled_label || item.scheduled_slot}
                      </span>`
-                  : `<span style="background:rgba(245,158,11,0.2);color:#fde68a;padding:4px 12px;border-radius:99px;font-weight:800;font-size:0.78rem;">
-                       🟡 READY FOR APPROVAL
+                  : `<span style="background:rgba(245,158,11,0.2);color:#fde68a;padding:4px 12px;border-radius:99px;font-weight:800;font-size:0.76rem;">
+                       Ready
                      </span>`
                 }
               </div>
@@ -2430,9 +2438,9 @@ LUXURY_3D_HTML = r"""
             </div>
           </div>
         </div>`;
-      }).join('') || `<div class="lux-card" style="color:#94a3b8;text-align:center;">No unposted reels in Daily Queue right now. Click 'Generate Manually' or wait for 02:00 AM IST Factory!</div>`;
+      }).join('') || `<div class="lux-card" style="color:#94a3b8;text-align:center;">Queue is empty.</div>`;
 
-      // 3. Render Schedule Inputs (Only if user isn't currently editing them — Bug #5 Fix!)
+      // 3. Render Schedule Inputs
       if (!scheduleInputsDirty && appState.schedule_config && appState.schedule_config.times) {
         savedScheduleTimes = appState.schedule_config.times;
         document.getElementById('slot-1').value = savedScheduleTimes[0] || "08:00";
@@ -2440,22 +2448,22 @@ LUXURY_3D_HTML = r"""
         document.getElementById('slot-3').value = savedScheduleTimes[2] || "20:00";
         const sBtn = document.getElementById('btn-save-schedule');
         sBtn.disabled = true;
-        sBtn.innerText = "✅ Schedule Locked (Edit Time to Change)";
+        sBtn.innerText = "Schedule Saved";
       }
 
       document.getElementById('scheduled-pending-list').innerHTML = (appState.scheduled_reels || []).map(item => `
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(16,185,129,0.35);border-radius:16px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:15px;background:rgba(255,255,255,0.05);border:1px solid rgba(16,185,129,0.35);border-radius:16px;margin-bottom:10px;">
           <div>
-            <strong style="font-size:1rem;color:#fde68a;">🎬 ${item.emotion_name}</strong>
-            <div style="font-size:0.82rem;color:#cbd5e1;margin-top:4px;">
-              🛠️ Created on: <strong>${item.created_at || 'Today'}</strong> • ⏰ Auto-Posting Slot: <strong style="color:#34d399;">${item.scheduled_label || item.scheduled_slot} IST</strong>
+            <strong style="font-size:0.98rem;color:#fde68a;">🎬 ${item.emotion_name}</strong>
+            <div style="font-size:0.8rem;color:#cbd5e1;margin-top:4px;">
+              Created: ${item.created_at || 'Today'} • Post Time: <strong style="color:#34d399;">${item.scheduled_label || item.scheduled_slot} IST</strong>
             </div>
           </div>
           <button class="btn-3d btn-danger" style="padding:8px 14px;font-size:0.8rem;" onclick="handleDeleteReel('${item.video_id}', this)">🗑️ Delete</button>
         </div>
-      `).join('') || `<p style="color:#94a3b8;">No reels currently waiting in scheduled queue.</p>`;
+      `).join('') || `<p style="color:#94a3b8;">No scheduled posts pending.</p>`;
 
-      // 4. Render Instagram-Style Activity Notifications Feed (Bug #6)
+      // 4. Render Activity Feed
       const notifs = appState.notifications || [];
       document.getElementById('nav-notif-cnt').innerText = notifs.length;
       const iconMap = { generated: "🎬", posted: "🚀", scheduled: "⏰", deleted: "🗑️", slot_missed: "⚠️", error: "❌" };
@@ -2464,18 +2472,18 @@ LUXURY_3D_HTML = r"""
           <div style="display:flex;align-items:center;gap:14px;">
             <div class="notif-icon">${iconMap[n.type] || "🔔"}</div>
             <div>
-              <strong style="font-size:0.96rem;color:#f8fafc;">${n.title}</strong>
-              <p style="font-size:0.85rem;color:#cbd5e1;margin-top:3px;">${n.message}</p>
+              <strong style="font-size:0.94rem;color:#f8fafc;">${n.title}</strong>
+              <p style="font-size:0.84rem;color:#cbd5e1;margin-top:2px;">${n.message}</p>
             </div>
           </div>
-          <div style="text-align:right;min-width:125px;">
-            <div style="font-size:0.8rem;font-weight:800;color:#fde68a;">${n.time_str || ''}</div>
-            <div style="font-size:0.72rem;color:#94a3b8;">${n.date_str || ''}</div>
+          <div style="text-align:right;min-width:110px;">
+            <div style="font-size:0.78rem;font-weight:800;color:#fde68a;">${n.time_str || ''}</div>
+            <div style="font-size:0.7rem;color:#94a3b8;">${n.date_str || ''}</div>
           </div>
         </div>
-      `).join('') || `<div class="lux-card" style="text-align:center;color:#94a3b8;">No activity notifications yet.</div>`;
+      `).join('') || `<div class="lux-card" style="text-align:center;color:#94a3b8;">No activity yet.</div>`;
 
-      // 5. Render Real Instagram Profile & Edits Insights (Bug #2)
+      // 5. Render Instagram Insights & Profile
       const ins = appState.insights;
       document.getElementById('edits-ig-handle').innerText = '@' + (ins.username || 'instagram');
       document.getElementById('ins-reach').innerText = (ins.total_reach || 0).toLocaleString();
@@ -2483,7 +2491,7 @@ LUXURY_3D_HTML = r"""
       document.getElementById('ins-comments').innerText = (ins.total_comments || 0).toLocaleString();
       document.getElementById('ins-shares').innerText = (ins.total_shares || 0).toLocaleString();
       document.getElementById('ins-followers').innerText = (ins.followers || 0).toLocaleString();
-      document.getElementById('ins-avg').innerText = ins.avg_performance || 'Live Connected';
+      document.getElementById('ins-avg').innerText = ins.avg_performance || 'Connected';
 
       document.getElementById('prof-username').innerText = '@' + (ins.username || 'instagram');
       document.getElementById('prof-posts').innerText = (ins.posts_count || 0).toLocaleString();
@@ -2503,39 +2511,38 @@ LUXURY_3D_HTML = r"""
               <strong>🎬 ${item.emotion_name}</strong>
               <span style="color:#94a3b8;font-size:0.82rem;">📅 ${item.posted_at || ''}</span>
             </div>
-            <div style="display:flex;gap:18px;margin:12px 0;font-weight:700;font-size:0.9rem;flex-wrap:wrap;">
+            <div style="display:flex;gap:18px;margin:12px 0;font-weight:700;font-size:0.88rem;flex-wrap:wrap;">
               <span style="color:#34d399;">👁️ ${(item.views || 0).toLocaleString()} Views</span>
               <span style="color:#f43f5e;">❤️ ${(item.likes || 0).toLocaleString()} Likes</span>
               <span style="color:#38bdf8;">💬 ${(item.comments_count || 0).toLocaleString()} Comments</span>
               <span style="color:#fbbf24;">🚀 ${(item.shares || 0).toLocaleString()} Shares</span>
             </div>
-            <button class="btn-3d btn-glass" style="padding:7px 14px;font-size:0.8rem;margin-bottom:10px;"
+            <button class="btn-3d btn-glass" style="padding:7px 14px;font-size:0.78rem;margin-bottom:10px;"
               onclick="const c=document.getElementById('cap-${item.video_id}');c.style.display=c.style.display==='none'?'block':'none';">
-              📝 View / Hide Caption
+              Caption
             </button>
             <div id="cap-${item.video_id}" style="display:none;background:rgba(0,0,0,0.45);padding:12px;border-radius:10px;font-size:0.84rem;margin-bottom:12px;white-space:pre-line;">${item.caption || ''}</div>
 
             <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;">
-              <div style="font-size:0.8rem;color:#fde68a;font-weight:700;margin-bottom:8px;">💬 Live Comments & Unscripted AI Smart Reply:</div>
+              <div style="font-size:0.78rem;color:#fde68a;font-weight:700;margin-bottom:8px;">💬 Comments:</div>
               ${(item.comments_list || []).map((c, idx) => `
                 <div style="background:rgba(0,0,0,0.35);padding:10px;border-radius:10px;margin-bottom:8px;font-size:0.84rem;">
-                  <div><strong>@${c.user}:</strong> ${c.text}</div>${c.reply ? `<div style="color:#34d399;margin-top:4px;">↪️ <strong>Replied:</strong> ${c.reply}</div>` : `
+                  <div><strong>@${c.user}:</strong> ${c.text}</div>${c.reply ? `<div style="color:#34d399;margin-top:4px;">↪️ ${c.reply}</div>` : `
                     <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
-                      <input id="rep-${item.video_id}-${idx}" placeholder="Write manual reply..." style="flex:1;padding:6px 10px;border-radius:8px;background:#0f172a;color:#fff;border:1px solid #334155;">
+                      <input id="rep-${item.video_id}-${idx}" placeholder="Reply..." style="flex:1;padding:6px 10px;border-radius:8px;background:#0f172a;color:#fff;border:1px solid #334155;">
                       <button class="btn-3d" style="padding:6px 12px;font-size:0.76rem;" onclick="sendCommentReply('${item.video_id}', ${idx}, 'rep-${item.video_id}-${idx}', false, this)">Send</button>
-                      <button class="btn-3d btn-gold" style="padding:6px 12px;font-size:0.76rem;" onclick="sendCommentReply('${item.video_id}', ${idx}, null, true, this)">🧠 AI Auto-Reply</button>
+                      <button class="btn-3d btn-gold" style="padding:6px 12px;font-size:0.76rem;" onclick="sendCommentReply('${item.video_id}', ${idx}, null, true, this)">🧠 AI Reply</button>
                     </div>
                   `}
                 </div>
-              `).join('') || `<div style="color:#64748b;font-size:0.8rem;">No recent comments to display on this reel.</div>`}
+              `).join('') || `<div style="color:#64748b;font-size:0.8rem;">No comments yet.</div>`}
             </div>
           </div>
         </div>
-      `).join('') || `<div class="lux-card">Click 'Reload' above to sync your live Instagram Reels!</div>`;
+      `).join('') || `<div class="lux-card">Click 'Reload' above to sync your Instagram Reels.</div>`;
     } catch (e) {}
   }
 
-  /* BUG #4 & #8 FIX: Moves 3D AK-47 Soldier with Percentage & Auto-Resets on Error/Completion so it NEVER stays stuck! */
   async function pollTelemetryLoop() {
     try {
       const r = await fetch('/api/telemetry_3d');
@@ -2548,9 +2555,9 @@ LUXURY_3D_HTML = r"""
         const cur = Math.min(5, t.step_num);
         const nxt = cur + 1;
         const pct = t.progress || 15;
-        document.getElementById('pair-left-num').innerText = `ACTIVE • STEP ${cur}`;
+        document.getElementById('pair-left-num').innerText = `STEP ${cur}`;
         document.getElementById('pair-left-title').innerText = STEP_META[cur].title;
-        document.getElementById('pair-right-num').innerText = `NEXT • STEP ${nxt}`;
+        document.getElementById('pair-right-num').innerText = `STEP ${nxt}`;
         document.getElementById('pair-right-title').innerText = STEP_META[nxt].title;
         document.getElementById('pipe-pct').innerText = pct + '%';
         document.getElementById('pipe-subdetail').innerText = t.sub_detail || '';
@@ -2562,18 +2569,18 @@ LUXURY_3D_HTML = r"""
           fetch('/api/reset_telemetry', { method: 'POST' });
           fetchAppState();
           show3DModal({
-            title: "🎖️ REEL SENT FOR APPROVAL!",
-            body: "3D Video verified & added to your Daily Generated Queue and Telegram!",
-            buttons: [{ label: "View Reel", cls: "btn-gold", onClick: () => { close3DModal(); switchHomeVault('daily'); } }]
+            title: "🎬 Reel Ready",
+            body: "Added to Daily Queue for approval.",
+            buttons: [{ label: "View", cls: "btn-gold", onClick: () => { close3DModal(); switchHomeVault('daily'); } }]
           });
         } else if (t.status === 'error' && t.sub_detail && tEpoch > lastHandledTelemetryEpoch) {
           lastHandledTelemetryEpoch = tEpoch;
           fetch('/api/reset_telemetry', { method: 'POST' });
           fetchAppState();
           show3DModal({
-            title: "⚠️ PIPELINE STOPPED / LIMIT NOTICE",
+            title: "Notice",
             body: t.sub_detail,
-            buttons: [{ label: "Dismiss", cls: "btn-danger", onClick: () => close3DModal() }]
+            buttons: [{ label: "OK", cls: "btn-danger", onClick: () => close3DModal() }]
           });
         }
       }
@@ -2581,7 +2588,7 @@ LUXURY_3D_HTML = r"""
   }
 
   setInterval(pollTelemetryLoop, 2500);
-  setInterval(() => fetchAppState(true), 60000);
+  setInterval(() => fetchAppState(false), 60000);
   fetchAppState();
 </script>
 </body>
