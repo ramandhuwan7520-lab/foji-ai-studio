@@ -22,7 +22,7 @@ from datetime import datetime, timedelta, timezone
 IST = timezone(timedelta(hours=5, minutes=30))
 
 def push_app_notification(notif_type, title, message, status="info"):
-    """Bug #11: Saves real-time Instagram-style notification with exact IST timestamp."""
+    """Bug #6: Saves every micro & macro event into data/notifications.json and syncs to Cloud immediately."""
     os.makedirs("data", exist_ok=True)
     n_path = "data/notifications.json"
     items = []
@@ -34,8 +34,8 @@ def push_app_notification(notif_type, title, message, status="info"):
             items = []
     now_ist = datetime.now(IST)
     items.insert(0, {
-        "id": int(time.time() * 1000) + len(items),
-        "type": notif_type,       # 'generated', 'posted', 'scheduled', 'deleted', 'error', 'slot_missed'
+        "id": f"notif_{int(time.time() * 1000)}_{random.randint(100,999)}",
+        "type": notif_type,
         "title": title,
         "message": message,
         "status": status,
@@ -43,35 +43,47 @@ def push_app_notification(notif_type, title, message, status="info"):
         "date_str": now_ist.strftime("%d %b %Y"),
         "timestamp": time.time()
     })
-    items = items[:80]
+    items = items[:120]
     try:
         with open(n_path, "w", encoding="utf-8") as f:
             json.dump(items, f, indent=2, ensure_ascii=False)
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            subprocess.run(["git", "config", "user.name", "FojiCloudEngine"], check=False)
+            subprocess.run(["git", "config", "user.email", "foji@studio.ai"], check=False)
+            subprocess.run(["git", "add", "data/notifications.json", "data/live_telemetry.json"], check=False)
+            subprocess.run(["git", "commit", "-m", f"Notif: {title[:40]}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(["git", "push", "origin", "HEAD:main", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         pass
 
 def update_3d_telemetry(step_num, step_title, sub_detail, status="active", progress=10, driver=None):
-    """Fast 3D Pipeline Step Tracker (Live Window & heavy screenshot overhead removed per Bug #2)."""
+    """Bug #4 Fix: Immediately pushes error/completion state to GitHub so Frontend never stays stuck on steps 1-6!"""
     os.makedirs("data", exist_ok=True)
     now_ist = datetime.now(IST)
+    # If status is error or completed, set step_num to 0 so pipeline box hides immediately on refresh!
+    effective_step = 0 if status in ("error", "completed", "idle") else step_num
     payload = {
-        "step_num": step_num,
+        "step_num": effective_step,
+        "raw_step": step_num,
         "step_title": step_title,
         "sub_detail": sub_detail,
         "status": status,
         "progress": progress,
-        "timestamp": now_ist.strftime("%I:%M:%S %p IST")
+        "timestamp": now_ist.strftime("%I:%M:%S %p IST"),
+        "epoch": time.time()
     }
     try:
         with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
-        if os.environ.get("GITHUB_ACTIONS") == "true" and step_num in (1, 3, 5, 6):
-            subprocess.run(["git", "add", "data/live_telemetry.json"], check=False)
-            subprocess.run(["git", "commit", "-m", f"Step {step_num}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if os.environ.get("GITHUB_ACTIONS") == "true" and (status in ("error", "completed") or step_num in (1, 2, 4, 5, 6)):
+            subprocess.run(["git", "config", "user.name", "FojiCloudEngine"], check=False)
+            subprocess.run(["git", "config", "user.email", "foji@studio.ai"], check=False)
+            subprocess.run(["git", "add", "data/live_telemetry.json", "data/notifications.json"], check=False)
+            subprocess.run(["git", "commit", "-m", f"Telemetry: {status} {step_title[:30]}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(["git", "push", "origin", "HEAD:main", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         pass
-    print(f"🌐 [STEP {step_num}/6] {step_title} -> {sub_detail} ({progress}%)")
+    print(f"🌐 [STEP {step_num}/6 | {status.upper()}] {step_title} -> {sub_detail} ({progress}%)")
 
 def allowed_gai_family():
     return socket.AF_INET
