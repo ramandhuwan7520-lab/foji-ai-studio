@@ -59,9 +59,9 @@ jobs:
         run: |
           /tmp/foji_venv/bin/python cloud_worker.py
 
-      - name: Save Updated History, 3D Telemetry & Schedule Permanently
+      - name: Save Updated History, Videos & Schedule Permanently
         run: |
           git config user.name "FojiCloudEngine"
           git config user.email "foji@studio.ai"
-          git add data/*.json || true
-          git diff --staged --quiet || (git commit -m "Auto-update reel history & 3D telemetry from Cloud" && git push origin HEAD:main)
+          git add data/*.json output/raw_videos/*.mp4 || true
+          git diff --staged --quiet || (git commit -m "Sync generated MP4 reel, history & notifications" && git push origin HEAD:main)
