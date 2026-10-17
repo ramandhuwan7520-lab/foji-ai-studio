@@ -1,10 +1,10 @@
 {
   "step_num": 1,
   "raw_step": 1,
-  "step_title": "Opening Studio Core",
-  "sub_detail": "Connecting to Gemini Flash...",
+  "step_title": "CHECKING GEMINI & FLASH MODEL",
+  "sub_detail": "Capturing live Chrome screen & checking model dropdown...",
   "status": "active",
-  "progress": 14,
-  "timestamp": "10:18:44 PM IST",
-  "epoch": 1792255724.91076
+  "progress": 18,
+  "timestamp": "10:19:07 PM IST",
+  "epoch": 1792255747.6419003
 }
