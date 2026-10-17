@@ -18,45 +18,60 @@ load_dotenv()
 
 LIVE_LOGS_BUFFER = []
 
-def update_3d_telemetry(step_num, step_title, sub_detail, status="active", progress=10, driver=None):
-    """Saves real-time step state, live console logs, AND a live screenshot of Hidden Chrome!"""
+from datetime import datetime, timedelta, timezone
+IST = timezone(timedelta(hours=5, minutes=30))
+
+def push_app_notification(notif_type, title, message, status="info"):
+    """Bug #11: Saves real-time Instagram-style notification with exact IST timestamp."""
     os.makedirs("data", exist_ok=True)
-    ts = time.strftime("%H:%M:%S")
-    log_line = f"[{ts}] [STEP {step_num}] {step_title} -> {sub_detail}"
-    print(f"🌐 {log_line}")
-
-    LIVE_LOGS_BUFFER.append(log_line)
-    if len(LIVE_LOGS_BUFFER) > 25:
-        LIVE_LOGS_BUFFER.pop(0)
-
-    if driver is not None:
+    n_path = "data/notifications.json"
+    items = []
+    if os.path.exists(n_path):
         try:
-            driver.save_screenshot("data/live_screen.png")
+            with open(n_path, "r", encoding="utf-8") as f:
+                items = json.load(f)
         except Exception:
-            pass
+            items = []
+    now_ist = datetime.now(IST)
+    items.insert(0, {
+        "id": int(time.time() * 1000) + len(items),
+        "type": notif_type,       # 'generated', 'posted', 'scheduled', 'deleted', 'error', 'slot_missed'
+        "title": title,
+        "message": message,
+        "status": status,
+        "time_str": now_ist.strftime("%I:%M:%S %p IST"),
+        "date_str": now_ist.strftime("%d %b %Y"),
+        "timestamp": time.time()
+    })
+    items = items[:80]
+    try:
+        with open(n_path, "w", encoding="utf-8") as f:
+            json.dump(items, f, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
 
+def update_3d_telemetry(step_num, step_title, sub_detail, status="active", progress=10, driver=None):
+    """Fast 3D Pipeline Step Tracker (Live Window & heavy screenshot overhead removed per Bug #2)."""
+    os.makedirs("data", exist_ok=True)
+    now_ist = datetime.now(IST)
     payload = {
         "step_num": step_num,
         "step_title": step_title,
         "sub_detail": sub_detail,
         "status": status,
         "progress": progress,
-        "timestamp": ts,
-        "logs": LIVE_LOGS_BUFFER[-15:],
-        "has_screenshot": os.path.exists("data/live_screen.png")
+        "timestamp": now_ist.strftime("%I:%M:%S %p IST")
     }
     try:
         with open("data/live_telemetry.json", "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
-        if os.environ.get("GITHUB_ACTIONS") == "true":
-            subprocess.run(["git", "config", "user.name", "FojiCloudEngine"], check=False)
-            subprocess.run(["git", "config", "user.email", "foji@studio.ai"], check=False)
-            subprocess.run(["git", "add", "data/live_telemetry.json", "data/live_screen.png"], check=False)
-            subprocess.run(["git", "commit", "-m", f"Live Step {step_num}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if os.environ.get("GITHUB_ACTIONS") == "true" and step_num in (1, 3, 5, 6):
+            subprocess.run(["git", "add", "data/live_telemetry.json"], check=False)
+            subprocess.run(["git", "commit", "-m", f"Step {step_num}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(["git", "push", "origin", "HEAD:main", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         pass
-    print(f"🌐 [3D LIVE STEP {step_num}/6] {step_title} -> {sub_detail} ({progress}%)")
+    print(f"🌐 [STEP {step_num}/6] {step_title} -> {sub_detail} ({progress}%)")
 
 def allowed_gai_family():
     return socket.AF_INET
