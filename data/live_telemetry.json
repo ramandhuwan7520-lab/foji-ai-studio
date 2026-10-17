@@ -1,10 +1,10 @@
 {
-  "step_num": 1,
-  "raw_step": 1,
-  "step_title": "FLASH ENGINE READY",
-  "sub_detail": "Gemini Flash model locked! Proceeding to '+' menu...",
+  "step_num": 2,
+  "raw_step": 2,
+  "step_title": "Enabling Video Tool",
+  "sub_detail": "Selecting Create Video...",
   "status": "active",
-  "progress": 25,
-  "timestamp": "10:19:13 PM IST",
-  "epoch": 1792255753.1659303
+  "progress": 32,
+  "timestamp": "10:19:14 PM IST",
+  "epoch": 1792255754.4761443
 }
