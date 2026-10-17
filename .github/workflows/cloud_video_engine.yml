@@ -1,16 +1,16 @@
-name: Foji 3D Cloud Video Engine (7GB RAM 24/7)
+name: AutoReels 3D AI Cloud Engine (7GB RAM 24/7)
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
       action_type:
-        description: "generate_only, generate_and_publish, or check_schedule"
+        description: "generate_only, generate_and_publish, or sync_instagram"
         required: false
-        default: "generate_and_publish"
+        default: "generate_only"
       custom_topic:
-        description: "Optional custom story topic"
+        description: "Optional custom story topic or REGEN_ID"
         required: false
         default: ""
 
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
-      - name: Clone Latest Code Directly (Zero Node.js Actions)
+      - name: Clone Latest Code Directly
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -52,6 +52,8 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           INSTAGRAM_USERNAME: ${{ secrets.INSTAGRAM_USERNAME }}
           INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
+          INSTAGRAM_SESSIONID: ${{ secrets.INSTAGRAM_SESSIONID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           GEMINI_COOKIES_JSON: ${{ secrets.GEMINI_COOKIES_JSON }}
           CLOUD_EVENT_NAME: ${{ github.event_name }}
           CLOUD_ACTION_TYPE: ${{ github.event.inputs.action_type }}
@@ -59,9 +61,9 @@ jobs:
         run: |
           /tmp/foji_venv/bin/python cloud_worker.py
 
-      - name: Save Updated History, Videos & Schedule Permanently
+      - name: Pull Latest Deletions & Push Updated Videos/Cache Permanently
         run: |
-          git config user.name "FojiCloudEngine"
-          git config user.email "foji@studio.ai"
+          git config user.name "AutoReels3DEngine"
+          git config user.email "engine@autoreels3d.ai"
           git add data/*.json output/raw_videos/*.mp4 || true
-          git diff --staged --quiet || (git commit -m "Sync generated MP4 reel, history & notifications" && git push origin HEAD:main)
+          git diff --staged --quiet || (git commit -m "Sync reels, IG cache & schedule state" && git pull --rebase origin main && git push origin HEAD:main)
