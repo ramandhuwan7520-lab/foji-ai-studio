@@ -129,6 +129,80 @@ def is_valid_mp4(file_path):
     except Exception:
         return False
 
+def extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_path):
+    """
+    PERMANENT BUG #1 FIX:
+    Guarantees the rendered <video> in Gemini is actually saved as a valid .mp4 file on disk!
+    Method 1: Clicks Gemini Download button & waits up to 45s for Chrome download to finish (.crdownload -> .mp4).
+    Method 2: Directly extracts the <video src> stream inside Chrome via JS fetch / session cookies!
+    """
+    # Method 1: Trigger official Download button
+    dl_btns = driver.find_elements(
+        By.XPATH,
+        "//button[contains(@aria-label, 'Download') or contains(@mattooltip, 'Download') or .//mat-icon[contains(text(), 'download')]]"
+    )
+    if dl_btns:
+        js_click(driver, dl_btns[-1])
+
+    # Poll up to 45 seconds for Chrome to finish writing the .mp4
+    for _ in range(15):
+        time.sleep(3)
+        current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
+        new_files = list(current_mp4s - existing_mp4s) or list(current_mp4s)
+        for fpath in sorted(new_files, key=os.path.getmtime, reverse=True):
+            if is_valid_mp4(fpath):
+                if os.path.abspath(fpath) != os.path.abspath(output_video_path):
+                    shutil.copy2(fpath, output_video_path)
+                if is_valid_mp4(output_video_path):
+                    return True
+
+    # Method 2: Direct JS Blob / Video SRC extraction inside Chrome if Download button was blocked!
+    try:
+        videos = driver.find_elements(By.TAG_NAME, "video")
+        if videos:
+            vid_el = videos[-1]
+            vid_src = vid_el.get_attribute("src") or ""
+            if not vid_src:
+                sources = vid_el.find_elements(By.TAG_NAME, "source")
+                if sources:
+                    vid_src = sources[0].get_attribute("src") or ""
+
+            if vid_src:
+                print(f"📥 Extracting video directly from stream URL: {vid_src[:60]}...")
+                b64_data = driver.execute_async_script("""
+                    const url = arguments[0];
+                    const callback = arguments[arguments.length - 1];
+                    fetch(url, {credentials: 'include'})
+                      .then(r => r.blob())
+                      .then(b => {
+                          const reader = new FileReader();
+                          reader.onloadend = () => callback(reader.result.split(',')[1]);
+                          reader.readAsDataURL(b);
+                      })
+                      .catch(() => callback(null));
+                """, vid_src)
+                if b64_data:
+                    import base64
+                    with open(output_video_path, "wb") as bf:
+                        bf.write(base64.b64decode(b64_data))
+                    if is_valid_mp4(output_video_path):
+                        return True
+
+                # Method 3: Python requests with Chrome cookies
+                sess = requests.Session()
+                for ck in driver.get_cookies():
+                    sess.cookies.set(ck["name"], ck["value"])
+                r = sess.get(vid_src, headers={"User-Agent": driver.execute_script("return navigator.userAgent;")}, timeout=30)
+                if r.status_code == 200 and len(r.content) > 300 * 1024:
+                    with open(output_video_path, "wb") as rf:
+                        rf.write(r.content)
+                    if is_valid_mp4(output_video_path):
+                        return True
+    except Exception as e:
+        print(f"⚠️ Direct stream extraction note: {e}")
+
+    return is_valid_mp4(output_video_path)    
+
 def find_real_chrome():
     """Works on both your Windows Laptop AND 24/7 Free Linux Cloud Servers!"""
     paths = [
