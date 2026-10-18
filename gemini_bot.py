@@ -219,13 +219,13 @@ def inject_cloud_cookies_if_present(driver):
             except Exception:
                 pass
         driver.get("https://gemini.google.com/app")
-        time.sleep(4)
+        time.sleep(5)
     except Exception as e:
         print(f"⚠️ Cookie injection note: {e}")
 
 def dismiss_annoying_popups(driver):
     js_dismiss = """
-    const dismissWords = ['no thanks', 'got it', 'dismiss', 'not now', 'skip', 'continue', 'close'];
+    const dismissWords = ['no thanks', 'got it', 'dismiss', 'not now', 'skip', 'continue', 'close', 'accept all', 'i agree'];
     for (const btn of document.querySelectorAll('button, [role="button"]')) {
         const txt = (btn.innerText || btn.getAttribute('aria-label') || '').trim().toLowerCase();
         if (dismissWords.includes(txt) && btn.offsetParent !== null) {
@@ -252,7 +252,7 @@ def select_flash_model(driver):
     """
     try:
         driver.execute_script(js_select_flash)
-        time.sleep(1.2)
+        time.sleep(1.5)
         js_pick = """
         const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="option"], button, span'));
         for (const item of items) {
@@ -285,7 +285,7 @@ def click_plus_and_select_create_video(driver):
     """
     try:
         if driver.execute_script(js_direct_chip) == "DIRECT_CLICKED":
-            time.sleep(1.5)
+            time.sleep(1.8)
             return True
     except Exception:
         pass
@@ -303,7 +303,7 @@ def click_plus_and_select_create_video(driver):
     """
     try:
         driver.execute_script(js_open_plus)
-        time.sleep(1.8)
+        time.sleep(2.0)
         js_pick_video = """
         const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="option"], button, [role="button"], span, div'));
         for (const el of items) {
@@ -316,7 +316,7 @@ def click_plus_and_select_create_video(driver):
         return false;
         """
         clicked = driver.execute_script(js_pick_video)
-        time.sleep(1.2)
+        time.sleep(1.5)
         if not clicked:
             ActionChains(driver).send_keys(Keys.ESCAPE).perform()
         return bool(clicked)
@@ -345,7 +345,7 @@ def select_portrait_9_16_ratio(driver):
     """
     try:
         res = driver.execute_script(js_ratio)
-        time.sleep(1)
+        time.sleep(1.2)
         if not res:
             js_pick_916 = """
             const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="option"], button, span'));
@@ -359,12 +359,12 @@ def select_portrait_9_16_ratio(driver):
             return false;
             """
             driver.execute_script(js_pick_916)
-            time.sleep(1)
+            time.sleep(1.2)
     except Exception:
         pass
 
 def upload_character_images_strictly(driver, foji_img, fojan_img):
-    """Step 4: Uploads both Foji and Fojan character images."""
+    """Step 4: Uploads both Foji and Fojan character images and waits for upload spinners to finish."""
     file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
     if not file_inputs:
         js_click_plus = """
@@ -378,7 +378,7 @@ def upload_character_images_strictly(driver, foji_img, fojan_img):
         }
         """
         driver.execute_script(js_click_plus)
-        time.sleep(1.5)
+        time.sleep(1.8)
         js_click_upload = """
         const items = Array.from(document.querySelectorAll('[role="menuitem"], button, span, div'));
         for (const item of items) {
@@ -390,30 +390,30 @@ def upload_character_images_strictly(driver, foji_img, fojan_img):
         }
         """
         driver.execute_script(js_click_upload)
-        time.sleep(1.5)
+        time.sleep(1.8)
         file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
 
     if file_inputs:
         target_input = file_inputs[-1]
         try:
             target_input.send_keys(f"{foji_img}\n{fojan_img}")
-            time.sleep(4)
+            time.sleep(6)
             return True
         except Exception:
             try:
                 target_input.send_keys(foji_img)
-                time.sleep(2.5)
+                time.sleep(3.5)
                 file_inputs_2 = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
                 if file_inputs_2:
                     file_inputs_2[-1].send_keys(fojan_img)
-                time.sleep(3.5)
+                time.sleep(5)
                 return True
             except Exception:
                 pass
     return False
 
 def paste_and_send_prompt(driver, prompt_text):
-    """Step 5: Pastes prompt and submits for generation."""
+    """Step 5: Pastes prompt and guarantees submission (retries click/Enter if box isn't cleared)."""
     clean_prompt = " ".join(prompt_text.splitlines()).strip()
     selectors = [
         "div.ql-editor[contenteditable='true']",
@@ -436,7 +436,7 @@ def paste_and_send_prompt(driver, prompt_text):
         raise RuntimeError("Gemini input box not found! Please refresh Gemini cookies.")
 
     driver.execute_script("arguments[0].focus();", box)
-    time.sleep(0.5)
+    time.sleep(0.6)
     js_insert = """
     const el = arguments[0];
     const txt = arguments[1];
@@ -449,23 +449,49 @@ def paste_and_send_prompt(driver, prompt_text):
     }
     """
     driver.execute_script(js_insert, box, clean_prompt)
-    time.sleep(1.5)
+    time.sleep(2.5)
 
     js_send = """
     const btns = Array.from(document.querySelectorAll('button, [role="button"]'));
     for (const b of btns) {
         const lbl = ((b.getAttribute('aria-label') || '') + ' ' + (b.getAttribute('mattooltip') || '') + ' ' + (b.innerText || '')).toLowerCase();
-        if ((lbl.includes('send') || lbl.includes('submit') || lbl.includes('generate')) && !lbl.includes('feedback') && b.offsetParent !== null) {
+        if ((lbl.includes('send') || lbl.includes('submit') || lbl.includes('generate')) && !lbl.includes('feedback') && !b.disabled && b.getAttribute('aria-disabled') !== 'true' && b.offsetParent !== null) {
             b.click();
             return true;
         }
     }
     return false;
     """
-    sent = driver.execute_script(js_send)
-    if not sent:
-        box.send_keys(Keys.ENTER)
-    time.sleep(2)
+    for attempt in range(4):
+        sent = driver.execute_script(js_send)
+        if not sent:
+            try:
+                box.send_keys(Keys.ENTER)
+            except Exception:
+                pass
+        time.sleep(2.5)
+        try:
+            rem_txt = (box.text or box.get_attribute("value") or "").strip()
+            if len(rem_txt) < 15:
+                break
+        except Exception:
+            break
+
+def get_all_videos_count(driver):
+    """Finds all <video> elements including inside Shadow DOMs."""
+    js_vids = """
+    let vids = Array.from(document.querySelectorAll('video'));
+    for (const el of document.querySelectorAll('*')) {
+        if (el.shadowRoot) {
+            vids = vids.concat(Array.from(el.shadowRoot.querySelectorAll('video')));
+        }
+    }
+    return vids.length;
+    """
+    try:
+        return int(driver.execute_script(js_vids) or 0)
+    except Exception:
+        return len(driver.find_elements(By.TAG_NAME, "video"))
 
 def get_response_bubbles(driver):
     for sel in ["message-content", ".model-response-text", "model-response", "[data-message-author-role='model']"]:
@@ -486,12 +512,21 @@ def get_latest_response_text(driver):
 def is_video_currently_generating(driver):
     js_check = """
     const bodyTxt = (document.body.innerText || '').toLowerCase();
-    if (bodyTxt.includes('generating video') || bodyTxt.includes('creating your video') || bodyTxt.includes('creating video') || bodyTxt.includes('hang tight') || bodyTxt.includes('this may take a minute')) {
-        return true;
+    const keywords = [
+        'generating video', 'creating your video', 'creating video',
+        'hang tight', 'this may take a minute', 'generating...',
+        'almost there', 'putting the finishing touches', 'rendering'
+    ];
+    for (const kw of keywords) {
+        if (bodyTxt.includes(kw)) return true;
     }
-    const spinners = document.querySelectorAll('mat-progress-spinner, mat-progress-bar, [role="progressbar"]');
+    const spinners = document.querySelectorAll('mat-progress-spinner, mat-progress-bar, [role="progressbar"], .loading-spinner');
     for (const s of spinners) {
         if (s.offsetParent !== null) return true;
+    }
+    const stopBtns = document.querySelectorAll('button[aria-label*="Stop" i], button[mattooltip*="Stop" i]');
+    for (const b of stopBtns) {
+        if (b.offsetParent !== null) return true;
     }
     return false;
     """
@@ -501,7 +536,7 @@ def is_video_currently_generating(driver):
         return False
 
 def extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_path):
-    """Step 6: Downloads and verifies the rendered MP4 video."""
+    """Step 6: Downloads and verifies the rendered MP4 video (supports Download button, direct HTTP, and Blob URLs)."""
     js_click_dl = """
     const btns = Array.from(document.querySelectorAll('button, a, [role="button"]'));
     for (const b of btns) {
@@ -518,7 +553,7 @@ def extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_p
     except Exception:
         pass
 
-    for _ in range(18):
+    for _ in range(20):
         time.sleep(2)
         current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
         new_files = [f for f in (current_mp4s - existing_mp4s) if not f.endswith(".crdownload")]
@@ -529,20 +564,26 @@ def extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_p
                     shutil.move(newest, output_video_path)
                 return True
 
+    # Fallback 2: Extract video src (including Shadow DOM)
     js_get_src = """
-    const vids = Array.from(document.querySelectorAll('video'));
+    let vids = Array.from(document.querySelectorAll('video'));
+    for (const el of document.querySelectorAll('*')) {
+        if (el.shadowRoot) {
+            vids = vids.concat(Array.from(el.shadowRoot.querySelectorAll('video')));
+        }
+    }
     for (let i = vids.length - 1; i >= 0; i--) {
         const v = vids[i];
         const src = v.currentSrc || v.src || (v.querySelector('source') ? v.querySelector('source').src : '');
-        if (src && src.startsWith('http')) return src;
+        if (src) return src;
     }
     return '';
     """
     try:
         video_url = driver.execute_script(js_get_src)
-        if video_url and video_url.startswith("http"):
+        if video_url and video_url.startswith("http") and not video_url.startswith("blob:"):
             cookies_dict = {c["name"]: c["value"] for c in driver.get_cookies()}
-            r = requests.get(video_url, cookies=cookies_dict, headers={"User-Agent": "Mozilla/5.0"}, stream=True, timeout=45)
+            r = requests.get(video_url, cookies=cookies_dict, headers={"User-Agent": "Mozilla/5.0"}, stream=True, timeout=60)
             if r.status_code == 200:
                 with open(output_video_path, "wb") as f:
                     for chunk in r.iter_content(chunk_size=65536):
@@ -550,8 +591,32 @@ def extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_p
                             f.write(chunk)
                 if is_valid_mp4(output_video_path):
                     return True
-    except Exception:
-        pass
+
+        # Fallback 3: In-Browser Fetch -> Base64 for blob: or protected URLs
+        if video_url:
+            driver.set_script_timeout(90)
+            b64_data = driver.execute_async_script("""
+                const url = arguments[0];
+                const callback = arguments[arguments.length - 1];
+                fetch(url)
+                  .then(r => r.blob())
+                  .then(blob => {
+                      const reader = new FileReader();
+                      reader.onloadend = () => callback(reader.result);
+                      reader.onerror = () => callback('');
+                      reader.readAsDataURL(blob);
+                  })
+                  .catch(() => callback(''));
+            """, video_url)
+            if b64_data and "," in b64_data:
+                raw_bytes = base64.b64decode(b64_data.split(",", 1)[1])
+                with open(output_video_path, "wb") as f:
+                    f.write(raw_bytes)
+                if is_valid_mp4(output_video_path):
+                    return True
+    except Exception as e:
+        print(f"⚠️ Direct video stream fallback note: {e}")
+
     return False
 
 def generate_video_in_gemini(pending_pkg=None):
@@ -579,11 +644,10 @@ def generate_video_in_gemini(pending_pkg=None):
     driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
 
     try:
-        time.sleep(3)
+        time.sleep(4)
         inject_cloud_cookies_if_present(driver)
         dismiss_annoying_popups(driver)
 
-        # Quick Login Check (Fails in 5 seconds instead of hanging 30 minutes!)
         page_txt_low = (driver.find_element(By.TAG_NAME, "body").text or "").lower()
         if "sign in" in page_txt_low and "gemini" in page_txt_low and not driver.find_elements(By.CSS_SELECTOR, "div[contenteditable='true'], textarea"):
             err = "Gemini Cookies Expired on Cloud! Run 'python cloud_worker.py --export-cookies' locally and push."
@@ -602,7 +666,7 @@ def generate_video_in_gemini(pending_pkg=None):
             base_video_prompt += " Include cinematic Indian instrumental background music matching the emotion."
 
         existing_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
-        initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
+        initial_videos = get_all_videos_count(driver)
         prev_bubbles = len(get_response_bubbles(driver))
 
         # 2. Click '+' and select 'Create videos'
@@ -622,42 +686,60 @@ def generate_video_in_gemini(pending_pkg=None):
 
         # 5. Paste Prompt & Click Generate
         print("✉️ [Step 5/6] Submitting prompt to Gemini...")
-        update_3d_telemetry(5, "Generating Video", "Submitting prompt & waiting for Gemini...", "active", 82)
+        update_3d_telemetry(5, "Generating Video", "Submitting prompt & waiting for Gemini (up to 15 mins)...", "active", 80)
         paste_and_send_prompt(driver, base_video_prompt)
 
-        time.sleep(8)
-        update_3d_telemetry(5, "Rendering Video", "Waiting for Gemini response...", "active", 90)
+        time.sleep(10)
+        update_3d_telemetry(5, "Rendering Video", "Gemini is rendering 3D video (10-15 mins max)...", "active", 85)
         video_saved = False
         idle_ticks = 0
 
-        # FAST POLLING: Max 45 ticks (3.5 mins max, never 30 mins!)
-        for tick in range(45):
+        # FULL 15-MINUTE PATIENCE WINDOW: 180 ticks x 5s = 900 seconds (15 Minutes)
+        for tick in range(180):
             time.sleep(5)
             dismiss_annoying_popups(driver)
 
-            videos = driver.find_elements(By.TAG_NAME, "video")
-            if len(videos) > initial_videos:
-                print("✅ [Step 6/6] Video detected! Downloading MP4...")
-                update_3d_telemetry(6, "Downloading MP4", "Saving & verifying video...", "active", 97)
+            # Check if a new MP4 was already downloaded into raw_dir
+            current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
+            new_files = [f for f in (current_mp4s - existing_mp4s) if not f.endswith(".crdownload")]
+            if new_files:
+                newest = max(new_files, key=os.path.getctime)
+                if is_valid_mp4(newest):
+                    if os.path.abspath(newest) != os.path.abspath(output_video_path):
+                        shutil.move(newest, output_video_path)
+                    video_saved = True
+                    break
+
+            vid_count = get_all_videos_count(driver)
+            if vid_count > initial_videos:
+                print("✅ [Step 6/6] Video detected in Gemini! Downloading MP4...")
+                update_3d_telemetry(6, "Downloading MP4", "Saving & verifying rendered video...", "active", 97)
                 if extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_path):
                     video_saved = True
                     break
 
             generating_now = is_video_currently_generating(driver)
             current_bubbles = len(get_response_bubbles(driver))
-            print(f"⏳ Poll {tick+1}/45 | Generating: {generating_now} | Bubbles: {current_bubbles}/{prev_bubbles}")
+            elapsed_mins = round(((tick + 1) * 5) / 60.0, 1)
+            print(f"⏳ [{elapsed_mins}/15.0 min] Generating: {generating_now} | Videos: {vid_count}/{initial_videos} | Bubbles: {current_bubbles}/{prev_bubbles}")
+
+            # Keep dashboard telemetry alive every 30 seconds so frontend never times out
+            if tick % 6 == 0:
+                prog = min(95, 85 + int(tick / 18))
+                update_3d_telemetry(5, "Rendering 3D Video", f"Gemini rendering video... ({elapsed_mins} min elapsed)", "active", prog)
 
             if generating_now:
                 idle_ticks = 0
                 continue
 
-            # If Gemini replied with text/limit/error, immediately forward to Telegram & App and exit!
-            if current_bubbles > prev_bubbles and tick >= 2:
-                time.sleep(3)
-                if len(driver.find_elements(By.TAG_NAME, "video")) > initial_videos:
+            # If Gemini finished responding with text/quota/error (and no video is generating), forward reply after 30s confirmation
+            if current_bubbles > prev_bubbles and tick >= 5:
+                time.sleep(5)
+                if get_all_videos_count(driver) > initial_videos or is_video_currently_generating(driver):
                     continue
                 reply_txt = get_latest_response_text(driver).strip()
-                if reply_txt:
+                # Ignore short status texts that might precede a video card
+                if reply_txt and not any(w in reply_txt.lower() for w in ["generating", "creating", "hang tight", "here's your video", "here is your video"]):
                     clean_reply = reply_txt[:240]
                     print(f"💬 Gemini Text Reply: {clean_reply}")
                     update_3d_telemetry(5, "Gemini Response", clean_reply, "error", 0)
@@ -665,12 +747,12 @@ def generate_video_in_gemini(pending_pkg=None):
                     send_alert(f"💬 *Gemini Response:*\n{clean_reply}")
                     raise RuntimeError(clean_reply)
 
-            # Fast Stagnation Exit: If nothing is generating for 45 seconds straight, don't hang!
+            # Only exit early if Gemini is completely idle for 3 full minutes (36 ticks) with no spinner & no video
             idle_ticks += 1
-            if idle_ticks >= 9:
+            if idle_ticks >= 36:
                 reply_txt = get_latest_response_text(driver).strip()
-                msg = reply_txt[:220] if reply_txt else "Gemini did not start video render (check cookies or daily quota)."
-                print(f"⚠️ Fast Exit: {msg}")
+                msg = reply_txt[:220] if reply_txt else "Gemini remained idle for 3 minutes without starting video render."
+                print(f"⚠️ Idle Exit: {msg}")
                 update_3d_telemetry(5, "Gemini Notice", msg, "error", 0)
                 push_app_notification("error", "Gemini Notice", msg, "error")
                 send_alert(f"⚠️ *Gemini Notice:*\n{msg}")
@@ -681,7 +763,7 @@ def generate_video_in_gemini(pending_pkg=None):
             update_3d_telemetry(6, "Reel Ready", "Sent for approval!", "completed", 100)
             return output_video_path
 
-        timeout_err = "Gemini video render timed out after 3.5 minutes."
+        timeout_err = "Gemini video render timed out after 15 minutes."
         update_3d_telemetry(5, "Timeout", timeout_err, "error", 0)
         push_app_notification("error", "Timeout", timeout_err, "error")
         send_alert(f"⚠️ *Gemini Notice:*\n{timeout_err}")
