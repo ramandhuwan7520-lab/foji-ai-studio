@@ -240,7 +240,12 @@ def run_single_cloud_video_job():
         sys.exit(0)
 
 if __name__ == "__main__":
-    if "--export-cookies" in sys.argv:
-        export_local_chrome_cookies()
-    else:
-        run_single_cloud_video_job()
+    os.environ["IS_CLOUD_WORKER"] = "1"
+    try:
+        if "--export-cookies" in sys.argv:
+            export_local_chrome_cookies()
+        else:
+            run_single_cloud_video_job()
+    finally:
+        # Force-terminate any background threads so GitHub Actions exits in 0.1s!
+        os._exit(0)

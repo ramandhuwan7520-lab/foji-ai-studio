@@ -574,6 +574,7 @@ def generate_video_in_gemini(pending_pkg=None):
     os.makedirs(raw_dir, exist_ok=True)
     output_video_path = os.path.join(raw_dir, f"raw_video_{video_num}.mp4")
 
+    print("🚀 [Step 1/6] Launching Chrome & Opening Gemini...")
     update_3d_telemetry(1, "Opening Gemini", "Selecting Flash model...", "active", 15)
     driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
 
@@ -582,7 +583,18 @@ def generate_video_in_gemini(pending_pkg=None):
         inject_cloud_cookies_if_present(driver)
         dismiss_annoying_popups(driver)
 
+        # Quick Login Check (Fails in 5 seconds instead of hanging 30 minutes!)
+        page_txt_low = (driver.find_element(By.TAG_NAME, "body").text or "").lower()
+        if "sign in" in page_txt_low and "gemini" in page_txt_low and not driver.find_elements(By.CSS_SELECTOR, "div[contenteditable='true'], textarea"):
+            err = "Gemini Cookies Expired on Cloud! Run 'python cloud_worker.py --export-cookies' locally and push."
+            print(f"❌ {err}")
+            update_3d_telemetry(1, "Login Required", err, "error", 0)
+            push_app_notification("error", "Cookies Expired", err, "error")
+            send_alert(f"🔐 *Gemini Login Required*\n{err}")
+            raise RuntimeError(err)
+
         # 1. Select Flash Model
+        print("⚡ [Step 1/6] Selecting Flash Model...")
         select_flash_model(driver)
 
         base_video_prompt = latest_pkg.get("gemini_video_prompt", "")
@@ -594,58 +606,82 @@ def generate_video_in_gemini(pending_pkg=None):
         prev_bubbles = len(get_response_bubbles(driver))
 
         # 2. Click '+' and select 'Create videos'
+        print("🎬 [Step 2/6] Selecting Create Videos tool...")
         update_3d_telemetry(2, "Create Videos Tool", "Clicking + and selecting Create Videos...", "active", 32)
         click_plus_and_select_create_video(driver)
 
         # 3. Select 9:16 Portrait
+        print("📱 [Step 3/6] Selecting 9:16 Portrait ratio...")
         update_3d_telemetry(3, "9:16 Portrait", "Selecting 9:16 vertical ratio...", "active", 48)
         select_portrait_9_16_ratio(driver)
 
         # 4. Upload both Character Images
+        print("📸 [Step 4/6] Uploading Foji & Fojan images...")
         update_3d_telemetry(4, "Uploading Characters", "Uploading Foji & Fojan images...", "active", 65)
         upload_character_images_strictly(driver, foji_img, fojan_img)
 
         # 5. Paste Prompt & Click Generate
+        print("✉️ [Step 5/6] Submitting prompt to Gemini...")
         update_3d_telemetry(5, "Generating Video", "Submitting prompt & waiting for Gemini...", "active", 82)
         paste_and_send_prompt(driver, base_video_prompt)
 
-        time.sleep(12)
+        time.sleep(8)
         update_3d_telemetry(5, "Rendering Video", "Waiting for Gemini response...", "active", 90)
         video_saved = False
+        idle_ticks = 0
 
-        for tick in range(300):
+        # FAST POLLING: Max 45 ticks (3.5 mins max, never 30 mins!)
+        for tick in range(45):
             time.sleep(5)
             dismiss_annoying_popups(driver)
 
             videos = driver.find_elements(By.TAG_NAME, "video")
             if len(videos) > initial_videos:
+                print("✅ [Step 6/6] Video detected! Downloading MP4...")
                 update_3d_telemetry(6, "Downloading MP4", "Saving & verifying video...", "active", 97)
                 if extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_path):
                     video_saved = True
                     break
 
-            if is_video_currently_generating(driver):
+            generating_now = is_video_currently_generating(driver)
+            current_bubbles = len(get_response_bubbles(driver))
+            print(f"⏳ Poll {tick+1}/45 | Generating: {generating_now} | Bubbles: {current_bubbles}/{prev_bubbles}")
+
+            if generating_now:
+                idle_ticks = 0
                 continue
 
-            # If Gemini replies with text instead of a video, forward exact reply to Telegram & App
-            current_bubbles = len(get_response_bubbles(driver))
-            if current_bubbles > prev_bubbles and tick >= 3 and not is_video_currently_generating(driver):
-                time.sleep(4)
+            # If Gemini replied with text/limit/error, immediately forward to Telegram & App and exit!
+            if current_bubbles > prev_bubbles and tick >= 2:
+                time.sleep(3)
                 if len(driver.find_elements(By.TAG_NAME, "video")) > initial_videos:
                     continue
                 reply_txt = get_latest_response_text(driver).strip()
                 if reply_txt:
                     clean_reply = reply_txt[:240]
+                    print(f"💬 Gemini Text Reply: {clean_reply}")
                     update_3d_telemetry(5, "Gemini Response", clean_reply, "error", 0)
                     push_app_notification("error", "Gemini Response", clean_reply, "error")
                     send_alert(f"💬 *Gemini Response:*\n{clean_reply}")
                     raise RuntimeError(clean_reply)
 
+            # Fast Stagnation Exit: If nothing is generating for 45 seconds straight, don't hang!
+            idle_ticks += 1
+            if idle_ticks >= 9:
+                reply_txt = get_latest_response_text(driver).strip()
+                msg = reply_txt[:220] if reply_txt else "Gemini did not start video render (check cookies or daily quota)."
+                print(f"⚠️ Fast Exit: {msg}")
+                update_3d_telemetry(5, "Gemini Notice", msg, "error", 0)
+                push_app_notification("error", "Gemini Notice", msg, "error")
+                send_alert(f"⚠️ *Gemini Notice:*\n{msg}")
+                raise RuntimeError(msg)
+
         if video_saved and is_valid_mp4(output_video_path):
+            print(f"🎉 SUCCESS! Saved MP4 at {output_video_path}")
             update_3d_telemetry(6, "Reel Ready", "Sent for approval!", "completed", 100)
             return output_video_path
 
-        timeout_err = "Gemini response timed out."
+        timeout_err = "Gemini video render timed out after 3.5 minutes."
         update_3d_telemetry(5, "Timeout", timeout_err, "error", 0)
         push_app_notification("error", "Timeout", timeout_err, "error")
         send_alert(f"⚠️ *Gemini Notice:*\n{timeout_err}")
@@ -660,6 +696,8 @@ def generate_video_in_gemini(pending_pkg=None):
             chrome_proc.terminate()
         except Exception:
             pass
+        if os.name != "nt":
+            subprocess.run(["pkill", "-9", "-f", "chrome"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 if __name__ == "__main__":
     generate_video_in_gemini()
