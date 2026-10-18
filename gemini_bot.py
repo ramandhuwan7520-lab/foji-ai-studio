@@ -879,7 +879,7 @@ def generate_video_in_gemini(pending_pkg=None):
         err = "Character photos missing in assets/characters."
         update_3d_telemetry(1, "Assets Missing", err, "error", 0)
         push_app_notification("error", "Character Photos Missing", err, "error")
-        send_alert(f"⚠️ * Character Photos Missing*\n`assets/characters/` check karein.")
+        send_alert(f"⚠️ *Character Photos Missing*\n`assets/characters/` check karein.")
         raise FileNotFoundError(err)
 
     raw_dir = os.path.abspath("output/raw_videos")
@@ -904,28 +904,46 @@ def generate_video_in_gemini(pending_pkg=None):
         initial_videos = len(driver.find_elements(By.TAG_NAME, "video"))
         prev_bubbles = len(get_response_bubbles(driver))
 
-        update_3d_telemetry(2, "Enabling Video Tool", "Selecting Create Video...", "active", 32)
-        create_video_selected = click_plus_and_select_create_video(driver)
-        if not create_video_selected:
-            err_msg = "Daily video limit active on Gemini."
-            save_detected_quota_reopen_time(get_latest_response_text(driver))
-            update_3d_telemetry(2, "Limit Active", err_msg, "error", 0)
-            push_app_notification("error", "Video Limit Active", "Will retry automatically at next window.", "error")
-            send_alert("⏳ *Video Limit Active*\nNext scheduled window par auto-retry hoga.")
-            raise RuntimeError(err_msg)
+        # Step 2: Try selecting 'Create video' tool if visible, NEVER fail if Gemini triggers video via prompt!
+        update_3d_telemetry(2, "Enabling Video Tool", "Configuring Gemini video workspace...", "active", 32)
+        try:
+            click_plus_and_select_create_video(driver)
+        except Exception:
+            pass
+        # Ensure any open dropdown/menu is closed cleanly before uploading photos
+        try:
+            ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+            time.sleep(0.8)
+        except Exception:
+            pass
 
+        # Step 3: Set 9:16 Portrait Ratio if chip is available
         update_3d_telemetry(3, "9:16 Portrait Mode", "Setting vertical reel ratio...", "active", 48)
-        select_portrait_9_16_ratio(driver)
+        try:
+            select_portrait_9_16_ratio(driver)
+        except Exception:
+            pass
 
+        # Step 4: Strictly upload Foji & Fojan character reference photos
         update_3d_telemetry(4, "Uploading Characters", "Attaching Foji & Fojan references...", "active", 64)
         upload_character_images_strictly(driver, foji_img, fojan_img)
 
+        # Step 5: Paste & Submit Script Prompt
         update_3d_telemetry(5, "Sending Script", "Submitting dialogue & music prompt...", "active", 80)
         paste_and_send_prompt(driver, base_video_prompt)
 
-        time.sleep(5)
+        # Wait 15 seconds so Gemini starts mounting the video generation card/spinner
+        time.sleep(15)
         update_3d_telemetry(5, "Rendering 3D Reel", "Generating 8K 3D animation...", "active", 88)
         video_saved = False
+
+        strict_limit_phrases = [
+            "you've reached your video generation limit",
+            "reached your limit for generating videos",
+            "can't generate more videos right now",
+            "video generation limit resets",
+            "daily limit for video"
+        ]
 
         for tick in range(300):
             time.sleep(5)
@@ -941,19 +959,21 @@ def generate_video_in_gemini(pending_pkg=None):
             if is_video_currently_generating(driver):
                 continue
 
+            # ONLY stop early if Gemini explicitly replies with a REAL quota limit message!
             current_bubbles = len(get_response_bubbles(driver))
-            if current_bubbles > prev_bubbles and not is_video_currently_generating(driver):
+            if current_bubbles > prev_bubbles and tick >= 3 and not is_video_currently_generating(driver):
                 time.sleep(4)
                 if len(driver.find_elements(By.TAG_NAME, "video")) > initial_videos:
                     continue
                 reply_txt = get_latest_response_text(driver).strip()
-                if reply_txt:
+                low_reply = reply_txt.lower()
+                if reply_txt and any(p in low_reply for p in strict_limit_phrases):
                     save_detected_quota_reopen_time(reply_txt)
                     reopen_t, _ = extract_reopen_time_and_details(reply_txt)
-                    short_notice = f"Limit active. Reopens at {reopen_t}." if reopen_t else reply_txt[:110]
-                    update_3d_telemetry(5, "Generation Paused", short_notice, "error", 0)
-                    push_app_notification("error", "Generation Paused", short_notice, "error")
-                    send_alert(f"⏳ *Generation Paused*\n{short_notice}")
+                    short_notice = f"Limit active. Reopens at {reopen_t}." if reopen_t else "Gemini video limit reached."
+                    update_3d_telemetry(5, "Limit Active", short_notice, "error", 0)
+                    push_app_notification("error", "Video Limit Active", short_notice, "error")
+                    send_alert(f"⏳ *Video Limit Active*\n{short_notice}")
                     raise RuntimeError(short_notice)
 
         if video_saved and is_valid_mp4(output_video_path):
@@ -962,7 +982,7 @@ def generate_video_in_gemini(pending_pkg=None):
 
         timeout_err = "Video render timed out."
         update_3d_telemetry(5, "Render Timeout", timeout_err, "error", 0)
-        push_app_notification("error", "Render Timeout", "Will retry at next pre-slot window.", "error")
+        push_app_notification("error", "Render Timeout", "Will retry at next window.", "error")
         raise RuntimeError(timeout_err)
 
     finally:

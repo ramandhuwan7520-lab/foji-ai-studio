@@ -488,7 +488,29 @@ def generate_single_reel_package(custom_topic=None, send_for_approval=True, forc
 # ==============================================================================
 # 📸 BUG #1, #2, #3, #11 FIX: FACEBOOK GRAPH API + 7-REELS DEEP FETCH + CACHE LOCK
 # ==============================================================================
+LATEST_IG_DEVICE = {
+    "app_version": "358.0.0.42.96",
+    "android_version": 34,
+    "android_release": "14.0",
+    "dpi": "480dpi",
+    "resolution": "1080x2400",
+    "manufacturer": "Samsung",
+    "device": "dm3q",
+    "model": "SM-S918B",
+    "cpu": "qcom",
+    "version_code": "658492103"
+}
+LATEST_IG_UA = (
+    "Instagram 358.0.0.42.96 Android (34/14.0; 480dpi; 1080x2400; "
+    "Samsung; SM-S918B; dm3q; qcom; en_US; 658492103)"
+)
+
 def get_authenticated_ig_client():
+    """
+    PERMANENT FIX FOR 'OUTDATED VERSION' ERROR:
+    Forces instagrapi to use Latest 2026 Instagram Android v358.0.0.42.96 (Android 14)
+    and upgrades any old cached session before calling Instagram servers!
+    """
     from instagrapi import Client
     ig_user = os.getenv("INSTAGRAM_USERNAME", "").strip().lstrip("@")
     ig_pass = os.getenv("INSTAGRAM_PASSWORD", "").strip()
@@ -496,20 +518,37 @@ def get_authenticated_ig_client():
 
     cl = Client()
     cl.delay_range = [1, 2]
+    cl.set_device(LATEST_IG_DEVICE)
+    cl.set_user_agent(LATEST_IG_UA)
+
     if ig_sess_id:
         try:
             cl.login_by_sessionid(urllib.parse.unquote(ig_sess_id))
+            cl.set_device(LATEST_IG_DEVICE)
+            cl.set_user_agent(LATEST_IG_UA)
             return cl
         except Exception:
             pass
+
     if os.path.exists(IG_SESSION_FILE):
         try:
             cl.load_settings(IG_SESSION_FILE)
+            # Force-upgrade loaded session settings so old cached app_version never triggers 'Outdated Version'!
+            cl.set_device(LATEST_IG_DEVICE)
+            cl.set_user_agent(LATEST_IG_UA)
             cl.login(ig_user, ig_pass)
+            cl.dump_settings(IG_SESSION_FILE)
             return cl
         except Exception:
-            pass
+            try:
+                os.remove(IG_SESSION_FILE)
+            except Exception:
+                pass
+
     if ig_user and ig_pass:
+        cl = Client()
+        cl.set_device(LATEST_IG_DEVICE)
+        cl.set_user_agent(LATEST_IG_UA)
         cl.login(ig_user, ig_pass)
         try:
             cl.dump_settings(IG_SESSION_FILE)
@@ -767,16 +806,20 @@ def fetch_real_instagram_data(force_refresh=False):
                 cl = get_authenticated_ig_client()
                 user_info = cl.user_info_by_username(ig_user)
                 medias = []
-                try:
-                    medias.extend(cl.user_clips(user_info.pk, amount=15))
-                except Exception:
-                    pass
-                try:
-                    for m in cl.user_medias(user_info.pk, amount=15):
-                        if not any(str(x.pk) == str(m.pk) for x in medias):
-                            medias.append(m)
-                except Exception:
-                    pass
+                for fetch_fn in (
+                    lambda: cl.user_clips_v1(user_info.pk, amount=15),
+                    lambda: cl.user_medias_v1(user_info.pk, amount=15),
+                    lambda: cl.user_clips(user_info.pk, amount=15),
+                    lambda: cl.user_medias(user_info.pk, amount=15),
+                ):
+                    try:
+                        for m in fetch_fn():
+                            if not any(str(x.pk) == str(m.pk) for x in medias):
+                                medias.append(m)
+                        if len(medias) >= 7:
+                            break
+                    except Exception:
+                        continue
 
                 real_reels = []
                 for idx, m in enumerate(medias[:18]):
