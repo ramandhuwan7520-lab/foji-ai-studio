@@ -488,29 +488,8 @@ def generate_single_reel_package(custom_topic=None, send_for_approval=True, forc
 # ==============================================================================
 # 📸 BUG #1, #2, #3, #11 FIX: FACEBOOK GRAPH API + 7-REELS DEEP FETCH + CACHE LOCK
 # ==============================================================================
-LATEST_IG_DEVICE = {
-    "app_version": "358.0.0.42.96",
-    "android_version": 34,
-    "android_release": "14.0",
-    "dpi": "480dpi",
-    "resolution": "1080x2400",
-    "manufacturer": "Samsung",
-    "device": "dm3q",
-    "model": "SM-S918B",
-    "cpu": "qcom",
-    "version_code": "658492103"
-}
-LATEST_IG_UA = (
-    "Instagram 358.0.0.42.96 Android (34/14.0; 480dpi; 1080x2400; "
-    "Samsung; SM-S918B; dm3q; qcom; en_US; 658492103)"
-)
-
 def get_authenticated_ig_client():
-    """
-    PERMANENT FIX FOR 'OUTDATED VERSION' ERROR:
-    Forces instagrapi to use Latest 2026 Instagram Android v358.0.0.42.96 (Android 14)
-    and upgrades any old cached session before calling Instagram servers!
-    """
+    """Uses upgraded instagrapi native Bloks profile with override_app_version=True (Fixes CAA bloks_versioning_id error!)."""
     from instagrapi import Client
     ig_user = os.getenv("INSTAGRAM_USERNAME", "").strip().lstrip("@")
     ig_pass = os.getenv("INSTAGRAM_PASSWORD", "").strip()
@@ -518,24 +497,20 @@ def get_authenticated_ig_client():
 
     cl = Client()
     cl.delay_range = [1, 2]
-    cl.set_device(LATEST_IG_DEVICE)
-    cl.set_user_agent(LATEST_IG_UA)
 
     if ig_sess_id:
         try:
             cl.login_by_sessionid(urllib.parse.unquote(ig_sess_id))
-            cl.set_device(LATEST_IG_DEVICE)
-            cl.set_user_agent(LATEST_IG_UA)
             return cl
         except Exception:
             pass
 
     if os.path.exists(IG_SESSION_FILE):
         try:
-            cl.load_settings(IG_SESSION_FILE)
-            # Force-upgrade loaded session settings so old cached app_version never triggers 'Outdated Version'!
-            cl.set_device(LATEST_IG_DEVICE)
-            cl.set_user_agent(LATEST_IG_UA)
+            try:
+                cl.load_settings(IG_SESSION_FILE, override_app_version=True)
+            except TypeError:
+                cl.load_settings(IG_SESSION_FILE)
             cl.login(ig_user, ig_pass)
             cl.dump_settings(IG_SESSION_FILE)
             return cl
@@ -547,8 +522,7 @@ def get_authenticated_ig_client():
 
     if ig_user and ig_pass:
         cl = Client()
-        cl.set_device(LATEST_IG_DEVICE)
-        cl.set_user_agent(LATEST_IG_UA)
+        cl.delay_range = [1, 2]
         cl.login(ig_user, ig_pass)
         try:
             cl.dump_settings(IG_SESSION_FILE)
@@ -556,6 +530,7 @@ def get_authenticated_ig_client():
             pass
         return cl
     raise RuntimeError("Instagram credentials not configured.")
+
 
 def _parse_human_count(val_str):
     if not val_str:
@@ -804,7 +779,10 @@ def fetch_real_instagram_data(force_refresh=False):
         if os.getenv("INSTAGRAM_PASSWORD") or os.getenv("INSTAGRAM_SESSIONID"):
             try:
                 cl = get_authenticated_ig_client()
-                user_info = cl.user_info_by_username(ig_user)
+                try:
+                    user_info = cl.user_info_by_username_v1(ig_user)
+                except Exception:
+                    user_info = cl.user_info_by_username(ig_user)
                 medias = []
                 for fetch_fn in (
                     lambda: cl.user_clips_v1(user_info.pk, amount=15),
@@ -924,7 +902,7 @@ def fetch_real_instagram_data(force_refresh=False):
                     if desc_m and " - " in desc_m.group(1) and not bio_txt:
                         bio_txt = desc_m.group(1).split(" - ")[-1].strip()
 
-                    codes = re.findall(r'/(?:p|reel|tv)/([A-Za-z0-9_-]{11})/', txt)
+                    codes = re.findall(r'/(?:p|reel|tv)/([A-Za-z0-9_-]{8,14})/', txt)
                     for sc in codes:
                         if sc and not any(x["code"] == sc for x in scraped_reels):
                             scraped_reels.append({
@@ -964,7 +942,8 @@ def fetch_real_instagram_data(force_refresh=False):
 
     return merge_and_save_ig_cache({"username": ig_user})
 
-def start_lightweight_ig_sync_daemon():
+def if '--sync-ig' not in os.sys.argv:
+    start_lightweight_ig_sync_daemon():
     def _loop():
         while True:
             try:
@@ -975,7 +954,8 @@ def start_lightweight_ig_sync_daemon():
             time.sleep(60)
     threading.Thread(target=_loop, daemon=True).start()
 
-start_lightweight_ig_sync_daemon()
+if '--sync-ig' not in os.sys.argv:
+    start_lightweight_ig_sync_daemon()
 
 def publish_reel_item_to_instagram(video_id):
     vid_key = str(video_id)
