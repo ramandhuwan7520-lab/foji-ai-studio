@@ -33,6 +33,21 @@ def send_alert(msg):
         except Exception:
             pass
 
+def send_telegram_photo(photo_path, caption=""):
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    if token and chat_id and os.path.exists(photo_path):
+        try:
+            with open(photo_path, "rb") as pf:
+                requests.post(
+                    f"https://api.telegram.org/bot{token}/sendPhoto",
+                    data={"chat_id": chat_id, "caption": caption[:900]},
+                    files={"photo": pf},
+                    timeout=20
+                )
+        except Exception:
+            pass
+
 def sync_file_to_github(rel_path, commit_msg):
     gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
     repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
@@ -125,7 +140,11 @@ def get_chrome_driver(download_dir):
     opts.add_experimental_option("useAutomationExtension", False)
     return webdriver.Chrome(options=opts)
 
-def launch_chrome_and_connect(download_dir, headless=True):
+def launch_chrome_and_connect(download_dir):
+    """
+    Launches REAL Chrome (NOT broken headless=new if display/local is available)
+    so Gemini UI buttons, '+' menu, and file uploads work 100% identically to local!
+    """
     bot_profile_dir = os.path.abspath("chrome_bot_profile")
     os.makedirs(bot_profile_dir, exist_ok=True)
 
@@ -163,15 +182,14 @@ def launch_chrome_and_connect(download_dir, headless=True):
         "--no-default-browser-check",
         "--disable-blink-features=AutomationControlled",
         "--window-size=1920,1080",
-        "--mute-audio"
+        "--mute-audio",
+        "--no-sandbox",
+        "--disable-dev-shm-usage"
     ]
-    if headless or is_linux:
-        cmd.extend([
-            "--headless=new",
-            "--no-sandbox",
-            "--disable-dev-shm-usage",
-            "--disable-gpu"
-        ])
+    # Only use headless if Linux AND no Xvfb DISPLAY is running
+    if is_linux and not os.environ.get("DISPLAY"):
+        cmd.extend(["--headless=new", "--disable-gpu"])
+
     cmd.append("https://gemini.google.com/app")
 
     proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -271,7 +289,7 @@ def select_flash_model(driver):
         pass
 
 def click_plus_and_select_create_video(driver):
-    """Step 2: Clicks '+' and selects 'Create videos' / 'Create video'."""
+    """Step 2: Clicks '+' and selects 'Create videos' / 'Video'."""
     js_direct_chip = """
     const allEls = Array.from(document.querySelectorAll('button, [role="button"], mat-chip, [role="menuitem"], span'));
     for (const el of allEls) {
@@ -364,7 +382,7 @@ def select_portrait_9_16_ratio(driver):
         pass
 
 def upload_character_images_strictly(driver, foji_img, fojan_img):
-    """Step 4: Uploads both Foji and Fojan character images and waits for upload spinners to finish."""
+    """Step 4: Uploads both Foji and Fojan character images."""
     file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
     if not file_inputs:
         js_click_plus = """
@@ -413,7 +431,7 @@ def upload_character_images_strictly(driver, foji_img, fojan_img):
     return False
 
 def paste_and_send_prompt(driver, prompt_text):
-    """Step 5: Pastes prompt and guarantees submission (retries click/Enter if box isn't cleared)."""
+    """Step 5: Pastes prompt using real ActionChains + JS and clicks Send."""
     clean_prompt = " ".join(prompt_text.splitlines()).strip()
     selectors = [
         "div.ql-editor[contenteditable='true']",
@@ -435,8 +453,12 @@ def paste_and_send_prompt(driver, prompt_text):
     if not box:
         raise RuntimeError("Gemini input box not found! Please refresh Gemini cookies.")
 
-    driver.execute_script("arguments[0].focus();", box)
-    time.sleep(0.6)
+    try:
+        box.click()
+    except Exception:
+        driver.execute_script("arguments[0].focus();", box)
+    time.sleep(0.8)
+
     js_insert = """
     const el = arguments[0];
     const txt = arguments[1];
@@ -449,7 +471,15 @@ def paste_and_send_prompt(driver, prompt_text):
     }
     """
     driver.execute_script(js_insert, box, clean_prompt)
-    time.sleep(2.5)
+    time.sleep(1.5)
+    # Trigger physical spacebar + backspace so Angular/React enables the Send button!
+    try:
+        box.send_keys(" ")
+        time.sleep(0.3)
+        box.send_keys(Keys.BACKSPACE)
+    except Exception:
+        pass
+    time.sleep(2.0)
 
     js_send = """
     const btns = Array.from(document.querySelectorAll('button, [role="button"]'));
@@ -478,7 +508,6 @@ def paste_and_send_prompt(driver, prompt_text):
             break
 
 def get_all_videos_count(driver):
-    """Finds all <video> elements including inside Shadow DOMs."""
     js_vids = """
     let vids = Array.from(document.querySelectorAll('video'));
     for (const el of document.querySelectorAll('*')) {
@@ -536,7 +565,7 @@ def is_video_currently_generating(driver):
         return False
 
 def extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_path):
-    """Step 6: Downloads and verifies the rendered MP4 video (supports Download button, direct HTTP, and Blob URLs)."""
+    """Step 6: Downloads and verifies the rendered MP4 video."""
     js_click_dl = """
     const btns = Array.from(document.querySelectorAll('button, a, [role="button"]'));
     for (const b of btns) {
@@ -564,7 +593,6 @@ def extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_p
                     shutil.move(newest, output_video_path)
                 return True
 
-    # Fallback 2: Extract video src (including Shadow DOM)
     js_get_src = """
     let vids = Array.from(document.querySelectorAll('video'));
     for (const el of document.querySelectorAll('*')) {
@@ -592,7 +620,6 @@ def extract_and_verify_gemini_mp4(driver, raw_dir, existing_mp4s, output_video_p
                 if is_valid_mp4(output_video_path):
                     return True
 
-        # Fallback 3: In-Browser Fetch -> Base64 for blob: or protected URLs
         if video_url:
             driver.set_script_timeout(90)
             b64_data = driver.execute_async_script("""
@@ -641,7 +668,7 @@ def generate_video_in_gemini(pending_pkg=None):
 
     print("🚀 [Step 1/6] Launching Chrome & Opening Gemini...")
     update_3d_telemetry(1, "Opening Gemini", "Selecting Flash model...", "active", 15)
-    driver, chrome_proc = launch_chrome_and_connect(raw_dir, headless=True)
+    driver, chrome_proc = launch_chrome_and_connect(raw_dir)
 
     try:
         time.sleep(4)
@@ -649,12 +676,13 @@ def generate_video_in_gemini(pending_pkg=None):
         dismiss_annoying_popups(driver)
 
         page_txt_low = (driver.find_element(By.TAG_NAME, "body").text or "").lower()
-        if "sign in" in page_txt_low and "gemini" in page_txt_low and not driver.find_elements(By.CSS_SELECTOR, "div[contenteditable='true'], textarea"):
-            err = "Gemini Cookies Expired on Cloud! Run 'python cloud_worker.py --export-cookies' locally and push."
-            print(f"❌ {err}")
+        if "sign in" in page_txt_low and not driver.find_elements(By.CSS_SELECTOR, "div[contenteditable='true'], textarea"):
+            snap = "data/gemini_login_error.png"
+            driver.save_screenshot(snap)
+            err = "Gemini Cookies Expired! Run 'python cloud_worker.py --export-cookies' on laptop and push."
+            send_telegram_photo(snap, f"🔐 {err}")
             update_3d_telemetry(1, "Login Required", err, "error", 0)
             push_app_notification("error", "Cookies Expired", err, "error")
-            send_alert(f"🔐 *Gemini Login Required*\n{err}")
             raise RuntimeError(err)
 
         # 1. Select Flash Model
@@ -686,20 +714,26 @@ def generate_video_in_gemini(pending_pkg=None):
 
         # 5. Paste Prompt & Click Generate
         print("✉️ [Step 5/6] Submitting prompt to Gemini...")
-        update_3d_telemetry(5, "Generating Video", "Submitting prompt & waiting for Gemini (up to 15 mins)...", "active", 80)
+        update_3d_telemetry(5, "Generating Video", "Submitting prompt & waiting for Gemini...", "active", 80)
         paste_and_send_prompt(driver, base_video_prompt)
 
-        time.sleep(10)
-        update_3d_telemetry(5, "Rendering Video", "Gemini is rendering 3D video (10-15 mins max)...", "active", 85)
+        time.sleep(8)
+        # Send live proof screenshot to Telegram so user sees Gemini working!
+        snap_start = "data/gemini_started.png"
+        try:
+            driver.save_screenshot(snap_start)
+            send_telegram_photo(snap_start, f"🎬 Gemini Prompt Submitted for *{latest_pkg.get('emotion_name', 'Reel')}*! Waiting for response/video...")
+        except Exception:
+            pass
+
+        update_3d_telemetry(5, "Rendering Video", "Gemini is processing your video...", "active", 85)
         video_saved = False
         idle_ticks = 0
 
-        # FULL 15-MINUTE PATIENCE WINDOW: 180 ticks x 5s = 900 seconds (15 Minutes)
         for tick in range(180):
             time.sleep(5)
             dismiss_annoying_popups(driver)
 
-            # Check if a new MP4 was already downloaded into raw_dir
             current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
             new_files = [f for f in (current_mp4s - existing_mp4s) if not f.endswith(".crdownload")]
             if new_files:
@@ -723,7 +757,6 @@ def generate_video_in_gemini(pending_pkg=None):
             elapsed_mins = round(((tick + 1) * 5) / 60.0, 1)
             print(f"⏳ [{elapsed_mins}/15.0 min] Generating: {generating_now} | Videos: {vid_count}/{initial_videos} | Bubbles: {current_bubbles}/{prev_bubbles}")
 
-            # Keep dashboard telemetry alive every 30 seconds so frontend never times out
             if tick % 6 == 0:
                 prog = min(95, 85 + int(tick / 18))
                 update_3d_telemetry(5, "Rendering 3D Video", f"Gemini rendering video... ({elapsed_mins} min elapsed)", "active", prog)
@@ -732,30 +765,29 @@ def generate_video_in_gemini(pending_pkg=None):
                 idle_ticks = 0
                 continue
 
-            # If Gemini finished responding with text/quota/error (and no video is generating), forward reply after 30s confirmation
-            if current_bubbles > prev_bubbles and tick >= 5:
-                time.sleep(5)
+            if current_bubbles > prev_bubbles and tick >= 4:
+                time.sleep(4)
                 if get_all_videos_count(driver) > initial_videos or is_video_currently_generating(driver):
                     continue
                 reply_txt = get_latest_response_text(driver).strip()
-                # Ignore short status texts that might precede a video card
                 if reply_txt and not any(w in reply_txt.lower() for w in ["generating", "creating", "hang tight", "here's your video", "here is your video"]):
                     clean_reply = reply_txt[:240]
-                    print(f"💬 Gemini Text Reply: {clean_reply}")
+                    snap_reply = "data/gemini_reply.png"
+                    driver.save_screenshot(snap_reply)
+                    send_telegram_photo(snap_reply, f"💬 Gemini Response:\n{clean_reply}")
                     update_3d_telemetry(5, "Gemini Response", clean_reply, "error", 0)
                     push_app_notification("error", "Gemini Response", clean_reply, "error")
-                    send_alert(f"💬 *Gemini Response:*\n{clean_reply}")
                     raise RuntimeError(clean_reply)
 
-            # Only exit early if Gemini is completely idle for 3 full minutes (36 ticks) with no spinner & no video
             idle_ticks += 1
-            if idle_ticks >= 36:
+            if idle_ticks >= 24:
+                snap_idle = "data/gemini_idle.png"
+                driver.save_screenshot(snap_idle)
                 reply_txt = get_latest_response_text(driver).strip()
-                msg = reply_txt[:220] if reply_txt else "Gemini remained idle for 3 minutes without starting video render."
-                print(f"⚠️ Idle Exit: {msg}")
+                msg = reply_txt[:220] if reply_txt else "Gemini did not start video generation (see screenshot on Telegram)."
+                send_telegram_photo(snap_idle, f"⚠️ {msg}")
                 update_3d_telemetry(5, "Gemini Notice", msg, "error", 0)
                 push_app_notification("error", "Gemini Notice", msg, "error")
-                send_alert(f"⚠️ *Gemini Notice:*\n{msg}")
                 raise RuntimeError(msg)
 
         if video_saved and is_valid_mp4(output_video_path):
