@@ -942,7 +942,7 @@ def fetch_real_instagram_data(force_refresh=False):
 
     return merge_and_save_ig_cache({"username": ig_user})
 
-def if '--sync-ig' not in os.sys.argv:
+if '--sync-ig' not in os.sys.argv:
     start_lightweight_ig_sync_daemon():
     def _loop():
         while True:
