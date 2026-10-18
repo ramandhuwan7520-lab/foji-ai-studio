@@ -942,11 +942,11 @@ def fetch_real_instagram_data(force_refresh=False):
 
     return merge_and_save_ig_cache({"username": ig_user})
 
-def start_lightweight_ig_sync_daemon():
+def # ig_sync_removed:
     def _loop():
         while True:
             try:
-                fetch_real_instagram_data(force_refresh=True)
+                None
                 trim_system_memory()
             except Exception:
                 pass
@@ -954,7 +954,7 @@ def start_lightweight_ig_sync_daemon():
     threading.Thread(target=_loop, daemon=True).start()
 
 if '--sync-ig' not in os.sys.argv:
-    start_lightweight_ig_sync_daemon()
+    # ig_sync_removed
 
 def publish_reel_item_to_instagram(video_id):
     vid_key = str(video_id)
@@ -993,7 +993,7 @@ def publish_reel_item_to_instagram(video_id):
         UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 100, "stage": "Published!", "status": "done", "error": ""}
         log_notification("posted", "Published to Instagram", f"{target.get('emotion_name')} is now live.", "success")
         trim_system_memory()
-        threading.Thread(target=lambda: fetch_real_instagram_data(force_refresh=True), daemon=True).start()
+        threading.Thread(target=lambda: None, daemon=True).start()
         return True, "POSTED DONE"
 
     except Exception as e:

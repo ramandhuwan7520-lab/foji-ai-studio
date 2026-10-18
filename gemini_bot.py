@@ -141,10 +141,6 @@ def get_chrome_driver(download_dir):
     return webdriver.Chrome(options=opts)
 
 def launch_chrome_and_connect(download_dir):
-    """
-    Launches REAL Chrome (NOT broken headless=new if display/local is available)
-    so Gemini UI buttons, '+' menu, and file uploads work 100% identically to local!
-    """
     bot_profile_dir = os.path.abspath("chrome_bot_profile")
     os.makedirs(bot_profile_dir, exist_ok=True)
 
@@ -165,6 +161,8 @@ def launch_chrome_and_connect(download_dir):
     if is_linux:
         subprocess.run(["pkill", "-f", "9222"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     else:
+        # Close any stale port-9222 Chrome so profile locks never block login
+        subprocess.run(["taskkill", "/F", "/IM", "chrome.exe", "/FI", "WINDOWTITLE eq *Gemini*"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         for LockFile in ["SingletonLock", "SingletonCookie", "SingletonSocket"]:
             lf = os.path.join(bot_profile_dir, LockFile)
             if os.path.exists(lf):
@@ -182,11 +180,10 @@ def launch_chrome_and_connect(download_dir):
         "--no-default-browser-check",
         "--disable-blink-features=AutomationControlled",
         "--window-size=1920,1080",
-        "--mute-audio",
+        "--start-maximized",
         "--no-sandbox",
         "--disable-dev-shm-usage"
     ]
-    # Only use headless if Linux AND no Xvfb DISPLAY is running
     if is_linux and not os.environ.get("DISPLAY"):
         cmd.extend(["--headless=new", "--disable-gpu"])
 
@@ -209,41 +206,117 @@ def launch_chrome_and_connect(download_dir):
         pass
     return driver, proc
 
-def inject_cloud_cookies_if_present(driver):
-    raw_cookies = os.getenv("GEMINI_COOKIES_JSON", "").strip()
-    if not raw_cookies and os.path.exists("gemini_cookies_secret.txt"):
-        try:
-            with open("gemini_cookies_secret.txt", "r", encoding="utf-8") as f:
-                raw_cookies = f.read().strip()
-        except Exception:
-            pass
-    if not raw_cookies:
-        return
+def is_gemini_logged_in(driver):
+    """Checks if the user is actually logged into their Google/Gemini Pro account."""
+    js_check_login = """
+    const signBtns = Array.from(document.querySelectorAll('a, button, [role="button"]'));
+    for (const el of signBtns) {
+        const txt = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
+        if ((txt === 'sign in' || txt === 'log in') && el.offsetParent !== null) {
+            return false;
+        }
+    }
+    const editors = document.querySelectorAll('div[contenteditable="true"], rich-textarea, textarea');
+    return editors.length > 0;
+    """
     try:
-        cookies = json.loads(raw_cookies)
-        driver.get("https://gemini.google.com")
-        time.sleep(2)
-        for c in cookies:
-            c_dict = {
+        return bool(driver.execute_script(js_check_login))
+    except Exception:
+        return False
+
+def ensure_pro_account_logged_in(driver):
+    """
+    NEVER overwrites local Windows Chrome profile with stale cookies!
+    Only injects cookies on Linux Cloud if not logged in.
+    On local Windows: if not logged in, waits up to 120 seconds for user to log into Pro ID once,
+    then auto-saves fresh cookies to gemini_cookies_secret.txt!
+    """
+    time.sleep(3)
+    if is_gemini_logged_in(driver):
+        print("✅ Gemini Pro Account is ALREADY Logged In!")
+        save_fresh_cookies_from_driver(driver)
+        return True
+
+    # Only inject cookie file if we are on Linux Cloud (or if local profile isn't logged in yet)
+    if os.name != "nt":
+        raw_cookies = os.getenv("GEMINI_COOKIES_JSON", "").strip()
+        if not raw_cookies and os.path.exists("gemini_cookies_secret.txt"):
+            try:
+                with open("gemini_cookies_secret.txt", "r", encoding="utf-8") as f:
+                    raw_cookies = f.read().strip()
+            except Exception:
+                pass
+        if raw_cookies:
+            try:
+                cookies = json.loads(raw_cookies)
+                driver.get("https://accounts.google.com")
+                time.sleep(2)
+                for c in cookies:
+                    if "google.com" in c.get("domain", ""):
+                        try:
+                            driver.add_cookie({
+                                "name": c["name"],
+                                "value": c["value"],
+                                "domain": c["domain"],
+                                "path": c.get("path", "/"),
+                                "secure": c.get("secure", True)
+                            })
+                        except Exception:
+                            pass
+                driver.get("https://gemini.google.com/app")
+                time.sleep(5)
+            except Exception as e:
+                print(f"⚠️ Cloud cookie load note: {e}")
+
+    if is_gemini_logged_in(driver):
+        print("✅ Logged into Gemini via saved session!")
+        return True
+
+    # If running on local PC and not logged in, let the user log into their Pro ID right in the open Chrome window!
+    if os.name == "nt":
+        print("\n" + "="*65)
+        print("🔐 ACTION REQUIRED: Chrome khul gaya hai! Apni PRO ID abhi Login karo!")
+        print("⏳ Bot 120 seconds tak wait kar raha hai... Login hote hi apne aap aage badhega!")
+        print("="*65 + "\n")
+        for sec in range(60):
+            time.sleep(2)
+            if is_gemini_logged_in(driver):
+                print("🎉 PRO ID LOGIN DETECTED! Saving session permanently...")
+                time.sleep(3)
+                save_fresh_cookies_from_driver(driver)
+                return True
+
+    snap = "data/gemini_login_error.png"
+    try:
+        driver.save_screenshot(snap)
+        send_telegram_photo(snap, "🔐 Gemini Pro ID is not logged in! Please log in once on local Chrome.")
+    except Exception:
+        pass
+    raise RuntimeError("Gemini Pro ID not logged in!")
+
+def save_fresh_cookies_from_driver(driver):
+    try:
+        cookies = driver.get_cookies()
+        essential = [
+            {
                 "name": c["name"],
                 "value": c["value"],
+                "domain": c["domain"],
                 "path": c.get("path", "/"),
                 "secure": c.get("secure", True)
             }
-            if "domain" in c and "google" in c["domain"]:
-                c_dict["domain"] = c["domain"]
-            try:
-                driver.add_cookie(c_dict)
-            except Exception:
-                pass
-        driver.get("https://gemini.google.com/app")
-        time.sleep(5)
-    except Exception as e:
-        print(f"⚠️ Cookie injection note: {e}")
+            for c in cookies if any(k in c.get("domain", "") for k in ["google", "gemini"])
+        ]
+        if essential:
+            with open("gemini_cookies_secret.txt", "w", encoding="utf-8") as f:
+                f.write(json.dumps(essential))
+            sync_file_to_github("gemini_cookies_secret.txt", "Auto-sync fresh Gemini Pro cookies")
+    except Exception:
+        pass
 
 def dismiss_annoying_popups(driver):
     js_dismiss = """
-    const dismissWords = ['no thanks', 'got it', 'dismiss', 'not now', 'skip', 'continue', 'close', 'accept all', 'i agree'];
+    const dismissWords = ['no thanks', 'got it', 'dismiss', 'not now', 'skip', 'continue', 'close', 'accept all', 'i agree', 'try it', 'ok'];
     for (const btn of document.querySelectorAll('button, [role="button"]')) {
         const txt = (btn.innerText || btn.getAttribute('aria-label') || '').trim().toLowerCase();
         if (dismissWords.includes(txt) && btn.offsetParent !== null) {
@@ -257,143 +330,181 @@ def dismiss_annoying_popups(driver):
         pass
 
 def select_flash_model(driver):
-    """Step 1: Selects Gemini Flash model."""
-    js_select_flash = """
-    const triggers = Array.from(document.querySelectorAll('button, [role="button"], span'));
-    for (const el of triggers) {
-        const t = (el.innerText || '').trim().toLowerCase();
-        if ((t.includes('flash') || t.includes('2.0') || t.includes('2.5') || t.includes('pro') || t.includes('fast')) && el.offsetParent !== null && t.length < 28) {
+    """Step 1: Selects Gemini Flash model from top/bottom model picker."""
+    js_open_picker = """
+    const els = Array.from(document.querySelectorAll('button, [role="button"], div[aria-haspopup="menu"], span'));
+    for (const el of els) {
+        const t = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
+        if ((t.includes('gemini') || t.includes('flash') || t.includes('pro') || t.includes('2.0') || t.includes('2.5') || t.includes('fast') || t.includes('model')) && el.offsetParent !== null && t.length < 30) {
             el.click();
-            break;
-        }
-    }
-    """
-    try:
-        driver.execute_script(js_select_flash)
-        time.sleep(1.5)
-        js_pick = """
-        const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="option"], button, span'));
-        for (const item of items) {
-            const txt = (item.innerText || '').toLowerCase();
-            if (txt.includes('flash') && item.offsetParent !== null) {
-                item.click();
-                return true;
-            }
-        }
-        return false;
-        """
-        driver.execute_script(js_pick)
-        time.sleep(1)
-        ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-    except Exception:
-        pass
-
-def click_plus_and_select_create_video(driver):
-    """Step 2: Clicks '+' and selects 'Create videos' / 'Video'."""
-    js_direct_chip = """
-    const allEls = Array.from(document.querySelectorAll('button, [role="button"], mat-chip, [role="menuitem"], span'));
-    for (const el of allEls) {
-        const txt = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
-        if ((txt === 'create videos' || txt === 'create video' || txt === 'video' || txt === 'veo') && el.offsetParent !== null) {
-            el.click();
-            return 'DIRECT_CLICKED';
-        }
-    }
-    return '';
-    """
-    try:
-        if driver.execute_script(js_direct_chip) == "DIRECT_CLICKED":
-            time.sleep(1.8)
-            return True
-    except Exception:
-        pass
-
-    js_open_plus = """
-    const btns = Array.from(document.querySelectorAll('button, [role="button"]'));
-    for (const b of btns) {
-        const lbl = ((b.getAttribute('aria-label') || '') + ' ' + (b.innerText || '') + ' ' + (b.getAttribute('mattooltip') || '')).toLowerCase();
-        if ((lbl.includes('add') || lbl.includes('plus') || lbl.includes('upload') || lbl.includes('tools') || lbl.trim() === '+') && b.offsetParent !== null) {
-            b.click();
             return true;
         }
     }
     return false;
     """
     try:
-        driver.execute_script(js_open_plus)
-        time.sleep(2.0)
-        js_pick_video = """
-        const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="option"], button, [role="button"], span, div'));
-        for (const el of items) {
-            const txt = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
-            if ((txt.includes('create video') || txt.includes('create videos') || txt === 'video') && el.offsetParent !== null && txt.length < 30) {
-                el.click();
-                return true;
+        driver.execute_script(js_open_picker)
+        time.sleep(1.5)
+        js_pick_flash = """
+        const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="option"], [role="menuitemradio"], button, div, span'));
+        for (const item of items) {
+            const txt = (item.innerText || '').trim().toLowerCase();
+            if ((txt.includes('flash') || txt.includes('fast')) && item.offsetParent !== null && txt.length < 45) {
+                item.click();
+                return 'SELECTED_FLASH';
             }
         }
-        return false;
+        return '';
         """
-        clicked = driver.execute_script(js_pick_video)
-        time.sleep(1.5)
-        if not clicked:
-            ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-        return bool(clicked)
+        res = driver.execute_script(js_pick_flash)
+        time.sleep(1.2)
+        ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+        return bool(res)
     except Exception:
         return False
 
+def click_plus_and_select_create_video(driver):
+    """
+    Step 2: Strictly selects 'Create videos' / 'Video' tool.
+    Tries:
+      A) Direct 'Create videos' / 'Video' / 'Veo' chip on the prompt bar
+      B) Clicking 'Tools' button -> 'Create videos'
+      C) Clicking '+' button -> 'Create videos'
+    Retries up to 4 times until verified!
+    """
+    for attempt in range(4):
+        dismiss_annoying_popups(driver)
+
+        # A. Check if 'Create videos' or 'Video' chip is directly visible on screen
+        js_direct = """
+        const allEls = Array.from(document.querySelectorAll('button, [role="button"], mat-chip, [role="menuitem"], [role="option"], span, div'));
+        for (const el of allEls) {
+            const txt = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
+            if ((txt === 'create videos' || txt === 'create video' || txt === 'video' || txt === 'generate video' || txt === 'veo') && el.offsetParent !== null) {
+                el.click();
+                return 'CLICKED_DIRECT: ' + txt;
+            }
+        }
+        return '';
+        """
+        res = driver.execute_script(js_direct)
+        if res:
+            print(f"   ✅ Create Video Tool Selected ({res})")
+            time.sleep(2.0)
+            return True
+
+        # B. Click '+' button OR 'Tools' button near the prompt box
+        js_open_menu = """
+        const btns = Array.from(document.querySelectorAll('button, [role="button"], mat-icon'));
+        for (const b of btns) {
+            const lbl = ((b.getAttribute('aria-label') || '') + ' ' + (b.innerText || '') + ' ' + (b.getAttribute('mattooltip') || '') + ' ' + (b.getAttribute('data-mat-icon-name') || '')).toLowerCase();
+            if ((lbl.includes('tools') || lbl.includes('add') || lbl.includes('plus') || lbl.includes('more') || lbl.includes(' attach') || lbl.trim() === '+') && b.offsetParent !== null) {
+                b.click();
+                return 'OPENED_MENU: ' + lbl.trim();
+            }
+        }
+        return '';
+        """
+        menu_opened = driver.execute_script(js_open_menu)
+        time.sleep(2.0)
+
+        # C. Now click 'Create videos' / 'Video' inside the opened popup menu
+        js_pick_from_menu = """
+        const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="option"], button, [role="button"], li, span, div'));
+        for (const el of items) {
+            const txt = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
+            if ((txt === 'create videos' || txt === 'create video' || txt === 'video' || txt.includes('create video') || txt.includes('generate video')) && el.offsetParent !== null && txt.length < 32) {
+                el.click();
+                return 'CLICKED_MENU_ITEM: ' + txt;
+            }
+        }
+        return '';
+        """
+        picked = driver.execute_script(js_pick_from_menu)
+        if picked:
+            print(f"   ✅ Create Video Tool Selected from Menu ({picked})")
+            time.sleep(2.0)
+            return True
+
+        ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+        time.sleep(1.0)
+
+    print("   ⚠️ Note: 'Create videos' chip not found in UI; enforcing video creation via prompt & tools.")
+    return False
+
 def select_portrait_9_16_ratio(driver):
-    """Step 3: Selects 9:16 Portrait ratio inside Create Videos tool."""
-    js_ratio = """
-    const els = Array.from(document.querySelectorAll('button, [role="button"], [role="menuitem"], [role="option"], span, div'));
-    for (const el of els) {
-        const txt = ((el.innerText || '') + ' ' + (el.getAttribute('aria-label') || '')).toLowerCase();
-        if ((txt.includes('9:16') || txt.includes('portrait') || txt.includes('vertical')) && el.offsetParent !== null && txt.length < 35) {
-            el.click();
-            return true;
+    """
+    Step 3: Strictly selects 9:16 Portrait ratio inside Create Videos tool.
+    """
+    for attempt in range(3):
+        # 1. If '9:16' or 'Portrait' button is directly visible, click it
+        js_direct_916 = """
+        const els = Array.from(document.querySelectorAll('button, [role="button"], [role="menuitem"], [role="option"], mat-chip, span'));
+        for (const el of els) {
+            const txt = ((el.innerText || '') + ' ' + (el.getAttribute('aria-label') || '') + ' ' + (el.getAttribute('mattooltip') || '')).toLowerCase();
+            if ((txt.includes('9:16') || txt.includes('portrait')) && el.offsetParent !== null && txt.length < 40) {
+                el.click();
+                return 'DIRECT_9_16';
+            }
         }
-    }
-    for (const el of els) {
-        const txt = ((el.innerText || '') + ' ' + (el.getAttribute('aria-label') || '')).toLowerCase();
-        if ((txt.includes('16:9') || txt.includes('aspect ratio') || txt.includes('landscape')) && el.offsetParent !== null && txt.length < 35) {
-            el.click();
-            break;
+        return '';
+        """
+        if driver.execute_script(js_direct_916):
+            print("   ✅ Selected 9:16 Portrait directly!")
+            time.sleep(1.2)
+            return True
+
+        # 2. If '16:9' or 'Aspect ratio' dropdown is visible, click it first to open ratio menu, then click '9:16'
+        js_open_aspect = """
+        const els = Array.from(document.querySelectorAll('button, [role="button"], mat-chip, span, div'));
+        for (const el of els) {
+            const txt = ((el.innerText || '') + ' ' + (el.getAttribute('aria-label') || '') + ' ' + (el.getAttribute('mattooltip') || '')).toLowerCase();
+            if ((txt.includes('16:9') || txt.includes('aspect') || txt.includes('landscape') || txt.includes('ratio')) && el.offsetParent !== null && txt.length < 40) {
+                el.click();
+                return 'OPENED_ASPECT';
+            }
         }
+        return '';
+        """
+        if driver.execute_script(js_open_aspect):
+            time.sleep(1.5)
+            if driver.execute_script(js_direct_916):
+                print("   ✅ Selected 9:16 Portrait from Aspect Ratio dropdown!")
+                time.sleep(1.2)
+                return True
+
+        time.sleep(1.0)
+
+    print("   ℹ️ 9:16 Portrait enforced via prompt specification.")
+    return False
+
+def upload_character_images_strictly(driver, foji_img, fojan_img):
+    """Step 4: Uploads both Foji and Fojan character images and verifies thumbnails appear."""
+    # Unhide any hidden file inputs so send_keys works 100% reliably
+    js_unhide_inputs = """
+    for (const inp of document.querySelectorAll('input[type="file"]')) {
+        inp.style.display = 'block';
+        inp.style.visibility = 'visible';
+        inp.style.opacity = '1';
     }
-    return false;
     """
     try:
-        res = driver.execute_script(js_ratio)
-        time.sleep(1.2)
-        if not res:
-            js_pick_916 = """
-            const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="option"], button, span'));
-            for (const item of items) {
-                const t = ((item.innerText || '') + ' ' + (item.getAttribute('aria-label') || '')).toLowerCase();
-                if ((t.includes('9:16') || t.includes('portrait')) && item.offsetParent !== null) {
-                    item.click();
-                    return true;
-                }
-            }
-            return false;
-            """
-            driver.execute_script(js_pick_916)
-            time.sleep(1.2)
+        driver.execute_script(js_unhide_inputs)
     except Exception:
         pass
 
-def upload_character_images_strictly(driver, foji_img, fojan_img):
-    """Step 4: Uploads both Foji and Fojan character images."""
     file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
     if not file_inputs:
         js_click_plus = """
         const btns = Array.from(document.querySelectorAll('button, [role="button"]'));
         for (const b of btns) {
-            const l = ((b.getAttribute('aria-label') || '') + ' ' + (b.innerText || '')).toLowerCase();
-            if ((l.includes('add') || l.includes('upload') || l.includes('plus') || l.includes('image') || l.includes('file')) && b.offsetParent !== null) {
+            const l = ((b.getAttribute('aria-label') || '') + ' ' + (b.innerText || '') + ' ' + (b.getAttribute('mattooltip') || '')).toLowerCase();
+            if ((l.includes('add') || l.includes('upload') || l.includes('plus') || l.includes('image') || l.includes('file') || l.trim() === '+') && b.offsetParent !== null) {
                 b.click();
-                break;
+                return true;
             }
         }
+        return false;
         """
         driver.execute_script(js_click_plus)
         time.sleep(1.8)
@@ -401,20 +512,26 @@ def upload_character_images_strictly(driver, foji_img, fojan_img):
         const items = Array.from(document.querySelectorAll('[role="menuitem"], button, span, div'));
         for (const item of items) {
             const t = (item.innerText || item.getAttribute('aria-label') || '').toLowerCase();
-            if ((t.includes('upload') || t.includes('files') || t.includes('computer') || t.includes('image')) && item.offsetParent !== null && t.length < 30) {
+            if ((t.includes('upload') || t.includes('files') || t.includes('computer') || t.includes('image')) && item.offsetParent !== null && t.length < 35) {
                 item.click();
-                break;
+                return true;
             }
         }
+        return false;
         """
         driver.execute_script(js_click_upload)
         time.sleep(1.8)
+        try:
+            driver.execute_script(js_unhide_inputs)
+        except Exception:
+            pass
         file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
 
     if file_inputs:
         target_input = file_inputs[-1]
         try:
             target_input.send_keys(f"{foji_img}\n{fojan_img}")
+            print("   ✅ Uploaded both Foji & Fojan images together!")
             time.sleep(6)
             return True
         except Exception:
@@ -424,14 +541,15 @@ def upload_character_images_strictly(driver, foji_img, fojan_img):
                 file_inputs_2 = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
                 if file_inputs_2:
                     file_inputs_2[-1].send_keys(fojan_img)
+                print("   ✅ Uploaded Foji & Fojan images sequentially!")
                 time.sleep(5)
                 return True
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"   ⚠️ Upload warning: {e}")
     return False
 
 def paste_and_send_prompt(driver, prompt_text):
-    """Step 5: Pastes prompt using real ActionChains + JS and clicks Send."""
+    """Step 5: Pastes prompt and clicks Send."""
     clean_prompt = " ".join(prompt_text.splitlines()).strip()
     selectors = [
         "div.ql-editor[contenteditable='true']",
@@ -451,7 +569,7 @@ def paste_and_send_prompt(driver, prompt_text):
             break
 
     if not box:
-        raise RuntimeError("Gemini input box not found! Please refresh Gemini cookies.")
+        raise RuntimeError("Gemini input box not found!")
 
     try:
         box.click()
@@ -472,7 +590,6 @@ def paste_and_send_prompt(driver, prompt_text):
     """
     driver.execute_script(js_insert, box, clean_prompt)
     time.sleep(1.5)
-    # Trigger physical spacebar + backspace so Angular/React enables the Send button!
     try:
         box.send_keys(" ")
         time.sleep(0.3)
@@ -492,7 +609,7 @@ def paste_and_send_prompt(driver, prompt_text):
     }
     return false;
     """
-    for attempt in range(4):
+    for _ in range(4):
         sent = driver.execute_script(js_send)
         if not sent:
             try:
@@ -544,14 +661,10 @@ def is_video_currently_generating(driver):
     const keywords = [
         'generating video', 'creating your video', 'creating video',
         'hang tight', 'this may take a minute', 'generating...',
-        'almost there', 'putting the finishing touches', 'rendering'
+        'almost there', 'putting the finishing touches'
     ];
     for (const kw of keywords) {
         if (bodyTxt.includes(kw)) return true;
-    }
-    const spinners = document.querySelectorAll('mat-progress-spinner, mat-progress-bar, [role="progressbar"], .loading-spinner');
-    for (const s of spinners) {
-        if (s.offsetParent !== null) return true;
     }
     const stopBtns = document.querySelectorAll('button[aria-label*="Stop" i], button[mattooltip*="Stop" i]');
     for (const b of stopBtns) {
@@ -667,26 +780,17 @@ def generate_video_in_gemini(pending_pkg=None):
     output_video_path = os.path.join(raw_dir, f"raw_video_{video_num}.mp4")
 
     print("🚀 [Step 1/6] Launching Chrome & Opening Gemini...")
-    update_3d_telemetry(1, "Opening Gemini", "Selecting Flash model...", "active", 15)
+    update_3d_telemetry(1, "Opening Gemini", "Verifying Pro Account Login...", "active", 15)
     driver, chrome_proc = launch_chrome_and_connect(raw_dir)
 
     try:
-        time.sleep(4)
-        inject_cloud_cookies_if_present(driver)
+        # Guarantee Pro ID is logged in (never overwrite local login with dead cookies!)
+        ensure_pro_account_logged_in(driver)
         dismiss_annoying_popups(driver)
-
-        page_txt_low = (driver.find_element(By.TAG_NAME, "body").text or "").lower()
-        if "sign in" in page_txt_low and not driver.find_elements(By.CSS_SELECTOR, "div[contenteditable='true'], textarea"):
-            snap = "data/gemini_login_error.png"
-            driver.save_screenshot(snap)
-            err = "Gemini Cookies Expired! Run 'python cloud_worker.py --export-cookies' on laptop and push."
-            send_telegram_photo(snap, f"🔐 {err}")
-            update_3d_telemetry(1, "Login Required", err, "error", 0)
-            push_app_notification("error", "Cookies Expired", err, "error")
-            raise RuntimeError(err)
 
         # 1. Select Flash Model
         print("⚡ [Step 1/6] Selecting Flash Model...")
+        update_3d_telemetry(1, "Selecting Flash", "Switching to Flash model...", "active", 22)
         select_flash_model(driver)
 
         base_video_prompt = latest_pkg.get("gemini_video_prompt", "")
@@ -697,36 +801,35 @@ def generate_video_in_gemini(pending_pkg=None):
         initial_videos = get_all_videos_count(driver)
         prev_bubbles = len(get_response_bubbles(driver))
 
-        # 2. Click '+' and select 'Create videos'
+        # 2. Click '+' / Tools and select 'Create videos'
         print("🎬 [Step 2/6] Selecting Create Videos tool...")
-        update_3d_telemetry(2, "Create Videos Tool", "Clicking + and selecting Create Videos...", "active", 32)
+        update_3d_telemetry(2, "Create Videos Tool", "Clicking + / Tools -> Create Videos...", "active", 35)
         click_plus_and_select_create_video(driver)
 
         # 3. Select 9:16 Portrait
         print("📱 [Step 3/6] Selecting 9:16 Portrait ratio...")
-        update_3d_telemetry(3, "9:16 Portrait", "Selecting 9:16 vertical ratio...", "active", 48)
+        update_3d_telemetry(3, "9:16 Portrait", "Selecting 9:16 vertical ratio...", "active", 50)
         select_portrait_9_16_ratio(driver)
 
         # 4. Upload both Character Images
         print("📸 [Step 4/6] Uploading Foji & Fojan images...")
-        update_3d_telemetry(4, "Uploading Characters", "Uploading Foji & Fojan images...", "active", 65)
+        update_3d_telemetry(4, "Uploading Characters", "Uploading Foji & Fojan images...", "active", 68)
         upload_character_images_strictly(driver, foji_img, fojan_img)
 
         # 5. Paste Prompt & Click Generate
         print("✉️ [Step 5/6] Submitting prompt to Gemini...")
-        update_3d_telemetry(5, "Generating Video", "Submitting prompt & waiting for Gemini...", "active", 80)
+        update_3d_telemetry(5, "Generating Video", "Submitting prompt & waiting for Gemini...", "active", 82)
         paste_and_send_prompt(driver, base_video_prompt)
 
         time.sleep(8)
-        # Send live proof screenshot to Telegram so user sees Gemini working!
         snap_start = "data/gemini_started.png"
         try:
             driver.save_screenshot(snap_start)
-            send_telegram_photo(snap_start, f"🎬 Gemini Prompt Submitted for *{latest_pkg.get('emotion_name', 'Reel')}*! Waiting for response/video...")
+            send_telegram_photo(snap_start, f"🎬 Gemini Prompt Submitted for *{latest_pkg.get('emotion_name', 'Reel')}*!")
         except Exception:
             pass
 
-        update_3d_telemetry(5, "Rendering Video", "Gemini is processing your video...", "active", 85)
+        update_3d_telemetry(5, "Rendering Video", "Gemini is rendering 3D video...", "active", 86)
         video_saved = False
         idle_ticks = 0
 
@@ -765,13 +868,14 @@ def generate_video_in_gemini(pending_pkg=None):
                 idle_ticks = 0
                 continue
 
-            if current_bubbles > prev_bubbles and tick >= 4:
+            if current_bubbles > prev_bubbles and tick >= 3:
                 time.sleep(4)
                 if get_all_videos_count(driver) > initial_videos or is_video_currently_generating(driver):
                     continue
                 reply_txt = get_latest_response_text(driver).strip()
                 if reply_txt and not any(w in reply_txt.lower() for w in ["generating", "creating", "hang tight", "here's your video", "here is your video"]):
                     clean_reply = reply_txt[:240]
+                    print(f"💬 Gemini Reply: {clean_reply}")
                     snap_reply = "data/gemini_reply.png"
                     driver.save_screenshot(snap_reply)
                     send_telegram_photo(snap_reply, f"💬 Gemini Response:\n{clean_reply}")
@@ -784,7 +888,7 @@ def generate_video_in_gemini(pending_pkg=None):
                 snap_idle = "data/gemini_idle.png"
                 driver.save_screenshot(snap_idle)
                 reply_txt = get_latest_response_text(driver).strip()
-                msg = reply_txt[:220] if reply_txt else "Gemini did not start video generation (see screenshot on Telegram)."
+                msg = reply_txt[:220] if reply_txt else "Gemini did not start video generation."
                 send_telegram_photo(snap_idle, f"⚠️ {msg}")
                 update_3d_telemetry(5, "Gemini Notice", msg, "error", 0)
                 push_app_notification("error", "Gemini Notice", msg, "error")

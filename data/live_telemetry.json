@@ -1,1 +1,9 @@
-{"step_num": 0, "step_title": "STANDBY", "sub_detail": "Ready", "status": "idle", "progress": 0, "epoch": 0}
+{
+  "step_num": 0,
+  "step_title": "Paused",
+  "sub_detail": "invalid syntax (dashboard_app.py, line 945)",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "11:45:59 PM",
+  "epoch": 1792347359.0151477
+}
