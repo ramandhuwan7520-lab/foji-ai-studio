@@ -3,14 +3,12 @@ import sys
 import json
 import time
 import subprocess
-import traceback
 from datetime import datetime, timedelta, timezone
 
 IST = timezone(timedelta(hours=5, minutes=30))
 DEFAULT_SLOTS = ["08:00", "14:00", "20:00"]
 
 def pull_latest_from_github():
-    """Bug #5 Fix: Always pulls latest deletions from GitHub before reading/writing history.json!"""
     if os.environ.get("GITHUB_ACTIONS") == "true":
         try:
             subprocess.run(["git", "pull", "--rebase", "origin", "main"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -31,12 +29,11 @@ def ensure_required_folders_and_files():
         with open("data/schedule_config.json", "w", encoding="utf-8") as f:
             json.dump({
                 "enabled": True,
-                "nightly_batch_time": "02:00",
+                "nightly_batch_time": "02:30",
                 "times": DEFAULT_SLOTS,
                 "button_locked": True,
-                "nightly_2am_tried_date": "",
-                "quota_reopen_time_str": "",
-                "pre_slot_attempts": {},
+                "nightly_230am_tried_date": "",
+                "pre_slot_30m_tried": {},
                 "missed_slots_log": {},
                 "completed_slots_log": {}
             }, f, indent=4)
@@ -81,26 +78,18 @@ def get_today_ready_reels_count(hist, today_str):
         and (item.get("batch_date") == today_str or item.get("status") in ("pending_approval", "scheduled"))
     )
 
-def try_building_missing_reels(target_missing, today_str, cfg, reason_label):
-    """Tries generating 1st reel -> if successful, immediately chains 2nd -> then 3rd!"""
+def try_building_missing_reels(target_missing, today_str):
     import dashboard_app
-    import gemini_bot
-    print(f"🎬 [{reason_label}] Attempting to build {target_missing} reel(s)...")
-
-    for i in range(target_missing):
+    for _ in range(target_missing):
         try:
             pull_latest_from_github()
             dashboard_app.generate_single_reel_package(send_for_approval=True, batch_date=today_str)
-            cfg["quota_reopen_time_str"] = ""
-            with open("data/schedule_config.json", "w", encoding="utf-8") as f:
-                json.dump(cfg, f, indent=4)
             time.sleep(3)
         except Exception as e:
-            print(f"⏸️ Generation stopped during '{reason_label}': {e}")
+            print(f"⏸️ Generation stopped: {e}")
             break
 
 def rollover_overdue_scheduled_reels(hist, slots, now_ist, today_str):
-    """Point #7: If a scheduled reel's slot time already passed, automatically attaches it to the next upcoming slot!"""
     import dashboard_app
     changed = False
     upcoming_slots = []
@@ -120,42 +109,22 @@ def rollover_overdue_scheduled_reels(hist, slots, now_ist, today_str):
                 item["scheduled_slot"] = next_slot
                 item["scheduled_label"] = dt_label
                 changed = True
-                dashboard_app.log_notification(
-                    "scheduled",
-                    "Moved to Next Slot",
-                    f"{item.get('emotion_name')} shifted to {dt_label} IST.",
-                    "info"
-                )
+                dashboard_app.log_notification("scheduled", "Moved to Next Slot", f"{item.get('emotion_name')} shifted to {dt_label} IST.", "info")
     if changed:
-        dashboard_app.save_history(hist, sync_cloud=True, msg="Auto-rollover scheduled reel to next slot")
+        dashboard_app.save_history(hist, sync_cloud=True, msg="Auto-rollover scheduled reel")
 
 def run_autonomous_schedule_cycle():
     """
-    STRICT POINT #7 SCHEDULE & PRECISION RETRY ENGINE:
-    1. Syncs live Instagram profile & 7 reels into cache.
-    2. At 02:00 AM IST: Tries ONCE to generate all 3 daily reels.
-    3. If < 3 reels ready after 02:00 AM:
-       - Does NOT blind-retry every hour!
-       - Checks if `quota_reopen_time_str` is reached -> Tries immediately!
-       - Otherwise, before each schedule slot (e.g. 08:00, 14:00, 20:00), tries at:
-         * Stage 1: 1 Hour Before Slot (`T - 60m`)
-         * Stage 2: 30 Mins Before Slot (`T - 30m`)
-         * Stage 3: 5 Mins Before Slot (`T - 5m`)
-       - Whenever 1st reel succeeds, immediately chains 2nd and 3rd!
-    4. At Slot Time: Publishes approved/scheduled reel, or rolls over late reels to next slot.
+    POINT #5 STRICT SCHEDULE ENGINE:
+    1. Posts any scheduled reel when its slot time arrives.
+    2. At 02:30 AM IST: Tries ONCE to generate all 3 daily reels.
+    3. At 30 Minutes Before Each Schedule Slot (T - 30m): Tries ONCE if < 3 reels are ready.
     """
     import dashboard_app
-    import gemini_bot
 
     pull_latest_from_github()
     now_ist = datetime.now(IST)
     today_str = now_ist.strftime("%Y-%m-%d")
-
-    # Sync real Instagram profile & reels in background
-    try:
-        dashboard_app.fetch_real_instagram_data(force_refresh=True)
-    except Exception:
-        pass
 
     with open("data/schedule_config.json", "r", encoding="utf-8") as f:
         cfg = json.load(f)
@@ -166,16 +135,14 @@ def run_autonomous_schedule_cycle():
     slots = sorted(cfg.get("times") or DEFAULT_SLOTS)
     completed_runs = cfg.get("completed_slots_log", {})
     missed_runs = cfg.get("missed_slots_log", {})
-    pre_attempts = cfg.get("pre_slot_attempts", {}).get(today_str, {})
+    pre30_map = cfg.get("pre_slot_30m_tried", {}).get(today_str, [])
     done_today = completed_runs.get(today_str, [])
     missed_today = missed_runs.get(today_str, [])
 
     hist = dashboard_app.load_history()
     rollover_overdue_scheduled_reels(hist, slots, now_ist, today_str)
 
-    # ==========================================================================
-    # 1. POST DUE SCHEDULED REELS AT SLOT TIME (08:00, 14:00, 20:00)
-    # ==========================================================================
+    # 1. PUBLISH SCHEDULED REELS AT SLOT TIME
     for idx, slot in enumerate(slots):
         if slot in done_today or slot in missed_today:
             continue
@@ -206,76 +173,32 @@ def run_autonomous_schedule_cycle():
             with open("data/schedule_config.json", "w", encoding="utf-8") as f:
                 json.dump(cfg, f, indent=4)
 
-            if idx < len(slots) - 1:
-                next_s = slots[idx + 1]
-                dashboard_app.log_notification("slot_missed", f"Slot {slot} Skipped", f"Next target slot: {next_s} IST.", "warning")
-            else:
-                dashboard_app.log_notification("slot_missed", "Daily Cycle Concluded", "Moving to tomorrow's schedule.", "error")
-
-    # ==========================================================================
-    # 2. 02:00 AM NIGHTLY BATCH — STRICTLY ONE TRY AT 2:00 AM!
-    # ==========================================================================
+    # 2. CHECK IF 3 REELS ARE ALREADY READY
     ready_count = get_today_ready_reels_count(hist, today_str)
     if ready_count >= 3:
         return
 
-    if now_ist.hour == 2 and cfg.get("nightly_2am_tried_date") != today_str:
-        cfg["nightly_2am_tried_date"] = today_str
+    # 3. 02:30 AM IST DAILY BATCH — STRICTLY ONE TRY AT 2:30 AM!
+    if now_ist.hour == 2 and 25 <= now_ist.minute <= 45 and cfg.get("nightly_230am_tried_date") != today_str:
+        cfg["nightly_230am_tried_date"] = today_str
         with open("data/schedule_config.json", "w", encoding="utf-8") as f:
             json.dump(cfg, f, indent=4)
-        try_building_missing_reels(3 - ready_count, today_str, cfg, "02:00 AM Daily Batch")
+        try_building_missing_reels(3 - ready_count, today_str)
         return
 
-    # ==========================================================================
-    # 3. EXACT QUOTA REOPEN TIME TRIGGER (IF GEMINI GAVE REOPEN TIME)
-    # ==========================================================================
-    reopen_str = cfg.get("quota_reopen_time_str", "").strip()
-    if reopen_str:
-        try:
-            # Parse time like "10:30 AM" or "14:00"
-            for fmt in ("%I:%M %p", "%H:%M", "%I %p"):
-                try:
-                    t_parsed = datetime.strptime(reopen_str.upper(), fmt)
-                    reopen_dt = now_ist.replace(hour=t_parsed.hour, minute=t_parsed.minute, second=0)
-                    diff_reopen = (now_ist - reopen_dt).total_seconds() / 60.0
-                    if 0 <= diff_reopen <= 20:
-                        cfg["quota_reopen_time_str"] = ""
-                        with open("data/schedule_config.json", "w", encoding="utf-8") as f:
-                            json.dump(cfg, f, indent=4)
-                        try_building_missing_reels(3 - ready_count, today_str, cfg, f"Quota Reopen ({reopen_str})")
-                        return
-                    break
-                except ValueError:
-                    continue
-        except Exception:
-            pass
-
-    # ==========================================================================
-    # 4. PRE-SLOT 3-STAGE SNIPER: T-60m (1 Hr), T-30m (30 Min), T-5m (5 Min)!
-    # ==========================================================================
+    # 4. ONLY ONE RETRY 30 MINUTES BEFORE EACH SCHEDULE TIME!
     for slot in slots:
-        if slot in done_today or slot in missed_today:
+        if slot in done_today or slot in missed_today or slot in pre30_map:
             continue
         slot_dt = datetime.strptime(f"{today_str} {slot}", "%Y-%m-%d %H:%M").replace(tzinfo=IST)
         mins_before_slot = (slot_dt - now_ist).total_seconds() / 60.0
-        slot_tries = pre_attempts.get(slot, [])
 
-        stage_to_run = None
-        if 48 <= mins_before_slot <= 66 and "T-60" not in slot_tries:
-            stage_to_run = "T-60"
-        elif 22 <= mins_before_slot <= 36 and "T-30" not in slot_tries:
-            stage_to_run = "T-30"
-        elif 2 <= mins_before_slot <= 12 and "T-5" not in slot_tries:
-            stage_to_run = "T-5"
-
-        if stage_to_run:
-            slot_tries.append(stage_to_run)
-            pre_attempts[slot] = slot_tries
-            cfg.setdefault("pre_slot_attempts", {})[today_str] = pre_attempts
+        if 24 <= mins_before_slot <= 36:
+            pre30_map.append(slot)
+            cfg.setdefault("pre_slot_30m_tried", {})[today_str] = pre30_map
             with open("data/schedule_config.json", "w", encoding="utf-8") as f:
                 json.dump(cfg, f, indent=4)
-
-            try_building_missing_reels(3 - ready_count, today_str, cfg, f"Pre-Slot {slot} ({stage_to_run})")
+            try_building_missing_reels(3 - ready_count, today_str)
             return
 
 def run_single_cloud_video_job():
@@ -288,10 +211,6 @@ def run_single_cloud_video_job():
 
     try:
         import dashboard_app
-        if action_type == "sync_instagram":
-            dashboard_app.fetch_real_instagram_data(force_refresh=True)
-            return
-
         if event_name == "schedule":
             run_autonomous_schedule_cycle()
             return
@@ -317,17 +236,11 @@ def run_single_cloud_video_job():
     except Exception as e:
         import gemini_bot
         err_msg = str(e)
-        print(f"\n⚠️ [CLOUD WORKER NOTICE]: {err_msg}")
         gemini_bot.update_3d_telemetry(0, "Paused", err_msg[:140], "error", 0)
         sys.exit(0)
 
 if __name__ == "__main__":
     if "--export-cookies" in sys.argv:
         export_local_chrome_cookies()
-    elif "--sync-ig" in sys.argv:
-        import dashboard_app
-        print("📸 Syncing all 7 Real Instagram Reels & Profile from local machine...")
-        data = dashboard_app.fetch_real_instagram_data(force_refresh=True)
-        print(f"✅ Synced @{data.get('username')} | Followers: {data.get('followers')} | Reels Found: {len(data.get('posted_reels', []))}")
     else:
         run_single_cloud_video_job()
