@@ -1,5 +1,35 @@
 [
   {
+    "id": "notif_1792562136004_106",
+    "type": "generated",
+    "title": "Generation Started",
+    "message": "Creating new 3D episode in Gemini.",
+    "status": "info",
+    "time_str": "11:25 AM",
+    "date_str": "21 Oct 2026",
+    "timestamp": 1792562136.0045066
+  },
+  {
+    "id": "notif_1792562135822_708",
+    "type": "generated",
+    "title": "Generation Started",
+    "message": "Creating new 3D episode in Gemini.",
+    "status": "info",
+    "time_str": "11:25 AM",
+    "date_str": "21 Oct 2026",
+    "timestamp": 1792562135.82302
+  },
+  {
+    "id": "notif_1792562129364_253",
+    "type": "generated",
+    "title": "Generation Started",
+    "message": "Creating new 3D episode in Gemini.",
+    "status": "info",
+    "time_str": "11:25 AM",
+    "date_str": "21 Oct 2026",
+    "timestamp": 1792562129.3645983
+  },
+  {
     "id": "notif_1792561439974",
     "type": "error",
     "title": "Gemini Response",
