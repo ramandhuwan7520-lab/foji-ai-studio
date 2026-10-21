@@ -42,27 +42,14 @@ def ensure_required_folders_and_files():
         with open("data/notifications.json", "w", encoding="utf-8") as f:
             json.dump([], f, indent=2)
 
-def export_local_chrome_cookies():
+def interactive_pro_login_and_save_cookies():
     import gemini_bot
-    print("🔐 Opening local Chrome profile to export Google/Gemini login cookies...")
-    driver = gemini_bot.get_chrome_driver(os.path.abspath("output/raw_videos"))
+    print("\n🔐 Opening Chrome for Gemini PRO Account Login...")
+    driver = gemini_bot.create_direct_chrome_driver(os.path.abspath("output/raw_videos"))
     try:
-        driver.get("https://gemini.google.com/app")
-        time.sleep(6)
-        cookies = driver.get_cookies()
-        essential = [
-            {
-                "name": c["name"],
-                "value": c["value"],
-                "domain": c["domain"],
-                "path": c.get("path", "/"),
-                "secure": c.get("secure", True)
-            }
-            for c in cookies if any(k in c.get("domain", "") for k in ["google", "gemini"])
-        ]
-        with open("gemini_cookies_secret.txt", "w", encoding="utf-8") as f:
-            f.write(json.dumps(essential))
-        print("\n✅ SUCCESS! Cookies saved in `gemini_cookies_secret.txt`!")
+        gemini_bot.load_and_ensure_login(driver)
+        gemini_bot.save_cookies_from_driver(driver)
+        print("🎉 Login & Cookie Export 100% Complete!")
     finally:
         try:
             driver.quit()
@@ -89,33 +76,9 @@ def try_building_missing_reels(target_missing, today_str):
             print(f"⏸️ Generation stopped: {e}")
             break
 
-def rollover_overdue_scheduled_reels(hist, slots, now_ist, today_str):
-    import dashboard_app
-    changed = False
-    upcoming_slots = []
-    for s in slots:
-        s_dt = datetime.strptime(f"{today_str} {s}", "%Y-%m-%d %H:%M").replace(tzinfo=IST)
-        if (s_dt - now_ist).total_seconds() > -120:
-            upcoming_slots.append(s)
-
-    next_slot = upcoming_slots[0] if upcoming_slots else slots[0]
-    dt_label = datetime.strptime(next_slot, "%H:%M").strftime("%I:%M %p")
-
-    for item in hist.get("history", []):
-        if item.get("status") == "scheduled" and item.get("scheduled_slot"):
-            cur_s = item["scheduled_slot"]
-            cur_dt = datetime.strptime(f"{today_str} {cur_s}", "%Y-%m-%d %H:%M").replace(tzinfo=IST)
-            if (now_ist - cur_dt).total_seconds() > 1800 and cur_s != next_slot:
-                item["scheduled_slot"] = next_slot
-                item["scheduled_label"] = dt_label
-                changed = True
-                dashboard_app.log_notification("scheduled", "Moved to Next Slot", f"{item.get('emotion_name')} shifted to {dt_label} IST.", "info")
-    if changed:
-        dashboard_app.save_history(hist, sync_cloud=True, msg="Auto-rollover scheduled reel")
-
 def run_autonomous_schedule_cycle():
     """
-    POINT #5 STRICT SCHEDULE ENGINE:
+    STRICT SCHEDULE ENGINE:
     1. Posts any scheduled reel when its slot time arrives.
     2. At 02:30 AM IST: Tries ONCE to generate all 3 daily reels.
     3. At 30 Minutes Before Each Schedule Slot (T - 30m): Tries ONCE if < 3 reels are ready.
@@ -140,10 +103,9 @@ def run_autonomous_schedule_cycle():
     missed_today = missed_runs.get(today_str, [])
 
     hist = dashboard_app.load_history()
-    rollover_overdue_scheduled_reels(hist, slots, now_ist, today_str)
 
     # 1. PUBLISH SCHEDULED REELS AT SLOT TIME
-    for idx, slot in enumerate(slots):
+    for slot in slots:
         if slot in done_today or slot in missed_today:
             continue
         slot_dt = datetime.strptime(f"{today_str} {slot}", "%Y-%m-%d %H:%M").replace(tzinfo=IST)
@@ -202,6 +164,7 @@ def run_autonomous_schedule_cycle():
             return
 
 def run_single_cloud_video_job():
+    print("🎬 Starting AutoReels 3D Worker Job...")
     ensure_required_folders_and_files()
     pull_latest_from_github()
     event_name = os.environ.get("CLOUD_EVENT_NAME", "workflow_dispatch")
@@ -236,16 +199,15 @@ def run_single_cloud_video_job():
     except Exception as e:
         import gemini_bot
         err_msg = str(e)
-        gemini_bot.update_3d_telemetry(0, "Paused", err_msg[:140], "error", 0)
-        sys.exit(0)
+        print(f"❌ Worker Notice: {err_msg}")
+        gemini_bot.update_3d_telemetry(0, "Notice", err_msg[:180], "error", 0)
 
 if __name__ == "__main__":
     os.environ["IS_CLOUD_WORKER"] = "1"
     try:
-        if "--export-cookies" in sys.argv:
-            export_local_chrome_cookies()
+        if "--login" in sys.argv or "--export-cookies" in sys.argv:
+            interactive_pro_login_and_save_cookies()
         else:
             run_single_cloud_video_job()
     finally:
-        # Force-terminate any background threads so GitHub Actions exits in 0.1s!
         os._exit(0)

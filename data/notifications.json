@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "notif_1792561439974",
+    "type": "error",
+    "title": "Gemini Response",
+    "message": "I can create more videos as soon as your limit resets. Check your usage in Settings.",
+    "status": "error",
+    "time_str": "11:13 AM",
+    "date_str": "21 Oct 2026",
+    "timestamp": 1792561439.9749103
+  }
+]
