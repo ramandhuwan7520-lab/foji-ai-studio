@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1792561865.8819366
+  "step_num": 1,
+  "step_title": "Opening Gemini",
+  "sub_detail": "Selecting Flash model...",
+  "status": "active",
+  "progress": 15,
+  "updated_at": "03:29:06 PM",
+  "epoch": 1792576746.114186
 }
