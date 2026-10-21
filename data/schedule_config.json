@@ -5,5 +5,11 @@
         "16:00",
         "20:30"
     ],
-    "lead_minutes": 15
+    "lead_minutes": 15,
+    "times": [
+        "08:00",
+        "15:55",
+        "20:00"
+    ],
+    "button_locked": true
 }
