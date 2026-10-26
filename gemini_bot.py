@@ -17,34 +17,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 load_dotenv()
 IST = timezone(timedelta(hours=5, minutes=30))
 COOKIE_FILE = "gemini_cookies_secret.txt"
-BLUEPRINT_FILE = "data/flow_learned_blueprint.json"
 DEBUG_PORT = 9225
 FLOW_URL = "https://labs.google/fx/tools/flow"
-
-# ==============================================================================
-# 🧠 PERMANENT 20-STEP MASTER MEMORY (LOCKED FROM YOUR RECORDED SESSION)
-# ==============================================================================
-MASTER_SETUP_STEPS = [
-    {"step": 1,  "name": "New Project",          "match": ["add new project", "new project"],                   "xpct": 52.4, "ypct": 77.4, "wait_timeout": 20.0, "post_delay": 1.5},
-    {"step": 3,  "name": "Open Settings",        "match": ["settings trigger", "video · 720p", "crop_9_16"],   "xpct": 62.2, "ypct": 88.4, "wait_timeout": 20.0, "post_delay": 0.5},
-    {"step": 4,  "name": "Select Video Mode",    "match": ["videocam video", "video"],                          "xpct": 63.0, "ypct": 36.1, "wait_timeout": 8.0,  "post_delay": 0.3},
-    {"step": 5,  "name": "Select 9:16 Ratio",    "match": ["crop_9_16 9:16", "9:16"],                           "xpct": 62.7, "ypct": 45.1, "wait_timeout": 8.0,  "post_delay": 0.3},
-    {"step": 6,  "name": "Select 720p",          "match": ["720p"],                                             "xpct": 63.0, "ypct": 61.4, "wait_timeout": 8.0,  "post_delay": 0.3},
-    {"step": 7,  "name": "Select 10s Duration",  "match": ["10s"],                                              "xpct": 65.2, "ypct": 67.5, "wait_timeout": 8.0,  "post_delay": 0.3},
-    {"step": 8,  "name": "Select x1 Output",     "match": ["x1"],                                               "xpct": 49.3, "ypct": 75.0, "wait_timeout": 8.0,  "post_delay": 0.3},
-    {"step": 9,  "name": "Close Settings",       "match": ["settings trigger", "video · 720p"],                 "xpct": 62.9, "ypct": 89.1, "wait_timeout": 8.0,  "post_delay": 0.5},
-    {"step": 10, "name": "Click + Ingredients",  "match": ["add ingredients to the prompt box"],                "xpct": 29.1, "ypct": 90.4, "wait_timeout": 12.0, "post_delay": 0.6},
-    {"step": 11, "name": "Click Upload Media",   "match": ["upload upload media", "upload media"],              "xpct": 28.4, "ypct": 83.8, "wait_timeout": 10.0, "post_delay": 0.5, "action": "UPLOAD_CHARACTERS"},
-    {"step": 13, "name": "Add 1st Char Prompt",  "match": ["add to prompt"],                                    "xpct": 55.3, "ypct": 81.5, "wait_timeout": 20.0, "post_delay": 0.8},
-    {"step": 14, "name": "Click + 2nd Char",     "match": ["add ingredients to the prompt box"],                "xpct": 29.3, "ypct": 90.8, "wait_timeout": 12.0, "post_delay": 0.6},
-    {"step": 15, "name": "Add 2nd Char Prompt",  "match": ["add to prompt", "foji", "fojan"],                   "xpct": 56.1, "ypct": 82.7, "wait_timeout": 15.0, "post_delay": 0.8},
-    {"step": 16, "name": "Fill Prompt Box",      "match": ["what do you want to create?"],                      "xpct": 42.7, "ypct": 82.1, "wait_timeout": 12.0, "post_delay": 0.6, "action": "FILL_PROMPT"},
-    {"step": 17, "name": "Start Generation",     "match": ["start generation", "arrow_forward"],                "xpct": 69.5, "ypct": 89.7, "wait_timeout": 12.0, "post_delay": 2.0}
-]
 
 
 def send_alert(msg):
@@ -179,11 +158,6 @@ def find_chrome_executable():
 
 
 def ensure_clean_matching_chromedriver_in_python():
-    """
-    PERMANENT FIX FOR GITHUB ACTIONS CHROMEDRIVER MISMATCH (155 vs 156):
-    Deletes stale pre-installed `/usr/bin/chromedriver` directly from Python BEFORE
-    Selenium starts, so Selenium Manager automatically uses the exact matching driver!
-    """
     if os.name == "nt":
         return
     stale_paths = [
@@ -196,16 +170,14 @@ def ensure_clean_matching_chromedriver_in_python():
         if os.path.exists(sp):
             try:
                 os.remove(sp)
-                print(f"🧹 Removed stale system chromedriver: {sp}")
             except Exception:
                 try:
                     subprocess.run(["sudo", "rm", "-f", sp], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                    print(f"🧹 Sudo-removed stale system chromedriver: {sp}")
                 except Exception:
                     pass
 
 
-def launch_resilient_chrome_session(download_dir, start_blank=False):
+def launch_resilient_chrome_session(download_dir):
     ensure_clean_matching_chromedriver_in_python()
     os.makedirs(download_dir, exist_ok=True)
     profile_dir = os.path.abspath("chrome_gemini_pro_profile")
@@ -232,7 +204,6 @@ def launch_resilient_chrome_session(download_dir, start_blank=False):
                 pass
 
     chrome_exe = find_chrome_executable()
-    initial_url = "about:blank" if start_blank else FLOW_URL
     cmd = [
         chrome_exe,
         f"--remote-debugging-port={DEBUG_PORT}",
@@ -248,7 +219,7 @@ def launch_resilient_chrome_session(download_dir, start_blank=False):
         "--mute-audio",
         "--window-size=1920,1080",
         "--start-maximized",
-        initial_url
+        FLOW_URL
     ]
     if os.name != "nt" and not os.environ.get("DISPLAY"):
         cmd.append("--headless=new")
@@ -311,7 +282,7 @@ def install_file_dialog_blocker(driver):
 
 def hardware_click_xy(driver, x, y, label="Target"):
     x_int, y_int = int(x), int(y)
-    print(f"   ⚡ [Fast Click] '{label}' at ({x_int}, {y_int})")
+    print(f"   ⚡ [Click] '{label}' at ({x_int}, {y_int})")
     try:
         driver.execute_script(
             """
@@ -329,9 +300,9 @@ def hardware_click_xy(driver, x, y, label="Target"):
 
     try:
         driver.execute_cdp_cmd("Input.dispatchMouseEvent", {"type": "mouseMoved", "x": x_int, "y": y_int})
-        time.sleep(0.04)
+        time.sleep(0.05)
         driver.execute_cdp_cmd("Input.dispatchMouseEvent", {"type": "mousePressed", "x": x_int, "y": y_int, "button": "left", "clickCount": 1})
-        time.sleep(0.04)
+        time.sleep(0.05)
         driver.execute_cdp_cmd("Input.dispatchMouseEvent", {"type": "mouseReleased", "x": x_int, "y": y_int, "button": "left", "clickCount": 1})
     except Exception:
         pass
@@ -356,21 +327,21 @@ def hardware_click_xy(driver, x, y, label="Target"):
     return True
 
 
-def click_by_pct_fallback(driver, xpct, ypct, label="Recorded %"):
-    vw_vh = driver.execute_script("return {w: window.innerWidth, h: window.innerHeight};")
-    cx = int((float(xpct) / 100.0) * vw_vh["w"])
-    cy = int((float(ypct) / 100.0) * vw_vh["h"])
-    return hardware_click_xy(driver, cx, cy, label)
-
-
-def wait_until_visible_and_click(driver, match_keywords, xpct=None, ypct=None, timeout=18.0, post_delay=0.4, step_label="Step"):
+def wait_until_visible_and_click(driver, match_keywords, region_filter=None, timeout=15.0, post_delay=0.45, step_label="Step"):
+    """
+    Polls the live DOM every 0.25s until a visible button/tab/option matching `match_keywords`
+    appears on screen, then immediately clicks its exact center `(X, Y)`!
+    `region_filter`:
+      - 'prompt_bar': Bottom prompt bar area (`y > window.innerHeight * 0.72`)
+      - 'settings_popup': Settings popover area (`y between 0.20 and 0.82`)
+      - 'top_right': Top toolbar (`y < window.innerHeight * 0.30`)
+    """
     match_keywords = [k.lower().strip() for k in (match_keywords or []) if k and k.strip()]
     start_t = time.time()
 
-    js_fast_find = """
+    js_find = """
     const keywords = arguments[0];
-    const targetXpct = arguments[1];
-    const targetYpct = arguments[2];
+    const region = arguments[1];
 
     function walkNodes(root) {
         let res = [];
@@ -390,12 +361,17 @@ def wait_until_visible_and_click(driver, match_keywords, xpct=None, ypct=None, t
         const style = window.getComputedStyle(el);
         if (style.visibility === 'hidden' || style.display === 'none' || parseFloat(style.opacity) === 0) continue;
 
+        const cyPct = ((r.top + r.height / 2) / window.innerHeight) * 100;
+        if (region === 'prompt_bar' && cyPct < 70) continue;
+        if (region === 'settings_popup' && (cyPct < 20 || cyPct > 84)) continue;
+        if (region === 'top_right' && cyPct > 35) continue;
+
         const tag = el.tagName.toLowerCase();
         const role = (el.getAttribute('role') || '').toLowerCase();
         const aria = (el.getAttribute('aria-label') || '').trim().toLowerCase();
         const title = (el.getAttribute('title') || el.getAttribute('mattooltip') || '').trim().toLowerCase();
         const txt = (el.innerText || el.textContent || '').trim().replace(/\\s+/g, ' ').toLowerCase();
-        if (txt.length > 90 && tag !== 'textarea' && el.getAttribute('contenteditable') !== 'true') continue;
+        if (txt.length > 85 && tag !== 'textarea' && el.getAttribute('contenteditable') !== 'true') continue;
 
         const blob = (txt + ' ' + aria + ' ' + title).trim();
         if (!blob) continue;
@@ -409,23 +385,18 @@ def wait_until_visible_and_click(driver, match_keywords, xpct=None, ypct=None, t
         }
         if (!matchedKw) continue;
 
-        let score = 200 - Math.min(80, txt.length);
-        if (txt === matchedKw || aria === matchedKw) score += 250;
-        if (tag === 'button' || role === 'button' || role === 'menuitem' || role === 'option' || role === 'tab') score += 100;
-
-        const curXpct = ((r.left + r.width / 2) / window.innerWidth) * 100;
-        const curYpct = ((r.top + r.height / 2) / window.innerHeight) * 100;
-        if (targetXpct !== null && targetYpct !== null) {
-            const dist = Math.abs(curXpct - targetXpct) + Math.abs(curYpct - targetYpct);
-            score -= dist * 2.0;
-        }
+        const clickable = el.closest('button, [role="button"], [role="menuitem"], [role="option"], [role="tab"], [role="radio"]') || el;
+        const cr = clickable.getBoundingClientRect();
+        let score = 300 - Math.min(80, txt.length);
+        if (txt === matchedKw || aria === matchedKw) score += 400;
+        if (clickable.tagName.toLowerCase() === 'button' || clickable.getAttribute('role')) score += 150;
 
         if (score > bestScore) {
             bestScore = score;
             best = {
-                x: Math.round(r.left + r.width / 2),
-                y: Math.round(r.top + r.height / 2),
-                label: (txt || aria).slice(0, 35)
+                x: Math.round(cr.left + cr.width / 2),
+                y: Math.round(cr.top + cr.height / 2),
+                label: (txt || aria).slice(0, 40)
             };
         }
     }
@@ -435,21 +406,16 @@ def wait_until_visible_and_click(driver, match_keywords, xpct=None, ypct=None, t
     while (time.time() - start_t) < timeout:
         install_file_dialog_blocker(driver)
         try:
-            found = driver.execute_script(js_fast_find, match_keywords, xpct, ypct)
+            found = driver.execute_script(js_find, match_keywords, region_filter)
             if found:
-                hardware_click_xy(driver, found["x"], found["y"], f"{step_label} -> '{found['label']}'")
+                hardware_click_xy(driver, found["x"], found["y"], f"{step_label} ('{found['label']}')")
                 time.sleep(post_delay)
                 return True
         except Exception:
             pass
         time.sleep(0.25)
 
-    if xpct is not None and ypct is not None:
-        print(f"   🎯 [Fallback % Click] Clicking learned coordinates ({xpct}%, {ypct}%) for {step_label}...")
-        click_by_pct_fallback(driver, xpct, ypct, step_label)
-        time.sleep(post_delay)
-        return True
-
+    print(f"   ⚠️ Warning: '{step_label}' ({match_keywords}) not found within {timeout}s.")
     return False
 
 
@@ -493,14 +459,7 @@ def fill_prompt_box_directly(driver, prompt_text):
     return bool(ok)
 
 
-# ==============================================================================
-# 🔐 ALL-DOMAIN CDP COOKIE SAVER & CLOUD RESTORER (NEVER HANGS ON CLOUD!)
-# ==============================================================================
 def save_all_browser_cookies_via_cdp(driver):
-    """
-    Uses `Network.getAllCookies` so it captures EVERY cookie across `.google.com`,
-    `labs.google`, `accounts.google.com`, etc. (unlike `driver.get_cookies()` which only gets 1 domain!).
-    """
     try:
         res = driver.execute_cdp_cmd("Network.getAllCookies", {})
         all_cookies = res.get("cookies", [])
@@ -520,20 +479,14 @@ def save_all_browser_cookies_via_cdp(driver):
             with open(COOKIE_FILE, "w", encoding="utf-8") as f:
                 f.write(json.dumps(essential, indent=2))
             sync_file_to_github(COOKIE_FILE, "Update full Google Flow CDP cookies")
-            print(f"🔐 Saved {len(essential)} multi-domain Google/Labs cookies to {COOKIE_FILE}!")
             return len(essential)
-    except Exception as e:
-        print(f"⚠️ Cookie save note: {e}")
+    except Exception:
+        pass
     return 0
 
 
 def inject_cookies_and_verify_flow_login(driver):
-    """
-    Injects all saved cookies from `gemini_cookies_secret.txt` (or `GEMINI_COOKIES_JSON` secret)
-    into Chrome via CDP BEFORE navigating to Google Flow, and verifies we are logged in!
-    """
     raw_cookies = ""
-    # Always prefer the latest repo file first, then fallback to env var
     if os.path.exists(COOKIE_FILE):
         try:
             with open(COOKIE_FILE, "r", encoding="utf-8") as f:
@@ -546,27 +499,23 @@ def inject_cookies_and_verify_flow_login(driver):
     if raw_cookies:
         try:
             cookies = json.loads(raw_cookies)
-            print(f"🔐 Injecting {len(cookies)} saved Google Pro cookies into Chrome...")
             driver.execute_cdp_cmd("Network.enable", {})
             for c in cookies:
                 try:
-                    domain = c.get("domain", ".google.com")
                     driver.execute_cdp_cmd("Network.setCookie", {
                         "name": c["name"],
                         "value": c["value"],
-                        "domain": domain,
+                        "domain": c.get("domain", ".google.com"),
                         "path": c.get("path", "/"),
                         "secure": True
                     })
                 except Exception:
                     pass
-            # Reload Flow with injected cookies
             driver.execute_cdp_cmd("Page.navigate", {"url": FLOW_URL})
             time.sleep(5)
-        except Exception as e:
-            print(f"⚠️ Cookie injection note: {e}")
+        except Exception:
+            pass
 
-    # Wait up to 25 seconds for Flow Home ('New project') or Editor to appear
     for tick in range(50):
         install_file_dialog_blocker(driver)
         try:
@@ -583,29 +532,21 @@ def inject_cookies_and_verify_flow_login(driver):
                 ) {
                     return 'LOGGED_IN';
                 }
-                // Click 'Create with Flow' / 'Launch Flow' / 'Get started' if on marketing splash page
                 for (const b of document.querySelectorAll('button, a, [role="button"]')) {
                     if (b.offsetParent === null) continue;
                     const t = (b.innerText || b.getAttribute('aria-label') || '').trim().toLowerCase();
-                    if (t === 'create with flow' || t === 'launch flow' || t === 'get started' || t === 'sign in') {
+                    if (t === 'create with flow' || t === 'launch flow' || t === 'get started') {
                         b.click();
-                        return 'CLICKED_SPLASH:' + t;
+                        return 'CLICKED_SPLASH';
                     }
                 }
                 return 'WAITING';
                 """
             )
             if status == "LOGGED_IN":
-                print("✅ Google Flow Pro Session Verified & Ready!")
+                print("✅ Google Flow Pro Session Verified!")
                 save_all_browser_cookies_via_cdp(driver)
                 return True
-            if status == "SIGNIN_PAGE" and os.name != "nt" and tick > 12:
-                snap = "data/flow_login_needed.png"
-                driver.save_screenshot(snap)
-                send_telegram_photo(snap, "🔐 Cloud needs fresh Google Flow cookies! Run `python gemini_bot.py --save-cookies` on laptop and push.")
-                raise RuntimeError("Google Flow session expired on Cloud. Run `python gemini_bot.py --save-cookies` on laptop.")
-        except RuntimeError:
-            raise
         except Exception:
             pass
         time.sleep(0.5)
@@ -613,108 +554,252 @@ def inject_cookies_and_verify_flow_login(driver):
     return True
 
 
+# ==============================================================================
+# 🎯 SCREENSHOT-VERIFIED 20-STEP FLOW PIPELINE
+#    Fixes the `Nano Banana 2.1 x2` bug by clicking the Settings pill inside
+#    the prompt box and verifying `videocam Video` + `9:16` + `720p` + `10s` + `x1`!
+# ==============================================================================
+def open_settings_pill_in_prompt_bar(driver):
+    """
+    Finds the Settings trigger button inside the bottom prompt bar (which initially displays
+    `Nano Banana 2.1 x2` or `Settings trigger` or `Video · 720p`) and clicks it until the
+    Settings popover (`videocam Video`, `9:16`, `720p`, `x1`) opens!
+    """
+    js_find_settings_pill = """
+    const promptBox = document.querySelector('[aria-label*="What do you want to create" i], textarea, div[contenteditable="true"]');
+    const boxRect = promptBox ? promptBox.getBoundingClientRect() : {top: window.innerHeight - 160, left: 400, right: 1400};
+
+    // 1. Check explicit aria-label='Settings trigger' first
+    const explicit = document.querySelector('button[aria-label*="Settings trigger" i], [aria-label*="Settings trigger" i]');
+    if (explicit && explicit.offsetParent !== null) {
+        const r = explicit.getBoundingClientRect();
+        return {x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2), txt: explicit.innerText || 'Settings trigger'};
+    }
+
+    // 2. Find the model/settings pill button inside the bottom prompt container (contains 'nano banana', 'video', 'image', 'veo', 'x1', 'x2', 'x4', '720p')
+    for (const b of document.querySelectorAll('button, [role="button"]')) {
+        if (b.offsetParent === null) continue;
+        const r = b.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.72) continue;
+        const t = ((b.innerText || '') + ' ' + (b.getAttribute('aria-label') || '')).trim().toLowerCase();
+        if (
+            t.includes('nano banana') || t.includes('banana') ||
+            t.includes('settings trigger') || t.includes('720p') ||
+            t.includes('1080p') || t.includes('x2') || t.includes('x1') ||
+            t.includes('veo') || t.includes('video ·')
+        ) {
+            return {x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2), txt: t.slice(0, 35)};
+        }
+    }
+    return null;
+    """
+    for _ in range(4):
+        pill = driver.execute_script(js_find_settings_pill)
+        if pill:
+            hardware_click_xy(driver, pill["x"], pill["y"], f"Step #3: Open Settings Pill ('{pill['txt']}')")
+            time.sleep(0.8)
+            # Verify if the Settings popup ('videocam Video' / '9:16' / 'x1') is now visible on screen!
+            popup_open = driver.execute_script(
+                """
+                const txt = (document.body.innerText || '').toLowerCase();
+                return (txt.includes('9:16') || txt.includes('16:9') || txt.includes('720p'));
+                """
+            )
+            if popup_open:
+                return True
+        time.sleep(0.5)
+    return False
+
+
 def execute_locked_20_step_flow_pipeline(driver, foji_img, fojan_img, fresh_prompt):
     install_file_dialog_blocker(driver)
 
+    # STEP 1: Click 'add New project' if on Flow Home Page
     on_home = driver.execute_script("return (document.body.innerText || '').toLowerCase().includes('new project');")
     if on_home:
         wait_until_visible_and_click(
             driver,
             ["add new project", "new project"],
-            xpct=52.4,
-            ypct=77.4,
             timeout=20.0,
-            post_delay=1.0,
+            post_delay=1.5,
             step_label="Step #1: New Project"
         )
 
-    print("   ⏳ Waiting for Project Workspace to appear on screen...")
-    editor_ready = False
+    # Wait until the Prompt Box (`What do you want to create?`) is visible on screen
+    print("   ⏳ Waiting for Project Prompt Box (`What do you want to create?`) to appear...")
     for _ in range(70):
         install_file_dialog_blocker(driver)
         has_editor = driver.execute_script(
-            """
-            return Boolean(
-                document.querySelector('[aria-label*="Settings trigger" i], [aria-label*="Add ingredients" i], [aria-label*="What do you want to create" i]')
-            );
-            """
+            "return Boolean(document.querySelector('[aria-label*=\"What do you want to create\" i], [aria-label*=\"Settings trigger\" i]'));"
         )
         if has_editor:
-            editor_ready = True
             break
         time.sleep(0.35)
 
-    if not editor_ready:
-        snap = "data/flow_workspace_error.png"
+    # STEP 3: Click the Settings Pill (`Nano Banana 2.1 x2` / `Settings trigger`) inside the Prompt Bar!
+    open_settings_pill_in_prompt_bar(driver)
+
+    # STEP 4: Switch from Image (`Nano Banana`) to `videocam Video` mode!
+    wait_until_visible_and_click(
+        driver,
+        ["videocam video", "video"],
+        region_filter="settings_popup",
+        timeout=10.0,
+        post_delay=0.5,
+        step_label="Step #4: Select 'videocam Video' Mode"
+    )
+
+    # STEP 5: Select `crop_9_16 9:16` Portrait Aspect Ratio
+    wait_until_visible_and_click(
+        driver,
+        ["crop_9_16 9:16", "9:16"],
+        region_filter="settings_popup",
+        timeout=8.0,
+        post_delay=0.4,
+        step_label="Step #5: Select '9:16' Portrait"
+    )
+
+    # STEP 6: Select `720p` Resolution
+    wait_until_visible_and_click(
+        driver,
+        ["720p"],
+        region_filter="settings_popup",
+        timeout=8.0,
+        post_delay=0.4,
+        step_label="Step #6: Select '720p'"
+    )
+
+    # STEP 7: Select `10s` Duration
+    wait_until_visible_and_click(
+        driver,
+        ["10s"],
+        region_filter="settings_popup",
+        timeout=8.0,
+        post_delay=0.4,
+        step_label="Step #7: Select '10s'"
+    )
+
+    # STEP 8: Select `x1` (1 Video at a time instead of x2!)
+    wait_until_visible_and_click(
+        driver,
+        ["x1"],
+        region_filter="settings_popup",
+        timeout=8.0,
+        post_delay=0.4,
+        step_label="Step #8: Select 'x1' (1 Video)"
+    )
+
+    # STEP 9: Close Settings Popup by clicking Settings trigger again (or pressing Escape)
+    if not wait_until_visible_and_click(
+        driver,
+        ["settings trigger", "video · 720p"],
+        region_filter="prompt_bar",
+        timeout=5.0,
+        post_delay=0.5,
+        step_label="Step #9: Close Settings"
+    ):
+        ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+        time.sleep(0.5)
+
+    # STEP 10: Click `+` (`Add ingredients to the prompt box`) on the bottom-left of Prompt Box
+    wait_until_visible_and_click(
+        driver,
+        ["add ingredients to the prompt box", "add"],
+        region_filter="prompt_bar",
+        timeout=12.0,
+        post_delay=0.7,
+        step_label="Step #10: Click '+' (Add Ingredients)"
+    )
+
+    # STEP 11 & 12: Click `upload Upload media` and inject BOTH Foji & Fojan character images!
+    install_file_dialog_blocker(driver)
+    wait_until_visible_and_click(
+        driver,
+        ["upload upload media", "upload media"],
+        timeout=10.0,
+        post_delay=0.5,
+        step_label="Step #11: Click 'upload Upload media'"
+    )
+
+    install_file_dialog_blocker(driver)
+    file_inputs = []
+    for _ in range(25):
+        file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
+        if file_inputs:
+            break
+        time.sleep(0.2)
+
+    if file_inputs:
+        target_inp = file_inputs[-1]
         try:
-            driver.save_screenshot(snap)
-            send_telegram_photo(snap, "⚠️ Google Flow Workspace did not open on Cloud (check login/cookies).")
+            target_inp.send_keys(f"{foji_img}\n{fojan_img}")
+            print("   📸 [Step #12] Injected BOTH Foji & Fojan character images!")
         except Exception:
-            pass
-        raise RuntimeError("Google Flow Project Editor did not appear on screen!")
+            try:
+                target_inp.send_keys(foji_img)
+                time.sleep(1.5)
+                target_inp.send_keys(fojan_img)
+            except Exception:
+                pass
 
-    for s in MASTER_SETUP_STEPS:
-        if s["step"] == 1:
-            continue
+    # STEP 13: Wait for upload to complete and click `Add to prompt` (1st character)
+    print("   ⏳ Waiting for 'Add to prompt' button to appear after upload...")
+    wait_until_visible_and_click(
+        driver,
+        ["add to prompt"],
+        timeout=25.0,
+        post_delay=0.8,
+        step_label="Step #13: Click 'Add to prompt' (1st Character)"
+    )
 
-        step_num = s["step"]
-        step_name = f"Step #{step_num}: {s['name']}"
-        act = s.get("action", "CLICK")
+    # STEP 14: Click `+` (`Add ingredients to the prompt box`) again for 2nd character
+    wait_until_visible_and_click(
+        driver,
+        ["add ingredients to the prompt box", "add"],
+        region_filter="prompt_bar",
+        timeout=12.0,
+        post_delay=0.7,
+        step_label="Step #14: Click '+' for 2nd Character"
+    )
 
-        if act == "FILL_PROMPT":
-            wait_until_visible_and_click(
-                driver,
-                s["match"],
-                xpct=s["xpct"],
-                ypct=s["ypct"],
-                timeout=s["wait_timeout"],
-                post_delay=0.4,
-                step_label=step_name
-            )
-            fill_prompt_box_directly(driver, fresh_prompt)
-            print("   ✉️ [Step #16] Fresh AI Script filled into Prompt Box!")
-            time.sleep(0.8)
-            continue
-
+    # STEP 15: Click `Add to prompt` (or the 2nd uploaded character card in the drawer)
+    if not wait_until_visible_and_click(
+        driver,
+        ["add to prompt"],
+        timeout=6.0,
+        post_delay=0.8,
+        step_label="Step #15: Click 'Add to prompt' (2nd Character)"
+    ):
         wait_until_visible_and_click(
             driver,
-            s["match"],
-            xpct=s["xpct"],
-            ypct=s["ypct"],
-            timeout=s["wait_timeout"],
-            post_delay=s["post_delay"],
-            step_label=step_name
+            ["foji", "fojan", "image"],
+            timeout=8.0,
+            post_delay=0.8,
+            step_label="Step #15: Select 2nd Character from Drawer"
         )
 
-        if act == "UPLOAD_CHARACTERS":
-            install_file_dialog_blocker(driver)
-            file_inputs = []
-            for _ in range(20):
-                file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type='file']")
-                if file_inputs:
-                    break
-                time.sleep(0.2)
-            if file_inputs:
-                target_inp = file_inputs[-1]
-                try:
-                    target_inp.send_keys(f"{foji_img}\n{fojan_img}")
-                    print("   📸 [Step #12] Injected BOTH Foji & Fojan character images!")
-                except Exception:
-                    try:
-                        target_inp.send_keys(foji_img)
-                        time.sleep(1.5)
-                        target_inp.send_keys(fojan_img)
-                    except Exception:
-                        pass
+    # STEP 16: Click Prompt Box (`What do you want to create?`) & fill fresh AI Script
+    wait_until_visible_and_click(
+        driver,
+        ["what do you want to create?"],
+        region_filter="prompt_bar",
+        timeout=10.0,
+        post_delay=0.4,
+        step_label="Step #16: Focus Prompt Box"
+    )
+    fill_prompt_box_directly(driver, fresh_prompt)
+    print("   ✉️ [Step #16] Fresh AI Script filled into Prompt Box!")
+    time.sleep(0.8)
 
-            print("   ⏳ Waiting for Character Upload to finish ('Add to prompt' button to appear)...")
-            for _ in range(70):
-                ready_add = driver.execute_script(
-                    "return (document.body.innerText || '').toLowerCase().includes('add to prompt');"
-                )
-                if ready_add:
-                    break
-                time.sleep(0.35)
+    # STEP 17: Click `Start generation` (`arrow_forward`)
+    wait_until_visible_and_click(
+        driver,
+        ["start generation", "arrow_forward"],
+        region_filter="prompt_bar",
+        timeout=12.0,
+        post_delay=2.0,
+        step_label="Step #17: Click 'Start generation'"
+    )
 
 
 def get_flow_videos_info(driver):
@@ -735,6 +820,7 @@ def get_flow_videos_info(driver):
 def execute_locked_download_steps(driver, raw_dir, existing_mp4s, new_video_url, output_video_path):
     print("📥 [Steps #18-#20] Clicking Rendered Video -> 'Download media' -> '720p Original size'...")
 
+    # Step #18: Click the rendered <video> element on screen
     js_vid_rect = """
     const vids = Array.from(document.querySelectorAll('video')).filter(v => v.offsetParent !== null);
     if (vids.length > 0) {
@@ -746,25 +832,23 @@ def execute_locked_download_steps(driver, raw_dir, existing_mp4s, new_video_url,
     v_pt = driver.execute_script(js_vid_rect)
     if v_pt:
         hardware_click_xy(driver, v_pt["x"], v_pt["y"], "Step #18: Rendered Video")
-    else:
-        click_by_pct_fallback(driver, 25.9, 40.9, "Step #18: Rendered Video")
     time.sleep(1.0)
 
+    # Step #19: Click 'Download media'
     wait_until_visible_and_click(
         driver,
         ["download media", "download"],
-        xpct=75.8,
-        ypct=7.0,
+        region_filter="top_right",
         timeout=12.0,
         post_delay=0.8,
         step_label="Step #19: Download Media"
     )
 
+    # Step #20: Click '720p Original size'
     wait_until_visible_and_click(
         driver,
         ["720p original size", "720p"],
-        xpct=77.9,
-        ypct=22.6,
+        region_filter="top_right",
         timeout=12.0,
         post_delay=1.0,
         step_label="Step #20: 720p Original Size"
@@ -844,7 +928,6 @@ def rotate_track_and_script_in_history(pending_pkg):
 
 
 def export_fresh_flow_cookies_from_local():
-    """Opens local Chrome profile on Google Flow, verifies login, and saves all CDP cookies to gemini_cookies_secret.txt."""
     print("🔐 Opening Google Flow to export ALL multi-domain cookies for Cloud...")
     driver, proc = launch_resilient_chrome_session(os.path.abspath("output/raw_videos"))
     try:
@@ -897,7 +980,7 @@ def generate_video_in_gemini(pending_pkg=None):
     base_video_prompt = pending_pkg["gemini_video_prompt"]
 
     print(f"🚀 [Step 1/5] Launching Fast Google Flow 20-Step Engine for: {pending_pkg.get('emotion_name', f'Reel #{video_num}')}...")
-    update_3d_telemetry(1, "Opening Google Flow", "Loading Flow & Running 20-Step Memory...", "active", 18)
+    update_3d_telemetry(1, "Opening Google Flow", "Loading Flow & Switching to Video 9:16 x1...", "active", 18)
     driver, chrome_proc = launch_resilient_chrome_session(raw_dir)
 
     try:
@@ -905,7 +988,7 @@ def generate_video_in_gemini(pending_pkg=None):
         inject_cookies_and_verify_flow_login(driver)
         initial_video_urls = set(get_flow_videos_info(driver))
 
-        update_3d_telemetry(3, "Executing 20-Step Memory", "Settings (9:16, 720p, 10s, x1) + Characters + Script...", "active", 52)
+        update_3d_telemetry(3, "Executing 20-Step Memory", "Switching Nano Banana -> Video 9:16 720p 10s x1...", "active", 52)
         execute_locked_20_step_flow_pipeline(driver, foji_img, fojan_img, base_video_prompt)
 
         time.sleep(4)
@@ -914,7 +997,7 @@ def generate_video_in_gemini(pending_pkg=None):
             driver.save_screenshot(snap_start)
             send_telegram_photo(
                 snap_start,
-                f"🎬 *Google Flow Generation Started!*\n📌 *{pending_pkg.get('emotion_name')}*\n🗣️ _{pending_pkg.get('dialogue_line_1_hinglish')}_"
+                f"🎬 *Google Flow Video (9:16 • 720p • x1) Started!*\n📌 *{pending_pkg.get('emotion_name')}*\n🗣️ _{pending_pkg.get('dialogue_line_1_hinglish')}_"
             )
         except Exception:
             pass
