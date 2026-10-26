@@ -1,5 +1,5 @@
 {
-    "generated_count": 5,
+    "generated_count": 6,
     "recent_tracks": [
         "funny",
         "fighting",
@@ -8,7 +8,11 @@
         "emotional",
         "comedy",
         "patriotic",
-        "romantic"
+        "romantic",
+        "border_action",
+        "emotional",
+        "comedy",
+        "patriotic"
     ],
     "history": [
         {
@@ -98,6 +102,28 @@
             "batch_date": "2026-10-26",
             "video_url": "/videos/raw_video_5.mp4?t=1793021437",
             "file_size_kb": 2659.2
+        },
+        {
+            "id": 6,
+            "video_id": 6,
+            "track_id": "patriotic",
+            "emotion_name": "Tiranga Shaan & Duty • Part 1",
+            "part_number": 1,
+            "bgm_folder": "patriotic",
+            "new_location": "Regiment Parade Ground & War Memorial",
+            "dialogue_speaker_1": "Foji Makra",
+            "dialogue_line_1_hinglish": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+            "dialogue_speaker_2": "Fojan Meera",
+            "dialogue_line_2_hinglish": "Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!",
+            "gemini_video_prompt": "Create a 9:16 vertical 3D Pixar Disney style 720p cinematic animated video using the two uploaded character images. Character 1 is Foji Makra (handsome Indian Army Soldier/Jawan in camouflage uniform with plain shoulder straps, strictly NO stars). Character 2 is Fojan Meera (beautiful young Indian woman in traditional attire). Keep their exact facial identity. Setting: Regiment Parade Ground & War Memorial. Action: Video call at midnight while Foji Makra is guarding a snowy bunker in Ladakh and Meera shows him the full moon. From 0 to 4 seconds, Foji Makra speaks in Hindi with natural lip-sync and expression: \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\". From 4 to 8 seconds, Fojan Meera replies in Hindi with emotional lip-sync: \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\". Audio: Add soulful Bollywood patriotic instrumental background music.",
+            "caption": "❤️ Tiranga Shaan & Duty • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+            "video_completed": true,
+            "status": "pending_approval",
+            "scheduled_slot": null,
+            "created_at": "26 Oct 2026, 07:59 PM",
+            "batch_date": "2026-10-26",
+            "video_url": "/videos/raw_video_6.mp4?t=1793025464",
+            "file_size_kb": 3032.2
         }
     ],
     "failed_dialogues": [
@@ -106,12 +132,17 @@
         "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
         "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
         "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
-        "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!"
+        "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
+        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!"
     ],
     "deleted_ids": [],
     "track_parts": {
         "funny": 1,
         "fighting": 1,
-        "romantic": 1
+        "romantic": 1,
+        "patriotic": 1
     }
 }
