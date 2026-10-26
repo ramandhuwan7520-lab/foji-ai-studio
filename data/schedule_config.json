@@ -1,9 +1,17 @@
 {
     "enabled": true,
-    "slots": [
-        "11:00",
-        "16:00",
-        "20:30"
+    "times": [
+        "06:00",
+        "12:30",
+        "18:00"
     ],
-    "lead_minutes": 15
+    "gen_times": [
+        "05:30",
+        "12:00",
+        "17:30"
+    ],
+    "button_locked": true,
+    "gen_tried_log": {},
+    "completed_slots_log": {},
+    "missed_slots_log": {}
 }

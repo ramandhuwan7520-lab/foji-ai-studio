@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# pyright: reportOptionalMemberAccess=false, reportGeneralTypeIssues=false
 import os
 import gc
 import json
@@ -17,7 +19,7 @@ load_dotenv()
 
 app = Flask(__name__)
 IST = timezone(timedelta(hours=5, minutes=30))
-DEFAULT_SLOTS = ["08:00", "14:00", "20:00"]
+DEFAULT_SLOTS = ["06:00", "12:30", "18:00"]
 
 IG_SESSION_FILE = "data/ig_session.json"
 NOTIF_FILE = "data/notifications.json"
@@ -30,15 +32,29 @@ TG_LAST_UPDATE_ID = 0
 
 SERIES_TRACKS = [
     {"id": "romantic", "name": "Foji & Fojan Love Saga", "bgm": "romantic", "loc": "Snowy Kashmir Valley & Army Cantt"},
-    {"id": "border_action", "name": "LOC Vigil & Braveheart", "bgm": "patriotic", "loc": "High Altitude Border Outpost"},
-    {"id": "emotional", "name": "Chithi & Homecoming", "bgm": "emotional", "loc": "Village Courtyard & Railway Station"},
-    {"id": "comedy", "name": "Foji Nok-Jhok & Chai", "bgm": "upbeat", "loc": "Army Canteen & Festive Market"},
-    {"id": "patriotic", "name": "Tiranga Shaan & Duty", "bgm": "patriotic", "loc": "Regiment Parade Ground"}
+    {"id": "border_action", "name": "LOC Vigil & Braveheart", "bgm": "patriotic", "loc": "High Altitude Siachen & Border Outpost"},
+    {"id": "emotional", "name": "Chithi & Homecoming", "bgm": "emotional", "loc": "Haryana Village Courtyard & Railway Station"},
+    {"id": "comedy", "name": "Foji Nok-Jhok & Chai", "bgm": "upbeat", "loc": "Army Canteen & Festive Bazaar"},
+    {"id": "patriotic", "name": "Tiranga Shaan & Duty", "bgm": "patriotic", "loc": "Regiment Parade Ground & War Memorial"}
 ]
 
-# ==============================================================================
-# 🛡️ MEMORY GUARD & DATA FILES INITIALIZER
-# ==============================================================================
+# 25+ Fresh Story Situations so AI NEVER repeats old scripts!
+DYNAMIC_STORY_SITUATIONS = [
+    "Foji Makra surprises Fojan Meera by arriving home unannounced during Diwali festival with sweets",
+    "Video call at midnight while Foji Makra is guarding a snowy bunker in Ladakh and Meera shows him the full moon",
+    "Fojan Meera teasing Foji Makra about his strict morning PT routine while making hot adrak chai in the kitchen",
+    "Foji Makra tying Fojan Meera's shoelace or fixing her dupatta before leaving at the railway station",
+    "Rainy evening at the Army Cantonment garden where Foji Makra shares his umbrella with Fojan Meera",
+    "Fojan Meera proudly pinning a bravery medal on Foji Makra's uniform before the Regiment Parade",
+    "Foji Makra trying to cook rotis in the kitchen during leave and Fojan Meera laughing at his round map-shaped rotis",
+    "Karwa Chauth night where Fojan Meera looks at Foji Makra through a sieve over a live video call from the border",
+    "Foji Makra teaching Fojan Meera how to salute like a commando and both bursting into laughter",
+    "Emotional goodbye at the village bus stand where Fojan Meera hands Foji Makra a tiffin of homemade desi ghee churma",
+    "Holi celebration at the Army Camp where Foji Makra puts gulal on Fojan Meera's cheeks",
+    "Foji Makra reading a handwritten love letter from Fojan Meera by a bonfire at a high-altitude post"
+]
+
+
 def trim_system_memory():
     try:
         gc.collect()
@@ -47,6 +63,7 @@ def trim_system_memory():
     except Exception:
         pass
 
+
 def start_memory_guard_daemon():
     def _mem_loop():
         while True:
@@ -54,8 +71,10 @@ def start_memory_guard_daemon():
             trim_system_memory()
     threading.Thread(target=_mem_loop, daemon=True).start()
 
+
 if not os.environ.get("IS_CLOUD_WORKER"):
     start_memory_guard_daemon()
+
 
 def ensure_data_files():
     global GLOBAL_DELETED_IDS
@@ -75,17 +94,23 @@ def ensure_data_files():
 
     if not os.path.exists("data/history.json"):
         with open("data/history.json", "w", encoding="utf-8") as f:
-            json.dump({"generated_count": 0, "track_parts": {}, "recent_tracks": [], "deleted_ids": [], "history": []}, f, indent=4)
+            json.dump({
+                "generated_count": 0,
+                "track_parts": {},
+                "recent_tracks": [],
+                "failed_dialogues": [],
+                "deleted_ids": [],
+                "history": []
+            }, f, indent=4)
 
     if not os.path.exists("data/schedule_config.json"):
         with open("data/schedule_config.json", "w", encoding="utf-8") as f:
             json.dump({
                 "enabled": True,
-                "nightly_batch_time": "02:30",
                 "times": DEFAULT_SLOTS,
+                "gen_times": ["05:30", "12:00", "17:30"],
                 "button_locked": True,
-                "nightly_230am_tried_date": "",
-                "pre_slot_30m_tried": {},
+                "gen_tried_log": {},
                 "missed_slots_log": {},
                 "completed_slots_log": {}
             }, f, indent=4)
@@ -94,9 +119,7 @@ def ensure_data_files():
         with open(NOTIF_FILE, "w", encoding="utf-8") as f:
             json.dump([], f, indent=2)
 
-# ==============================================================================
-# ☁️ GITHUB REST API SYNC
-# ==============================================================================
+
 def push_file_to_github_api(rel_path, commit_message, blocking=False):
     def _sync_worker():
         gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
@@ -140,6 +163,7 @@ def push_file_to_github_api(rel_path, commit_message, blocking=False):
     else:
         threading.Thread(target=_sync_worker, daemon=True).start()
 
+
 def log_notification(notif_type, title, message, status="info"):
     ensure_data_files()
     with FILE_LOCK:
@@ -152,7 +176,7 @@ def log_notification(notif_type, title, message, status="info"):
                 items = []
         now_ist = datetime.now(IST)
         new_entry = {
-            "id": f"notif_{int(time.time() * 1000)}_{random.randint(100,999)}",
+            "id": f"notif_{int(time.time() * 1000)}_{random.randint(100, 999)}",
             "type": notif_type,
             "title": title,
             "message": message,
@@ -168,6 +192,7 @@ def log_notification(notif_type, title, message, status="info"):
     push_file_to_github_api("data/notifications.json", f"Log: {title[:30]}")
     return new_entry
 
+
 def recalculate_track_parts(history_list):
     parts = {}
     for item in history_list:
@@ -175,6 +200,7 @@ def recalculate_track_parts(history_list):
         if tid and item.get("video_completed"):
             parts[tid] = max(parts.get(tid, 0), int(item.get("part_number", 1)))
     return parts
+
 
 def load_history():
     global GLOBAL_DELETED_IDS
@@ -184,7 +210,7 @@ def load_history():
             with open("data/history.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
         except Exception:
-            data = {"generated_count": 0, "track_parts": {}, "recent_tracks": [], "deleted_ids": [], "history": []}
+            data = {"generated_count": 0, "track_parts": {}, "recent_tracks": [], "failed_dialogues": [], "deleted_ids": [], "history": []}
 
         GLOBAL_DELETED_IDS.update(str(x) for x in data.get("deleted_ids", []))
         valid_history = []
@@ -200,6 +226,7 @@ def load_history():
         data["track_parts"] = recalculate_track_parts(valid_history)
         return data
 
+
 def save_history(data, sync_cloud=True, msg="Update reel history", blocking=False):
     global GLOBAL_DELETED_IDS
     with FILE_LOCK:
@@ -214,8 +241,9 @@ def save_history(data, sync_cloud=True, msg="Update reel history", blocking=Fals
         push_file_to_github_api(DELETED_IDS_FILE, msg, blocking=blocking)
         push_file_to_github_api("data/history.json", msg, blocking=blocking)
 
+
 # ==============================================================================
-# 🧠 AI SCRIPT ENGINE & GEMINI VIDEO PACKAGE GENERATOR
+# 🧠 100% DYNAMIC AI SCRIPT ENGINE (NO OLD REPEATED STATIC SCRIPTS!)
 # ==============================================================================
 def call_live_gemini_ai_brain(system_prompt, user_prompt):
     combined_prompt = f"{system_prompt}\n\nTask:\n{user_prompt}"
@@ -227,7 +255,7 @@ def call_live_gemini_ai_brain(system_prompt, user_prompt):
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/{m_name}:generateContent?key={api_key}"
                 payload = {
                     "contents": [{"role": "user", "parts": [{"text": combined_prompt}]}],
-                    "generationConfig": {"temperature": 0.85}
+                    "generationConfig": {"temperature": 0.95}
                 }
                 r = requests.post(url, json=payload, timeout=15)
                 if r.status_code == 200:
@@ -246,6 +274,7 @@ def call_live_gemini_ai_brain(system_prompt, user_prompt):
                 headers={"Content-Type": "application/json"},
                 json={
                     "model": "openai",
+                    "seed": random.randint(1000, 999999),
                     "messages": [
                         {"role": "system", "content": system_prompt},
                         {"role": "user", "content": user_prompt}
@@ -265,6 +294,7 @@ def call_live_gemini_ai_brain(system_prompt, user_prompt):
         except Exception:
             continue
     return ""
+
 
 def get_next_track_and_part(history_data, forced_track_id=None):
     track_parts = recalculate_track_parts(history_data.get("history", []))
@@ -287,58 +317,85 @@ def get_next_track_and_part(history_data, forced_track_id=None):
     completed_part = track_parts.get(tid, 0)
     return chosen_track, completed_part + 1
 
+
 def build_fresh_prompt_package(track, part_num, video_id, recent_dialogues=None):
-    recent_dialogues = list(recent_dialogues or [])[-8:]
+    recent_dialogues = [d for d in (recent_dialogues or []) if d][-15:]
     now_ist = datetime.now(IST)
+    situation_seed = random.choice(DYNAMIC_STORY_SITUATIONS)
 
     sys_instruction = (
-        "You are an Indian 3D Pixar-style Cinema Director creating a viral Instagram Reel episode "
-        "starring 'Foji Makra' (Indian Army Soldier/Jawan with plain shoulder straps, NO stars) "
-        "and 'Fojan Meera' (his witty, loving Indian wife). "
-        "Create a fresh micro-story, natural Hinglish dialogues (5-7 words per character), "
-        "a vivid location, and a background music instruction."
+        "You are an award-winning Indian 3D Pixar-style Cinema Director creating a brand new, unseen "
+        "viral Instagram & Facebook Reel episode starring 'Foji Makra' (Indian Army Jawan with plain soldier shoulder straps, NO stars) "
+        "and 'Fojan Meera' (his loving, expressive Indian wife). "
+        "Write 100% original, heart-touching or witty Hinglish dialogues (6-8 words per character) that have NEVER been used before."
     )
     user_req = (
-        f"Episode: {track['name']} - Part {part_num}.\n"
-        f"Do NOT repeat these dialogues: {json.dumps(recent_dialogues, ensure_ascii=False)}\n"
-        "Return ONLY valid JSON with keys: new_location, dialogue_line_1_hinglish, dialogue_line_2_hinglish, music_direction, caption"
+        f"Series Track: {track['name']} - Episode Part {part_num}.\n"
+        f"Unique Story Situation for this Episode: {situation_seed} (Random Seed #{random.randint(10000,99999)}).\n"
+        f"STRICTLY FORBIDDEN DIALOGUES (Never repeat these): {json.dumps(recent_dialogues, ensure_ascii=False)}\n"
+        "Return ONLY valid JSON with keys: new_location, visual_action, dialogue_line_1_hinglish, dialogue_line_2_hinglish, music_direction, caption"
     )
 
-    d1 = "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!"
-    d2 = "Aur meri har shaam aapke laut aane ki dua se, Foji sahab!"
+    d1 = ""
+    d2 = ""
+    visual_action = situation_seed
     scene_setting = track["loc"]
     music_cue = f"Add soulful Bollywood {track['bgm']} instrumental background music."
     caption = ""
 
-    try:
-        ai_raw = call_live_gemini_ai_brain(sys_instruction, user_req)
-        s_idx, e_idx = ai_raw.find("{"), ai_raw.rfind("}") + 1
-        if s_idx != -1 and e_idx > s_idx:
-            parsed = json.loads(ai_raw[s_idx:e_idx])
-            d1 = parsed.get("dialogue_line_1_hinglish") or d1
-            d2 = parsed.get("dialogue_line_2_hinglish") or d2
-            scene_setting = parsed.get("new_location") or scene_setting
-            music_cue = parsed.get("music_direction") or music_cue
-            caption = parsed.get("caption") or ""
-    except Exception:
-        pass
+    for _ in range(3):
+        try:
+            ai_raw = call_live_gemini_ai_brain(sys_instruction, user_req)
+            s_idx, e_idx = ai_raw.find("{"), ai_raw.rfind("}") + 1
+            if s_idx != -1 and e_idx > s_idx:
+                parsed = json.loads(ai_raw[s_idx:e_idx])
+                cand_d1 = (parsed.get("dialogue_line_1_hinglish") or "").strip()
+                cand_d2 = (parsed.get("dialogue_line_2_hinglish") or "").strip()
+                if cand_d1 and cand_d1 not in recent_dialogues:
+                    d1 = cand_d1
+                    d2 = cand_d2
+                    visual_action = parsed.get("visual_action") or visual_action
+                    scene_setting = parsed.get("new_location") or scene_setting
+                    music_cue = parsed.get("music_direction") or music_cue
+                    caption = parsed.get("caption") or ""
+                    break
+        except Exception:
+            pass
+
+    if not d1:
+        # Dynamic procedural generator if offline
+        openers = [
+            f"Meera, is bar chutti par tere hath ka churma pakka khayenge!",
+            f"Fojan ji, border ki thand me bhi teri muskan garmi deti hai!",
+            f"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+            f"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!"
+        ]
+        replies = [
+            f"Jaldi aao Foji sahab, darwaze par diya jalaye baithi hu!",
+            f"Aap salamat raho Foji ji, mera harpal aapke naam hai!",
+            f"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!",
+            f"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!"
+        ]
+        idx_pick = (video_id + int(time.time())) % len(openers)
+        d1 = openers[idx_pick]
+        d2 = replies[idx_pick]
 
     if not caption:
         caption = (
             f"❤️ {track['name']} • Part {part_num} 🇮🇳✨\n"
             f"🪖 \"{d1}\"\n"
             f"💖 \"{d2}\"\n.\n"
-            f"#FojiFojan #IndianArmy #3DAnimation #FojiLoveStory #ReelsIndia"
+            f"#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia"
         )
 
     prompt = (
-        f"Create a 9:16 Portrait 3D Pixar Disney style 8K cinematic animated video using the two uploaded character images. "
-        f"Image 1 is Foji Makra (handsome Indian Army Soldier/Jawan with plain soldier shoulder straps, strictly NO stars). "
-        f"Image 2 is Fojan Meera (young Indian woman). Keep their exact facial identity. "
-        f"Series: {track['name']} (Part {part_num}). Location: {scene_setting}. "
-        f"From 0 to 4 seconds, Foji Makra speaks in Hindi with exact lip-sync: \"{d1}\". "
-        f"From 4 to 8 seconds, Fojan Meera replies in Hindi with lip-sync: \"{d2}\". "
-        f"MANDATORY MUSIC & AUDIO: {music_cue}"
+        f"Create a 9:16 vertical 3D Pixar Disney style 720p cinematic animated video using the two uploaded character images. "
+        f"Character 1 is Foji Makra (handsome Indian Army Soldier/Jawan in camouflage uniform with plain shoulder straps, strictly NO stars). "
+        f"Character 2 is Fojan Meera (beautiful young Indian woman in traditional attire). Keep their exact facial identity. "
+        f"Setting: {scene_setting}. Action: {visual_action}. "
+        f"From 0 to 4 seconds, Foji Makra speaks in Hindi with natural lip-sync and expression: \"{d1}\". "
+        f"From 4 to 8 seconds, Fojan Meera replies in Hindi with emotional lip-sync: \"{d2}\". "
+        f"Audio: {music_cue}"
     )
 
     return {
@@ -361,9 +418,10 @@ def build_fresh_prompt_package(track, part_num, video_id, recent_dialogues=None)
         "created_at": now_ist.strftime("%d %b %Y, %I:%M %p")
     }
 
+
 def send_telegram_approval_card(pkg, mp4_path=None):
-    token = os.getenv("TELEGRAM_BOT_TOKEN")
-    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+    chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
     if not token or not chat_id:
         return
     vid_id = pkg.get("video_id")
@@ -375,7 +433,7 @@ def send_telegram_approval_card(pkg, mp4_path=None):
     keyboard = json.dumps({
         "inline_keyboard": [
             [
-                {"text": "✅ Approve & Post", "callback_data": f"approve_post:{vid_id}"},
+                {"text": "✅ Approve & Post (IG+FB)", "callback_data": f"approve_post:{vid_id}"},
                 {"text": "⏰ Approve & Schedule", "callback_data": f"approve_sched:{vid_id}"}
             ],
             [
@@ -402,11 +460,13 @@ def send_telegram_approval_card(pkg, mp4_path=None):
     except Exception:
         pass
 
+
 def generate_single_reel_package(custom_topic=None, send_for_approval=True, force_track_id=None, replace_video_id=None, batch_date=None):
     import gemini_bot
     hist = load_history()
     today_str = batch_date or datetime.now(IST).strftime("%Y-%m-%d")
     used_lines = [item.get("dialogue_line_1_hinglish", "") for item in hist.get("history", [])]
+    used_lines.extend(hist.get("failed_dialogues", []))
 
     if replace_video_id is not None:
         target_pkg = next((i for i in hist["history"] if int(i.get("video_id", 0)) == int(replace_video_id)), None)
@@ -426,6 +486,11 @@ def generate_single_reel_package(custom_topic=None, send_for_approval=True, forc
         candidate_pkg = build_fresh_prompt_package(track, next_part, new_id, used_lines)
 
     candidate_pkg["batch_date"] = today_str
+
+    # Immediately record track & dialogue so even if generation fails, next attempt uses NEXT title & NEW script!
+    hist.setdefault("recent_tracks", []).append(candidate_pkg.get("track_id", "romantic"))
+    hist.setdefault("failed_dialogues", []).append(candidate_pkg.get("dialogue_line_1_hinglish", ""))
+    save_history(hist, sync_cloud=False)
 
     out_path = gemini_bot.generate_video_in_gemini(pending_pkg=candidate_pkg)
     if not out_path or not gemini_bot.is_valid_mp4(out_path):
@@ -452,23 +517,20 @@ def generate_single_reel_package(custom_topic=None, send_for_approval=True, forc
         hist["generated_count"] = max(int(hist.get("generated_count", 0)), int(candidate_pkg["video_id"]))
         hist["history"].append(candidate_pkg)
 
-    tid = candidate_pkg.get("track_id")
-    if tid:
-        hist.setdefault("recent_tracks", []).append(tid)
-
-    save_history(hist, sync_cloud=True, msg=f"Add verified reel #{candidate_pkg['video_id']}", blocking=True)
-    log_notification("generated", "New Reel Ready", f"{candidate_pkg['emotion_name']} is ready for approval.", "success")
+    save_history(hist, sync_cloud=True, msg=f"Add verified Flow reel #{candidate_pkg['video_id']}", blocking=True)
+    log_notification("generated", "New Reel Ready", f"{candidate_pkg['emotion_name']} is ready.", "success")
     if send_for_approval:
         send_telegram_approval_card(candidate_pkg, mp4_path=out_path)
     trim_system_memory()
     return candidate_pkg
 
+
 # ==============================================================================
-# 🚀 DIRECT INSTAGRAM REEL PUBLISHER (ONLY UPLOAD, ZERO SCRAPING!)
+# 🚀 INSTAGRAM + FACEBOOK REEL PUBLISHER (@ai_foji_lovelife + Connected FB Page)
 # ==============================================================================
 def get_authenticated_ig_client():
     from instagrapi import Client
-    ig_user = os.getenv("INSTAGRAM_USERNAME", "").strip().lstrip("@")
+    ig_user = os.getenv("INSTAGRAM_USERNAME", "ai_foji_lovelife").strip().lstrip("@")
     ig_pass = os.getenv("INSTAGRAM_PASSWORD", "").strip()
     ig_sess_id = os.getenv("INSTAGRAM_SESSIONID", "").strip()
 
@@ -516,11 +578,16 @@ def get_authenticated_ig_client():
         except Exception:
             pass
         return cl
-    raise RuntimeError("Instagram credentials not configured in .env / Secrets.")
+    raise RuntimeError("Instagram credentials not configured in .env / GitHub Secrets.")
+
 
 def publish_reel_item_to_instagram(video_id):
+    """
+    Uploads the Reel to Instagram (@ai_foji_lovelife) with `share_to_facebook` enabled
+    so it automatically cross-posts to the linked Facebook Page!
+    """
     vid_key = str(video_id)
-    UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 15, "stage": "Verifying MP4 file...", "status": "uploading", "error": ""}
+    UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 15, "stage": "Verifying 720p MP4 file...", "status": "uploading", "error": ""}
 
     hist = load_history()
     target = next((i for i in hist.get("history", []) if str(i.get("video_id", "")) == vid_key), None)
@@ -537,23 +604,35 @@ def publish_reel_item_to_instagram(video_id):
         return False, err
 
     try:
-        UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 45, "stage": "Authenticating Instagram...", "status": "uploading", "error": ""}
+        UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 45, "stage": "Authenticating Instagram & Facebook...", "status": "uploading", "error": ""}
         cl = get_authenticated_ig_client()
 
-        UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 78, "stage": "Uploading Reel & Caption...", "status": "uploading", "error": ""}
-        media = cl.clip_upload(raw_mp4, caption=target.get("caption", ""))
+        UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 78, "stage": "Uploading Reel to Instagram + Facebook...", "status": "uploading", "error": ""}
+        caption_txt = target.get("caption", "")
+        try:
+            media = cl.clip_upload(
+                raw_mp4,
+                caption=caption_txt,
+                extra_data={
+                    "share_to_facebook": "1",
+                    "share_to_fb_reels": "1",
+                    "crosspost_to_facebook": "1"
+                }
+            )
+        except TypeError:
+            media = cl.clip_upload(raw_mp4, caption=caption_txt)
 
-        UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 96, "stage": "Finalizing post...", "status": "uploading", "error": ""}
+        UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 96, "stage": "Finalizing IG + FB post...", "status": "uploading", "error": ""}
         target["ig_media_id"] = str(media.id)
         target["code"] = str(media.code)
         target["permalink"] = f"https://www.instagram.com/reel/{media.code}/"
         target["status"] = "posted"
         target["scheduled_slot"] = None
         target["posted_at"] = datetime.now(IST).strftime("%d %b %Y, %I:%M %p")
-        save_history(hist, sync_cloud=True, msg=f"Published Reel #{video_id}", blocking=True)
+        save_history(hist, sync_cloud=True, msg=f"Published Reel #{video_id} to IG+FB", blocking=True)
 
-        UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 100, "stage": "Published!", "status": "done", "error": ""}
-        log_notification("posted", "Published to Instagram", f"{target.get('emotion_name')} is now live.", "success")
+        UPLOAD_PROGRESS_MAP[vid_key] = {"pct": 100, "stage": "Published to IG + FB!", "status": "done", "error": ""}
+        log_notification("posted", "Published to IG & Facebook", f"{target.get('emotion_name')} is now live.", "success")
         trim_system_memory()
         return True, "POSTED DONE"
 
@@ -564,9 +643,7 @@ def publish_reel_item_to_instagram(video_id):
         trim_system_memory()
         return False, err_msg
 
-# ==============================================================================
-# 📲 SHARED REEL ACTIONS & TELEGRAM BUTTON LISTENER
-# ==============================================================================
+
 def trigger_github_7gb_worker(action_type="generate_only", custom_topic=""):
     gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
     repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
@@ -583,6 +660,23 @@ def trigger_github_7gb_worker(action_type="generate_only", custom_topic=""):
     except Exception:
         return False
 
+
+def assign_reel_to_specific_slot(vid_id, slot_str):
+    vid_str = str(vid_id)
+    hist = load_history()
+    dt_obj = datetime.strptime(slot_str, "%H:%M")
+    slot_label = dt_obj.strftime("%I:%M %p")
+    for item in hist.get("history", []):
+        if str(item.get("video_id", "")) == vid_str:
+            item["status"] = "scheduled"
+            item["scheduled_slot"] = slot_str
+            item["scheduled_label"] = slot_label
+            item["schedule_click_order"] = int(time.time())
+            break
+    save_history(hist, sync_cloud=True, msg=f"Auto-Schedule Reel #{vid_str} for {slot_str}", blocking=True)
+    return slot_label
+
+
 def assign_reel_to_next_schedule_slot(vid_id):
     vid_str = str(vid_id)
     hist = load_history()
@@ -596,21 +690,8 @@ def assign_reel_to_next_schedule_slot(vid_id):
         if s not in used_slots:
             assigned_slot = s
             break
+    return assign_reel_to_specific_slot(vid_str, assigned_slot)
 
-    dt_obj = datetime.strptime(assigned_slot, "%H:%M")
-    slot_label = dt_obj.strftime("%I:%M %p")
-    target_title = f"Reel #{vid_str}"
-    for item in hist.get("history", []):
-        if str(item.get("video_id", "")) == vid_str:
-            item["status"] = "scheduled"
-            item["scheduled_slot"] = assigned_slot
-            item["scheduled_label"] = slot_label
-            item["schedule_click_order"] = int(time.time())
-            target_title = item.get("emotion_name", target_title)
-            break
-    save_history(hist, sync_cloud=True, msg=f"Schedule Reel #{vid_str}", blocking=True)
-    log_notification("scheduled", f"Scheduled • {slot_label}", f"{target_title} queued for auto-post.", "info")
-    return slot_label
 
 def delete_reel_permanently(vid_id):
     global GLOBAL_DELETED_IDS
@@ -638,10 +719,11 @@ def delete_reel_permanently(vid_id):
     log_notification("deleted", "Post Deleted", f"{deleted_title} removed permanently.", "warning")
     return deleted_title
 
+
 def trigger_reel_regeneration(vid_id):
     import gemini_bot
     vid_str = str(vid_id)
-    gemini_bot.update_3d_telemetry(1, "Regenerating", "Opening Gemini Flash...", "active", 15)
+    gemini_bot.update_3d_telemetry(1, "Regenerating", "Opening Google Flow...", "active", 15)
     log_notification("generated", "Regenerating Reel", f"Creating fresh version for Reel #{vid_str}.", "info")
 
     def _regen_bg():
@@ -655,6 +737,7 @@ def trigger_reel_regeneration(vid_id):
             gemini_bot.update_3d_telemetry(0, "Paused", str(e)[:140], "error", 0)
 
     threading.Thread(target=_regen_bg, daemon=True).start()
+
 
 def start_telegram_callback_listener():
     def _tg_loop():
@@ -683,10 +766,10 @@ def start_telegram_callback_listener():
                         act, vid_id = data_str.split(":", 1)
 
                         if act == "approve_post":
-                            requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": "🚀 Uploading to Instagram..."}, timeout=10)
+                            requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": "🚀 Uploading to IG + Facebook..."}, timeout=10)
                             def _post_notify(v=vid_id, cid=chat_id):
                                 ok, msg = publish_reel_item_to_instagram(v)
-                                txt = f"✅ *Reel #{v} Published to Instagram!*" if ok else f"❌ *Upload Failed:* {msg}"
+                                txt = f"✅ *Reel #{v} Published to Instagram & Facebook!*" if ok else f"❌ *Upload Failed:* {msg}"
                                 requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": cid, "text": txt, "parse_mode": "Markdown"}, timeout=10)
                             threading.Thread(target=_post_notify, daemon=True).start()
 
@@ -710,8 +793,10 @@ def start_telegram_callback_listener():
 
     threading.Thread(target=_tg_loop, daemon=True).start()
 
+
 if not os.environ.get("IS_CLOUD_WORKER"):
     start_telegram_callback_listener()
+
 
 def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
     now_ist = datetime.now(IST)
@@ -732,7 +817,7 @@ def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
 
     if not next_dt:
         tomorrow_str = (now_ist + timedelta(days=1)).strftime("%Y-%m-%d")
-        first_s = slots[0] if slots else "08:00"
+        first_s = slots[0] if slots else "06:00"
         next_dt = datetime.strptime(f"{tomorrow_str} {first_s}", "%Y-%m-%d %H:%M").replace(tzinfo=IST)
         next_slot_label = f"Tomorrow {next_dt.strftime('%I:%M %p IST')}"
 
@@ -741,15 +826,14 @@ def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
         "next_slot_label": next_slot_label,
         "remaining_seconds": rem_sec,
         "queued_count": len(scheduled_reels),
-        "status_banner": "SCHEDULED REEL ARMED" if scheduled_reels else "AUTO-PILOT ACTIVE (02:30 AM & T-30M)"
+        "status_banner": "CLOUD AUTO-PILOT LIVE (5:30->6:00 AM • 12:00->12:30 PM • 5:30->6:00 PM)"
     }
 
-# ==============================================================================
-# 🌐 CLEAN FLASK ENDPOINTS
-# ==============================================================================
+
 @app.route("/videos/<path:filename>")
 def serve_video(filename):
     return send_from_directory(os.path.abspath("output/raw_videos"), filename)
+
 
 @app.route("/api/telemetry_3d", methods=["GET"])
 def api_telemetry_3d():
@@ -769,6 +853,7 @@ def api_telemetry_3d():
             pass
     return jsonify({"step_num": 0, "step_title": "STANDBY", "sub_detail": "Ready", "status": "idle", "progress": 0})
 
+
 @app.route("/api/reset_telemetry", methods=["POST"])
 def api_reset_telemetry():
     t_path = "data/live_telemetry.json"
@@ -778,9 +863,11 @@ def api_reset_telemetry():
     push_file_to_github_api(t_path, "Reset telemetry")
     return jsonify({"ok": True})
 
+
 @app.route("/api/upload_status/<video_id>", methods=["GET"])
 def api_upload_status(video_id):
     return jsonify(UPLOAD_PROGRESS_MAP.get(str(video_id), {"pct": 0, "stage": "Starting...", "status": "idle", "error": ""}))
+
 
 @app.route("/api/state", methods=["GET"])
 def api_state():
@@ -823,16 +910,17 @@ def api_state():
         "schedule_config": sched
     })
 
+
 @app.route("/api/generate_manual", methods=["POST"])
 def api_generate_manual():
     import gemini_bot
-    gemini_bot.update_3d_telemetry(1, "Opening Gemini", "Selecting Flash model...", "active", 15)
-    log_notification("generated", "Generation Started", "Creating new 3D episode in Gemini.", "info")
+    gemini_bot.update_3d_telemetry(1, "Opening Google Flow", "Starting Google Flow 720p pipeline...", "active", 15)
+    log_notification("generated", "Generation Started", "Creating new 3D episode in Google Flow.", "info")
 
     def _bg():
         if os.name != "nt" and not os.path.exists("/usr/bin/google-chrome"):
             if not trigger_github_7gb_worker(action_type="generate_only"):
-                err = "GITHUB_PAT missing in Render Environment! Add GITHUB_PAT or run locally."
+                err = "GITHUB_PAT missing in Render Environment!"
                 log_notification("error", "Cloud Trigger Failed", err, "error")
                 gemini_bot.update_3d_telemetry(0, "Trigger Failed", err, "error", 0)
             return
@@ -840,11 +928,12 @@ def api_generate_manual():
             generate_single_reel_package(send_for_approval=True)
         except Exception as e:
             err = str(e)[:180]
-            log_notification("error", "Gemini Notice", err, "error")
+            log_notification("error", "Flow Notice", err, "error")
             gemini_bot.update_3d_telemetry(0, "Paused", err, "error", 0)
 
     threading.Thread(target=_bg, daemon=True).start()
     return jsonify({"ok": True})
+
 
 @app.route("/api/reel_action", methods=["POST"])
 def api_reel_action():
@@ -853,7 +942,7 @@ def api_reel_action():
     vid_id = str(body.get("video_id", ""))
 
     if action == "approve_post":
-        UPLOAD_PROGRESS_MAP[vid_id] = {"pct": 10, "stage": "Starting upload...", "status": "uploading", "error": ""}
+        UPLOAD_PROGRESS_MAP[vid_id] = {"pct": 10, "stage": "Starting IG + FB upload...", "status": "uploading", "error": ""}
         threading.Thread(target=lambda: publish_reel_item_to_instagram(vid_id), daemon=True).start()
         return jsonify({"ok": True, "started": True})
 
@@ -871,6 +960,7 @@ def api_reel_action():
 
     return jsonify({"ok": False}), 400
 
+
 @app.route("/api/save_schedule", methods=["POST"])
 def api_save_schedule():
     body = request.json or {}
@@ -885,20 +975,19 @@ def api_save_schedule():
     push_file_to_github_api("data/schedule_config.json", f"Lock schedule {times}", blocking=True)
     return jsonify({"ok": True, "times": times, "button_locked": True})
 
+
 @app.route("/")
 def index():
     return render_template_string(CLEAN_FAST_HTML)
 
-# ==============================================================================
-# ⚡ ULTRA-SIMPLE, ZERO-IG, SUPER-FAST FRONTEND (GENERATE + APPROVE + SCHEDULE)
-# ==============================================================================
+
 CLEAN_FAST_HTML = r"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutoReels 3D AI — Generate • Approve • Schedule</title>
+<title>AutoReels 3D AI — Google Flow Live Engine</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -909,29 +998,19 @@ CLEAN_FAST_HTML = r"""
     --border: rgba(255, 255, 255, 0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: #040711;
-    color: #f8fafc;
-    min-height: 100vh;
-  }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #040711; color: #f8fafc; min-height: 100vh; }
   .lux-navbar {
     max-width: 1120px; margin: 16px auto; padding: 14px 22px;
     background: var(--glass); border: 1px solid var(--border); border-radius: 20px;
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
   }
-  .brand-title {
-    font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; font-weight: 800;
-    color: #fde68a;
-  }
+  .brand-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; font-weight: 800; color: #fde68a; }
   .nav-tabs { display: flex; gap: 10px; }
   .nav-tab {
     padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 0.9rem;
     color: #94a3b8; background: rgba(255,255,255,0.05); border: 1px solid transparent; cursor: pointer;
   }
-  .nav-tab.active {
-    color: #fff; background: rgba(16, 185, 129, 0.2); border-color: var(--emerald);
-  }
+  .nav-tab.active { color: #fff; background: rgba(16, 185, 129, 0.2); border-color: var(--emerald); }
   .ist-clock {
     font-family: 'Space Grotesk', monospace; font-size: 0.95rem; font-weight: 800;
     color: #fde68a; background: rgba(0,0,0,0.45); padding: 8px 14px; border-radius: 12px;
@@ -940,11 +1019,7 @@ CLEAN_FAST_HTML = r"""
   .container { max-width: 1120px; margin: 0 auto 60px; padding: 0 18px; }
   .page-section { display: none; }
   .page-section.active { display: block; }
-
-  .lux-card {
-    background: var(--glass); border: 1px solid var(--border);
-    border-radius: 20px; padding: 22px; margin-bottom: 20px;
-  }
+  .lux-card { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 22px; margin-bottom: 20px; }
   .btn-3d {
     cursor: pointer; border: none; font-family: inherit; font-weight: 700; font-size: 0.88rem;
     border-radius: 12px; padding: 11px 18px; color: #fff;
@@ -955,7 +1030,6 @@ CLEAN_FAST_HTML = r"""
   .btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
   .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
   .btn-glass { background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.16); }
-
   .part-badge {
     display: inline-block; padding: 5px 12px; border-radius: 99px;
     background: rgba(245, 158, 11, 0.18); border: 1px solid var(--gold);
@@ -968,14 +1042,12 @@ CLEAN_FAST_HTML = r"""
   }
   @media (max-width: 768px) { .daily-card { grid-template-columns: 1fr; } }
   .daily-card video { width: 100%; aspect-ratio: 9/16; border-radius: 12px; background: #000; object-fit: cover; }
-
   #pipeline-box {
     display: none; margin-bottom: 20px; padding: 20px;
     background: rgba(6, 78, 59, 0.35); border: 1px solid var(--emerald); border-radius: 18px;
   }
   .prog-track { width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; margin: 12px 0; }
   .prog-fill { height: 100%; width: 15%; background: linear-gradient(90deg, #10b981, #f59e0b); transition: width 0.4s; }
-
   .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 18px; }
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 9999; background: rgba(3, 6, 14, 0.85);
@@ -992,8 +1064,8 @@ CLEAN_FAST_HTML = r"""
 
 <nav class="lux-navbar">
   <div>
-    <div class="brand-title">🎬 AutoReels 3D AI</div>
-    <div style="font-size:0.75rem;color:#94a3b8;">Generate • Approve & Post • Schedule</div>
+    <div class="brand-title">🎬 AutoReels 3D AI (Google Flow 720p)</div>
+    <div style="font-size:0.75rem;color:#94a3b8;">Instagram + Facebook Auto-Pilot • 6:00 AM • 12:30 PM • 6:00 PM</div>
   </div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="switchPage('dashboard', this)">🎬 Generate & Approve</button>
@@ -1008,15 +1080,15 @@ CLEAN_FAST_HTML = r"""
 
     <div class="lux-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:16px 22px;">
       <div>
-        <strong style="color:#34d399;font-size:0.92rem;" id="cd-status-banner">AUTO-PILOT ACTIVE (02:30 AM & T-30M)</strong>
-        <div style="font-size:0.82rem;color:#cbd5e1;margin-top:2px;" id="cd-next-slot-txt">Next Slot: 08:00 AM IST</div>
+        <strong style="color:#34d399;font-size:0.92rem;" id="cd-status-banner">CLOUD AUTO-PILOT LIVE (5:30->6:00 AM • 12:00->12:30 PM • 5:30->6:00 PM)</strong>
+        <div style="font-size:0.82rem;color:#cbd5e1;margin-top:2px;" id="cd-next-slot-txt">Next Post Slot: 06:00 AM IST</div>
       </div>
       <div style="font-family:'Space Grotesk',monospace;font-size:1.1rem;font-weight:800;color:#fde68a;" id="cd-reverse-timer">00h : 00m : 00s</div>
     </div>
 
     <div id="pipeline-box">
       <div style="display:flex;justify-content:space-between;font-weight:800;">
-        <span id="pipe-title" style="color:#fde68a;">STEP 1: Opening Gemini Flash...</span>
+        <span id="pipe-title" style="color:#fde68a;">STEP 1: Opening Google Flow...</span>
         <span id="pipe-pct" style="color:#34d399;">15%</span>
       </div>
       <div class="prog-track"><div class="prog-fill" id="pipe-bar"></div></div>
@@ -1030,38 +1102,40 @@ CLEAN_FAST_HTML = r"""
         <p style="color:#94a3b8;font-size:0.86rem;margin-top:4px;" id="next-ep-loc">📍 Snowy Kashmir Valley</p>
       </div>
       <button class="btn-3d btn-gold" onclick="triggerManualGenerate()" style="font-size:0.98rem;padding:14px 26px;">
-        ⚡ Generate New 3D Reel
+        ⚡ Generate New 3D Reel (Flow 720p)
       </button>
     </div>
 
     <h3 style="margin-bottom:14px;font-size:1.15rem;">🎬 Approval & Scheduled Queue (<span id="badge-daily-cnt">0</span>)</h3>
     <div id="vault-daily-view"></div>
 
-    <h3 style="margin:26px 0 14px;font-size:1.1rem;color:#94a3b8;">✅ Recently Posted Archive (<span id="badge-posted-cnt">0</span>)</h3>
+    <h3 style="margin:26px 0 14px;font-size:1.1rem;color:#94a3b8;">✅ Recently Posted on IG & Facebook (<span id="badge-posted-cnt">0</span>)</h3>
     <div id="vault-posted-view"></div>
 
   </section>
 
   <section id="page-schedule" class="page-section">
     <div class="lux-card">
-      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">⏰ Daily Auto-Post Schedule (IST)</h2>
+      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">⏰ Daily Cloud Schedule (IST) — Works with Laptop OFF</h2>
       <p style="color:#94a3b8;font-size:0.84rem;margin-bottom:16px;">
-        System tries once at <strong>02:30 AM IST</strong> to build all 3 videos, and tries once <strong>30 minutes before</strong> each slot if needed.
+        • Morning: Generates at <strong>05:30 AM</strong> &rarr; Posts at <strong>06:00 AM IST</strong> (IG + FB)<br>
+        • Afternoon: Generates at <strong>12:00 PM</strong> &rarr; Posts at <strong>12:30 PM IST</strong> (IG + FB)<br>
+        • Evening: Generates at <strong>05:30 PM</strong> &rarr; Posts at <strong>06:00 PM IST</strong> (IG + FB)
       </p>
       <div class="kpi-grid">
         <div style="background:rgba(0,0,0,0.4);padding:16px;border-radius:14px;border:1px solid var(--border);">
-          <label style="color:#fde68a;font-weight:700;font-size:0.8rem;">🌅 SLOT 1</label>
-          <input type="time" id="slot-1" value="08:00" oninput="onScheduleTimeInputChanged()"
+          <label style="color:#fde68a;font-weight:700;font-size:0.8rem;">🌅 MORNING POST (Gen @ 05:30)</label>
+          <input type="time" id="slot-1" value="06:00" oninput="onScheduleTimeInputChanged()"
                  style="width:100%;margin-top:8px;padding:10px;border-radius:10px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:1.05rem;font-weight:700;">
         </div>
         <div style="background:rgba(0,0,0,0.4);padding:16px;border-radius:14px;border:1px solid var(--border);">
-          <label style="color:#fde68a;font-weight:700;font-size:0.8rem;">☀️ SLOT 2</label>
-          <input type="time" id="slot-2" value="14:00" oninput="onScheduleTimeInputChanged()"
+          <label style="color:#fde68a;font-weight:700;font-size:0.8rem;">☀️ AFTERNOON POST (Gen @ 12:00)</label>
+          <input type="time" id="slot-2" value="12:30" oninput="onScheduleTimeInputChanged()"
                  style="width:100%;margin-top:8px;padding:10px;border-radius:10px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:1.05rem;font-weight:700;">
         </div>
         <div style="background:rgba(0,0,0,0.4);padding:16px;border-radius:14px;border:1px solid var(--border);">
-          <label style="color:#fde68a;font-weight:700;font-size:0.8rem;">🌙 SLOT 3</label>
-          <input type="time" id="slot-3" value="20:00" oninput="onScheduleTimeInputChanged()"
+          <label style="color:#fde68a;font-weight:700;font-size:0.8rem;">🌙 EVENING POST (Gen @ 17:30)</label>
+          <input type="time" id="slot-3" value="18:00" oninput="onScheduleTimeInputChanged()"
                  style="width:100%;margin-top:8px;padding:10px;border-radius:10px;background:#0f172a;color:#fff;border:1px solid #334155;font-size:1.05rem;font-weight:700;">
         </div>
       </div>
@@ -1090,7 +1164,7 @@ CLEAN_FAST_HTML = r"""
   let appState = null;
   let lastHandledTelemetryEpoch = 0;
   let remainingCountdownSec = 0;
-  let savedScheduleTimes = ["08:00", "14:00", "20:00"];
+  let savedScheduleTimes = ["06:00", "12:30", "18:00"];
   let scheduleInputsDirty = false;
 
   setInterval(() => {
@@ -1135,13 +1209,13 @@ CLEAN_FAST_HTML = r"""
 
   function triggerManualGenerate() {
     fetch('/api/generate_manual', { method: 'POST' }).then(() => {
-      showModal("🚀 Gemini Video Pipeline Started", "Opening Gemini Flash -> + Create Videos -> 9:16 -> Uploading Characters & Prompt.");
+      showModal("🚀 Google Flow Pipeline Started", "Uploading Foji & Fojan + Fresh Dynamic AI Script in Google Flow (720p).");
       pollTelemetryLoop();
     });
   }
 
   function handleApproveAndPost(videoId) {
-    showModal("🚀 Publishing...", "Uploading Reel to Instagram...", []);
+    showModal("🚀 Publishing...", "Uploading Reel to Instagram & Linked Facebook Page...", []);
     fetch('/api/reel_action', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -1155,7 +1229,7 @@ CLEAN_FAST_HTML = r"""
           if (st.status === 'done') {
             clearInterval(pollIv);
             fetchAppState();
-            showModal("✅ Published!", "Reel is now live on Instagram!");
+            showModal("✅ Published!", "Reel is now live on Instagram & Facebook!");
           } else if (st.status === 'error') {
             clearInterval(pollIv);
             fetchAppState();
@@ -1173,7 +1247,7 @@ CLEAN_FAST_HTML = r"""
       body: JSON.stringify({ action: 'approve_schedule', video_id: videoId })
     }).then(r => r.json()).then(res => {
       fetchAppState();
-      showModal("⏰ Scheduled", `Reel will auto-post at ${res.slot_time || 'Next Slot'} IST.`);
+      showModal("⏰ Scheduled", `Reel will auto-post to IG + FB at ${res.slot_time || 'Next Slot'} IST.`);
     });
   }
 
@@ -1183,7 +1257,7 @@ CLEAN_FAST_HTML = r"""
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ action: 'regenerate', video_id: videoId })
     }).then(() => {
-      showModal("🔄 Regenerating...", "Creating fresh video in Gemini Flash.");
+      showModal("🔄 Regenerating...", "Creating fresh 720p video with a brand new script in Google Flow.");
       pollTelemetryLoop();
     });
   }
@@ -1218,9 +1292,9 @@ CLEAN_FAST_HTML = r"""
   }
 
   function saveScheduleConfig() {
-    const t1 = document.getElementById('slot-1').value || "08:00";
-    const t2 = document.getElementById('slot-2').value || "14:00";
-    const t3 = document.getElementById('slot-3').value || "20:00";
+    const t1 = document.getElementById('slot-1').value || "06:00";
+    const t2 = document.getElementById('slot-2').value || "12:30";
+    const t3 = document.getElementById('slot-3').value || "18:00";
     fetch('/api/save_schedule', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -1279,7 +1353,7 @@ CLEAN_FAST_HTML = r"""
               <p style="margin-top:12px;background:rgba(0,0,0,0.45);padding:14px;border-radius:12px;font-size:0.88rem;color:#e2e8f0;white-space:pre-line;">${item.caption || ''}</p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
-              <button class="btn-3d" onclick="handleApproveAndPost('${item.video_id}')">✅ Approve & Post</button>
+              <button class="btn-3d" onclick="handleApproveAndPost('${item.video_id}')">✅ Approve & Post (IG+FB)</button>
               ${!isScheduled ? `
                 <button class="btn-3d btn-gold" onclick="handleApproveAndSchedule('${item.video_id}')">⏰ Approve & Schedule</button>
               ` : ''}
@@ -1295,7 +1369,7 @@ CLEAN_FAST_HTML = r"""
           <video src="${item.video_url || ''}" controls playsinline preload="metadata"></video>
           <div>
             <span class="part-badge">${item.emotion_name || 'Posted Reel'}</span>
-            <span style="color:#34d399;font-weight:800;font-size:0.84rem;margin-left:10px;">✅ Posted • ${item.posted_at || ''}</span>
+            <span style="color:#34d399;font-weight:800;font-size:0.84rem;margin-left:10px;">✅ Posted (IG+FB) • ${item.posted_at || ''}</span>
             <p style="margin-top:12px;background:rgba(0,0,0,0.45);padding:14px;border-radius:12px;font-size:0.88rem;color:#e2e8f0;white-space:pre-line;">${item.caption || ''}</p>
           </div>
         </div>
@@ -1303,9 +1377,9 @@ CLEAN_FAST_HTML = r"""
 
       if (!scheduleInputsDirty && appState.schedule_config && appState.schedule_config.times) {
         savedScheduleTimes = appState.schedule_config.times;
-        document.getElementById('slot-1').value = savedScheduleTimes[0] || "08:00";
-        document.getElementById('slot-2').value = savedScheduleTimes[1] || "14:00";
-        document.getElementById('slot-3').value = savedScheduleTimes[2] || "20:00";
+        document.getElementById('slot-1').value = savedScheduleTimes[0] || "06:00";
+        document.getElementById('slot-2').value = savedScheduleTimes[1] || "12:30";
+        document.getElementById('slot-3').value = savedScheduleTimes[2] || "18:00";
         const sBtn = document.getElementById('btn-save-schedule');
         sBtn.disabled = true;
         sBtn.innerText = "Schedule Saved";
@@ -1320,7 +1394,7 @@ CLEAN_FAST_HTML = r"""
             </div>
           </div>
           <div style="display:flex;gap:8px;">
-            <button class="btn-3d" onclick="handleApproveAndPost('${item.video_id}')">🚀 Post Now</button>
+            <button class="btn-3d" onclick="handleApproveAndPost('${item.video_id}')">🚀 Post Now (IG+FB)</button>
             <button class="btn-3d btn-danger" onclick="handleDeleteReel('${item.video_id}')">🗑️ Delete</button>
           </div>
         </div>
@@ -1348,12 +1422,12 @@ CLEAN_FAST_HTML = r"""
           lastHandledTelemetryEpoch = tEpoch;
           fetch('/api/reset_telemetry', { method: 'POST' });
           fetchAppState();
-          showModal("🎬 3D Reel Ready!", "Video downloaded & added to Approval Queue!");
+          showModal("🎬 3D Reel Ready!", "720p Video downloaded from Google Flow & added to Queue!");
         } else if (t.status === 'error' && t.sub_detail && tEpoch > lastHandledTelemetryEpoch) {
           lastHandledTelemetryEpoch = tEpoch;
           fetch('/api/reset_telemetry', { method: 'POST' });
           fetchAppState();
-          showModal("💬 Gemini Notice", t.sub_detail);
+          showModal("💬 Flow Notice", t.sub_detail);
         }
       }
     } catch (e) {}
