@@ -1,8 +1,14 @@
 {
-    "generated_count": 4,
+    "generated_count": 5,
     "recent_tracks": [
         "funny",
-        "fighting"
+        "fighting",
+        "romantic",
+        "border_action",
+        "emotional",
+        "comedy",
+        "patriotic",
+        "romantic"
     ],
     "history": [
         {
@@ -70,6 +76,42 @@
             "shares_count": 0,
             "insta_url": "https://www.instagram.com/reel/DehJY1es06N/",
             "needs_cloud_sync": false
+        },
+        {
+            "id": 5,
+            "video_id": 5,
+            "track_id": "romantic",
+            "emotion_name": "Foji & Fojan Love Saga • Part 1",
+            "part_number": 1,
+            "bgm_folder": "romantic",
+            "new_location": "Snowy Kashmir Valley & Army Cantt",
+            "dialogue_speaker_1": "Foji Makra",
+            "dialogue_line_1_hinglish": "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
+            "dialogue_speaker_2": "Fojan Meera",
+            "dialogue_line_2_hinglish": "Aur meri har shaam aapke laut aane ki dua se, Foji sahab!",
+            "gemini_video_prompt": "Create a 9:16 Portrait 3D Pixar Disney style 8K cinematic animated video using the two uploaded character images. Image 1 is Foji Makra (handsome Indian Army Soldier/Jawan with plain soldier shoulder straps, strictly NO stars). Image 2 is Fojan Meera (young Indian woman). Keep their exact facial identity. Series: Foji & Fojan Love Saga (Part 1). Location: Snowy Kashmir Valley & Army Cantt. From 0 to 4 seconds, Foji Makra speaks in Hindi with exact lip-sync: \"Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!\". From 4 to 8 seconds, Fojan Meera replies in Hindi with lip-sync: \"Aur meri har shaam aapke laut aane ki dua se, Foji sahab!\". MANDATORY MUSIC & AUDIO: Add soulful Bollywood romantic instrumental background music.",
+            "caption": "❤️ Foji & Fojan Love Saga • Part 1 🇮🇳✨\n🪖 \"Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!\"\n💖 \"Aur meri har shaam aapke laut aane ki dua se, Foji sahab!\"\n.\n#FojiFojan #IndianArmy #3DAnimation #FojiLoveStory #ReelsIndia",
+            "video_completed": true,
+            "status": "pending_approval",
+            "scheduled_slot": null,
+            "created_at": "26 Oct 2026, 06:53 PM",
+            "batch_date": "2026-10-26",
+            "video_url": "/videos/raw_video_5.mp4?t=1793021437",
+            "file_size_kb": 2659.2
         }
-    ]
+    ],
+    "failed_dialogues": [
+        "Aaj PT zabardast, mauj jaise.",
+        "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
+        "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
+        "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
+        "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
+        "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!"
+    ],
+    "deleted_ids": [],
+    "track_parts": {
+        "funny": 1,
+        "fighting": 1,
+        "romantic": 1
+    }
 }
