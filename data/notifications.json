@@ -1,5 +1,85 @@
 [
   {
+    "id": "notif_1793107607460_786",
+    "type": "generated",
+    "title": "New Reel Ready",
+    "message": "Chithi & Homecoming • Part 1 is ready.",
+    "status": "success",
+    "time_str": "06:56 PM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793107607.4608822
+  },
+  {
+    "id": "notif_1793102547348",
+    "type": "error",
+    "title": "Error at Step #3: Open Settings Menu",
+    "message": "Settings popup did not open after multiple clicks.",
+    "status": "error",
+    "time_str": "05:32 PM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793102547.3489544
+  },
+  {
+    "id": "notif_1793084586401",
+    "type": "error",
+    "title": "Error at Step #2: Project Workspace",
+    "message": "Workspace did not open even after multiple clicks.",
+    "status": "error",
+    "time_str": "12:33 PM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793084586.4011393
+  },
+  {
+    "id": "notif_1793083901462",
+    "type": "error",
+    "title": "Error at Step #3: Open Settings Menu",
+    "message": "Settings popup did not open after multiple clicks.",
+    "status": "error",
+    "time_str": "12:21 PM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793083901.4629016
+  },
+  {
+    "id": "notif_1793075826813",
+    "type": "error",
+    "title": "Error at Step #12: Character File Input",
+    "message": "No <input type='file'> appeared after clicking Upload media.",
+    "status": "error",
+    "time_str": "10:07 AM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793075826.814001
+  },
+  {
+    "id": "notif_1793075648025",
+    "type": "error",
+    "title": "Error at Step #12: Character File Input",
+    "message": "No <input type='file'> appeared after clicking Upload media.",
+    "status": "error",
+    "time_str": "10:04 AM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793075648.0254946
+  },
+  {
+    "id": "notif_1793074979809",
+    "type": "error",
+    "title": "Error at Step #2: Project Workspace",
+    "message": "Prompt box ('What do you want to create?') did not appear.",
+    "status": "error",
+    "time_str": "09:52 AM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793074979.8100219
+  },
+  {
+    "id": "notif_1793074852221",
+    "type": "error",
+    "title": "Error at Step #2: Project Workspace",
+    "message": "Prompt box ('What do you want to create?') did not appear.",
+    "status": "error",
+    "time_str": "09:50 AM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793074852.2219787
+  },
+  {
     "id": "notif_1792561439974",
     "type": "error",
     "title": "Gemini Response",
