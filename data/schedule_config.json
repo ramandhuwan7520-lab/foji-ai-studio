@@ -11,7 +11,11 @@
         "17:30"
     ],
     "button_locked": true,
-    "gen_tried_log": {},
+    "gen_tried_log": {
+        "2026-10-28": [
+            "06:00"
+        ]
+    },
     "completed_slots_log": {},
     "missed_slots_log": {}
 }
