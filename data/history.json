@@ -1,5 +1,5 @@
 {
-    "generated_count": 7,
+    "generated_count": 8,
     "recent_tracks": [
         "funny",
         "fighting",
@@ -38,7 +38,9 @@
         "border_action",
         "border_action",
         "emotional",
-        "emotional"
+        "emotional",
+        "comedy",
+        "comedy"
     ],
     "history": [
         {
@@ -172,6 +174,28 @@
             "batch_date": "2026-10-27",
             "video_url": "/videos/raw_video_7.mp4?t=1793107573",
             "file_size_kb": 3434.2
+        },
+        {
+            "id": 8,
+            "video_id": 8,
+            "track_id": "comedy",
+            "emotion_name": "Foji Nok-Jhok & Chai • Part 1",
+            "part_number": 1,
+            "bgm_folder": "upbeat",
+            "new_location": "Army Canteen & Festive Bazaar",
+            "dialogue_speaker_1": "Foji Makra",
+            "dialogue_line_1_hinglish": "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+            "dialogue_speaker_2": "Fojan Meera",
+            "dialogue_line_2_hinglish": "Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!",
+            "gemini_video_prompt": "Create a 9:16 vertical 3D Pixar Disney style 720p cinematic animated video using the two uploaded character images. Character 1 is Foji Makra (handsome Indian Army Soldier/Jawan in camouflage uniform with plain shoulder straps, strictly NO stars). Character 2 is Fojan Meera (beautiful young Indian woman in traditional attire). Keep their exact facial identity. Setting: Army Canteen & Festive Bazaar. Action: Foji Makra trying to cook rotis in the kitchen during leave and Fojan Meera laughing at his round map-shaped rotis. From 0 to 4 seconds, Foji Makra speaks in Hindi with natural lip-sync and expression: \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\". From 4 to 8 seconds, Fojan Meera replies in Hindi with emotional lip-sync: \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\". Audio: Add soulful Bollywood upbeat instrumental background music.",
+            "caption": "❤️ Foji Nok-Jhok & Chai • Part 1 🇮🇳✨\n🪖 \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\"\n💖 \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+            "video_completed": true,
+            "status": "pending_approval",
+            "scheduled_slot": null,
+            "created_at": "27 Oct 2026, 07:10 PM",
+            "batch_date": "2026-10-27",
+            "video_url": "/videos/raw_video_8.mp4?t=1793108825",
+            "file_size_kb": 4137.2
         }
     ],
     "failed_dialogues": [
@@ -210,7 +234,9 @@
         "Fojan ji, border ki thand me bhi teri muskan garmi deti hai!",
         "Fojan ji, border ki thand me bhi teri muskan garmi deti hai!",
         "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
-        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!"
+        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+        "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+        "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!"
     ],
     "deleted_ids": [],
     "track_parts": {
@@ -218,6 +244,7 @@
         "fighting": 1,
         "romantic": 1,
         "patriotic": 1,
-        "emotional": 1
+        "emotional": 1,
+        "comedy": 1
     }
 }
