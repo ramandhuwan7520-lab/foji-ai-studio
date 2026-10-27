@@ -1,5 +1,5 @@
 {
-    "generated_count": 8,
+    "generated_count": 9,
     "recent_tracks": [
         "funny",
         "fighting",
@@ -40,7 +40,9 @@
         "emotional",
         "emotional",
         "comedy",
-        "comedy"
+        "comedy",
+        "patriotic",
+        "patriotic"
     ],
     "history": [
         {
@@ -196,6 +198,28 @@
             "batch_date": "2026-10-27",
             "video_url": "/videos/raw_video_8.mp4?t=1793108825",
             "file_size_kb": 4137.2
+        },
+        {
+            "id": 9,
+            "video_id": 9,
+            "track_id": "patriotic",
+            "emotion_name": "Tiranga Shaan & Duty • Part 2",
+            "part_number": 2,
+            "bgm_folder": "patriotic",
+            "new_location": "Regiment Parade Ground & War Memorial",
+            "dialogue_speaker_1": "Foji Makra",
+            "dialogue_line_1_hinglish": "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+            "dialogue_speaker_2": "Fojan Meera",
+            "dialogue_line_2_hinglish": "Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!",
+            "gemini_video_prompt": "Create a 9:16 vertical 3D Pixar Disney style 720p cinematic animated video using the two uploaded character images. Character 1 is Foji Makra (handsome Indian Army Soldier/Jawan in camouflage uniform with plain shoulder straps, strictly NO stars). Character 2 is Fojan Meera (beautiful young Indian woman in traditional attire). Keep their exact facial identity. Setting: Regiment Parade Ground & War Memorial. Action: Holi celebration at the Army Camp where Foji Makra puts gulal on Fojan Meera's cheeks. From 0 to 4 seconds, Foji Makra speaks in Hindi with natural lip-sync and expression: \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\". From 4 to 8 seconds, Fojan Meera replies in Hindi with emotional lip-sync: \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\". Audio: Add soulful Bollywood patriotic instrumental background music.",
+            "caption": "❤️ Tiranga Shaan & Duty • Part 2 🇮🇳✨\n🪖 \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\"\n💖 \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+            "video_completed": true,
+            "status": "pending_approval",
+            "scheduled_slot": null,
+            "created_at": "27 Oct 2026, 07:18 PM",
+            "batch_date": "2026-10-27",
+            "video_url": "/videos/raw_video_9.mp4?t=1793109380",
+            "file_size_kb": 4872.9
         }
     ],
     "failed_dialogues": [
@@ -236,6 +260,8 @@
         "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
         "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
         "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+        "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+        "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
         "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!"
     ],
     "deleted_ids": [],
@@ -243,7 +269,7 @@
         "funny": 1,
         "fighting": 1,
         "romantic": 1,
-        "patriotic": 1,
+        "patriotic": 2,
         "emotional": 1,
         "comedy": 1
     }
