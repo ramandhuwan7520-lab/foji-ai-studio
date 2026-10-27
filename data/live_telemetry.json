@@ -1,8 +1,9 @@
 {
   "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
+  "step_title": "Notice",
+  "sub_detail": "Google account is 'Signed out' in saved cookies! Run `python gemini_bot.py --save-cookies` on your laptop, log in once if asked, and push `gemini_cookies_secret.txt`.",
+  "status": "error",
   "progress": 0,
-  "epoch": 1793124003.37375
+  "updated_at": "05:29:19 AM",
+  "epoch": 1793145559.366288
 }
