@@ -44,7 +44,9 @@
         "patriotic",
         "patriotic",
         "romantic",
-        "romantic"
+        "romantic",
+        "border_action",
+        "border_action"
     ],
     "history": [
         {
@@ -266,7 +268,9 @@
         "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
         "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
         "Chalo, gulal lagao, army ki palette banao!",
-        "Chalo, gulal lagao, army ki palette banao!"
+        "Chalo, gulal lagao, army ki palette banao!",
+        "Pehle humara pyaar hi humari army hai",
+        "Pehle humara pyaar hi humari army hai"
     ],
     "deleted_ids": [],
     "track_parts": {
