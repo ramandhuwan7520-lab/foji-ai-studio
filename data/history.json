@@ -46,7 +46,9 @@
         "romantic",
         "romantic",
         "border_action",
-        "border_action"
+        "border_action",
+        "emotional",
+        "emotional"
     ],
     "history": [
         {
@@ -270,7 +272,9 @@
         "Chalo, gulal lagao, army ki palette banao!",
         "Chalo, gulal lagao, army ki palette banao!",
         "Pehle humara pyaar hi humari army hai",
-        "Pehle humara pyaar hi humari army hai"
+        "Pehle humara pyaar hi humari army hai",
+        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!"
     ],
     "deleted_ids": [],
     "track_parts": {
