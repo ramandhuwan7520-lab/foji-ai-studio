@@ -48,7 +48,9 @@
         "border_action",
         "border_action",
         "emotional",
-        "emotional"
+        "emotional",
+        "comedy",
+        "comedy"
     ],
     "history": [
         {
@@ -274,7 +276,9 @@
         "Pehle humara pyaar hi humari army hai",
         "Pehle humara pyaar hi humari army hai",
         "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
-        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!"
+        "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+        "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+        "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!"
     ],
     "deleted_ids": [],
     "track_parts": {
