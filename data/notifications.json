@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1793362254082",
+    "type": "error",
+    "title": "Error at Step #0: Google Login",
+    "message": "Google account is 'Signed out' in saved cookies! Run `python gemini_bot.py --save-cookies` on your laptop, log in once if asked, and push `gemini_cookies_secret.txt`.",
+    "status": "error",
+    "time_str": "05:40 PM",
+    "date_str": "30 Oct 2026",
+    "timestamp": 1793362254.082517
+  },
+  {
     "id": "notif_1793321492817_689",
     "type": "error",
     "title": "Upload Failed",
