@@ -50,7 +50,9 @@
         "emotional",
         "emotional",
         "comedy",
-        "comedy"
+        "comedy",
+        "patriotic",
+        "patriotic"
     ],
     "history": [
         {
@@ -278,7 +280,9 @@
         "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
         "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
         "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
-        "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!"
+        "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+        "Meera, is bar chutti par tere hath ka churma pakka khayenge!",
+        "Meera, is bar chutti par tere hath ka churma pakka khayenge!"
     ],
     "deleted_ids": [],
     "track_parts": {
