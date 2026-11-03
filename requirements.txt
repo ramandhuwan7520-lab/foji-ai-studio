@@ -1,0 +1,8 @@
+flask
+requests
+python-dotenv
+selenium
+imageio-ffmpeg
+instagrapi
+yt-dlp
+Pillow

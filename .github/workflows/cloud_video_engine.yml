@@ -1,0 +1,87 @@
+name: AutoReels 3D Google Gemini Cloud Engine
+
+on:
+  workflow_dispatch:
+    inputs:
+      action_type:
+        description: "Action Type (generate_only / generate_and_publish)"
+        required: false
+        default: "generate_only"
+      custom_topic:
+        description: "Optional Custom Topic or REGEN_ID"
+        required: false
+        default: ""
+  schedule:
+    # 1. Night Batch at 02:30 AM IST (21:00 UTC previous day) -> Generates all 3 videos one-by-one
+    - cron: "0 21 * * *"
+    # 2. Morning Slot: 06:00 AM IST Fallback Gen (00:30 UTC) & 06:30 AM IST Post (01:00 UTC)
+    - cron: "30 0 * * *"
+    - cron: "0 1 * * *"
+    # 3. Afternoon Slot: 12:00 PM IST Fallback Gen (06:30 UTC) & 12:30 PM IST Post (07:00 UTC)
+    - cron: "30 6 * * *"
+    - cron: "0 7 * * *"
+    # 4. Evening Slot: 06:00 PM IST Fallback Gen (12:30 UTC) & 06:30 PM IST Post (13:00 UTC)
+    - cron: "30 12 * * *"
+    - cron: "0 13 * * *"
+    # Safety check
+    - cron: "15,45 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build_and_post_reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Google Chrome & Setup Xvfb (Ubuntu 24.04 Ready)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget xvfb fonts-liberation
+          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt-get install -y ./google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
+          sudo rm -f /usr/bin/chromedriver /usr/local/bin/chromedriver || true
+
+      - name: Install Python Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install --upgrade flask requests python-dotenv selenium instagrapi pillow
+
+      - name: Execute Google Gemini 13-Step Engine under Virtual Display
+        env:
+          CLOUD_EVENT_NAME: ${{ github.event_name }}
+          CLOUD_ACTION_TYPE: ${{ github.event.inputs.action_type }}
+          CLOUD_CUSTOM_TOPIC: ${{ github.event.inputs.custom_topic }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # GEMINI_COOKIES_JSON: ${{ secrets.GEMINI_COOKIES_JSON }}
+          GOOGLE_PASSWORD: ${{ secrets.GOOGLE_PASSWORD }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          INSTAGRAM_USERNAME: ${{ secrets.INSTAGRAM_USERNAME }}
+          INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
+          INSTAGRAM_SESSIONID: ${{ secrets.INSTAGRAM_SESSIONID }}
+          GITHUB_PAT: ${{ secrets.GH_TOKEN || secrets.GITHUB_PAT || github.token }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python cloud_worker.py
+
+      - name: Commit & Sync Generated Videos and State back to Repo
+        run: |
+          git config user.name "AutoReels3D-Cloud"
+          git config user.email "cloud@autoreels3d.ai"
+          git add -f data/* output/raw_videos/*.mp4 || true
+          git diff --staged --quiet || git commit -m "Sync cloud generated Gemini reel & state"
+          git pull --rebase origin main || true
+          git push origin HEAD:main --force || true

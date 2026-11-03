@@ -1,0 +1,70 @@
+{
+  "uuids": {
+    "phone_id": "02485f5e-08da-4a10-9ad9-a5903d162ea4",
+    "uuid": "3bc38f32-f205-46a6-ad07-289414d291f6",
+    "client_session_id": "aa017ab1-087b-4dff-8800-afa630e3d43a",
+    "advertising_id": "8bdae15e-ef31-4dc4-aa2b-1119b8dbf035",
+    "android_device_id": "android-72066018875d67ef",
+    "request_id": "7e7c4449-9fce-4ebf-9818-39707977dbe8",
+    "tray_session_id": "081f1fb8-caa1-48d0-b7d1-63299c80ebb9"
+  },
+  "mid": null,
+  "ig_u_rur": null,
+  "ig_www_claim": null,
+  "authorization_data": {
+    "ds_user_id": "22494488394",
+    "sessionid": "22494488394:BoIqwnLtb56ALQ:13:AYmYekjvAkhAU7bHemYp6NAwKpc1cFlT6SrkwQe-aA",
+    "should_use_header_over_cookies": true
+  },
+  "cookies": {
+    "sessionid": "22494488394:BoIqwnLtb56ALQ:13:AYmYekjvAkhAU7bHemYp6NAwKpc1cFlT6SrkwQe-aA",
+    "ds_user_id": "22494488394",
+    "rur": "MAZ,17841422331841811,1794797162:01ff6b96b2d5ad85effcf7d494ef534e63140e98fdca2b8decc8806bc1ddd9c4cab2ab6d",
+    "wd": "1370x637",
+    "ig_did": "C310710F-3181-486D-8674-772692C31EB0",
+    "csrftoken": "DvAHxnltC3gr6KNQMv7PPe",
+    "datr": "yGXnascj70a5kZW_n0tUCfAx",
+    "rd_challenge": "Q_6hBQQ31nrDaiw002GyqDSI39rLY0AGtfCoFmj5bXSc2s4eWKh98OOSY4vROGhcPm62gwntrblGln3F_Q-AwfzuA_77IRKKvFr6I1A",
+    "mid": "audlyAALAAGdye7RCpO1JydMICJj"
+  },
+  "last_login": null,
+  "device_settings": {
+    "android_version": 34,
+    "android_release": "14.0",
+    "dpi": "480dpi",
+    "resolution": "1080x2400",
+    "manufacturer": "Samsung",
+    "device": "dm1q",
+    "model": "SM-S911B",
+    "cpu": "qcom",
+    "app_version": "368.0.0.45.96",
+    "version_code": "674523890",
+    "bloks_versioning_id": "ce5588ef227687c7fd27de3f190c0ec0fb21b2b10cd0f1b902122f1f1f7216b2"
+  },
+  "user_agent": "Instagram 368.0.0.45.96 Android (34/14.0; 480dpi; 1080x2400; Samsung; SM-S911B; dm1q; qcom; en_US; 674523890)",
+  "country": "US",
+  "country_code": 1,
+  "locale": "en_US",
+  "timezone_offset": -14400,
+  "timezone_name": "GMT-04:00",
+  "push_disabled": true,
+  "request_timeout": 1,
+  "public_request_retries_count": 3,
+  "public_request_retries_timeout": 2,
+  "session_retry_total": 3,
+  "session_retry_backoff_factor": 2,
+  "session_retry_statuses": [
+    429,
+    500,
+    502,
+    503,
+    504
+  ],
+  "public_transport": "requests",
+  "public_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15",
+  "public_graphql_user_agent": "Instagram 273.0.0.16.70 (iPhone15,2; iOS 17_5_1; en_US; en-US; scale=3.00; 1290x2796; 470085518)",
+  "private_transport": "curl",
+  "public_transport_impersonate": "chrome136",
+  "tls_verify": true,
+  "bloks_versioning_id": "ce5588ef227687c7fd27de3f190c0ec0fb21b2b10cd0f1b902122f1f1f7216b2"
+}

@@ -1,0 +1,19 @@
+{
+    "enabled": true,
+    "times": [
+        "06:30",
+        "12:30",
+        "18:30"
+    ],
+    "night_batch_time": "02:30",
+    "fallback_gen_times": [
+        "06:00",
+        "12:00",
+        "18:00"
+    ],
+    "button_locked": true,
+    "night_batch_log": {},
+    "gen_tried_log": {},
+    "completed_slots_log": {},
+    "missed_slots_log": {}
+}

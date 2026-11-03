@@ -1,0 +1,13 @@
+venv/
+.venv/
+__pycache__/
+chrome_profile/
+chrome_bot_profile/
+chrome_gemini_pro_profile/
+assets/bgm/
+output/final_reels/
+cloudflared.exe
+*.exe
+*.deb
+*.pyc
+.env
