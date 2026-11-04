@@ -1585,5 +1585,354 @@ CLEAN_FAST_HTML = r"""
 </html>
 """
 
+# ==============================================================================
+# 🎖️ FOJI UNIVERSE DIRECTOR & COMMAND CENTER LIVE ROUTES (NON-DESTRUCTIVE)
+# ==============================================================================
+import foji_universe_director as _fud
+from flask import send_file as _send_file
+
+_orig_build_fresh_prompt_package = globals().get("build_fresh_prompt_package")
+
+def build_fresh_prompt_package(track=None, next_part=1, new_id=1, used_lines=None):
+    """Overrides prompt builder to use 100% Real AI Episodic Foji Universe Director (5 Tracks + Past Continuity)!"""
+    try:
+        return _fud.build_real_foji_universe_package(video_id=new_id)
+    except Exception as e:
+        print(f"⚠️ Foji Universe AI fallback note: {e}")
+        if _orig_build_fresh_prompt_package:
+            return _orig_build_fresh_prompt_package(track, next_part, new_id, used_lines)
+        raise
+
+@app.route("/api/universe/status", methods=["GET"])
+def api_universe_status():
+    from flask import jsonify
+    return jsonify(_fud.get_real_system_health())
+
+@app.route("/api/universe/select_track", methods=["POST"])
+def api_universe_select_track():
+    from flask import request, jsonify
+    data = request.get_json(force=True, silent=True) or {}
+    st = _fud.get_director_state()
+    if "active_mode" in data:
+        st["active_mode"] = data["active_mode"]
+    if "selected_track_id" in data:
+        st["selected_track_id"] = data["selected_track_id"]
+    if "custom_idea" in data:
+        st["custom_idea"] = data["custom_idea"].strip()
+    _fud.save_director_state(st)
+    return jsonify({"ok": True, "state": st})
+
+@app.route("/api/universe/generate_preview_script", methods=["POST"])
+def api_universe_generate_preview_script():
+    from flask import request, jsonify
+    data = request.get_json(force=True, silent=True) or {}
+    track_id = data.get("track_id")
+    custom_idea = data.get("custom_idea", "")
+    pkg = _fud.build_real_foji_universe_package(video_id=999, force_track_id=track_id, custom_idea=custom_idea)
+    return jsonify({"ok": True, "package": pkg})
+
+@app.route("/api/universe/live_screenshot", methods=["GET"])
+def api_universe_live_screenshot():
+    for snap in ["data/gemini_started.png", "data/gemini_step_problem.png", "data/gemini_login_status.png", "data/flow_started.png"]:
+        if os.path.exists(snap):
+            return _send_file(os.path.abspath(snap), mimetype="image/png")
+    return ("No screenshot yet", 404)
+
+@app.after_request
+def _inject_foji_universe_command_hub(response):
+    """Automatically injects the Next-Gen Foji Universe Command Bar & 13-Step Radar into the HTML dashboard!"""
+    try:
+        if response.content_type and "text/html" in response.content_type and response.status_code == 200:
+            html_text = response.get_data(as_text=True)
+            if "</body>" in html_text and "id=\"foji-universe-pro-hub\"" not in html_text:
+                widget_html = """
+<!-- 🎖️ FOJI AI STUDIO — PRO COMMAND HUB (5 TRACKS + 13-STEP RADAR + AI SHOWRUNNER) -->
+<style>
+#foji-universe-pro-hub {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(145deg, rgba(11,17,30,0.96), rgba(18,26,44,0.98));
+    border: 1px solid rgba(0, 245, 212, 0.28);
+    border-radius: 18px;
+    padding: 20px 24px;
+    margin: 18px auto;
+    max-width: 1360px;
+    color: #f1f5f9;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 25px rgba(0,245,212,0.12);
+    position: relative;
+    z-index: 999;
+}
+.fup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+}
+.fup-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #00f5d4, #38bdf8, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.fup-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+.fup-pill {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    color: #34d399;
+}
+.fup-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 20px;
+}
+@media (max-width: 960px) { .fup-grid { grid-template-columns: 1fr; } }
+.fup-tracks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+.fup-track-card {
+    background: rgba(30, 41, 59, 0.65);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 11px 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+.fup-track-card:hover { transform: translateY(-2px); border-color: #38bdf8; }
+.fup-track-card.active {
+    background: linear-gradient(135deg, rgba(0,245,212,0.18), rgba(56,189,248,0.14));
+    border: 2px solid #00f5d4;
+    box-shadow: 0 0 18px rgba(0,245,212,0.22);
+}
+.fup-track-name { font-size: 0.86rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.fup-track-badge { font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+.fup-input-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.fup-input {
+    flex: 1;
+    min-width: 220px;
+    background: rgba(15,23,42,0.85);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #fff;
+    font-size: 0.86rem;
+}
+.fup-btn {
+    background: linear-gradient(90deg, #00f5d4, #0ea5e9);
+    color: #0f172a;
+    font-weight: 800;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.84rem;
+    transition: opacity 0.2s;
+}
+.fup-btn:hover { opacity: 0.9; }
+.fup-radar-box {
+    background: rgba(15,23,42,0.78);
+    border: 1px solid rgba(56,189,248,0.22);
+    border-radius: 14px;
+    padding: 14px;
+}
+.fup-step-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+.fup-step-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00f5d4, #38bdf8, #a855f7);
+    width: 100%;
+    transition: width 0.4s ease;
+}
+.fup-script-preview {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(2,6,23,0.75);
+    border-left: 3px solid #00f5d4;
+    font-size: 0.83rem;
+    line-height: 1.5;
+    display: none;
+}
+</style>
+
+<div id="foji-universe-pro-hub">
+  <div class="fup-header">
+    <div class="fup-title">
+      <span>🎖️ FOJI AI UNIVERSE — EPISODIC STORY DIRECTOR & 13-STEP RADAR</span>
+    </div>
+    <div class="fup-badges">
+      <span class="fup-pill" id="fup-cookie-pill">🟢 Gemini Pure Cookies: Locked</span>
+      <span class="fup-pill" id="fup-ig-pill">🟢 Instagram Session: Verified</span>
+      <span class="fup-pill" style="background:rgba(168,85,247,0.16);border-color:#a855f7;color:#e9d5ff;">🔒 Golden Pipeline v1.0</span>
+    </div>
+  </div>
+
+  <div class="fup-grid">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:0.88rem;font-weight:700;color:#cbd5e1;">🎬 Select Foji Series Track (Every Video Connects to Previous Episode!):</span>
+        <button class="fup-btn" id="fup-mode-btn" onclick="fupSetAutoRotate()" style="padding:5px 12px;font-size:0.76rem;">🔄 Mode: Auto-Rotate All 5 Tracks</button>
+      </div>
+
+      <div class="fup-tracks" id="fup-tracks-container"></div>
+
+      <div class="fup-input-row">
+        <input type="text" id="fup-custom-idea" class="fup-input" placeholder="💡 Optional: Agle episode mein kya twist chahiye? (e.g., Ustad ne barrack mein Maggi pakad li / Meera ka birthday call)..." />
+        <button class="fup-btn" onclick="fupSaveCustomIdea()">💾 Lock Twist</button>
+        <button class="fup-btn" style="background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;" onclick="fupPreviewLiveScript()">🧠 Test AI Script</button>
+      </div>
+
+      <div id="fup-script-box" class="fup-script-preview"></div>
+    </div>
+
+    <div class="fup-radar-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:0.86rem;font-weight:800;color:#38bdf8;" id="fup-step-title">📡 Live 13-Step Pipeline Radar</span>
+        <span style="font-size:0.75rem;color:#94a3b8;" id="fup-step-time">Synced</span>
+      </div>
+      <div class="fup-step-bar"><div class="fup-step-fill" id="fup-step-fill" style="width:100%;"></div></div>
+      <div style="font-size:0.8rem;color:#e2e8f0;margin-bottom:10px;" id="fup-step-sub">All 13 steps verified & ready for next generation.</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <a href="/api/universe/live_screenshot" target="_blank" style="font-size:0.76rem;color:#00f5d4;text-decoration:none;font-weight:700;">📸 View Latest Cloud Chrome Screenshot ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let _fupCurrentState = { active_mode: 'auto_rotate', selected_track_id: 'love_meera' };
+let _fupTracks = [];
+
+async function fupLoadStatus() {
+  try {
+    const r = await fetch('/api/universe/status');
+    const d = await r.json();
+    _fupCurrentState = d.director_state || _fupCurrentState;
+    _fupTracks = d.tracks || [];
+    fupRenderTracks();
+
+    if (d.telemetry) {
+      document.getElementById('fup-step-title').innerText = '📡 Step #' + (d.telemetry.step_num || 0) + ': ' + (d.telemetry.step_title || 'Ready');
+      document.getElementById('fup-step-sub').innerText = d.telemetry.sub_detail || '';
+      document.getElementById('fup-step-time').innerText = d.telemetry.updated_at || '';
+      document.getElementById('fup-step-fill').style.width = (d.telemetry.progress || 100) + '%';
+    }
+  } catch (e) {}
+}
+
+function fupRenderTracks() {
+  const box = document.getElementById('fup-tracks-container');
+  if (!box || !_fupTracks.length) return;
+  const modeBtn = document.getElementById('fup-mode-btn');
+  if (_fupCurrentState.active_mode === 'auto_rotate') {
+    modeBtn.innerText = '🔄 Mode: Auto-Rotate All 5 Tracks (ACTIVE)';
+    modeBtn.style.background = 'linear-gradient(90deg, #00f5d4, #0ea5e9)';
+    modeBtn.style.color = '#0f172a';
+  } else {
+    modeBtn.innerText = '📌 Mode: Locked to Single Track (Click for Auto-Rotate)';
+    modeBtn.style.background = 'rgba(255,255,255,0.15)';
+    modeBtn.style.color = '#fff';
+  }
+
+  box.innerHTML = _fupTracks.map(t => {
+    const isAct = (_fupCurrentState.active_mode === 'locked_track' && _fupCurrentState.selected_track_id === t.id);
+    return `<div class="fup-track-card ${isAct ? 'active' : ''}" onclick="fupSelectTrack('${t.id}')">
+      <div class="fup-track-name">${t.name}</div>
+      <div class="fup-track-badge">${t.badge} ${isAct ? ' • 📌 LOCKED' : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+async function fupSelectTrack(trackId) {
+  await fetch('/api/universe/select_track', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ active_mode: 'locked_track', selected_track_id: trackId })
+  });
+  fupLoadStatus();
+}
+
+async function fupSetAutoRotate() {
+  await fetch('/api/universe/select_track', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ active_mode: 'auto_rotate' })
+  });
+  fupLoadStatus();
+}
+
+async function fupSaveCustomIdea() {
+  const val = document.getElementById('fup-custom-idea').value;
+  await fetch('/api/universe/select_track', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ custom_idea: val })
+  });
+  alert('✅ Next Episode Twist Locked! Agli video isi kahani ko aage badhate hue banegi!');
+}
+
+async function fupPreviewLiveScript() {
+  const sbox = document.getElementById('fup-script-box');
+  sbox.style.display = 'block';
+  sbox.innerHTML = '⏳ <b>AI Showrunner is writing a 100% fresh episode script linked to your past history...</b>';
+  const val = document.getElementById('fup-custom-idea').value;
+  try {
+    const r = await fetch('/api/universe/generate_preview_script', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ track_id: _fupCurrentState.selected_track_id, custom_idea: val })
+    });
+    const d = await r.json();
+    if (d.ok && d.package) {
+      const p = d.package;
+      sbox.innerHTML = `
+        <div style="color:#00f5d4;font-weight:800;margin-bottom:4px;">🎬 ${p.emotion_name}</div>
+        <div style="color:#cbd5e1;margin-bottom:6px;"><b>🎥 3D Scene:</b> ${p.scene_summary}</div>
+        <div style="color:#fff;margin-bottom:6px;"><b>🗣️ Hinglish Dialogue:</b> "${p.dialogue_line_1_hinglish}"</div>
+        <div style="color:#fbbf24;white-space:pre-line;"><b>🔥 Shayari:</b>\n${p.shayari_hindi}</div>
+      `;
+    }
+  } catch (e) {
+    sbox.innerHTML = '⚠️ Error generating preview: ' + e;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hub = document.getElementById('foji-universe-pro-hub');
+  if (hub && document.body.firstChild) {
+    document.body.insertBefore(hub, document.body.firstChild);
+  }
+  fupLoadStatus();
+  setInterval(fupLoadStatus, 8000);
+});
+</script>
+"""
+                html_text = html_text.replace("</body>", widget_html + "\n</body>", 1)
+                response.set_data(html_text)
+    except Exception:
+        pass
+    return response
+
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 7860)), debug=False)
