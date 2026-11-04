@@ -308,23 +308,6 @@ STRICT RULES:
             except Exception:
                 pass
 
-    # 2. Try google.generativeai SDK if installed
-    if api_key:
-        try:
-            import google.generativeai as genai
-            genai.configure(api_key=api_key)
-            for m in ["gemini-2.0-flash", "gemini-1.5-flash"]:
-                try:
-                    model = genai.GenerativeModel(m)
-                    resp = model.generate_content(system_prompt)
-                    parsed = _extract_json_dict(resp.text)
-                    if parsed:
-                        print(f"   ✅ Gemini SDK ({m}) wrote Episode #{ep_num}!")
-                        return parsed
-                except Exception:
-                    pass
-        except Exception:
-            pass
 
     # 3. Never crash: Use Procedural Linked Story Synthesizer so pipeline NEVER stops!
     print(f"   ⚡ Using Built-In Procedural Foji Story Synthesizer for Episode #{ep_num}...")
