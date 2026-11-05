@@ -1622,7 +1622,6 @@ def generate_video_in_gemini(pending_pkg=None):
             print(f"🎉 SUCCESS! Gemini 9:16 Video Saved at {output_video_path}")
             rel_vid_path = f"output/raw_videos/{os.path.basename(output_video_path)}"
 
-            # 1. Record completed video into data/history.json & data/scheduled_queue.json so Frontend sees it immediately!
             try:
                 with open("data/history.json", "r", encoding="utf-8") as f:
                     h_now = json.load(f)
@@ -1645,127 +1644,6 @@ def generate_video_in_gemini(pending_pkg=None):
             except Exception:
                 pass
 
-            # 2. Upload the MP4 file to GitHub so Render Frontend can stream, preview, schedule & post it!
-            print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Scheduling...")
-            sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {os.path.basename(output_video_path)} for Frontend")
-
-            update_3d_telemetry(8, "Stage 8: Video Ready in Studio!", f"Video ({os.path.basename(output_video_path)}) ready on Frontend & Telegram!", "completed", 100)
-            push_app_notification("success", "🎉 New 3D Reel Ready!", f"{pending_pkg.get('emotion_name')} is ready in Frontend Preview & Queue!", "success")
-            return output_video_path
-
-    finally:
-        try:
-            driver.quit()
-        except Exception:
-            pass
-        try:
-            chrome_proc.terminate()
-        except Exception:
-            pass
-
-        # ======================================================================
-        # ⏳ ZERO TIME LIMIT WAITING LOOP: Waits indefinitely until video is
-        #    downloaded OR Gemini shows a real refusal/error on screen!
-        # ======================================================================
-        update_3d_telemetry(5, "Waiting for Gemini Video", "Waiting until video is ready (No Time Limit)...", "active", 85)
-        video_saved = False
-        gen_start_t = time.time()
-        idle_without_video_ticks = 0
-        tick = 0
-
-        while True:
-            tick += 1
-            time.sleep(4)
-            elapsed_sec = int(time.time() - gen_start_t)
-            elapsed_mins = round(elapsed_sec / 60.0, 1)
-
-            current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
-            new_files = [f for f in (current_mp4s - existing_mp4s) if not f.endswith(".crdownload")]
-            if new_files:
-                newest = max(new_files, key=os.path.getctime)
-                if is_valid_mp4(newest):
-                    if os.path.abspath(newest) != os.path.abspath(output_video_path):
-                        shutil.move(newest, output_video_path)
-                    video_saved = True
-                    break
-
-            # Hover mouse over video area so hidden Download button becomes visible
-            try:
-                vw_vh = driver.execute_script("return {w: window.innerWidth, h: window.innerHeight};")
-                driver.execute_cdp_cmd("Input.dispatchMouseEvent", {
-                    "type": "mouseMoved",
-                    "x": int(vw_vh["w"] * 0.50),
-                    "y": int(vw_vh["h"] * 0.55)
-                })
-            except Exception:
-                pass
-
-            st = get_gemini_reply_and_video_status(driver, ignored_video_urls)
-            is_gen = st.get("is_generating", False)
-            new_vids = st.get("new_video_urls", [])
-            dl_btn = st.get("download_btn")
-            screen_reply = (st.get("screen_reply_text") or "").strip()
-
-            print(
-                f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s) - NO TIMEOUT] "
-                f"Generating: {is_gen} | Video Detected: {len(new_vids)} | Download Btn: {bool(dl_btn)}"
-            )
-
-            if dl_btn is not None or (len(new_vids) > 0 and not is_gen):
-                print("✅ [Step #13] Video Ready on Screen! Clicking 'Download video'...")
-                update_3d_telemetry(6, "Downloading MP4", "Clicking 'Download video' in Gemini...", "active", 96)
-                time.sleep(2.5)
-                vid_url = new_vids[-1] if (new_vids and new_vids[-1] != "DOM_VIDEO_ELEMENT_VISIBLE") else ""
-                if execute_step13_download_video(driver, dl_btn, vid_url, raw_dir, existing_mp4s, output_video_path):
-                    video_saved = True
-                    break
-
-            # Only stop & alert if Gemini explicitly stopped generating AND returned a text error/refusal
-            if not is_gen and len(new_vids) == 0 and dl_btn is None and elapsed_sec >= 25:
-                idle_without_video_ticks += 1
-                if st.get("is_refusal_or_error") or (idle_without_video_ticks >= 8 and len(screen_reply) > 15):
-                    exact_msg = screen_reply if screen_reply else "Gemini stopped generating without returning a video."
-                    if st.get("is_limit"):
-                        report_step_problem_instantly(driver, "Gemini Video Limit Reached", f"Screen par yeh aaya: {exact_msg}")
-                        raise GeminiLimitReachedError(exact_msg)
-                    else:
-                        report_step_problem_instantly(driver, "Gemini Screen Error (Video Nahi Bani)", f"Screen par yeh aaya: {exact_msg}")
-                        raise RuntimeError(f"Gemini Screen Reply: {exact_msg}")
-            else:
-                idle_without_video_ticks = 0
-
-            if tick % 5 == 0:
-                prog = min(95, 85 + int(tick / 15))
-                update_3d_telemetry(5, "Rendering in Gemini", f"Gemini generating video... ({elapsed_mins} min elapsed)", "active", prog)
-
-        if video_saved and is_valid_mp4(output_video_path):
-            print(f"🎉 SUCCESS! Gemini 9:16 Video Saved at {output_video_path}")
-            rel_vid_path = f"output/raw_videos/{os.path.basename(output_video_path)}"
-
-            # 1. Record completed video into data/history.json & data/scheduled_queue.json so Frontend sees it immediately!
-            try:
-                with open("data/history.json", "r", encoding="utf-8") as f:
-                    h_now = json.load(f)
-                h_now["generated_count"] = max(int(h_now.get("generated_count", 0)), int(video_num))
-                pending_pkg["video_file"] = os.path.basename(output_video_path)
-                pending_pkg["completed_at"] = datetime.now(IST).strftime("%d %b %Y, %I:%M %p")
-                h_now.setdefault("history", []).append(pending_pkg)
-                with open("data/history.json", "w", encoding="utf-8") as f:
-                    json.dump(h_now, f, indent=2, ensure_ascii=False)
-                sync_file_to_github("data/history.json", f"Record completed video #{video_num}")
-            except Exception:
-                pass
-
-            try:
-                import foji_universe_director as _fud
-                _fud.mark_episode_part_completed(pending_pkg.get("track_id", "love_meera"), pending_pkg.get("part_number", 1))
-                _fud.sync_raw_videos_into_unapproved_queue()
-                sync_file_to_github("data/episode_tracker.json", "Sync episode part tracker")
-                sync_file_to_github("data/scheduled_queue.json", "Sync ready video into frontend approval queue")
-            except Exception:
-                pass
-
-            # 2. Upload the MP4 file to GitHub so Render Frontend can stream, preview, schedule & post it!
             print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Scheduling...")
             sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {os.path.basename(output_video_path)} for Frontend")
 
