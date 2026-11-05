@@ -74,6 +74,7 @@ jobs:
           INSTAGRAM_SESSIONID: ${{ secrets.INSTAGRAM_SESSIONID }}
           GITHUB_PAT: ${{ secrets.GH_TOKEN || secrets.GITHUB_PAT || github.token }}
           GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python cloud_worker.py
 

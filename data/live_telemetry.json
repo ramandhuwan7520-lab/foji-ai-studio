@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Executing 13-Step Memory",
-  "sub_detail": "3.8 Flash -> Create Video -> 9:16 -> Foji & Fojan -> Script...",
-  "status": "active",
-  "progress": 52,
-  "updated_at": "10:52:53 AM",
-  "epoch": 1793510573.9355743
+  "step_num": 0,
+  "step_title": "System Idle — Ready to Start",
+  "sub_detail": "Click 'Generate Reel' to start live 1-to-8 step tracking",
+  "status": "idle",
+  "progress": 0,
+  "updated_at": "Ready",
+  "epoch": 0
 }

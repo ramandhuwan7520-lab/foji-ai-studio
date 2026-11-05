@@ -2426,14 +2426,36 @@ html, body {
 <script>
 let _fnsState = { active_mode: 'auto_rotate', selected_track_id: 'love_meera' };
 let _fnsTracks = [];
+let _fnsLastNotifId = '';
+let _fnsLastCompletedVideo = '';
+let _fnsGenerationActive = false;
+
+function fnsPlayAlertBeep(isError=false) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = isError ? 'sawtooth' : 'sine';
+    osc.frequency.setValueAtTime(isError ? 220 : 880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + (isError ? 0.45 : 0.25));
+  } catch (e) {}
+}
 
 function fnsShowToast(msg, isError=false) {
   const t = document.getElementById('fns-action-toast');
   if (!t) return;
   t.style.display = 'block';
+  t.style.background = isError
+    ? 'linear-gradient(90deg, rgba(239,68,68,0.32), rgba(127,29,29,0.5))'
+    : 'linear-gradient(90deg, rgba(0,245,212,0.25), rgba(14,165,233,0.25))';
   t.style.borderColor = isError ? '#ef4444' : '#00f5d4';
   t.innerHTML = msg;
-  setTimeout(() => { t.style.display = 'none'; }, 8000);
+  fnsPlayAlertBeep(isError);
+  setTimeout(() => { t.style.display = 'none'; }, 10000);
 }
 
 function fnsSwitchTab(num) {
@@ -2443,72 +2465,83 @@ function fnsSwitchTab(num) {
   }
 }
 
-let _fnsLastKnownVideoFile = '';
-
-function fnsUpdateConnectedPipelineRoad(telemetry, notifications) {
+function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFile) {
   const stepNum = parseInt(telemetry.step_num || 0, 10);
-  const status = (telemetry.status || 'ready').toLowerCase();
-  const title = telemetry.step_title || 'System Idle & Ready';
-  const detail = telemetry.sub_detail || '';
+  const rawStatus = (telemetry.status || 'idle').toLowerCase();
+  const epoch = parseFloat(telemetry.epoch || 0);
+  const ageSeconds = epoch > 0 ? ((Date.now() / 1000) - epoch) : 999999;
+
+  // CRITICAL FIX: If telemetry is older than 20 minutes and still says 'active', treat as 'idle' so it NEVER gets stuck on Step 3/4!
+  let status = rawStatus;
+  if (status === 'active' && ageSeconds > 1200 && !_fnsGenerationActive) {
+    status = 'idle';
+  }
+  if (stepNum === 0 && status !== 'error') {
+    status = 'idle';
+  }
+
+  const title = (status === 'idle') ? 'System Idle — Waiting for Video Generation' : (telemetry.step_title || 'Ready');
+  const detail = (status === 'idle') ? 'Click "🚀 GENERATE 1 REEL NOW" to start live step-by-step tracking' : (telemetry.sub_detail || '');
 
   document.getElementById('fns-radar-subtitle').innerText =
-    `[${status.toUpperCase()}] ${title} — ${detail} (Updated: ${telemetry.updated_at || 'Now'})`;
-
-  // Exact 1-to-1 Stage Mapping (Stage 1 to Stage 8)
-  let activeStage = stepNum;
-  if (status === 'ready' || status === 'completed' || stepNum >= 8 || stepNum === 0) {
-    activeStage = 8;
-  }
+    `[${status.toUpperCase()}] ${title} — ${detail} ${telemetry.updated_at ? '(' + telemetry.updated_at + ')' : ''}`;
 
   for (let i = 1; i <= 8; i++) {
     const nd = document.getElementById('fns-pnode-' + i);
     if (!nd) continue;
     nd.className = 'fns-road-node';
+
     let badgeEl = nd.querySelector('.fns-stage-state-badge');
     if (!badgeEl) {
       badgeEl = document.createElement('div');
       badgeEl.className = 'fns-stage-state-badge';
-      badgeEl.style.cssText = 'font-size:0.65rem;font-weight:900;margin-top:4px;padding:2px 6px;border-radius:6px;display:inline-block;';
+      badgeEl.style.cssText = 'font-size:0.65rem;font-weight:900;margin-top:5px;padding:2px 7px;border-radius:6px;display:inline-block;';
       nd.appendChild(badgeEl);
     }
 
-    if (status === 'error') {
-      if (i < activeStage) {
-        nd.classList.add('done');
-        badgeEl.innerText = '✅ COMPLETED';
-        badgeEl.style.background = 'rgba(16,185,129,0.2)';
-        badgeEl.style.color = '#34d399';
-      } else if (i === activeStage) {
-        nd.classList.add('error');
-        badgeEl.innerText = '❌ FAILED HERE';
-        badgeEl.style.background = 'rgba(239,68,68,0.25)';
-        badgeEl.style.color = '#fca5a5';
-      } else {
-        badgeEl.innerText = '⏸️ WAITING';
-        badgeEl.style.background = 'rgba(255,255,255,0.06)';
-        badgeEl.style.color = '#64748b';
-      }
+    if (status === 'idle') {
+      // Nothing started yet -> All steps clean & waiting (NO fake green ticks!)
+      badgeEl.innerText = '⏸️ STANDBY';
+      badgeEl.style.background = 'rgba(255,255,255,0.06)';
+      badgeEl.style.color = '#64748b';
     } else if (status === 'active') {
-      if (i < activeStage) {
+      if (i < stepNum) {
         nd.classList.add('done');
         badgeEl.innerText = '✅ COMPLETED';
-        badgeEl.style.background = 'rgba(16,185,129,0.2)';
+        badgeEl.style.background = 'rgba(16,185,129,0.22)';
         badgeEl.style.color = '#34d399';
-      } else if (i === activeStage) {
+      } else if (i === stepNum) {
         nd.classList.add('active');
-        badgeEl.innerText = '⏳ RUNNING NOW...';
+        badgeEl.innerText = '⏳ RUNNING LIVE...';
         badgeEl.style.background = 'rgba(0,245,212,0.25)';
         badgeEl.style.color = '#00f5d4';
       } else {
-        badgeEl.innerText = '⏳ PENDING';
+        badgeEl.innerText = '⏳ WAITING';
         badgeEl.style.background = 'rgba(255,255,255,0.06)';
         badgeEl.style.color = '#64748b';
       }
-    } else {
+    } else if (status === 'completed') {
       nd.classList.add('done');
       badgeEl.innerText = '✅ COMPLETED';
-      badgeEl.style.background = 'rgba(16,185,129,0.2)';
+      badgeEl.style.background = 'rgba(16,185,129,0.22)';
       badgeEl.style.color = '#34d399';
+    } else if (status === 'error') {
+      const errStage = stepNum > 0 ? stepNum : 2;
+      if (i < errStage) {
+        nd.classList.add('done');
+        badgeEl.innerText = '✅ COMPLETED';
+        badgeEl.style.background = 'rgba(16,185,129,0.22)';
+        badgeEl.style.color = '#34d399';
+      } else if (i === errStage) {
+        nd.classList.add('error');
+        badgeEl.innerText = '❌ FAILED HERE';
+        badgeEl.style.background = 'rgba(239,68,68,0.28)';
+        badgeEl.style.color = '#fca5a5';
+      } else {
+        badgeEl.innerText = '⏹️ STOPPED';
+        badgeEl.style.background = 'rgba(255,255,255,0.05)';
+        badgeEl.style.color = '#64748b';
+      }
     }
   }
 
@@ -2516,30 +2549,77 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications) {
     const cn = document.getElementById('fns-pconn-' + c);
     if (!cn) continue;
     cn.className = 'fns-road-connector';
-    if (c < activeStage || status === 'completed' || status === 'ready') cn.classList.add('done');
-    else if (status === 'error' && c === activeStage) cn.classList.add('error');
-  }
-  const turn = document.getElementById('fns-pturn-1');
-  if (turn) {
-    turn.className = 'fns-road-turn' + ((activeStage > 4 || status === 'ready' || status === 'completed') ? ' done' : '');
+    if (status === 'completed') cn.classList.add('done');
+    else if (status === 'active' && c < stepNum) cn.classList.add('done');
+    else if (status === 'error' && c === stepNum) cn.classList.add('error');
   }
 
+  const turn = document.getElementById('fns-pturn-1');
+  if (turn) {
+    turn.className = 'fns-road-turn' + ((status === 'completed' || (status === 'active' && stepNum > 4)) ? ' done' : '');
+  }
+
+  // LIVE iPhone 9:16 Video Preview Logic:
+  // While generating -> Show "Rendering Live..." spinner; When completed/ready -> Show the generated MP4!
+  const vidEl = document.getElementById('fns-preview-video');
+  const fbEl = document.getElementById('fns-vid-fallback');
+  if (status === 'active') {
+    if (vidEl) vidEl.style.display = 'none';
+    if (fbEl) {
+      fbEl.style.display = 'flex';
+      fbEl.innerHTML = `
+        <div style="width:54px;height:54px;border:4px solid #00f5d4;border-top-color:transparent;border-radius:50%;animation:fnsSpin 1s linear infinite;margin-bottom:12px;"></div>
+        <style>@keyframes fnsSpin { to { transform: rotate(360deg); } }</style>
+        <div style="font-size:0.86rem;font-weight:900;color:#00f5d4;">⏳ Step #${stepNum}: ${title}</div>
+        <div style="font-size:0.74rem;color:#cbd5e1;margin-top:6px;">${detail}</div>
+        <div style="font-size:0.68rem;color:#94a3b8;margin-top:10px;">Jaise hi video banegi, yahan live play hogi!</div>
+      `;
+    }
+  } else if (latestVideoFile) {
+    if (_fnsLastCompletedVideo !== latestVideoFile) {
+      const wasFirstLoad = (_fnsLastCompletedVideo === '');
+      _fnsLastCompletedVideo = latestVideoFile;
+      if (fbEl) fbEl.style.display = 'none';
+      if (vidEl) {
+        vidEl.style.display = 'block';
+        vidEl.src = '/api/universe/video_file/' + encodeURIComponent(latestVideoFile) + '?t=' + Date.now();
+        vidEl.load();
+      }
+      document.getElementById('fns-phone-ep-title').innerText = '🎬 Ready: ' + latestVideoFile;
+      document.getElementById('fns-phone-ep-diag').innerText = 'Video Ready! Click Approve & Schedule or Post Now';
+      if (!wasFirstLoad) {
+        _fnsGenerationActive = false;
+        fnsShowToast('🎉 NEW 3D FOJI VIDEO READY! (' + latestVideoFile + ') — Loaded in 9:16 Preview Player!');
+      }
+    }
+  } else {
+    if (vidEl) vidEl.style.display = 'none';
+    if (fbEl) fbEl.style.display = 'flex';
+  }
+
+  // Error Banner + Instant Popup Notification on New Notification/Error
   const errBox = document.getElementById('fns-error-banner');
   const errTxt = document.getElementById('fns-error-reason-text');
   if (status === 'error') {
     errBox.style.display = 'block';
     errTxt.innerHTML = `<b>Failed at ${title}:</b> ${detail}`;
-  } else if (notifications && notifications.length > 0 && notifications[0].status === 'error') {
-    errBox.style.display = 'block';
-    errTxt.innerHTML = `<b>Latest Alert (${notifications[0].title} at ${notifications[0].time_str}):</b> ${notifications[0].message}`;
   } else {
     errBox.style.display = 'none';
+  }
+
+  if (notifications && notifications.length > 0) {
+    const newestN = notifications[0];
+    if (_fnsLastNotifId && newestN.id !== _fnsLastNotifId) {
+      const isErr = (newestN.status === 'error');
+      fnsShowToast((isErr ? '🚨 ERROR: ' : '🔔 UPDATE: ') + newestN.title + ' — ' + newestN.message, isErr);
+    }
+    _fnsLastNotifId = newestN.id;
   }
 }
 
 async function fnsRefreshHub() {
   try {
-    const r = await fetch('/api/universe/status');
+    const r = await fetch('/api/universe/status?t=' + Date.now());
     const d = await r.json();
     _fnsState = d.director_state || _fnsState;
     _fnsTracks = d.tracks || [];
@@ -2547,21 +2627,7 @@ async function fnsRefreshHub() {
     if (d.server_time_ist) document.getElementById('fns-server-clock').innerText = d.server_time_ist;
     if (d.next_open_slot) document.getElementById('fns-next-slot-sidebar').innerText = d.next_open_slot.display_time;
 
-    // Auto-reload 9:16 iPhone Video Player whenever a new MP4 arrives!
-    if (d.latest_video_file && d.latest_video_file !== _fnsLastKnownVideoFile) {
-      _fnsLastKnownVideoFile = d.latest_video_file;
-      const vidEl = document.getElementById('fns-preview-video');
-      const fbEl = document.getElementById('fns-vid-fallback');
-      if (vidEl) {
-        if (fbEl) fbEl.style.display = 'none';
-        vidEl.style.display = 'block';
-        vidEl.src = '/api/universe/video_file/' + encodeURIComponent(d.latest_video_file) + '?t=' + Date.now();
-        vidEl.load();
-      }
-      document.getElementById('fns-phone-ep-title').innerText = '🎬 Latest: ' + d.latest_video_file;
-    }
-
-    fnsUpdateConnectedPipelineRoad(d.telemetry || {}, d.notifications || []);
+    fnsUpdateConnectedPipelineRoad(d.telemetry || {}, d.notifications || [], d.latest_video_file || '');
     fnsRenderTrackSelectors();
     fnsRenderHistory(d.recent_history || []);
     fnsRenderNotifications(d.notifications || []);
@@ -2580,7 +2646,7 @@ function fnsRenderQueueLists(q) {
   const uBox = document.getElementById('fns-unapproved-list');
   if (uBox) {
     if (!unList.length) {
-      uBox.innerHTML = '<div style="padding:12px;color:#64748b;font-size:0.78rem;">No unapproved videos waiting. Click <b>Generate 1 Reel Now</b> or wait for 02:30 AM / T-30 Min auto-generation!</div>';
+      uBox.innerHTML = '<div style="padding:12px;color:#64748b;font-size:0.78rem;">No unapproved videos waiting. Click <b>Generate 1 Reel Now</b>!</div>';
     } else {
       uBox.innerHTML = unList.map(v => `
         <div class="fns-queue-card">
@@ -2601,14 +2667,12 @@ function fnsRenderQueueLists(q) {
   const sBox = document.getElementById('fns-scheduled-list');
   if (sBox) {
     if (!scList.length) {
-      sBox.innerHTML = '<div style="padding:12px;color:#64748b;font-size:0.78rem;">No posts currently in schedule queue. Click <b>Approve & Schedule</b> on any ready video to lock it into the next slot!</div>';
+      sBox.innerHTML = '<div style="padding:12px;color:#64748b;font-size:0.78rem;">No posts currently in schedule queue.</div>';
     } else {
       sBox.innerHTML = scList.map((v, idx) => `
         <div class="fns-queue-card" style="border-color:#a855f7;background:rgba(28,18,52,0.75);">
           <div style="flex:1;min-width:180px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="background:#a855f7;color:#fff;font-size:0.66rem;font-weight:900;padding:2px 8px;border-radius:99px;">SLOT #${idx+1}: ${v.scheduled_display}</span>
-            </div>
+            <span style="background:#a855f7;color:#fff;font-size:0.66rem;font-weight:900;padding:2px 8px;border-radius:99px;">SLOT #${idx+1}: ${v.scheduled_display}</span>
             <div style="font-size:0.83rem;font-weight:800;color:#fff;margin-top:5px;">🎬 ${v.title}</div>
             <div style="font-size:0.71rem;color:#cbd5e1;margin-top:2px;">File: ${v.video_file}</div>
           </div>
@@ -2625,9 +2689,11 @@ function fnsRenderQueueLists(q) {
 function fnsPreviewSpecificVideo(vfile, title) {
   fnsSwitchTab(1);
   const vid = document.getElementById('fns-preview-video');
+  const fb = document.getElementById('fns-vid-fallback');
+  if (fb) fb.style.display = 'none';
   if (vid) {
     vid.style.display = 'block';
-    vid.src = '/api/universe/video_file/' + encodeURIComponent(vfile);
+    vid.src = '/api/universe/video_file/' + encodeURIComponent(vfile) + '?t=' + Date.now();
     vid.play();
   }
   document.getElementById('fns-phone-ep-title').innerText = title || vfile;
@@ -2738,7 +2804,7 @@ function fnsRenderNotifications(list) {
     return;
   }
   nBox.innerHTML = list.slice(0, 10).map(n => `
-    <div style="padding:7px 10px;background:rgba(15,23,42,0.75);border-radius:8px;border-left:3px solid ${n.status==='error'?'#ef4444':'#00f5d4'};display:flex;justify-content:space-between;gap:10px;">
+    <div style="padding:7px 10px;background:rgba(15,23,42,0.75);border-radius:8px;border-left:3px solid ${n.status==='error'?'#ef4444':(n.status==='success'?'#10b981':'#00f5d4')};display:flex;justify-content:space-between;gap:10px;">
       <span><b>${n.title || 'Event'}:</b> ${n.message || ''}</span>
       <span style="color:#64748b;white-space:nowrap;">${n.time_str || ''}</span>
     </div>
@@ -2774,8 +2840,20 @@ async function fnsLockTwist() {
 }
 
 async function fnsStartFullVideoGeneration(cnt=1) {
+  _fnsGenerationActive = true;
   const twist = document.getElementById('fns-custom-twist').value;
-  fnsShowToast('🚀 Starting 13-Step Video Engine (' + cnt + ' Video' + (cnt>1?'s':'') + ')... Watch the Connected Pipeline Map!');
+
+  // Immediately show Stage 1 Active on the Pipeline Road!
+  fnsUpdateConnectedPipelineRoad({
+    step_num: 1,
+    step_title: 'Stage 1: AI Episodic Script & Cloud Dispatch',
+    sub_detail: 'Starting pipeline...',
+    status: 'active',
+    updated_at: 'Just Now',
+    epoch: Date.now() / 1000
+  }, [], '');
+
+  fnsShowToast('🚀 Pipeline Started! Watch Stage 1 -> Stage 8 light up live as each step completes!');
   try {
     const r = await fetch('/api/universe/trigger_pipeline', {
       method: 'POST',
@@ -2785,11 +2863,12 @@ async function fnsStartFullVideoGeneration(cnt=1) {
     const d = await r.json();
     if (d.ok) {
       fnsShowToast('✅ ' + d.message);
-      fnsRefreshHub();
     } else {
+      _fnsGenerationActive = false;
       fnsShowToast('❌ Error: ' + (d.error || 'Failed'), true);
     }
   } catch (e) {
+    _fnsGenerationActive = false;
     fnsShowToast('❌ Error: ' + e, true);
   }
 }
@@ -2825,7 +2904,7 @@ async function fnsSaveScheduleSlots() {
       daily_slots: [s1, s2, s3]
     })
   });
-  fnsShowToast('✅ Saved! 02:30 AM Batch (3 Videos) + T-30 Min Auto-Trigger + Daily Slots (' + s1 + ', ' + s2 + ', ' + s3 + ') Locked!');
+  fnsShowToast('✅ Saved! 02:30 AM Batch (3 Videos) + T-30 Min Auto-Trigger + Daily Slots Locked!');
   fnsRefreshHub();
 }
 
@@ -2863,7 +2942,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.insertBefore(shell, document.body.firstChild);
   }
   fnsRefreshHub();
-  setInterval(fnsRefreshHub, 5000);
+  setInterval(fnsRefreshHub, 3500);
 });
 </script>
 """
