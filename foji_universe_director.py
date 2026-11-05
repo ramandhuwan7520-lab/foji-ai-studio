@@ -509,10 +509,59 @@ def get_real_system_health():
     }
 
 # ==============================================================================
-# ⏰ SMART 2:30 AM BATCH + T-30 MIN AUTO-GENERATOR + SCHEDULE QUEUE ENGINE
+# ⏰ SMART 2:30 AM BATCH + T-30 MIN + MASTER REELS VAULT + ZERO-CACHE CLOUD SYNC
 # ==============================================================================
+import base64 as _b64
+
 QUEUE_FILE = "data/scheduled_queue.json"
 SCHEDULE_CFG_FILE = "data/schedule_config.json"
+_LAST_CLOUD_PULL_TS = 0.0
+_LOCAL_QUEUE_MODIFIED_TS = 0.0
+
+
+def push_json_to_github_instantly(rel_path, commit_msg):
+    """Immediately pushes local queue/schedule/status changes to GitHub so Cloud never overwrites your actions!"""
+    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+    rel_clean = rel_path.replace("\\", "/")
+    full_p = os.path.abspath(rel_path)
+    if not gh_pat or not os.path.exists(full_p):
+        return False
+    try:
+        with open(full_p, "rb") as f:
+            b64_content = _b64.b64encode(f.read()).decode("utf-8")
+        url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
+        headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
+        r = requests.get(url, headers=headers, timeout=10)
+        sha = r.json().get("sha") if r.status_code == 200 else None
+        payload = {"message": commit_msg, "content": b64_content, "branch": "main"}
+        if sha:
+            payload["sha"] = sha
+        put_r = requests.put(url, headers=headers, json=payload, timeout=20)
+        return put_r.status_code in (200, 201)
+    except Exception:
+        return False
+
+
+def _fetch_github_json_zero_cache(rel_path):
+    """Fetches JSON via GitHub REST API (0.0s cache) instead of raw.githubusercontent CDN (which lags by 2-3 mins!)."""
+    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    rel_clean = rel_path.replace("\\", "/")
+    headers = {"Accept": "application/vnd.github+json", "Cache-Control": "no-cache"}
+    if gh_pat:
+        headers["Authorization"] = f"Bearer {gh_pat}"
+    try:
+        url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}?ref=main&t={int(time.time()*1000)}"
+        r = requests.get(url, headers=headers, timeout=6)
+        if r.status_code == 200:
+            content_b64 = r.json().get("content", "")
+            if content_b64:
+                raw_bytes = _b64.b64decode(content_b64)
+                return json.loads(raw_bytes.decode("utf-8"))
+    except Exception:
+        pass
+    return None
 
 
 def get_schedule_config():
@@ -541,6 +590,7 @@ def save_schedule_config(cfg):
     os.makedirs("data", exist_ok=True)
     with open(SCHEDULE_CFG_FILE, "w", encoding="utf-8") as f:
         json.dump(cfg, f, indent=2, ensure_ascii=False)
+    push_json_to_github_instantly(SCHEDULE_CFG_FILE, "Sync schedule config")
 
 
 def get_scheduled_queue():
@@ -548,29 +598,54 @@ def get_scheduled_queue():
     if os.path.exists(QUEUE_FILE):
         try:
             with open(QUEUE_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+                data.setdefault("unapproved_videos", [])
+                data.setdefault("scheduled_posts", [])
+                data.setdefault("published_posts", [])
+                return data
         except Exception:
             pass
-    return {"unapproved_videos": [], "scheduled_posts": [], "published_posts": []}
+    return {"unapproved_videos": [], "scheduled_posts": [], "published_posts": [], "updated_epoch": 0}
 
 
-def save_scheduled_queue(qdata):
+def save_scheduled_queue(qdata, sync_cloud=True):
+    global _LOCAL_QUEUE_MODIFIED_TS
+    _LOCAL_QUEUE_MODIFIED_TS = time.time()
+    qdata["updated_epoch"] = _LOCAL_QUEUE_MODIFIED_TS
     os.makedirs("data", exist_ok=True)
     with open(QUEUE_FILE, "w", encoding="utf-8") as f:
         json.dump(qdata, f, indent=2, ensure_ascii=False)
+    if sync_cloud:
+        push_json_to_github_instantly(QUEUE_FILE, "Update scheduled & published queue state")
 
 
 def sync_raw_videos_into_unapproved_queue():
-    """Scans output/raw_videos for any newly generated MP4s and registers them in unapproved_videos list."""
+    """
+    Ensures every MP4 in `output/raw_videos` is tracked.
+    CRITICAL FIX: If a video is ALREADY in `scheduled_posts` or `published_posts`,
+    it will NEVER be put back into `unapproved_videos`!
+    """
     q = get_scheduled_queue()
-    known_files = set()
-    for lst_name in ["unapproved_videos", "scheduled_posts", "published_posts"]:
-        for item in q.get(lst_name, []):
-            if item.get("video_file"):
-                known_files.add(item["video_file"])
+    scheduled_files = {item.get("video_file") for item in q.get("scheduled_posts", []) if item.get("video_file")}
+    published_files = {item.get("video_file") for item in q.get("published_posts", []) if item.get("video_file")}
+
+    # Clean any duplicate out of unapproved_videos if it is already scheduled or published
+    clean_unapproved = []
+    seen_unapproved = set()
+    changed = False
+    for item in q.get("unapproved_videos", []):
+        vf = item.get("video_file")
+        if vf in scheduled_files or vf in published_files or vf in seen_unapproved:
+            changed = True
+            continue
+        seen_unapproved.add(vf)
+        clean_unapproved.append(item)
+    q["unapproved_videos"] = clean_unapproved
 
     raw_dir = "output/raw_videos"
     if not os.path.exists(raw_dir):
+        if changed:
+            save_scheduled_queue(q, sync_cloud=False)
         return q
 
     hist_map = {}
@@ -582,39 +657,85 @@ def sync_raw_videos_into_unapproved_queue():
                 vid_id = h.get("video_id")
                 if vid_id:
                     hist_map[f"raw_video_{vid_id}.mp4"] = h
+                if h.get("video_file"):
+                    hist_map[h["video_file"]] = h
         except Exception:
             pass
 
-    changed = False
     mp4_files = sorted(
         [f for f in os.listdir(raw_dir) if f.endswith(".mp4")],
-        key=lambda x: os.path.getmtime(os.path.join(raw_dir, x))
+        key=lambda x: os.path.getmtime(os.path.join(raw_dir, x)),
+        reverse=True
     )
     for fname in mp4_files:
-        if fname not in known_files:
+        if fname not in scheduled_files and fname not in published_files and fname not in seen_unapproved:
             meta = hist_map.get(fname, {})
-            now_ist = datetime.now(IST)
-            q.setdefault("unapproved_videos", []).append({
-                "id": f"vid_{int(time.time() * 1000)}_{fname}",
+            mtime_ist = datetime.fromtimestamp(os.path.getmtime(os.path.join(raw_dir, fname)), IST)
+            q["unapproved_videos"].append({
+                "id": f"vid_{fname}",
                 "video_file": fname,
                 "title": meta.get("emotion_name", f"Foji 3D Reel ({fname})"),
                 "track_id": meta.get("track_id", "love_meera"),
                 "part_number": meta.get("part_number", 1),
-                "dialogue": meta.get("dialogue_line_1_hinglish", "Fresh 3D Foji Episode Ready for Approval"),
+                "dialogue": meta.get("dialogue_line_1_hinglish", "Fresh 3D Foji Episode Ready"),
+                "shayari": meta.get("shayari_hindi", ""),
                 "caption": meta.get("caption", "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife"),
-                "created_at": now_ist.strftime("%d %b %Y, %I:%M %p"),
+                "created_at": meta.get("created_at") or mtime_ist.strftime("%d %b %Y, %I:%M %p"),
                 "status": "awaiting_approval"
             })
-            known_files.add(fname)
+            seen_unapproved.add(fname)
             changed = True
 
     if changed:
-        save_scheduled_queue(q)
+        save_scheduled_queue(q, sync_cloud=False)
     return q
 
 
+def build_master_all_reels_vault():
+    """
+    Builds the Permanent All-Time Reels Vault:
+    Every reel ever generated stays here permanently with its real live status:
+    - 'published' (🟢 POSTED ON INSTAGRAM)
+    - 'scheduled' (🟣 SCHEDULED FOR SLOT)
+    - 'awaiting_approval' (🔵 READY TO SCHEDULE / POST)
+    """
+    q = sync_raw_videos_into_unapproved_queue()
+    vault_map = {}
+
+    for item in q.get("published_posts", []):
+        vf = item.get("video_file")
+        if vf:
+            copy_it = dict(item)
+            copy_it["vault_status"] = "published"
+            copy_it["status_badge"] = f"✅ POSTED ON IG ({item.get('published_at', 'Live')})"
+            vault_map[vf] = copy_it
+
+    for item in q.get("scheduled_posts", []):
+        vf = item.get("video_file")
+        if vf and vf not in vault_map:
+            copy_it = dict(item)
+            copy_it["vault_status"] = "scheduled"
+            copy_it["status_badge"] = f"📅 SCHEDULED ({item.get('scheduled_display', '')})"
+            vault_map[vf] = copy_it
+
+    for item in q.get("unapproved_videos", []):
+        vf = item.get("video_file")
+        if vf and vf not in vault_map:
+            copy_it = dict(item)
+            copy_it["vault_status"] = "awaiting_approval"
+            copy_it["status_badge"] = "🔵 READY (NOT POSTED YET)"
+            vault_map[vf] = copy_it
+
+    # Sort newest first
+    def _sort_key(obj):
+        vf = obj.get("video_file", "")
+        nums = re.findall(r"\d+", vf)
+        return int(nums[-1]) if nums else 0
+
+    return sorted(vault_map.values(), key=_sort_key, reverse=True)
+
+
 def calculate_next_available_slot_ist():
-    """Finds the next open daily schedule slot that does not already have a video assigned to it."""
     cfg = get_schedule_config()
     slots = sorted(cfg.get("daily_slots", ["07:00", "13:30", "19:30"]))
     q = get_scheduled_queue()
@@ -625,7 +746,7 @@ def calculate_next_available_slot_ist():
     }
 
     now_ist = datetime.now(IST)
-    for day_offset in range(0, 15):
+    for day_offset in range(0, 20):
         target_date = now_ist + timedelta(days=day_offset)
         date_str = target_date.strftime("%Y-%m-%d")
         display_date = target_date.strftime("%d %b %Y")
@@ -660,10 +781,6 @@ def calculate_next_available_slot_ist():
 
 
 def approve_and_schedule_video_item(video_file=None, custom_caption=""):
-    """
-    Approves a generated video and locks it into the NEXT available schedule slot!
-    If today's slots are full, automatically queues it into tomorrow's slot!
-    """
     q = sync_raw_videos_into_unapproved_queue()
     unapproved = q.get("unapproved_videos", [])
 
@@ -673,25 +790,23 @@ def approve_and_schedule_video_item(video_file=None, custom_caption=""):
             if it.get("video_file") == video_file:
                 target_item = it
                 break
+        if not target_item:
+            for it in build_master_all_reels_vault():
+                if it.get("video_file") == video_file:
+                    target_item = dict(it)
+                    break
+
     if not target_item and unapproved:
         target_item = unapproved[0]
 
     if not target_item:
-        # Check if there is any raw video file in output/raw_videos
-        raw_dir = "output/raw_videos"
-        mp4s = sorted([f for f in os.listdir(raw_dir) if f.endswith(".mp4")], key=lambda x: os.path.getmtime(os.path.join(raw_dir, x))) if os.path.exists(raw_dir) else []
-        if not mp4s:
-            raise RuntimeError("Abhi koi nayi video schedule karne ke liye tayar nahi hai! Pehle Generate karein.")
-        newest_f = mp4s[-1]
-        target_item = {
-            "id": f"vid_{int(time.time() * 1000)}",
-            "video_file": newest_f,
-            "title": f"Foji 3D Reel ({newest_f})",
-            "dialogue": "Approved from Command Center",
-            "caption": custom_caption or "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife"
-        }
-    else:
-        q["unapproved_videos"] = [x for x in unapproved if x.get("id") != target_item.get("id")]
+        raise RuntimeError("Sabhi videos pehle se Schedule ya Post ho chuki hain! Nayi video generate karein.")
+
+    # Permanently remove from unapproved_videos
+    q["unapproved_videos"] = [
+        x for x in unapproved
+        if x.get("video_file") != target_item.get("video_file")
+    ]
 
     if custom_caption.strip():
         target_item["caption"] = custom_caption.strip()
@@ -704,79 +819,120 @@ def approve_and_schedule_video_item(video_file=None, custom_caption=""):
     target_item["date_label"] = slot_info["date_label"]
     target_item["time_label"] = slot_info["time_label"]
 
-    q.setdefault("scheduled_posts", []).append(target_item)
+    # Avoid duplicate scheduling of same file
+    q["scheduled_posts"] = [
+        x for x in q.get("scheduled_posts", [])
+        if x.get("video_file") != target_item.get("video_file")
+    ]
+    q["scheduled_posts"].append(target_item)
     q["scheduled_posts"].sort(key=lambda x: float(x.get("scheduled_epoch", 0)))
-    save_scheduled_queue(q)
+
+    # Save locally AND push to GitHub immediately so it NEVER reverts!
+    save_scheduled_queue(q, sync_cloud=True)
     return target_item
 
 
-# ==============================================================================
-# 🔄 LIVE GITHUB CLOUD-TO-FRONTEND REALTIME BRIDGE (FOR RENDER DASHBOARD)
-# ==============================================================================
-_LAST_CLOUD_PULL_TS = 0.0
+def mark_video_as_published_in_vault(video_file, caption="", media_pk=""):
+    """Moves a video into `published_posts` permanently so it shows as '✅ POSTED ON IG' in the Master Reels Vault!"""
+    q = sync_raw_videos_into_unapproved_queue()
+    vname = os.path.basename(video_file)
+    now_str = datetime.now(IST).strftime("%d %b %Y, %I:%M %p IST")
+
+    found_item = None
+    for lst_key in ["scheduled_posts", "unapproved_videos"]:
+        rem = []
+        for it in q.get(lst_key, []):
+            if it.get("video_file") == vname:
+                found_item = it
+            else:
+                rem.append(it)
+        q[lst_key] = rem
+
+    if not found_item:
+        found_item = {
+            "id": f"pub_{int(time.time()*1000)}",
+            "video_file": vname,
+            "title": f"Foji 3D Reel ({vname})",
+            "dialogue": "Published to Instagram (@ai_foji_lovelife)",
+            "caption": caption
+        }
+
+    if caption:
+        found_item["caption"] = caption
+    found_item["status"] = "published"
+    found_item["published_at"] = now_str
+    found_item["ig_media_pk"] = str(media_pk or "LIVE")
+
+    q["published_posts"] = [
+        x for x in q.get("published_posts", [])
+        if x.get("video_file") != vname
+    ]
+    q["published_posts"].insert(0, found_item)
+    save_scheduled_queue(q, sync_cloud=True)
+    return found_item
 
 
 def pull_latest_cloud_state_for_frontend():
     """
-    Ensures the Render Frontend ALWAYS displays real-time Step Progress (1..8) and
-    automatically downloads any newly generated MP4 from GitHub into `output/raw_videos/`
-    so you can watch, schedule, or post it directly from the Frontend!
+    Zero-Cache Real-Time Cloud Pull:
+    - Uses GitHub REST API (0s lag) for `live_telemetry.json` and `notifications.json`.
+    - NEVER overwrites local `scheduled_queue.json` if the user modified schedules recently!
     """
     global _LAST_CLOUD_PULL_TS
-    if (time.time() - _LAST_CLOUD_PULL_TS) < 4.0:
+    if (time.time() - _LAST_CLOUD_PULL_TS) < 2.2:
         return
     _LAST_CLOUD_PULL_TS = time.time()
 
+    # 1. Zero-cache pull of live_telemetry.json & notifications.json
+    for rel_json in ["data/live_telemetry.json", "data/notifications.json", "data/history.json"]:
+        remote_data = _fetch_github_json_zero_cache(rel_json)
+        if remote_data is not None:
+            local_p = os.path.abspath(rel_json)
+            os.makedirs(os.path.dirname(local_p), exist_ok=True)
+            should_write = True
+            if rel_json == "data/live_telemetry.json" and os.path.exists(local_p):
+                try:
+                    with open(local_p, "r", encoding="utf-8") as lf:
+                        loc_t = json.load(lf)
+                    if float(remote_data.get("epoch", 0)) < float(loc_t.get("epoch", 0)):
+                        should_write = False
+                except Exception:
+                    pass
+            if should_write:
+                with open(local_p, "w", encoding="utf-8") as wf:
+                    json.dump(remote_data, wf, indent=2, ensure_ascii=False)
+
+    # 2. Only merge new videos from remote scheduled_queue.json without overwriting local scheduled/published moves!
+    if (time.time() - _LOCAL_QUEUE_MODIFIED_TS) > 15.0:
+        remote_q = _fetch_github_json_zero_cache(QUEUE_FILE)
+        if isinstance(remote_q, dict):
+            loc_q = get_scheduled_queue()
+            if float(remote_q.get("updated_epoch", 0)) > float(loc_q.get("updated_epoch", 0)):
+                with open(QUEUE_FILE, "w", encoding="utf-8") as wf:
+                    json.dump(remote_q, wf, indent=2, ensure_ascii=False)
+
+    # 3. Auto-download any new MP4 from GitHub output/raw_videos into local folder
     repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
     gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
-    headers = {"Cache-Control": "no-cache"}
+    api_headers = {"Accept": "application/vnd.github+json", "Cache-Control": "no-cache"}
     if gh_pat:
-        headers["Authorization"] = f"Bearer {gh_pat}"
-
-    raw_base = f"https://raw.githubusercontent.com/{repo}/main"
-
-    # 1. Pull real-time JSON state files from GitHub main branch if newer
-    for rel_json in ["data/live_telemetry.json", "data/notifications.json", "data/history.json", "data/scheduled_queue.json", "data/episode_tracker.json"]:
-        try:
-            r = requests.get(f"{raw_base}/{rel_json}?t={int(time.time())}", headers=headers, timeout=5)
-            if r.status_code == 200:
-                remote_data = r.json()
-                local_p = os.path.abspath(rel_json)
-                os.makedirs(os.path.dirname(local_p), exist_ok=True)
-                should_write = True
-                if rel_json == "data/live_telemetry.json" and os.path.exists(local_p):
-                    try:
-                        with open(local_p, "r", encoding="utf-8") as lf:
-                            loc_t = json.load(lf)
-                        if float(remote_data.get("epoch", 0)) < float(loc_t.get("epoch", 0)):
-                            should_write = False
-                    except Exception:
-                        pass
-                if should_write:
-                    with open(local_p, "w", encoding="utf-8") as wf:
-                        json.dump(remote_data, wf, indent=2, ensure_ascii=False)
-        except Exception:
-            pass
-
-    # 2. Check if output/raw_videos on GitHub has any MP4 that isn't on this server yet -> download it!
+        api_headers["Authorization"] = f"Bearer {gh_pat}"
     try:
         os.makedirs("output/raw_videos", exist_ok=True)
-        api_url = f"https://api.github.com/repos/{repo}/contents/output/raw_videos"
-        api_headers = {"Accept": "application/vnd.github+json"}
-        if gh_pat:
-            api_headers["Authorization"] = f"Bearer {gh_pat}"
-        r_list = requests.get(api_url, headers=api_headers, timeout=8)
+        api_url = f"https://api.github.com/repos/{repo}/contents/output/raw_videos?ref=main&t={int(time.time())}"
+        r_list = requests.get(api_url, headers=api_headers, timeout=6)
         if r_list.status_code == 200 and isinstance(r_list.json(), list):
             for item in r_list.json():
                 fname = item.get("name", "")
                 if fname.endswith(".mp4"):
                     local_vid = os.path.join("output/raw_videos", fname)
                     if not os.path.exists(local_vid) or os.path.getsize(local_vid) < 100 * 1024:
-                        dl_url = item.get("download_url") or f"{raw_base}/output/raw_videos/{fname}"
-                        vr = requests.get(dl_url, headers=headers, timeout=45)
-                        if vr.status_code == 200 and len(vr.content) > 100 * 1024:
-                            with open(local_vid, "wb") as vf:
-                                vf.write(vr.content)
-                            print(f"📥 [Frontend Sync] Downloaded new cloud video {fname} into local studio!")
+                        dl_url = item.get("download_url")
+                        if dl_url:
+                            vr = requests.get(dl_url, headers=api_headers, timeout=45)
+                            if vr.status_code == 200 and len(vr.content) > 100 * 1024:
+                                with open(local_vid, "wb") as vf:
+                                    vf.write(vr.content)
+                                print(f"📥 [Live Vault Sync] Downloaded {fname} into local studio!")
     except Exception:
         pass
