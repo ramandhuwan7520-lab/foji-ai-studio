@@ -708,3 +708,75 @@ def approve_and_schedule_video_item(video_file=None, custom_caption=""):
     q["scheduled_posts"].sort(key=lambda x: float(x.get("scheduled_epoch", 0)))
     save_scheduled_queue(q)
     return target_item
+
+
+# ==============================================================================
+# 🔄 LIVE GITHUB CLOUD-TO-FRONTEND REALTIME BRIDGE (FOR RENDER DASHBOARD)
+# ==============================================================================
+_LAST_CLOUD_PULL_TS = 0.0
+
+
+def pull_latest_cloud_state_for_frontend():
+    """
+    Ensures the Render Frontend ALWAYS displays real-time Step Progress (1..8) and
+    automatically downloads any newly generated MP4 from GitHub into `output/raw_videos/`
+    so you can watch, schedule, or post it directly from the Frontend!
+    """
+    global _LAST_CLOUD_PULL_TS
+    if (time.time() - _LAST_CLOUD_PULL_TS) < 4.0:
+        return
+    _LAST_CLOUD_PULL_TS = time.time()
+
+    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    headers = {"Cache-Control": "no-cache"}
+    if gh_pat:
+        headers["Authorization"] = f"Bearer {gh_pat}"
+
+    raw_base = f"https://raw.githubusercontent.com/{repo}/main"
+
+    # 1. Pull real-time JSON state files from GitHub main branch if newer
+    for rel_json in ["data/live_telemetry.json", "data/notifications.json", "data/history.json", "data/scheduled_queue.json", "data/episode_tracker.json"]:
+        try:
+            r = requests.get(f"{raw_base}/{rel_json}?t={int(time.time())}", headers=headers, timeout=5)
+            if r.status_code == 200:
+                remote_data = r.json()
+                local_p = os.path.abspath(rel_json)
+                os.makedirs(os.path.dirname(local_p), exist_ok=True)
+                should_write = True
+                if rel_json == "data/live_telemetry.json" and os.path.exists(local_p):
+                    try:
+                        with open(local_p, "r", encoding="utf-8") as lf:
+                            loc_t = json.load(lf)
+                        if float(remote_data.get("epoch", 0)) < float(loc_t.get("epoch", 0)):
+                            should_write = False
+                    except Exception:
+                        pass
+                if should_write:
+                    with open(local_p, "w", encoding="utf-8") as wf:
+                        json.dump(remote_data, wf, indent=2, ensure_ascii=False)
+        except Exception:
+            pass
+
+    # 2. Check if output/raw_videos on GitHub has any MP4 that isn't on this server yet -> download it!
+    try:
+        os.makedirs("output/raw_videos", exist_ok=True)
+        api_url = f"https://api.github.com/repos/{repo}/contents/output/raw_videos"
+        api_headers = {"Accept": "application/vnd.github+json"}
+        if gh_pat:
+            api_headers["Authorization"] = f"Bearer {gh_pat}"
+        r_list = requests.get(api_url, headers=api_headers, timeout=8)
+        if r_list.status_code == 200 and isinstance(r_list.json(), list):
+            for item in r_list.json():
+                fname = item.get("name", "")
+                if fname.endswith(".mp4"):
+                    local_vid = os.path.join("output/raw_videos", fname)
+                    if not os.path.exists(local_vid) or os.path.getsize(local_vid) < 100 * 1024:
+                        dl_url = item.get("download_url") or f"{raw_base}/output/raw_videos/{fname}"
+                        vr = requests.get(dl_url, headers=headers, timeout=45)
+                        if vr.status_code == 200 and len(vr.content) > 100 * 1024:
+                            with open(local_vid, "wb") as vf:
+                                vf.write(vr.content)
+                            print(f"📥 [Frontend Sync] Downloaded new cloud video {fname} into local studio!")
+    except Exception:
+        pass

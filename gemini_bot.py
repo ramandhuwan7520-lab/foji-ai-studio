@@ -64,24 +64,41 @@ def send_telegram_photo(photo_path, caption=""):
 
 
 def sync_file_to_github(rel_path, commit_msg):
-    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
+    gh_pat = (
+        os.getenv("GITHUB_PAT")
+        or os.getenv("GH_TOKEN")
+        or os.getenv("GITHUB_TOKEN")
+        or ""
+    ).strip()
     repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+    rel_clean = rel_path.replace("\\", "/")
     full_p = os.path.abspath(rel_path)
-    if not gh_pat or not os.path.exists(full_p):
+    if not os.path.exists(full_p):
         return
-    try:
-        with open(full_p, "rb") as f:
-            b64 = base64.b64encode(f.read()).decode("utf-8")
-        url = f"https://api.github.com/repos/{repo}/contents/{rel_path}"
-        headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
-        r = requests.get(url, headers=headers, timeout=10)
-        sha = r.json().get("sha") if r.status_code == 200 else None
-        payload = {"message": commit_msg, "content": b64, "branch": "main"}
-        if sha:
-            payload["sha"] = sha
-        requests.put(url, headers=headers, json=payload, timeout=15)
-    except Exception:
-        pass
+    if gh_pat:
+        try:
+            with open(full_p, "rb") as f:
+                b64 = base64.b64encode(f.read()).decode("utf-8")
+            url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
+            headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
+            r = requests.get(url, headers=headers, timeout=12)
+            sha = r.json().get("sha") if r.status_code == 200 else None
+            payload = {"message": commit_msg, "content": b64, "branch": "main"}
+            if sha:
+                payload["sha"] = sha
+            put_r = requests.put(url, headers=headers, json=payload, timeout=45)
+            if put_r.status_code in (200, 201):
+                return
+        except Exception:
+            pass
+    # Fallback on Cloud Runner if API token is not set: use local git CLI
+    if os.name != "nt":
+        try:
+            subprocess.run(["git", "add", "-f", rel_clean], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(["git", "commit", "-m", commit_msg], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(["git", "push", "origin", "HEAD:main", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            pass
 
 
 def push_app_notification(notif_type, title, message, status="info"):
@@ -1473,13 +1490,20 @@ def generate_video_in_gemini(pending_pkg=None):
     with open("data/history.json", "r", encoding="utf-8") as f:
         history_data = json.load(f)
 
+    update_3d_telemetry(1, "Stage 1: AI Episodic Script", "Generating fresh connected script from .env API...", "active", 12)
+
     if not pending_pkg:
-        import dashboard_app
-        track, next_part = dashboard_app.get_next_track_and_part(history_data)
-        new_id = int(history_data.get("generated_count", 0)) + 1
-        used_lines = [item.get("dialogue_line_1_hinglish", "") for item in history_data.get("history", [])]
-        used_lines.extend(history_data.get("failed_dialogues", []))
-        pending_pkg = dashboard_app.build_fresh_prompt_package(track, next_part, new_id, used_lines)
+        try:
+            import foji_universe_director as _fud
+            new_id = int(history_data.get("generated_count", 0)) + 1
+            pending_pkg = _fud.build_real_foji_universe_package(video_id=new_id, is_preview=False)
+        except Exception:
+            import dashboard_app
+            track, next_part = dashboard_app.get_next_track_and_part(history_data)
+            new_id = int(history_data.get("generated_count", 0)) + 1
+            used_lines = [item.get("dialogue_line_1_hinglish", "") for item in history_data.get("history", [])]
+            used_lines.extend(history_data.get("failed_dialogues", []))
+            pending_pkg = dashboard_app.build_fresh_prompt_package(track, next_part, new_id, used_lines)
 
     rotate_track_and_script_in_history(pending_pkg)
     video_num = pending_pkg.get("video_id", int(history_data.get("generated_count", 0)) + 1)
@@ -1498,8 +1522,8 @@ def generate_video_in_gemini(pending_pkg=None):
     output_video_path = os.path.join(raw_dir, f"raw_video_{video_num}.mp4")
     base_video_prompt = pending_pkg["gemini_video_prompt"]
 
-    print(f"🚀 [Step 1/5] Launching Pure-Cookie 13-Step Gemini Engine for: {pending_pkg.get('emotion_name', f'Reel #{video_num}')}...")
-    update_3d_telemetry(1, "Opening Google Gemini", "Logging in via Pure Cookies...", "active", 18)
+    print(f"🚀 [Stage 2/8] Launching Pure-Cookie 13-Step Gemini Engine for: {pending_pkg.get('emotion_name', f'Reel #{video_num}')}...")
+    update_3d_telemetry(2, "Stage 2: Cookie Sign-In & Flash", "Logging in via Pure Cookies & selecting Flash...", "active", 25)
     driver, chrome_proc = launch_resilient_chrome_session(raw_dir, start_blank=True)
 
     try:
@@ -1509,17 +1533,133 @@ def generate_video_in_gemini(pending_pkg=None):
         initial_status = get_gemini_reply_and_video_status(driver, set())
         ignored_video_urls = set(initial_status.get("new_video_urls", []))
 
-        update_3d_telemetry(3, "Executing 13-Step Memory", "Flash -> Create Video -> 9:16 -> Foji & Fojan -> Script...", "active", 52)
+        update_3d_telemetry(3, "Stage 3: Create Video & 9:16", "Selecting Create Video + Portrait (9:16) + Uploading Characters...", "active", 45)
         execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, base_video_prompt)
 
+        update_3d_telemetry(5, "Stage 5: Prompt Injected & Sent", "Script submitted to Gemini! Starting 3D Veo Render...", "active", 68)
         time.sleep(4)
         snap_start = "data/gemini_started.png"
         try:
             driver.save_screenshot(snap_start)
+            sync_file_to_github(snap_start, "Update live Gemini started screenshot")
             send_telegram_photo(
                 snap_start,
                 f"🎬 *Google Gemini Video (Portrait 9:16) Started!*\n📌 *{pending_pkg.get('emotion_name')}*\n🗣️ _{pending_pkg.get('dialogue_line_1_hinglish')}_"
             )
+        except Exception:
+            pass
+
+        update_3d_telemetry(6, "Stage 6: 3D Video Rendering", "Gemini is rendering your 9:16 video (Zero Timeout)...", "active", 82)
+        video_saved = False
+        gen_start_t = time.time()
+        idle_without_video_ticks = 0
+        tick = 0
+
+        while True:
+            tick += 1
+            time.sleep(4)
+            elapsed_sec = int(time.time() - gen_start_t)
+            elapsed_mins = round(elapsed_sec / 60.0, 1)
+
+            current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
+            new_files = [f for f in (current_mp4s - existing_mp4s) if not f.endswith(".crdownload")]
+            if new_files:
+                newest = max(new_files, key=os.path.getctime)
+                if is_valid_mp4(newest):
+                    if os.path.abspath(newest) != os.path.abspath(output_video_path):
+                        shutil.move(newest, output_video_path)
+                    video_saved = True
+                    break
+
+            try:
+                vw_vh = driver.execute_script("return {w: window.innerWidth, h: window.innerHeight};")
+                driver.execute_cdp_cmd("Input.dispatchMouseEvent", {
+                    "type": "mouseMoved",
+                    "x": int(vw_vh["w"] * 0.50),
+                    "y": int(vw_vh["h"] * 0.55)
+                })
+            except Exception:
+                pass
+
+            st = get_gemini_reply_and_video_status(driver, ignored_video_urls)
+            is_gen = st.get("is_generating", False)
+            new_vids = st.get("new_video_urls", [])
+            dl_btn = st.get("download_btn")
+            screen_reply = (st.get("screen_reply_text") or "").strip()
+
+            print(
+                f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s) - NO TIMEOUT] "
+                f"Generating: {is_gen} | Video Detected: {len(new_vids)} | Download Btn: {bool(dl_btn)}"
+            )
+
+            if dl_btn is not None or (len(new_vids) > 0 and not is_gen):
+                print("✅ [Stage 7/8] Video Ready on Screen! Clicking 'Download video'...")
+                update_3d_telemetry(7, "Stage 7: Downloading MP4", "Video rendered! Clicking Download button...", "active", 94)
+                time.sleep(2.5)
+                vid_url = new_vids[-1] if (new_vids and new_vids[-1] != "DOM_VIDEO_ELEMENT_VISIBLE") else ""
+                if execute_step13_download_video(driver, dl_btn, vid_url, raw_dir, existing_mp4s, output_video_path):
+                    video_saved = True
+                    break
+
+            if not is_gen and len(new_vids) == 0 and dl_btn is None and elapsed_sec >= 25:
+                idle_without_video_ticks += 1
+                if st.get("is_refusal_or_error") or (idle_without_video_ticks >= 8 and len(screen_reply) > 15):
+                    exact_msg = screen_reply if screen_reply else "Gemini stopped generating without returning a video."
+                    if st.get("is_limit"):
+                        report_step_problem_instantly(driver, "Gemini Video Limit Reached", f"Screen par yeh aaya: {exact_msg}")
+                        raise GeminiLimitReachedError(exact_msg)
+                    else:
+                        report_step_problem_instantly(driver, "Gemini Screen Error (Video Nahi Bani)", f"Screen par yeh aaya: {exact_msg}")
+                        raise RuntimeError(f"Gemini Screen Reply: {exact_msg}")
+            else:
+                idle_without_video_ticks = 0
+
+            if tick % 4 == 0:
+                prog = min(92, 75 + int(tick / 6))
+                update_3d_telemetry(6, "Stage 6: 3D Video Rendering", f"Rendering in Gemini... ({elapsed_mins} min elapsed)", "active", prog)
+
+        if video_saved and is_valid_mp4(output_video_path):
+            print(f"🎉 SUCCESS! Gemini 9:16 Video Saved at {output_video_path}")
+            rel_vid_path = f"output/raw_videos/{os.path.basename(output_video_path)}"
+
+            # 1. Record completed video into data/history.json & data/scheduled_queue.json so Frontend sees it immediately!
+            try:
+                with open("data/history.json", "r", encoding="utf-8") as f:
+                    h_now = json.load(f)
+                h_now["generated_count"] = max(int(h_now.get("generated_count", 0)), int(video_num))
+                pending_pkg["video_file"] = os.path.basename(output_video_path)
+                pending_pkg["completed_at"] = datetime.now(IST).strftime("%d %b %Y, %I:%M %p")
+                h_now.setdefault("history", []).append(pending_pkg)
+                with open("data/history.json", "w", encoding="utf-8") as f:
+                    json.dump(h_now, f, indent=2, ensure_ascii=False)
+                sync_file_to_github("data/history.json", f"Record completed video #{video_num}")
+            except Exception:
+                pass
+
+            try:
+                import foji_universe_director as _fud
+                _fud.mark_episode_part_completed(pending_pkg.get("track_id", "love_meera"), pending_pkg.get("part_number", 1))
+                _fud.sync_raw_videos_into_unapproved_queue()
+                sync_file_to_github("data/episode_tracker.json", "Sync episode part tracker")
+                sync_file_to_github("data/scheduled_queue.json", "Sync ready video into frontend approval queue")
+            except Exception:
+                pass
+
+            # 2. Upload the MP4 file to GitHub so Render Frontend can stream, preview, schedule & post it!
+            print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Scheduling...")
+            sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {os.path.basename(output_video_path)} for Frontend")
+
+            update_3d_telemetry(8, "Stage 8: Video Ready in Studio!", f"Video ({os.path.basename(output_video_path)}) ready on Frontend & Telegram!", "completed", 100)
+            push_app_notification("success", "🎉 New 3D Reel Ready!", f"{pending_pkg.get('emotion_name')} is ready in Frontend Preview & Queue!", "success")
+            return output_video_path
+
+    finally:
+        try:
+            driver.quit()
+        except Exception:
+            pass
+        try:
+            chrome_proc.terminate()
         except Exception:
             pass
 
@@ -1600,7 +1740,37 @@ def generate_video_in_gemini(pending_pkg=None):
 
         if video_saved and is_valid_mp4(output_video_path):
             print(f"🎉 SUCCESS! Gemini 9:16 Video Saved at {output_video_path}")
-            update_3d_telemetry(6, "Reel Ready", "Sent to Telegram & Frontend for Approval!", "completed", 100)
+            rel_vid_path = f"output/raw_videos/{os.path.basename(output_video_path)}"
+
+            # 1. Record completed video into data/history.json & data/scheduled_queue.json so Frontend sees it immediately!
+            try:
+                with open("data/history.json", "r", encoding="utf-8") as f:
+                    h_now = json.load(f)
+                h_now["generated_count"] = max(int(h_now.get("generated_count", 0)), int(video_num))
+                pending_pkg["video_file"] = os.path.basename(output_video_path)
+                pending_pkg["completed_at"] = datetime.now(IST).strftime("%d %b %Y, %I:%M %p")
+                h_now.setdefault("history", []).append(pending_pkg)
+                with open("data/history.json", "w", encoding="utf-8") as f:
+                    json.dump(h_now, f, indent=2, ensure_ascii=False)
+                sync_file_to_github("data/history.json", f"Record completed video #{video_num}")
+            except Exception:
+                pass
+
+            try:
+                import foji_universe_director as _fud
+                _fud.mark_episode_part_completed(pending_pkg.get("track_id", "love_meera"), pending_pkg.get("part_number", 1))
+                _fud.sync_raw_videos_into_unapproved_queue()
+                sync_file_to_github("data/episode_tracker.json", "Sync episode part tracker")
+                sync_file_to_github("data/scheduled_queue.json", "Sync ready video into frontend approval queue")
+            except Exception:
+                pass
+
+            # 2. Upload the MP4 file to GitHub so Render Frontend can stream, preview, schedule & post it!
+            print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Scheduling...")
+            sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {os.path.basename(output_video_path)} for Frontend")
+
+            update_3d_telemetry(8, "Stage 8: Video Ready in Studio!", f"Video ({os.path.basename(output_video_path)}) ready on Frontend & Telegram!", "completed", 100)
+            push_app_notification("success", "🎉 New 3D Reel Ready!", f"{pending_pkg.get('emotion_name')} is ready in Frontend Preview & Queue!", "success")
             return output_video_path
 
     finally:

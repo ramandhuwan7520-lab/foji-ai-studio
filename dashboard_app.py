@@ -1742,6 +1742,10 @@ if not globals().get("_FOJI_MASTER_SCHEDULER_STARTED"):
 @app.route("/api/universe/status", methods=["GET"])
 def api_universe_status():
     from flask import jsonify
+    try:
+        _fud.pull_latest_cloud_state_for_frontend()
+    except Exception:
+        pass
     health = _fud.get_real_system_health()
     q = _fud.sync_raw_videos_into_unapproved_queue()
     cfg = _fud.get_schedule_config()
@@ -2439,6 +2443,8 @@ function fnsSwitchTab(num) {
   }
 }
 
+let _fnsLastKnownVideoFile = '';
+
 function fnsUpdateConnectedPipelineRoad(telemetry, notifications) {
   const stepNum = parseInt(telemetry.step_num || 0, 10);
   const status = (telemetry.status || 'ready').toLowerCase();
@@ -2448,28 +2454,61 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications) {
   document.getElementById('fns-radar-subtitle').innerText =
     `[${status.toUpperCase()}] ${title} — ${detail} (Updated: ${telemetry.updated_at || 'Now'})`;
 
-  // Map telemetry step_num (0..6) to the 8 visual road nodes
-  let activeStage = 8;
-  if (status === 'ready' || status === 'completed' || stepNum === 0) activeStage = 8;
-  else if (stepNum === 1) activeStage = 2;
-  else if (stepNum === 2) activeStage = 3;
-  else if (stepNum === 3) activeStage = 4;
-  else if (stepNum === 4) activeStage = 5;
-  else if (stepNum === 5) activeStage = 6;
-  else if (stepNum >= 6) activeStage = 7;
+  // Exact 1-to-1 Stage Mapping (Stage 1 to Stage 8)
+  let activeStage = stepNum;
+  if (status === 'ready' || status === 'completed' || stepNum >= 8 || stepNum === 0) {
+    activeStage = 8;
+  }
 
   for (let i = 1; i <= 8; i++) {
     const nd = document.getElementById('fns-pnode-' + i);
     if (!nd) continue;
     nd.className = 'fns-road-node';
+    let badgeEl = nd.querySelector('.fns-stage-state-badge');
+    if (!badgeEl) {
+      badgeEl = document.createElement('div');
+      badgeEl.className = 'fns-stage-state-badge';
+      badgeEl.style.cssText = 'font-size:0.65rem;font-weight:900;margin-top:4px;padding:2px 6px;border-radius:6px;display:inline-block;';
+      nd.appendChild(badgeEl);
+    }
+
     if (status === 'error') {
-      if (i < activeStage) nd.classList.add('done');
-      else if (i === activeStage) nd.classList.add('error');
+      if (i < activeStage) {
+        nd.classList.add('done');
+        badgeEl.innerText = '✅ COMPLETED';
+        badgeEl.style.background = 'rgba(16,185,129,0.2)';
+        badgeEl.style.color = '#34d399';
+      } else if (i === activeStage) {
+        nd.classList.add('error');
+        badgeEl.innerText = '❌ FAILED HERE';
+        badgeEl.style.background = 'rgba(239,68,68,0.25)';
+        badgeEl.style.color = '#fca5a5';
+      } else {
+        badgeEl.innerText = '⏸️ WAITING';
+        badgeEl.style.background = 'rgba(255,255,255,0.06)';
+        badgeEl.style.color = '#64748b';
+      }
     } else if (status === 'active') {
-      if (i < activeStage) nd.classList.add('done');
-      else if (i === activeStage) nd.classList.add('active');
+      if (i < activeStage) {
+        nd.classList.add('done');
+        badgeEl.innerText = '✅ COMPLETED';
+        badgeEl.style.background = 'rgba(16,185,129,0.2)';
+        badgeEl.style.color = '#34d399';
+      } else if (i === activeStage) {
+        nd.classList.add('active');
+        badgeEl.innerText = '⏳ RUNNING NOW...';
+        badgeEl.style.background = 'rgba(0,245,212,0.25)';
+        badgeEl.style.color = '#00f5d4';
+      } else {
+        badgeEl.innerText = '⏳ PENDING';
+        badgeEl.style.background = 'rgba(255,255,255,0.06)';
+        badgeEl.style.color = '#64748b';
+      }
     } else {
       nd.classList.add('done');
+      badgeEl.innerText = '✅ COMPLETED';
+      badgeEl.style.background = 'rgba(16,185,129,0.2)';
+      badgeEl.style.color = '#34d399';
     }
   }
 
@@ -2477,7 +2516,7 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications) {
     const cn = document.getElementById('fns-pconn-' + c);
     if (!cn) continue;
     cn.className = 'fns-road-connector';
-    if (c < activeStage || (status !== 'active' && status !== 'error')) cn.classList.add('done');
+    if (c < activeStage || status === 'completed' || status === 'ready') cn.classList.add('done');
     else if (status === 'error' && c === activeStage) cn.classList.add('error');
   }
   const turn = document.getElementById('fns-pturn-1');
@@ -2485,7 +2524,6 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications) {
     turn.className = 'fns-road-turn' + ((activeStage > 4 || status === 'ready' || status === 'completed') ? ' done' : '');
   }
 
-  // Show Red Error Diagnostic Banner if telemetry is in error state OR latest notification is an error
   const errBox = document.getElementById('fns-error-banner');
   const errTxt = document.getElementById('fns-error-reason-text');
   if (status === 'error') {
@@ -2508,6 +2546,20 @@ async function fnsRefreshHub() {
     document.getElementById('fns-ep-total').innerText = d.total_episodes_completed || 0;
     if (d.server_time_ist) document.getElementById('fns-server-clock').innerText = d.server_time_ist;
     if (d.next_open_slot) document.getElementById('fns-next-slot-sidebar').innerText = d.next_open_slot.display_time;
+
+    // Auto-reload 9:16 iPhone Video Player whenever a new MP4 arrives!
+    if (d.latest_video_file && d.latest_video_file !== _fnsLastKnownVideoFile) {
+      _fnsLastKnownVideoFile = d.latest_video_file;
+      const vidEl = document.getElementById('fns-preview-video');
+      const fbEl = document.getElementById('fns-vid-fallback');
+      if (vidEl) {
+        if (fbEl) fbEl.style.display = 'none';
+        vidEl.style.display = 'block';
+        vidEl.src = '/api/universe/video_file/' + encodeURIComponent(d.latest_video_file) + '?t=' + Date.now();
+        vidEl.load();
+      }
+      document.getElementById('fns-phone-ep-title').innerText = '🎬 Latest: ' + d.latest_video_file;
+    }
 
     fnsUpdateConnectedPipelineRoad(d.telemetry || {}, d.notifications || []);
     fnsRenderTrackSelectors();
