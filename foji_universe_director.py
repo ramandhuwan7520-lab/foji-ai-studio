@@ -507,3 +507,204 @@ def get_real_system_health():
         "total_episodes_completed": hist_count,
         "recent_history": list(reversed(recent_history))
     }
+
+# ==============================================================================
+# ⏰ SMART 2:30 AM BATCH + T-30 MIN AUTO-GENERATOR + SCHEDULE QUEUE ENGINE
+# ==============================================================================
+QUEUE_FILE = "data/scheduled_queue.json"
+SCHEDULE_CFG_FILE = "data/schedule_config.json"
+
+
+def get_schedule_config():
+    os.makedirs("data", exist_ok=True)
+    default_cfg = {
+        "night_batch_time": "02:30",
+        "night_batch_count": 3,
+        "pre_slot_minutes": 30,
+        "daily_slots": ["07:00", "13:30", "19:30"],
+        "auto_pilot_enabled": True,
+        "last_triggered_keys": []
+    }
+    if os.path.exists(SCHEDULE_CFG_FILE):
+        try:
+            with open(SCHEDULE_CFG_FILE, "r", encoding="utf-8") as f:
+                saved = json.load(f)
+            default_cfg.update(saved)
+            if "slots" in saved and "daily_slots" not in saved:
+                default_cfg["daily_slots"] = saved["slots"]
+        except Exception:
+            pass
+    return default_cfg
+
+
+def save_schedule_config(cfg):
+    os.makedirs("data", exist_ok=True)
+    with open(SCHEDULE_CFG_FILE, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, indent=2, ensure_ascii=False)
+
+
+def get_scheduled_queue():
+    os.makedirs("data", exist_ok=True)
+    if os.path.exists(QUEUE_FILE):
+        try:
+            with open(QUEUE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"unapproved_videos": [], "scheduled_posts": [], "published_posts": []}
+
+
+def save_scheduled_queue(qdata):
+    os.makedirs("data", exist_ok=True)
+    with open(QUEUE_FILE, "w", encoding="utf-8") as f:
+        json.dump(qdata, f, indent=2, ensure_ascii=False)
+
+
+def sync_raw_videos_into_unapproved_queue():
+    """Scans output/raw_videos for any newly generated MP4s and registers them in unapproved_videos list."""
+    q = get_scheduled_queue()
+    known_files = set()
+    for lst_name in ["unapproved_videos", "scheduled_posts", "published_posts"]:
+        for item in q.get(lst_name, []):
+            if item.get("video_file"):
+                known_files.add(item["video_file"])
+
+    raw_dir = "output/raw_videos"
+    if not os.path.exists(raw_dir):
+        return q
+
+    hist_map = {}
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                hd = json.load(f)
+            for h in hd.get("history", []):
+                vid_id = h.get("video_id")
+                if vid_id:
+                    hist_map[f"raw_video_{vid_id}.mp4"] = h
+        except Exception:
+            pass
+
+    changed = False
+    mp4_files = sorted(
+        [f for f in os.listdir(raw_dir) if f.endswith(".mp4")],
+        key=lambda x: os.path.getmtime(os.path.join(raw_dir, x))
+    )
+    for fname in mp4_files:
+        if fname not in known_files:
+            meta = hist_map.get(fname, {})
+            now_ist = datetime.now(IST)
+            q.setdefault("unapproved_videos", []).append({
+                "id": f"vid_{int(time.time() * 1000)}_{fname}",
+                "video_file": fname,
+                "title": meta.get("emotion_name", f"Foji 3D Reel ({fname})"),
+                "track_id": meta.get("track_id", "love_meera"),
+                "part_number": meta.get("part_number", 1),
+                "dialogue": meta.get("dialogue_line_1_hinglish", "Fresh 3D Foji Episode Ready for Approval"),
+                "caption": meta.get("caption", "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife"),
+                "created_at": now_ist.strftime("%d %b %Y, %I:%M %p"),
+                "status": "awaiting_approval"
+            })
+            known_files.add(fname)
+            changed = True
+
+    if changed:
+        save_scheduled_queue(q)
+    return q
+
+
+def calculate_next_available_slot_ist():
+    """Finds the next open daily schedule slot that does not already have a video assigned to it."""
+    cfg = get_schedule_config()
+    slots = sorted(cfg.get("daily_slots", ["07:00", "13:30", "19:30"]))
+    q = get_scheduled_queue()
+    taken_keys = {
+        item.get("scheduled_slot_key")
+        for item in q.get("scheduled_posts", [])
+        if item.get("status") == "scheduled"
+    }
+
+    now_ist = datetime.now(IST)
+    for day_offset in range(0, 15):
+        target_date = now_ist + timedelta(days=day_offset)
+        date_str = target_date.strftime("%Y-%m-%d")
+        display_date = target_date.strftime("%d %b %Y")
+        for hm in slots:
+            try:
+                hh, mm = [int(x) for x in hm.split(":")]
+            except Exception:
+                hh, mm = 7, 0
+            slot_dt = target_date.replace(hour=hh, minute=mm, second=0, microsecond=0)
+            if slot_dt <= now_ist + timedelta(minutes=1):
+                continue
+            slot_key = f"{date_str}_{hm}"
+            if slot_key not in taken_keys:
+                return {
+                    "slot_key": slot_key,
+                    "scheduled_iso": slot_dt.isoformat(),
+                    "scheduled_epoch": slot_dt.timestamp(),
+                    "display_time": slot_dt.strftime("%d %b %Y at %I:%M %p IST"),
+                    "date_label": display_date,
+                    "time_label": slot_dt.strftime("%I:%M %p")
+                }
+
+    fallback_dt = now_ist + timedelta(hours=4)
+    return {
+        "slot_key": fallback_dt.strftime("%Y-%m-%d_%H:%M"),
+        "scheduled_iso": fallback_dt.isoformat(),
+        "scheduled_epoch": fallback_dt.timestamp(),
+        "display_time": fallback_dt.strftime("%d %b %Y at %I:%M %p IST"),
+        "date_label": fallback_dt.strftime("%d %b %Y"),
+        "time_label": fallback_dt.strftime("%I:%M %p")
+    }
+
+
+def approve_and_schedule_video_item(video_file=None, custom_caption=""):
+    """
+    Approves a generated video and locks it into the NEXT available schedule slot!
+    If today's slots are full, automatically queues it into tomorrow's slot!
+    """
+    q = sync_raw_videos_into_unapproved_queue()
+    unapproved = q.get("unapproved_videos", [])
+
+    target_item = None
+    if video_file:
+        for it in unapproved:
+            if it.get("video_file") == video_file:
+                target_item = it
+                break
+    if not target_item and unapproved:
+        target_item = unapproved[0]
+
+    if not target_item:
+        # Check if there is any raw video file in output/raw_videos
+        raw_dir = "output/raw_videos"
+        mp4s = sorted([f for f in os.listdir(raw_dir) if f.endswith(".mp4")], key=lambda x: os.path.getmtime(os.path.join(raw_dir, x))) if os.path.exists(raw_dir) else []
+        if not mp4s:
+            raise RuntimeError("Abhi koi nayi video schedule karne ke liye tayar nahi hai! Pehle Generate karein.")
+        newest_f = mp4s[-1]
+        target_item = {
+            "id": f"vid_{int(time.time() * 1000)}",
+            "video_file": newest_f,
+            "title": f"Foji 3D Reel ({newest_f})",
+            "dialogue": "Approved from Command Center",
+            "caption": custom_caption or "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife"
+        }
+    else:
+        q["unapproved_videos"] = [x for x in unapproved if x.get("id") != target_item.get("id")]
+
+    if custom_caption.strip():
+        target_item["caption"] = custom_caption.strip()
+
+    slot_info = calculate_next_available_slot_ist()
+    target_item["status"] = "scheduled"
+    target_item["scheduled_slot_key"] = slot_info["slot_key"]
+    target_item["scheduled_epoch"] = slot_info["scheduled_epoch"]
+    target_item["scheduled_display"] = slot_info["display_time"]
+    target_item["date_label"] = slot_info["date_label"]
+    target_item["time_label"] = slot_info["time_label"]
+
+    q.setdefault("scheduled_posts", []).append(target_item)
+    q["scheduled_posts"].sort(key=lambda x: float(x.get("scheduled_epoch", 0)))
+    save_scheduled_queue(q)
+    return target_item

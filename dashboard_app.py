@@ -1586,7 +1586,7 @@ CLEAN_FAST_HTML = r"""
 """
 
 # ==============================================================================
-# 🎖️ FOJI UNIVERSE DIRECTOR & STANDALONE FULL-SCREEN COMMAND CENTER UI
+# 🎖️ FOJI UNIVERSE DIRECTOR — CONNECTED PIPELINE + 2:30 AM & T-30 SCHEDULER UI
 # ==============================================================================
 import threading as _threading
 import foji_universe_director as _fud
@@ -1595,31 +1595,173 @@ from flask import send_file as _send_file
 _orig_build_fresh_prompt_package = globals().get("build_fresh_prompt_package")
 
 def build_fresh_prompt_package(track=None, next_part=1, new_id=1, used_lines=None):
-    """Uses 100% Live API Episodic Story Engine with strict Pass/Fail Part Continuity!"""
     return _fud.build_real_foji_universe_package(video_id=new_id, is_preview=False)
+
+
+def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", custom_idea=""):
+    """Runs `count` video generations sequentially without touching core gemini_bot.py logic!"""
+    def _worker():
+        for i in range(1, int(count) + 1):
+            try:
+                import gemini_bot
+                gemini_bot.push_app_notification(
+                    "pipeline",
+                    f"🚀 Video Generation Started ({i}/{count})",
+                    f"Trigger: {reason_label}",
+                    "info"
+                )
+                pkg = _fud.build_real_foji_universe_package(
+                    video_id=int(time.time()) % 100000,
+                    custom_idea=custom_idea if i == 1 else "",
+                    is_preview=False
+                )
+                # Try cloud dispatch first if on Render, or local gemini_bot if on Windows/Worker
+                gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
+                repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+                dispatched_cloud = False
+                if os.name != "nt" and gh_pat:
+                    headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
+                    wf_url = f"https://api.github.com/repos/{repo}/actions/workflows/cloud_video_engine.yml/dispatches"
+                    r = requests.post(wf_url, headers=headers, json={"ref": "main"}, timeout=15)
+                    if r.status_code in (200, 201, 204):
+                        dispatched_cloud = True
+
+                if not dispatched_cloud:
+                    vid_path = gemini_bot.generate_video_in_gemini(pkg)
+                    if vid_path and os.path.exists(vid_path):
+                        _fud.mark_episode_part_completed(pkg["track_id"], pkg["part_number"])
+                        _fud.sync_raw_videos_into_unapproved_queue()
+            except Exception as ex:
+                print(f"⚠️ Generation worker error ({i}/{count}): {ex}")
+    _threading.Thread(target=_worker, daemon=True).start()
+
+
+def _publish_specific_video_to_ig(video_path, caption_text):
+    """Uses the locked ig_session.json and _ensure_reel_thumbnail to publish a Reel to Instagram."""
+    for ig_fn_name in ["post_to_instagram", "upload_reel_to_instagram", "publish_to_instagram", "upload_to_ig"]:
+        ig_fn = globals().get(ig_fn_name)
+        if callable(ig_fn):
+            return ig_fn(video_path, caption_text)
+
+    from instagrapi import Client
+    cl = Client()
+    if os.path.exists("data/ig_session.json"):
+        cl.load_settings("data/ig_session.json")
+    thumb_fn = globals().get("_ensure_reel_thumbnail")
+    thumb_path = thumb_fn(video_path) if callable(thumb_fn) else None
+    if thumb_path and os.path.exists(str(thumb_path)):
+        return cl.clip_upload(video_path, caption_text, thumbnail=thumb_path)
+    return cl.clip_upload(video_path, caption_text)
+
+
+def _background_master_scheduler_daemon():
+    """
+    24x7 Smart Automation Daemon:
+    Rule 1: At 02:30 AM IST -> Automatically generates 3 videos for the day.
+    Rule 2: 30 Minutes BEFORE every scheduled slot (T-30 min) -> ALWAYS generates 1 fresh video
+            (even if 2:30 AM videos were already created, so you always have extra/backup videos ready!).
+    Rule 3: At exact Schedule Slot time -> Automatically publishes the video queued for that slot!
+    """
+    while True:
+        try:
+            now_ist = datetime.now(_fud.IST)
+            today_str = now_ist.strftime("%Y-%m-%d")
+            curr_hm = now_ist.strftime("%H:%M")
+
+            cfg = _fud.get_schedule_config()
+            if cfg.get("auto_pilot_enabled", True):
+                triggered = set(cfg.get("last_triggered_keys", []))
+
+                # RULE 1: 02:30 AM IST Night Batch (Generates 3 Videos)
+                night_hm = cfg.get("night_batch_time", "02:30")
+                night_key = f"NIGHT_BATCH_{today_str}_{night_hm}"
+                if curr_hm == night_hm and night_key not in triggered:
+                    triggered.add(night_key)
+                    cfg["last_triggered_keys"] = list(triggered)[-60:]
+                    _fud.save_schedule_config(cfg)
+                    batch_cnt = int(cfg.get("night_batch_count", 3))
+                    print(f"🌙 [02:30 AM Night Batch] Automatically generating {batch_cnt} Foji Reels...")
+                    _execute_single_or_batch_generation(count=batch_cnt, reason_label=f"02:30 AM Night Batch ({batch_cnt} Videos)")
+
+                # RULE 2: 30 Minutes Before Every Schedule Slot (T-30 Min -> Always generates 1 Video!)
+                pre_mins = int(cfg.get("pre_slot_minutes", 30))
+                for slot_hm in cfg.get("daily_slots", ["07:00", "13:30", "19:30"]):
+                    try:
+                        sh, sm = [int(x) for x in slot_hm.split(":")]
+                        slot_dt = now_ist.replace(hour=sh, minute=sm, second=0, microsecond=0)
+                        pre_dt = slot_dt - timedelta(minutes=pre_mins)
+                        pre_hm = pre_dt.strftime("%H:%M")
+                        pre_key = f"PRE30_{today_str}_{slot_hm}"
+                        if curr_hm == pre_hm and pre_key not in triggered:
+                            triggered.add(pre_key)
+                            cfg["last_triggered_keys"] = list(triggered)[-60:]
+                            _fud.save_schedule_config(cfg)
+                            print(f"⏰ [T-30 Min Auto-Trigger] 30 mins before {slot_hm} slot -> Generating 1 fresh Foji Reel!")
+                            _execute_single_or_batch_generation(count=1, reason_label=f"T-30 Min Pre-Schedule Trigger (Before {slot_hm})")
+                    except Exception:
+                        pass
+
+                # RULE 3: Publish Scheduled Posts Whose Time Has Arrived!
+                q = _fud.get_scheduled_queue()
+                sched_list = q.get("scheduled_posts", [])
+                remaining = []
+                queue_changed = False
+                for post in sched_list:
+                    due_epoch = float(post.get("scheduled_epoch", 0))
+                    if due_epoch > 0 and time.time() >= due_epoch:
+                        vfile = post.get("video_file", "")
+                        vpath = os.path.join("output/raw_videos", vfile)
+                        if os.path.exists(vpath):
+                            try:
+                                print(f"📲 [Auto-Scheduler] Publishing scheduled video {vfile} for slot {post.get('scheduled_display')}...")
+                                _publish_specific_video_to_ig(vpath, post.get("caption", ""))
+                                post["status"] = "published"
+                                post["published_at"] = now_ist.strftime("%d %b %Y, %I:%M %p IST")
+                                q.setdefault("published_posts", []).insert(0, post)
+                                queue_changed = True
+                            except Exception as pub_err:
+                                post["last_error"] = str(pub_err)
+                                remaining.append(post)
+                        else:
+                            remaining.append(post)
+                    else:
+                        remaining.append(post)
+
+                if queue_changed:
+                    q["scheduled_posts"] = remaining
+                    _fud.save_scheduled_queue(q)
+        except Exception:
+            pass
+        time.sleep(25)
+
+if not globals().get("_FOJI_MASTER_SCHEDULER_STARTED"):
+    globals()["_FOJI_MASTER_SCHEDULER_STARTED"] = True
+    _threading.Thread(target=_background_master_scheduler_daemon, daemon=True).start()
+
 
 @app.route("/api/universe/status", methods=["GET"])
 def api_universe_status():
     from flask import jsonify
     health = _fud.get_real_system_health()
-    # Attach recent notifications & schedule config
+    q = _fud.sync_raw_videos_into_unapproved_queue()
+    cfg = _fud.get_schedule_config()
+    next_open_slot = _fud.calculate_next_available_slot_ist()
+
     notifs = []
     if os.path.exists("data/notifications.json"):
         try:
             with open("data/notifications.json", "r", encoding="utf-8") as f:
-                notifs = json.load(f)[:15]
+                notifs = json.load(f)[:20]
         except Exception:
             pass
-    sched = {"slots": ["07:00", "19:30"], "auto_pilot": True}
-    if os.path.exists("data/schedule_config.json"):
-        try:
-            with open("data/schedule_config.json", "r", encoding="utf-8") as f:
-                sched = json.load(f)
-        except Exception:
-            pass
+
     health["notifications"] = notifs
-    health["schedule"] = sched
+    health["schedule"] = cfg
+    health["queue"] = q
+    health["next_open_slot"] = next_open_slot
+    health["server_time_ist"] = datetime.now(_fud.IST).strftime("%I:%M:%S %p IST")
     return jsonify(health)
+
 
 @app.route("/api/universe/select_track", methods=["POST"])
 def api_universe_select_track():
@@ -1631,6 +1773,7 @@ def api_universe_select_track():
             st[k] = data[k]
     _fud.save_director_state(st)
     return jsonify({"ok": True, "state": st})
+
 
 @app.route("/api/universe/generate_preview_script", methods=["POST"])
 def api_universe_generate_preview_script():
@@ -1644,64 +1787,87 @@ def api_universe_generate_preview_script():
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 
+
 @app.route("/api/universe/trigger_pipeline", methods=["POST"])
 def api_universe_trigger_pipeline():
-    """Directly triggers the real video generation pipeline (Cloud GitHub Actions or Local Engine) from the new UI!"""
     from flask import request, jsonify
     try:
         data = request.get_json(force=True, silent=True) or {}
         twist = (data.get("custom_idea") or "").strip()
+        batch_count = int(data.get("count", 1))
         if twist:
             st = _fud.get_director_state()
             st["custom_idea"] = twist
             _fud.save_director_state(st)
 
-        # 1. Try existing dashboard_app trigger functions if defined
-        for fn_name in ["trigger_github_workflow", "start_generation_pipeline", "run_cloud_generation"]:
-            fn = globals().get(fn_name)
-            if callable(fn):
-                res = fn()
-                return jsonify({"ok": True, "message": "🚀 13-Step Video Generation Pipeline Started!", "detail": str(res)})
-
-        # 2. Try dispatching GitHub Actions workflow directly if GITHUB_PAT is configured
-        gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
-        repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-        if gh_pat:
-            headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
-            wf_url = f"https://api.github.com/repos/{repo}/actions/workflows/cloud_video_engine.yml/dispatches"
-            r = requests.post(wf_url, headers=headers, json={"ref": "main"}, timeout=15)
-            if r.status_code in (200, 201, 204):
-                return jsonify({"ok": True, "message": "🚀 Cloud 13-Step Video Engine Dispatched on GitHub Actions!"})
-
-        # 3. Run gemini_bot.generate_video_in_gemini() in background thread
-        def _bg_run():
-            try:
-                import gemini_bot
-                pkg = _fud.build_real_foji_universe_package(video_id=int(time.time()) % 10000, is_preview=False)
-                vid_path = gemini_bot.generate_video_in_gemini(pkg)
-                if vid_path and os.path.exists(vid_path):
-                    _fud.mark_episode_part_completed(pkg["track_id"], pkg["part_number"])
-            except Exception as ex:
-                print(f"⚠️ Pipeline execution error: {ex}")
-
-        _threading.Thread(target=_bg_run, daemon=True).start()
-        return jsonify({"ok": True, "message": "🚀 13-Step Gemini Video Engine Launched in Background!"})
+        _execute_single_or_batch_generation(
+            count=batch_count,
+            reason_label=f"Dashboard Manual Trigger ({batch_count} Video{'s' if batch_count > 1 else ''})",
+            custom_idea=twist
+        )
+        return jsonify({
+            "ok": True,
+            "message": f"🚀 13-Step Video Engine Started ({batch_count} Video{'s' if batch_count > 1 else ''})! Watch the Connected Pipeline Map below!"
+        })
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 
+
+@app.route("/api/universe/approve_and_schedule", methods=["POST"])
+def api_universe_approve_and_schedule():
+    """Approves a video and assigns it to the NEXT available schedule slot automatically!"""
+    from flask import request, jsonify
+    try:
+        data = request.get_json(force=True, silent=True) or {}
+        vfile = data.get("video_file")
+        cap = (data.get("caption") or "").strip()
+        item = _fud.approve_and_schedule_video_item(video_file=vfile, custom_caption=cap)
+        return jsonify({
+            "ok": True,
+            "message": f"📅 Video Approved & Scheduled for {item['scheduled_display']}!",
+            "scheduled_item": item
+        })
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/universe/remove_scheduled", methods=["POST"])
+def api_universe_remove_scheduled():
+    from flask import request, jsonify
+    data = request.get_json(force=True, silent=True) or {}
+    item_id = data.get("id")
+    q = _fud.get_scheduled_queue()
+    removed = None
+    new_sched = []
+    for it in q.get("scheduled_posts", []):
+        if it.get("id") == item_id:
+            removed = it
+        else:
+            new_sched.append(it)
+    q["scheduled_posts"] = new_sched
+    if removed:
+        removed["status"] = "awaiting_approval"
+        q.setdefault("unapproved_videos", []).insert(0, removed)
+    _fud.save_scheduled_queue(q)
+    return jsonify({"ok": True})
+
+
 @app.route("/api/universe/publish_latest_reel", methods=["POST"])
 def api_universe_publish_latest_reel():
-    """Directly publishes the latest generated 9:16 MP4 to Instagram using the locked ig_session.json & auto-thumbnail!"""
     from flask import request, jsonify
     try:
         data = request.get_json(force=True, silent=True) or {}
         custom_caption = (data.get("caption") or "").strip()
+        vfile = (data.get("video_file") or "").strip()
 
         raw_dir = "output/raw_videos"
-        mp4s = [os.path.join(raw_dir, f) for f in os.listdir(raw_dir) if f.endswith(".mp4")] if os.path.exists(raw_dir) else []
-        if not mp4s:
-            return jsonify({"ok": False, "error": "No generated MP4 video found in output/raw_videos yet!"}), 404
-        newest_vid = max(mp4s, key=os.path.getmtime)
+        if vfile and os.path.exists(os.path.join(raw_dir, vfile)):
+            newest_vid = os.path.join(raw_dir, vfile)
+        else:
+            mp4s = [os.path.join(raw_dir, f) for f in os.listdir(raw_dir) if f.endswith(".mp4")] if os.path.exists(raw_dir) else []
+            if not mp4s:
+                return jsonify({"ok": False, "error": "No generated MP4 video found in output/raw_videos yet!"}), 404
+            newest_vid = max(mp4s, key=os.path.getmtime)
 
         if not custom_caption and os.path.exists("data/history.json"):
             try:
@@ -1714,43 +1880,36 @@ def api_universe_publish_latest_reel():
         if not custom_caption:
             custom_caption = "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife for Next Part! 🇮🇳🔥 #indianarmy #faujilife #armyreels"
 
-        # Call existing verified Instagram upload function in dashboard_app
-        for ig_fn_name in ["post_to_instagram", "upload_reel_to_instagram", "publish_to_instagram", "upload_to_ig"]:
-            ig_fn = globals().get(ig_fn_name)
-            if callable(ig_fn):
-                res = ig_fn(newest_vid, custom_caption)
-                return jsonify({"ok": True, "message": "🎉 Reel Published to Instagram (@ai_foji_lovelife)!", "detail": str(res)})
-
-        # Direct Instagrapi fallback using locked data/ig_session.json + _ensure_reel_thumbnail
-        from instagrapi import Client
-        cl = Client()
-        if os.path.exists("data/ig_session.json"):
-            cl.load_settings("data/ig_session.json")
-        thumb_fn = globals().get("_ensure_reel_thumbnail")
-        thumb_path = thumb_fn(newest_vid) if callable(thumb_fn) else None
-        if thumb_path and os.path.exists(str(thumb_path)):
-            media = cl.clip_upload(newest_vid, custom_caption, thumbnail=thumb_path)
-        else:
-            media = cl.clip_upload(newest_vid, custom_caption)
-        return jsonify({"ok": True, "message": f"🎉 Reel Published Successfully! (Media PK: {getattr(media, 'pk', 'OK')})"})
+        _publish_specific_video_to_ig(newest_vid, custom_caption)
+        return jsonify({"ok": True, "message": "🎉 Reel Published Immediately to Instagram (@ai_foji_lovelife)!"})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
+
 
 @app.route("/api/universe/save_schedule", methods=["POST"])
 def api_universe_save_schedule():
     from flask import request, jsonify
     data = request.get_json(force=True, silent=True) or {}
-    os.makedirs("data", exist_ok=True)
-    with open("data/schedule_config.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
-    return jsonify({"ok": True, "schedule": data})
+    cfg = _fud.get_schedule_config()
+    if "daily_slots" in data:
+        cfg["daily_slots"] = data["daily_slots"]
+    if "night_batch_time" in data:
+        cfg["night_batch_time"] = data["night_batch_time"]
+    if "night_batch_count" in data:
+        cfg["night_batch_count"] = int(data["night_batch_count"])
+    if "pre_slot_minutes" in data:
+        cfg["pre_slot_minutes"] = int(data["pre_slot_minutes"])
+    _fud.save_schedule_config(cfg)
+    return jsonify({"ok": True, "schedule": cfg})
+
 
 @app.route("/api/universe/live_screenshot", methods=["GET"])
 def api_universe_live_screenshot():
-    for snap in ["data/gemini_started.png", "data/gemini_step_problem.png", "data/gemini_login_status.png", "data/flow_started.png"]:
+    for snap in ["data/gemini_step_problem.png", "data/gemini_started.png", "data/gemini_login_status.png", "data/flow_started.png"]:
         if os.path.exists(snap):
             return _send_file(os.path.abspath(snap), mimetype="image/png")
     return ("No screenshot yet", 404)
+
 
 @app.route("/api/universe/char_img/<name>", methods=["GET"])
 def api_universe_char_img(name):
@@ -1764,6 +1923,16 @@ def api_universe_char_img(name):
             return _send_file(os.path.abspath(p2))
     return ("Not found", 404)
 
+
+@app.route("/api/universe/video_file/<filename>", methods=["GET"])
+def api_universe_video_file(filename):
+    safe_name = os.path.basename(filename)
+    p = os.path.join("output/raw_videos", safe_name)
+    if os.path.exists(p):
+        return _send_file(os.path.abspath(p), mimetype="video/mp4")
+    return ("Not found", 404)
+
+
 @app.route("/api/universe/latest_video", methods=["GET"])
 def api_universe_latest_video():
     raw_dir = "output/raw_videos"
@@ -1774,488 +1943,392 @@ def api_universe_latest_video():
             return _send_file(os.path.abspath(newest), mimetype="video/mp4")
     return ("No video yet", 404)
 
+
 @app.after_request
 def _inject_foji_universe_command_hub(response):
-    """Replaces the old frontend completely with the Standalone Full-Screen 3-Tab Next-Gen Studio Command Center!"""
     try:
         if response.content_type and "text/html" in response.content_type and response.status_code == 200:
             html_text = response.get_data(as_text=True)
             if "</body>" in html_text and "id=\"foji-nextgen-studio-shell\"" not in html_text:
                 widget_html = """
-<!-- 🎖️ FOJI AI STUDIO — FULL-SCREEN STANDALONE NEXT-GEN COMMAND CENTER -->
+<!-- 🎖️ FOJI AI STUDIO — CONNECTED S-CURVE PIPELINE & SMART QUEUE COMMAND CENTER -->
 <style>
-/* COMPLETELY HIDE OLD FRONTEND ELEMENTS SO ONLY THE NEW PRO COMMAND CENTER SHOWS */
-body > *:not(#foji-nextgen-studio-shell):not(script):not(style) {
-    display: none !important;
-}
+body > *:not(#foji-nextgen-studio-shell):not(script):not(style) { display: none !important; }
 html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #040812 !important;
-    color: #e2e8f0 !important;
+    margin: 0 !important; padding: 0 !important;
+    background: #040812 !important; color: #e2e8f0 !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-    min-height: 100vh;
-    overflow-x: hidden;
+    min-height: 100vh; overflow-x: hidden;
 }
 #foji-nextgen-studio-shell {
     background: radial-gradient(circle at 12% 10%, #0d2235 0%, #060c17 55%, #03060c 100%);
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
+    min-height: 100vh; width: 100%; display: flex; flex-direction: column; box-sizing: border-box;
 }
 .fns-topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
-    padding: 14px 28px;
-    background: rgba(7, 13, 25, 0.95);
-    border-bottom: 1px solid rgba(0, 245, 212, 0.24);
-    backdrop-filter: blur(14px);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+    gap: 14px; padding: 13px 26px; background: rgba(7, 13, 25, 0.96);
+    border-bottom: 1px solid rgba(0, 245, 212, 0.25); position: sticky; top: 0; z-index: 1000;
 }
 .fns-brand { display: flex; align-items: center; gap: 12px; }
 .fns-logo-orb {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    width: 42px; height: 42px; border-radius: 12px;
     background: linear-gradient(135deg, #00f5d4, #0ea5e9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    font-size: 1.25rem;
-    color: #031117;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 1.25rem; color: #031117;
     box-shadow: 0 0 22px rgba(0, 245, 212, 0.5);
 }
 .fns-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 .fns-tab-btn {
-    background: rgba(24, 35, 56, 0.72);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #94a3b8;
-    padding: 10px 18px;
-    border-radius: 12px;
-    font-size: 0.84rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
+    background: rgba(24, 35, 56, 0.78); border: 1px solid rgba(255,255,255,0.1);
+    color: #94a3b8; padding: 9px 16px; border-radius: 11px;
+    font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
 }
-.fns-tab-btn:hover { color: #fff; border-color: rgba(0, 245, 212, 0.45); transform: translateY(-1px); }
+.fns-tab-btn:hover { color: #fff; border-color: rgba(0, 245, 212, 0.45); }
 .fns-tab-btn.active {
     background: linear-gradient(135deg, rgba(0, 245, 212, 0.22), rgba(14, 165, 233, 0.22));
-    border-color: #00f5d4;
-    color: #00f5d4;
-    box-shadow: 0 0 18px rgba(0, 245, 212, 0.25);
+    border-color: #00f5d4; color: #00f5d4; box-shadow: 0 0 18px rgba(0, 245, 212, 0.25);
 }
 .fns-cta-generate {
-    background: linear-gradient(90deg, #00f5d4, #0ea5e9);
-    color: #021017;
-    border: none;
-    padding: 11px 20px;
-    border-radius: 12px;
-    font-size: 0.86rem;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: 0 0 22px rgba(0, 245, 212, 0.4);
-    transition: all 0.2s;
+    background: linear-gradient(90deg, #00f5d4, #0ea5e9); color: #021017;
+    border: none; padding: 10px 18px; border-radius: 11px;
+    font-size: 0.84rem; font-weight: 900; cursor: pointer;
+    box-shadow: 0 0 22px rgba(0, 245, 212, 0.4); transition: all 0.2s;
 }
-.fns-cta-generate:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(0, 245, 212, 0.65); }
+.fns-cta-schedule {
+    background: linear-gradient(90deg, #a855f7, #ec4899); color: #fff;
+    border: none; padding: 10px 16px; border-radius: 11px;
+    font-size: 0.82rem; font-weight: 800; cursor: pointer;
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.4);
+}
 .fns-cta-post {
-    background: linear-gradient(90deg, #10b981, #059669);
-    color: #fff;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 11px;
-    font-size: 0.82rem;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+    background: linear-gradient(90deg, #10b981, #059669); color: #fff;
+    border: none; padding: 10px 16px; border-radius: 11px;
+    font-size: 0.82rem; font-weight: 800; cursor: pointer;
 }
-.fns-body {
-    display: grid;
-    grid-template-columns: 265px 1fr;
-    flex: 1;
-}
+.fns-body { display: grid; grid-template-columns: 260px 1fr; flex: 1; }
 @media (max-width: 1100px) { .fns-body { grid-template-columns: 1fr; } }
 .fns-sidebar {
-    background: rgba(6, 11, 22, 0.92);
-    border-right: 1px solid rgba(255,255,255,0.07);
-    padding: 20px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-.fns-profile-card {
-    background: rgba(18, 30, 50, 0.72);
-    border: 1px solid rgba(0, 245, 212, 0.25);
-    border-radius: 14px;
-    padding: 13px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    background: rgba(6, 11, 22, 0.94); border-right: 1px solid rgba(255,255,255,0.07);
+    padding: 18px; display: flex; flex-direction: column; gap: 14px;
 }
 .fns-side-box {
-    background: rgba(13, 21, 38, 0.82);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
-    padding: 13px;
+    background: rgba(13, 21, 38, 0.82); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 13px;
 }
 .fns-badge-live {
-    background: rgba(16, 185, 129, 0.18);
-    border: 1px solid #10b981;
-    color: #34d399;
-    font-size: 0.65rem;
-    font-weight: 800;
-    padding: 2px 8px;
-    border-radius: 99px;
+    background: rgba(16, 185, 129, 0.18); border: 1px solid #10b981;
+    color: #34d399; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 99px;
 }
 .fns-badge-soon {
-    background: rgba(245, 158, 11, 0.16);
-    border: 1px solid rgba(245, 158, 11, 0.5);
-    color: #fbbf24;
-    font-size: 0.62rem;
-    font-weight: 800;
-    padding: 2px 7px;
-    border-radius: 99px;
+    background: rgba(245, 158, 11, 0.16); border: 1px solid rgba(245, 158, 11, 0.5);
+    color: #fbbf24; font-size: 0.62rem; font-weight: 800; padding: 2px 7px; border-radius: 99px;
 }
-.fns-main-panel { padding: 22px 28px; overflow-y: auto; }
+.fns-main-panel { padding: 20px 26px; overflow-y: auto; }
 .fns-screen { display: none; }
 .fns-screen.active { display: block; }
-
-/* SCREEN 1 */
-.fns-s1-grid {
-    display: grid;
-    grid-template-columns: 1fr 330px;
-    gap: 24px;
-}
+.fns-s1-grid { display: grid; grid-template-columns: 1fr 330px; gap: 22px; }
 @media (max-width: 1020px) { .fns-s1-grid { grid-template-columns: 1fr; } }
 .fns-pipeline-card {
-    background: rgba(11, 19, 35, 0.88);
-    border: 1px solid rgba(0, 245, 212, 0.22);
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+    background: rgba(11, 19, 35, 0.9); border: 1px solid rgba(0, 245, 212, 0.24);
+    border-radius: 18px; padding: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.45);
 }
-.fns-nodes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
-    gap: 12px;
-    margin-top: 14px;
+
+/* CONNECTED ROAD / LINK PIPELINE (EXACT IMAGE #1 STYLE) */
+.fns-road-wrap {
+    margin: 18px 0 12px 0; padding: 18px 16px;
+    background: radial-gradient(circle at 50% 50%, rgba(0,245,212,0.07), rgba(6,12,24,0.95));
+    border: 1px solid rgba(0,245,212,0.2); border-radius: 16px;
 }
-.fns-node {
-    background: rgba(20, 32, 54, 0.76);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 12px;
-    transition: all 0.25s;
+.fns-road-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 0; position: relative;
 }
-.fns-node.done {
-    border-color: rgba(0, 245, 212, 0.55);
-    background: linear-gradient(135deg, rgba(0, 245, 212, 0.13), rgba(15, 23, 42, 0.88));
+.fns-road-node {
+    flex: 1; background: rgba(17, 28, 48, 0.92); border: 2px solid rgba(255,255,255,0.14);
+    border-radius: 13px; padding: 10px 10px; text-align: center; position: relative; z-index: 2;
+    transition: all 0.3s; min-width: 110px;
 }
-.fns-node.active {
-    border: 2px solid #00f5d4;
-    box-shadow: 0 0 22px rgba(0, 245, 212, 0.4);
-    background: linear-gradient(135deg, rgba(0, 245, 212, 0.25), rgba(14, 165, 233, 0.2));
+.fns-road-node.done {
+    border-color: #00f5d4; background: linear-gradient(135deg, rgba(0,245,212,0.16), rgba(13,25,43,0.95));
+    box-shadow: 0 0 14px rgba(0,245,212,0.22);
 }
-.fns-node-num { font-size: 0.68rem; font-weight: 800; color: #00f5d4; text-transform: uppercase; }
-.fns-node-title { font-size: 0.83rem; font-weight: 700; color: #fff; margin-top: 4px; }
+.fns-road-node.active {
+    border-color: #38bdf8; background: linear-gradient(135deg, rgba(56,189,248,0.28), rgba(0,245,212,0.22));
+    box-shadow: 0 0 25px rgba(0,245,212,0.65); transform: scale(1.04);
+    animation: fnsNodeGlow 1.5s infinite alternate;
+}
+.fns-road-node.error {
+    border-color: #ef4444; background: linear-gradient(135deg, rgba(239,68,68,0.28), rgba(40,12,18,0.95));
+    box-shadow: 0 0 25px rgba(239,68,68,0.65);
+}
+@keyframes fnsNodeGlow {
+    0% { box-shadow: 0 0 12px rgba(0,245,212,0.4); }
+    100% { box-shadow: 0 0 28px rgba(0,245,212,0.9); }
+}
+.fns-road-connector {
+    height: 5px; width: 32px; background: rgba(255,255,255,0.12);
+    position: relative; z-index: 1; transition: all 0.3s;
+}
+.fns-road-connector.done {
+    background: linear-gradient(90deg, #00f5d4, #38bdf8);
+    box-shadow: 0 0 12px #00f5d4;
+}
+.fns-road-connector.error {
+    background: #ef4444; box-shadow: 0 0 12px #ef4444;
+}
+.fns-road-turn {
+    height: 26px; width: 5px; margin-left: auto; margin-right: 55px;
+    background: rgba(255,255,255,0.12); transition: all 0.3s;
+}
+.fns-road-turn.done { background: #00f5d4; box-shadow: 0 0 12px #00f5d4; }
+.fns-dot-indicator {
+    width: 11px; height: 11px; border-radius: 50%; display: inline-block;
+    margin-bottom: 4px; background: #475569;
+}
+.fns-road-node.done .fns-dot-indicator { background: #00f5d4; box-shadow: 0 0 10px #00f5d4; }
+.fns-road-node.active .fns-dot-indicator { background: #38bdf8; box-shadow: 0 0 14px #38bdf8; }
+.fns-road-node.error .fns-dot-indicator { background: #ef4444; box-shadow: 0 0 14px #ef4444; }
+
+/* ERROR DIAGNOSTIC BANNER */
+.fns-error-box {
+    display: none; margin-top: 14px; padding: 14px 16px; border-radius: 13px;
+    background: linear-gradient(135deg, rgba(127, 29, 29, 0.45), rgba(24, 10, 15, 0.95));
+    border: 2px solid #ef4444; color: #fecaca;
+}
+
 .fns-iphone-frame {
-    background: #040710;
-    border: 4px solid #1e293b;
-    border-radius: 36px;
-    padding: 13px;
+    background: #040710; border: 4px solid #1e293b; border-radius: 36px; padding: 13px;
     box-shadow: 0 22px 55px rgba(0,0,0,0.85), inset 0 0 18px rgba(0, 245, 212, 0.16);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex; flex-direction: column; align-items: center;
 }
 .fns-iphone-notch { width: 95px; height: 18px; background: #0f172a; border-radius: 99px; margin-bottom: 8px; }
 .fns-iphone-screen {
-    width: 100%;
-    height: 465px;
-    background: #080e1a;
-    border-radius: 24px;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%; height: 440px; background: #080e1a; border-radius: 24px;
+    overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center;
 }
 .fns-iphone-overlay {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    background: rgba(0,0,0,0.65);
-    backdrop-filter: blur(6px);
-    padding: 9px 11px;
-    border-radius: 11px;
-    font-size: 0.73rem;
-    color: #fff;
-    pointer-events: none;
-}
-
-/* SCREEN 2 */
-.fns-s2-grid {
-    display: grid;
-    grid-template-columns: 280px 1fr 1.15fr;
-    gap: 18px;
-}
-@media (max-width: 1050px) { .fns-s2-grid { grid-template-columns: 1fr; } }
-.fns-char-card {
-    background: rgba(15, 25, 45, 0.85);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    border-radius: 16px;
-    padding: 13px;
-    margin-bottom: 12px;
-}
-.fns-char-img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 11px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: #09101d;
+    position: absolute; bottom: 12px; left: 12px; right: 12px;
+    background: rgba(0,0,0,0.68); backdrop-filter: blur(6px);
+    padding: 9px 11px; border-radius: 11px; font-size: 0.72rem; color: #fff; pointer-events: none;
 }
 .fns-track-item {
-    background: rgba(20, 32, 56, 0.75);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 11px 13px;
-    margin-bottom: 9px;
-    cursor: pointer;
-    transition: all 0.2s;
+    background: rgba(20, 32, 56, 0.78); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 10px 12px; cursor: pointer; transition: all 0.2s;
 }
-.fns-track-item:hover { border-color: #38bdf8; transform: translateX(3px); }
 .fns-track-item.active {
-    border: 2px solid #00f5d4;
-    background: linear-gradient(135deg, rgba(0, 245, 212, 0.18), rgba(15, 23, 42, 0.92));
+    border: 2px solid #00f5d4; background: linear-gradient(135deg, rgba(0, 245, 212, 0.18), rgba(15, 23, 42, 0.92));
 }
-.fns-wave-bars {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    height: 46px;
-    padding: 6px 10px;
-    background: rgba(5, 10, 20, 0.85);
-    border-radius: 10px;
-    overflow: hidden;
-}
-.fns-wave-bar {
-    flex: 1;
-    background: linear-gradient(180deg, #00f5d4, #0ea5e9);
-    border-radius: 99px;
-    animation: fnsPulse 1.3s infinite ease-in-out alternate;
-}
-@keyframes fnsPulse {
-    0% { height: 22%; opacity: 0.55; }
-    100% { height: 95%; opacity: 1; }
-}
-
-/* SCREEN 3 */
-.fns-s3-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr 1.1fr;
-    gap: 18px;
-}
-@media (max-width: 1050px) { .fns-s3-grid { grid-template-columns: 1fr; } }
-.fns-acc-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(20, 31, 53, 0.78);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 11px 13px;
-    margin-bottom: 10px;
-}
-.fns-cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-    margin-top: 10px;
-}
-.fns-cal-col {
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 9px;
-    padding: 7px 5px;
-    text-align: center;
-    font-size: 0.7rem;
-}
-.fns-cal-slot {
-    background: linear-gradient(135deg, rgba(0, 245, 212, 0.18), rgba(168, 85, 247, 0.18));
-    border: 1px solid rgba(0, 245, 212, 0.35);
-    border-radius: 6px;
-    padding: 5px 3px;
-    margin-top: 6px;
-    font-size: 0.63rem;
-    color: #e2e8f0;
+.fns-queue-card {
+    background: rgba(16, 26, 46, 0.88); border: 1px solid rgba(56, 189, 248, 0.24);
+    border-radius: 13px; padding: 12px 14px; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
 }
 </style>
 
 <div id="foji-nextgen-studio-shell">
-  <!-- TOP NAVIGATION & ACTION COMMAND BAR -->
+  <!-- TOP NAVIGATION BAR -->
   <div class="fns-topbar">
     <div class="fns-brand">
       <div class="fns-logo-orb">F</div>
       <div>
-        <div style="font-size:1.18rem;font-weight:900;letter-spacing:0.4px;color:#fff;">FOJI AI STUDIO</div>
-        <div style="font-size:0.72rem;color:#00f5d4;font-weight:700;">STANDALONE 3D EPISODIC COMMAND CENTER • GOLDEN v1.0</div>
+        <div style="font-size:1.15rem;font-weight:900;color:#fff;">FOJI AI STUDIO</div>
+        <div style="font-size:0.71rem;color:#00f5d4;font-weight:700;">2:30 AM BATCH (3 VIDEOS) + T-30 MIN AUTO-GENERATOR • GOLDEN v1.0</div>
       </div>
     </div>
 
     <div class="fns-tabs">
-      <button class="fns-tab-btn active" id="fns-btn-tab1" onclick="fnsSwitchTab(1)">🖥️ 1. Command Center & Radar</button>
-      <button class="fns-tab-btn" id="fns-btn-tab2" onclick="fnsSwitchTab(2)">🎬 2. Story Director & Characters</button>
-      <button class="fns-tab-btn" id="fns-btn-tab3" onclick="fnsSwitchTab(3)">📊 3. Accounts, Analytics & Scheduler</button>
+      <button class="fns-tab-btn active" id="fns-btn-tab1" onclick="fnsSwitchTab(1)">🖥️ 1. Connected Pipeline & Preview</button>
+      <button class="fns-tab-btn" id="fns-btn-tab2" onclick="fnsSwitchTab(2)">📅 2. Approve & Scheduled Queue (<span id="fns-q-badge">0</span>)</button>
+      <button class="fns-tab-btn" id="fns-btn-tab3" onclick="fnsSwitchTab(3)">🎬 3. Story Director & Accounts</button>
     </div>
 
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-      <button class="fns-cta-generate" id="fns-top-gen-btn" onclick="fnsStartFullVideoGeneration()">🚀 GENERATE NEXT EPISODE REEL</button>
-      <button class="fns-cta-post" onclick="fnsPublishLatestReel()">📲 POST REEL TO IG</button>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button class="fns-cta-generate" onclick="fnsStartFullVideoGeneration(1)">🚀 GENERATE 1 REEL NOW</button>
+      <button class="fns-cta-schedule" onclick="fnsApproveAndScheduleLatest()">📅 APPROVE & SCHEDULE NEXT SLOT</button>
+      <button class="fns-cta-post" onclick="fnsPublishLatestReel()">📲 POST NOW</button>
     </div>
   </div>
 
-  <!-- MAIN BODY -->
   <div class="fns-body">
     <!-- LEFT SIDEBAR -->
     <div class="fns-sidebar">
-      <div class="fns-profile-card">
-        <div style="width:40px;height:40px;border-radius:50%;background:#00f5d4;color:#04131a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.05rem;">R</div>
-        <div style="overflow:hidden;">
-          <div style="font-size:0.9rem;font-weight:800;color:#fff;">Raman (Commander)</div>
-          <div style="font-size:0.68rem;color:#94a3b8;text-overflow:ellipsis;overflow:hidden;">ramandhuwan7520@gmail.com</div>
+      <div class="fns-side-box">
+        <div style="font-size:0.78rem;font-weight:900;color:#00f5d4;margin-bottom:8px;">⏰ AUTO-PILOT ENGINE RULES</div>
+        <div style="font-size:0.73rem;color:#cbd5e1;line-height:1.55;">
+          🌙 <b>02:30 AM IST:</b> Auto-creates <b>3 Videos</b> every night.<br/>
+          ⚡ <b>T-30 Min Rule:</b> Always creates <b>1 Video</b> 30 mins before each schedule slot.<br/>
+          📅 <b>Approve & Schedule:</b> Locks video into next open slot!
+        </div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:#38bdf8;">
+          🕒 Server Clock: <b id="fns-server-clock">Syncing...</b>
         </div>
       </div>
 
       <div class="fns-side-box">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <span style="font-size:0.78rem;font-weight:800;color:#fff;">⚡ Studio Quick Actions</span>
-          <span class="fns-badge-live">LIVE</span>
-        </div>
-        <button class="fns-tab-btn" style="width:100%;margin-bottom:7px;text-align:left;color:#00f5d4;border-color:rgba(0,245,212,0.35);" onclick="fnsStartFullVideoGeneration()">🚀 Run 13-Step Video Engine</button>
-        <button class="fns-tab-btn" style="width:100%;margin-bottom:7px;text-align:left;color:#34d399;border-color:rgba(16,185,129,0.35);" onclick="fnsPublishLatestReel()">✅ Approve & Post to IG</button>
-        <button class="fns-tab-btn" style="width:100%;margin-bottom:7px;text-align:left;" onclick="fnsGenerateLiveScriptPreview()">🧠 Test Next Part AI Script</button>
-        <a href="/api/universe/latest_video" download="foji_latest_reel.mp4" class="fns-tab-btn" style="display:block;box-sizing:border-box;width:100%;text-align:left;text-decoration:none;color:#38bdf8;">📥 Download Latest MP4</a>
+        <div style="font-size:0.78rem;font-weight:800;color:#fff;margin-bottom:8px;">⚡ Quick Batch Controls</div>
+        <button class="fns-tab-btn" style="width:100%;margin-bottom:7px;text-align:left;color:#00f5d4;" onclick="fnsStartFullVideoGeneration(1)">🚀 Generate 1 Reel Now</button>
+        <button class="fns-tab-btn" style="width:100%;margin-bottom:7px;text-align:left;color:#a855f7;" onclick="fnsStartFullVideoGeneration(3)">🌙 Run 3-Video Batch Now</button>
+        <button class="fns-tab-btn" style="width:100%;margin-bottom:7px;text-align:left;color:#f472b6;" onclick="fnsApproveAndScheduleLatest()">📅 Approve & Add to Schedule</button>
+        <button class="fns-tab-btn" style="width:100%;text-align:left;color:#34d399;" onclick="fnsPublishLatestReel()">📲 Immediate IG Post</button>
       </div>
 
       <div class="fns-side-box">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <span style="font-size:0.78rem;font-weight:800;color:#fff;">📸 Connected Channels</span>
-          <span class="fns-badge-live">ACTIVE</span>
-        </div>
-        <div style="font-size:0.76rem;color:#e2e8f0;margin-bottom:5px;">🟢 <b>@ai_foji_lovelife</b> (IG Reels)</div>
-        <div style="font-size:0.74rem;color:#94a3b8;margin-bottom:5px;">⚡ @innocent._.foji._.shayar <span class="fns-badge-soon">SOON</span></div>
-        <div style="font-size:0.74rem;color:#94a3b8;margin-bottom:5px;">🎭 @gabru.mouse.comedy <span class="fns-badge-soon">SOON</span></div>
-        <div style="font-size:0.74rem;color:#94a3b8;">▶️ Kal Ka Sach (YT) <span class="fns-badge-soon">SOON</span></div>
+        <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-bottom:6px;">📌 Next Open Schedule Slot:</div>
+        <div id="fns-next-slot-sidebar" style="font-size:0.78rem;color:#00f5d4;font-weight:800;">Calculating...</div>
       </div>
 
       <div class="fns-side-box" style="margin-top:auto;">
-        <div style="font-size:0.74rem;font-weight:800;color:#00f5d4;margin-bottom:6px;">🛡️ GOLDEN LOCK v1.0</div>
-        <div style="font-size:0.72rem;color:#cbd5e1;line-height:1.5;">
-          • Episodes Completed: <b id="fns-ep-total" style="color:#00f5d4;">0</b><br/>
-          • Cookie Auth: <b>Verified 🟢</b><br/>
-          • Part Rule: <b>Pass=Next / Fail=Retry</b><br/>
-          • Timeout: <b>Infinite Wait 🟢</b>
+        <div style="font-size:0.74rem;font-weight:800;color:#00f5d4;margin-bottom:4px;">🛡️ BACKEND LOCK v1.0</div>
+        <div style="font-size:0.71rem;color:#94a3b8;line-height:1.45;">
+          • Pure Cookie Auth: <b>Locked 🟢</b><br/>
+          • 13-Step Gemini Bot: <b>Safe 🟢</b><br/>
+          • Completed Episodes: <b id="fns-ep-total" style="color:#fff;">0</b>
         </div>
       </div>
     </div>
 
     <!-- MAIN WORKSPACE -->
     <div class="fns-main-panel">
-
-      <!-- Status Toast Banner -->
-      <div id="fns-action-toast" style="display:none;margin-bottom:16px;padding:13px 18px;border-radius:12px;background:linear-gradient(90deg,rgba(0,245,212,0.2),rgba(14,165,233,0.2));border:1px solid #00f5d4;color:#fff;font-weight:700;font-size:0.86rem;"></div>
+      <div id="fns-action-toast" style="display:none;margin-bottom:14px;padding:12px 16px;border-radius:12px;background:linear-gradient(90deg,rgba(0,245,212,0.22),rgba(14,165,233,0.22));border:1px solid #00f5d4;color:#fff;font-weight:700;font-size:0.85rem;"></div>
 
       <!-- ================================================================= -->
-      <!-- SCREEN 1: MAIN COMMAND CENTER & 13-STEP PIPELINE + IPHONE PREVIEW -->
+      <!-- SCREEN 1: CONNECTED S-CURVE PIPELINE MAP + ERROR TRACKER + PHONE  -->
       <!-- ================================================================= -->
       <div class="fns-screen active" id="fns-screen-1">
         <div class="fns-s1-grid">
           <div class="fns-pipeline-card">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
               <div>
-                <div style="font-size:1.1rem;font-weight:900;color:#fff;">13-Step Automated AI Video Pipeline Radar</div>
-                <div style="font-size:0.78rem;color:#00f5d4;margin-top:2px;" id="fns-radar-subtitle">Live Telemetry & Continuity Engine — Zero Timeout Protection</div>
+                <div style="font-size:1.08rem;font-weight:900;color:#fff;">13-Step Connected AI Video Pipeline Radar</div>
+                <div style="font-size:0.78rem;color:#00f5d4;margin-top:2px;" id="fns-radar-subtitle">Live Process Path — Shows exact active step & failure reason if any</div>
               </div>
-              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                <a href="/api/universe/live_screenshot" target="_blank" class="fns-tab-btn" style="text-decoration:none;color:#00f5d4;border-color:#00f5d4;">📸 Live Cloud Screenshot ↗</a>
+              <a href="/api/universe/live_screenshot" target="_blank" class="fns-tab-btn" style="text-decoration:none;color:#00f5d4;border-color:#00f5d4;">📸 View Live Cloud Screen ↗</a>
+            </div>
+
+            <!-- CONNECTED S-CURVE ROAD MAP (MATCHING IMAGE #1) -->
+            <div class="fns-road-wrap">
+              <!-- Row 1: Step 1 -> Step 2 -> Step 3 -> Step 4 -->
+              <div class="fns-road-row">
+                <div class="fns-road-node" id="fns-pnode-1">
+                  <div class="fns-dot-indicator"></div>
+                  <div style="font-size:0.66rem;color:#00f5d4;font-weight:800;">STAGE 1</div>
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">1. AI Episodic Script</div>
+                  <div style="font-size:0.65rem;color:#94a3b8;">.env Gemini API</div>
+                </div>
+                <div class="fns-road-connector" id="fns-pconn-1"></div>
+                <div class="fns-road-node" id="fns-pnode-2">
+                  <div class="fns-dot-indicator"></div>
+                  <div style="font-size:0.66rem;color:#00f5d4;font-weight:800;">STAGE 2</div>
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">2. Cookie Sign-In</div>
+                  <div style="font-size:0.65rem;color:#94a3b8;">Step #1-2 Flash</div>
+                </div>
+                <div class="fns-road-connector" id="fns-pconn-2"></div>
+                <div class="fns-road-node" id="fns-pnode-3">
+                  <div class="fns-dot-indicator"></div>
+                  <div style="font-size:0.66rem;color:#00f5d4;font-weight:800;">STAGE 3</div>
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">3. Create Video 9:16</div>
+                  <div style="font-size:0.65rem;color:#94a3b8;">Step #3-7 Portrait</div>
+                </div>
+                <div class="fns-road-connector" id="fns-pconn-3"></div>
+                <div class="fns-road-node" id="fns-pnode-4">
+                  <div class="fns-dot-indicator"></div>
+                  <div style="font-size:0.66rem;color:#00f5d4;font-weight:800;">STAGE 4</div>
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">4. Character Upload</div>
+                  <div style="font-size:0.65rem;color:#94a3b8;">Step #8-10 Foji/Fojan</div>
+                </div>
+              </div>
+
+              <!-- Vertical S-Turn Connector -->
+              <div class="fns-road-turn" id="fns-pturn-1"></div>
+
+              <!-- Row 2: Step 8 <- Step 7 <- Step 6 <- Step 5 -->
+              <div class="fns-road-row">
+                <div class="fns-road-node" id="fns-pnode-8">
+                  <div class="fns-dot-indicator"></div>
+                  <div style="font-size:0.66rem;color:#00f5d4;font-weight:800;">STAGE 8</div>
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">8. Queue / IG Publish</div>
+                  <div style="font-size:0.65rem;color:#94a3b8;">Schedule or Post</div>
+                </div>
+                <div class="fns-road-connector" id="fns-pconn-7"></div>
+                <div class="fns-road-node" id="fns-pnode-7">
+                  <div class="fns-dot-indicator"></div>
+                  <div style="font-size:0.66rem;color:#00f5d4;font-weight:800;">STAGE 7</div>
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">7. Hover & MP4 Save</div>
+                  <div style="font-size:0.65rem;color:#94a3b8;">Step #13 Download</div>
+                </div>
+                <div class="fns-road-connector" id="fns-pconn-6"></div>
+                <div class="fns-road-node" id="fns-pnode-6">
+                  <div class="fns-dot-indicator"></div>
+                  <div style="font-size:0.66rem;color:#00f5d4;font-weight:800;">STAGE 6</div>
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">6. 3D Video Rendering</div>
+                  <div style="font-size:0.65rem;color:#94a3b8;">Zero-Timeout Wait</div>
+                </div>
+                <div class="fns-road-connector" id="fns-pconn-5"></div>
+                <div class="fns-road-node" id="fns-pnode-5">
+                  <div class="fns-dot-indicator"></div>
+                  <div style="font-size:0.66rem;color:#00f5d4;font-weight:800;">STAGE 5</div>
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">5. Prompt Injection</div>
+                  <div style="font-size:0.65rem;color:#94a3b8;">Step #11-12 Send</div>
+                </div>
               </div>
             </div>
 
-            <!-- Progress Bar -->
-            <div style="height:10px;background:rgba(255,255,255,0.07);border-radius:99px;overflow:hidden;margin:14px 0;">
-              <div id="fns-main-prog-bar" style="height:100%;width:100%;background:linear-gradient(90deg,#00f5d4,#0ea5e9,#a855f7);transition:width 0.4s;"></div>
-            </div>
-
-            <!-- 13-Step Visual Nodes -->
-            <div class="fns-nodes-grid">
-              <div class="fns-node done"><div class="fns-node-num">Step 1-2</div><div class="fns-node-title">🔐 Cookie Auth & Flash</div></div>
-              <div class="fns-node done"><div class="fns-node-num">Step 3-5</div><div class="fns-node-title">🎬 Create Video Lock</div></div>
-              <div class="fns-node done"><div class="fns-node-num">Step 6-7</div><div class="fns-node-title">📱 Portrait 9:16 Ratio</div></div>
-              <div class="fns-node done"><div class="fns-node-num">Step 8-10</div><div class="fns-node-title">📸 Foji & Fojan Upload</div></div>
-              <div class="fns-node done"><div class="fns-node-num">Step 11</div><div class="fns-node-title">🧠 Live API Episodic Script</div></div>
-              <div class="fns-node done"><div class="fns-node-num">Step 12</div><div class="fns-node-title">🚀 3D Veo Rendering</div></div>
-              <div class="fns-node done"><div class="fns-node-num">Step 13</div><div class="fns-node-title">📥 Hover & MP4 Save</div></div>
-              <div class="fns-node done"><div class="fns-node-num">Publish</div><div class="fns-node-title">📲 IG Reel & Telegram</div></div>
+            <!-- LIVE ERROR / FAILURE REASON DIAGNOSTIC BANNER -->
+            <div class="fns-error-box" id="fns-error-banner">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+                <div style="font-size:0.9rem;font-weight:900;color:#f87171;">🚨 PIPELINE FAILURE DETECTED — EXACT REASON:</div>
+                <a href="/api/universe/live_screenshot" target="_blank" style="color:#fff;background:#ef4444;padding:5px 11px;border-radius:8px;text-decoration:none;font-size:0.74rem;font-weight:800;">📸 Open Error Screenshot ↗</a>
+              </div>
+              <div id="fns-error-reason-text" style="font-size:0.82rem;color:#fee2e2;margin-top:6px;line-height:1.45;"></div>
             </div>
 
             <!-- 5 Foji Universe Track Selector -->
-            <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);">
               <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-                <span style="font-size:0.88rem;font-weight:800;color:#00f5d4;">🎖️ Select Active Foji Track (Pass = Next Part | Fail = Retry Same Part):</span>
-                <button class="fns-tab-btn" id="fns-autorotate-btn" onclick="fnsSetAutoRotate()" style="padding:6px 13px;font-size:0.76rem;">🔄 Auto-Rotate All 5 Tracks</button>
+                <span style="font-size:0.86rem;font-weight:800;color:#00f5d4;">🎖️ Active Foji Series Track (Pass = Next Part | Fail = Retry Same Part):</span>
+                <button class="fns-tab-btn" id="fns-autorotate-btn" onclick="fnsSetAutoRotate()" style="padding:5px 12px;font-size:0.75rem;">🔄 Auto-Rotate All 5 Tracks</button>
               </div>
-              <div id="fns-quick-tracks" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px;"></div>
+              <div id="fns-quick-tracks" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:8px;"></div>
 
-              <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
-                <input type="text" id="fns-custom-twist" placeholder="💡 Optional: Agle Part mein kya twist/incident dikhana hai? Yahan likho..." style="flex:1;min-width:220px;background:rgba(6,11,22,0.92);border:1px solid rgba(255,255,255,0.16);border-radius:11px;padding:11px 14px;color:#fff;font-size:0.84rem;" />
+              <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+                <input type="text" id="fns-custom-twist" placeholder="💡 Optional: Agle Part mein kya twist chahiye? Yahan likho..." style="flex:1;min-width:210px;background:rgba(6,11,22,0.92);border:1px solid rgba(255,255,255,0.16);border-radius:10px;padding:10px 13px;color:#fff;font-size:0.82rem;" />
                 <button class="fns-tab-btn active" onclick="fnsLockTwist()">💾 Lock Twist</button>
-                <button class="fns-tab-btn" style="background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;border:none;" onclick="fnsGenerateLiveScriptPreview()">🧠 Preview Next Part Script</button>
-                <button class="fns-cta-generate" onclick="fnsStartFullVideoGeneration()">🚀 Generate Video Now</button>
+                <button class="fns-tab-btn" style="background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;border:none;" onclick="fnsGenerateLiveScriptPreview()">🧠 Test AI Script</button>
               </div>
-
-              <div id="fns-live-script-output" style="display:none;margin-top:14px;background:rgba(4,9,18,0.92);border-left:4px solid #00f5d4;padding:14px;border-radius:11px;font-size:0.83rem;line-height:1.55;"></div>
+              <div id="fns-live-script-output" style="display:none;margin-top:12px;background:rgba(4,9,18,0.92);border-left:4px solid #00f5d4;padding:12px;border-radius:10px;font-size:0.81rem;line-height:1.5;"></div>
             </div>
 
-            <!-- Live System Notifications & Logs -->
-            <div style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);">
-              <div style="font-size:0.84rem;font-weight:800;color:#94a3b8;margin-bottom:8px;">🔔 Live Pipeline Telemetry & Activity Logs</div>
-              <div id="fns-notif-feed" style="max-height:150px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;font-size:0.76rem;"></div>
+            <!-- Live Activity Logs -->
+            <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
+              <div style="font-size:0.8rem;font-weight:800;color:#94a3b8;margin-bottom:6px;">🔔 Real-Time Pipeline Logs & Error History</div>
+              <div id="fns-notif-feed" style="max-height:135px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;font-size:0.75rem;"></div>
             </div>
           </div>
 
-          <!-- RIGHT: 9:16 iPhone Live Reel Preview Frame + Direct Post Controls -->
+          <!-- RIGHT: 9:16 iPhone Preview + One-Click Approve & Schedule -->
           <div style="display:flex;flex-direction:column;gap:12px;">
             <div class="fns-iphone-frame">
               <div class="fns-iphone-notch"></div>
-              <div style="font-size:0.76rem;font-weight:800;color:#94a3b8;margin-bottom:6px;">📱 Live 9:16 Reel Preview</div>
+              <div style="font-size:0.75rem;font-weight:800;color:#94a3b8;margin-bottom:6px;">📱 Live 9:16 Reel Preview</div>
               <div class="fns-iphone-screen">
                 <video id="fns-preview-video" src="/api/universe/latest_video" controls autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';document.getElementById('fns-vid-fallback').style.display='flex';"></video>
                 <div id="fns-vid-fallback" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;">
-                  <img src="/api/universe/char_img/foji" style="width:120px;height:120px;object-fit:cover;border-radius:50%;border:2px solid #00f5d4;margin-bottom:10px;" />
-                  <div style="font-size:0.84rem;font-weight:800;color:#fff;">Makra & Meera 3D Studio</div>
-                  <div style="font-size:0.72rem;color:#94a3b8;margin-top:4px;">Latest generated 9:16 MP4 streams here automatically</div>
+                  <img src="/api/universe/char_img/foji" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:2px solid #00f5d4;margin-bottom:10px;" />
+                  <div style="font-size:0.82rem;font-weight:800;color:#fff;">Makra & Meera 3D Studio</div>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:4px;">Generated 9:16 MP4 streams here</div>
                 </div>
                 <div class="fns-iphone-overlay">
                   <div style="font-weight:800;color:#00f5d4;" id="fns-phone-ep-title">@ai_foji_lovelife • Verified</div>
-                  <div id="fns-phone-ep-diag" style="font-size:0.69rem;color:#e2e8f0;margin-top:2px;">100% Real AI Episodic Pipeline Ready</div>
+                  <div id="fns-phone-ep-diag" style="font-size:0.68rem;color:#e2e8f0;margin-top:2px;">Ready for Approval & Scheduling</div>
                 </div>
               </div>
             </div>
 
             <div class="fns-pipeline-card" style="padding:14px;">
-              <button class="fns-cta-post" style="width:100%;margin-bottom:8px;padding:12px;" onclick="fnsPublishLatestReel()">✅ APPROVE & POST REEL TO INSTAGRAM</button>
+              <button class="fns-cta-schedule" style="width:100%;margin-bottom:8px;padding:12px;font-size:0.84rem;" onclick="fnsApproveAndScheduleLatest()">📅 APPROVE & ADD TO NEXT SCHEDULE SLOT</button>
+              <button class="fns-cta-post" style="width:100%;margin-bottom:8px;padding:10px;" onclick="fnsPublishLatestReel()">📲 POST IMMEDIATELY TO INSTAGRAM</button>
               <div style="display:flex;gap:8px;">
-                <button class="fns-tab-btn" style="flex:1;font-size:0.76rem;" onclick="fnsStartFullVideoGeneration()">🔄 Regenerate</button>
-                <a href="/api/universe/latest_video" download="foji_reel.mp4" class="fns-tab-btn" style="flex:1;font-size:0.76rem;text-align:center;text-decoration:none;color:#00f5d4;">📥 Save MP4</a>
+                <button class="fns-tab-btn" style="flex:1;font-size:0.75rem;" onclick="fnsStartFullVideoGeneration(1)">🔄 Regenerate</button>
+                <a href="/api/universe/latest_video" download="foji_reel.mp4" class="fns-tab-btn" style="flex:1;font-size:0.75rem;text-align:center;text-decoration:none;color:#00f5d4;">📥 Save MP4</a>
               </div>
             </div>
           </div>
@@ -2263,177 +2336,81 @@ html, body {
       </div>
 
       <!-- ================================================================= -->
-      <!-- SCREEN 2: AI STORY DIRECTOR, CHARACTERS & BGM AUDIO MIXER         -->
+      <!-- SCREEN 2: APPROVE & SCHEDULED POSTS QUEUE + 2:30 AM & T-30 CONFIG -->
       <!-- ================================================================= -->
       <div class="fns-screen" id="fns-screen-2">
-        <div class="fns-s2-grid">
-          <div>
-            <div style="font-size:0.92rem;font-weight:800;color:#00f5d4;margin-bottom:10px;">👥 3D Character Vault</div>
-            <div class="fns-char-card">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <span style="font-weight:800;font-size:0.84rem;color:#fff;">🪖 MAKRA (Foji Lead)</span>
-                <span class="fns-badge-live">ACTIVE</span>
-              </div>
-              <img src="/api/universe/char_img/foji" class="fns-char-img" alt="Foji" />
-              <div style="font-size:0.72rem;color:#94a3b8;margin-top:6px;">Role: Agniveer Soldier • Haryanvi Vibe • Combat & PT Gear</div>
+        <div style="display:grid;grid-template-columns:1.1fr 1.2fr 0.9fr;gap:18px;">
+          <!-- Col 1: Unapproved Generated Videos (From 2:30 AM Batch or T-30 Min) -->
+          <div class="fns-pipeline-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <span style="font-size:0.94rem;font-weight:900;color:#00f5d4;">🎬 1. Ready Videos (Awaiting Approval)</span>
+              <span class="fns-badge-live" id="fns-unapproved-cnt">0 Ready</span>
+            </div>
+            <div style="font-size:0.73rem;color:#94a3b8;margin-bottom:12px;">
+              Videos generated at <b>02:30 AM</b> or <b>30 mins before schedule</b> appear here. Click <b>Approve & Schedule</b> to lock them into the next open time slot!
+            </div>
+            <div id="fns-unapproved-list" style="max-height:430px;overflow-y:auto;"></div>
+          </div>
+
+          <!-- Col 2: Active Scheduled Queue (Shows exact Date & Time of each scheduled post!) -->
+          <div class="fns-pipeline-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <span style="font-size:0.94rem;font-weight:900;color:#a855f7;">📅 2. Active Scheduled Posts Queue</span>
+              <span class="fns-badge-live" id="fns-scheduled-cnt">0 Scheduled</span>
+            </div>
+            <div style="font-size:0.73rem;color:#94a3b8;margin-bottom:12px;">
+              Each approved video is locked to its exact IST slot. The daemon will automatically publish them on Instagram when the clock hits the scheduled time!
+            </div>
+            <div id="fns-scheduled-list" style="max-height:430px;overflow-y:auto;"></div>
+          </div>
+
+          <!-- Col 3: 2:30 AM Batch & Daily Schedule Time Slots Settings -->
+          <div class="fns-pipeline-card">
+            <div style="font-size:0.94rem;font-weight:900;color:#38bdf8;margin-bottom:12px;">⚙️ 3. Automation Timing Rules (IST)</div>
+
+            <div style="margin-bottom:12px;">
+              <label style="font-size:0.75rem;color:#cbd5e1;font-weight:700;">🌙 Night Batch Generation Time (3 Videos):</label>
+              <input type="time" id="fns-cfg-night-time" value="02:30" style="width:100%;box-sizing:border-box;margin-top:4px;background:#081020;border:1px solid rgba(255,255,255,0.16);color:#00f5d4;padding:9px;border-radius:9px;font-weight:800;" />
             </div>
 
-            <div class="fns-char-card">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <span style="font-weight:800;font-size:0.84rem;color:#fff;">🌸 MEERA (Fojan Lead)</span>
-                <span class="fns-badge-live">ACTIVE</span>
-              </div>
-              <img src="/api/universe/char_img/fojan" class="fns-char-img" alt="Fojan" />
-              <div style="font-size:0.72rem;color:#94a3b8;margin-top:6px;">Role: Lead Female • Emotional & Desi Banter</div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:0.75rem;color:#cbd5e1;font-weight:700;">⚡ Pre-Schedule Auto-Generate Lead Time:</label>
+              <div style="font-size:0.74rem;color:#34d399;margin-top:3px;font-weight:700;">✔ Always 30 Minutes Before Every Slot (1 Video)</div>
             </div>
 
-            <div class="fns-char-card" style="opacity:0.82;">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span style="font-weight:800;font-size:0.8rem;color:#fff;">🐐 Gabru Bakra & Mouse</span>
-                <span class="fns-badge-soon">COMING SOON</span>
-              </div>
-              <div style="font-size:0.7rem;color:#94a3b8;margin-top:4px;">2nd Show Switcher for @gabru.mouse.comedy</div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:0.75rem;color:#cbd5e1;font-weight:700;">📅 Daily Instagram Publishing Slots (IST):</label>
+              <input type="time" id="fns-slot-1" value="07:00" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.16);color:#fff;padding:8px;border-radius:8px;" />
+              <input type="time" id="fns-slot-2" value="13:30" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.16);color:#fff;padding:8px;border-radius:8px;" />
+              <input type="time" id="fns-slot-3" value="19:30" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.16);color:#fff;padding:8px;border-radius:8px;" />
             </div>
+
+            <button class="fns-cta-generate" style="width:100%;" onclick="fnsSaveScheduleSlots()">💾 SAVE SCHEDULE RULES</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- SCREEN 3: STORY DIRECTOR, CHARACTER VAULT & ACCOUNTS              -->
+      <!-- ================================================================= -->
+      <div class="fns-screen" id="fns-screen-3">
+        <div style="display:grid;grid-template-columns:280px 1fr 1fr;gap:18px;">
+          <div class="fns-pipeline-card">
+            <div style="font-size:0.9rem;font-weight:800;color:#00f5d4;margin-bottom:10px;">👥 3D Character Vault</div>
+            <img src="/api/universe/char_img/foji" style="width:100%;height:135px;object-fit:cover;border-radius:10px;margin-bottom:8px;" />
+            <div style="font-size:0.8rem;font-weight:800;color:#fff;margin-bottom:10px;">🪖 Makra (Foji Lead) — Active</div>
+            <img src="/api/universe/char_img/fojan" style="width:100%;height:135px;object-fit:cover;border-radius:10px;margin-bottom:8px;" />
+            <div style="font-size:0.8rem;font-weight:800;color:#fff;">🌸 Meera (Fojan Lead) — Active</div>
           </div>
 
           <div class="fns-pipeline-card">
-            <div style="font-size:0.92rem;font-weight:800;color:#38bdf8;margin-bottom:10px;">📚 5-Track Storyline Sequence & Next Part Lock</div>
+            <div style="font-size:0.9rem;font-weight:800;color:#38bdf8;margin-bottom:10px;">📚 5-Track Storyline Continuity</div>
             <div id="fns-s2-tracks-list"></div>
           </div>
 
           <div class="fns-pipeline-card">
-            <div style="font-size:0.92rem;font-weight:800;color:#a855f7;margin-bottom:10px;">🎙️ Live AI Script & Caption Editor</div>
-            <textarea id="fns-s2-script-editor" rows="7" style="width:100%;box-sizing:border-box;background:rgba(5,10,20,0.92);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:12px;color:#fff;font-size:0.82rem;line-height:1.5;" placeholder="Click 'Write Fresh Script' to generate a 100% live script from your .env API key..."></textarea>
-
-            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
-              <button class="fns-tab-btn active" onclick="fnsGenerateLiveScriptPreview()">⚡ Write Fresh Script (Live API)</button>
-              <button class="fns-cta-generate" onclick="fnsStartFullVideoGeneration()">🚀 Generate 3D Video</button>
-              <button class="fns-cta-post" onclick="fnsPublishLatestReel()">📲 Post to IG with This Caption</button>
-            </div>
-
-            <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <span style="font-size:0.8rem;font-weight:800;color:#00f5d4;">🎵 Live Audio Waveform & BGM Mixer</span>
-                <span class="fns-badge-live">READY</span>
-              </div>
-              <div class="fns-wave-bars">
-                <div class="fns-wave-bar" style="animation-delay:0.1s"></div>
-                <div class="fns-wave-bar" style="animation-delay:0.3s"></div>
-                <div class="fns-wave-bar" style="animation-delay:0.2s"></div>
-                <div class="fns-wave-bar" style="animation-delay:0.5s"></div>
-                <div class="fns-wave-bar" style="animation-delay:0.15s"></div>
-                <div class="fns-wave-bar" style="animation-delay:0.4s"></div>
-                <div class="fns-wave-bar" style="animation-delay:0.25s"></div>
-                <div class="fns-wave-bar" style="animation-delay:0.6s"></div>
-              </div>
-              <div style="margin-top:10px;font-size:0.75rem;color:#cbd5e1;">
-                <div style="display:flex;justify-content:space-between;"><span>🗣️ Original Veo Lip-Sync Dialogue Volume</span><span>100%</span></div>
-                <input type="range" min="0" max="100" value="100" style="width:100%;accent-color:#00f5d4;" />
-                <div style="display:flex;justify-content:space-between;margin-top:6px;"><span>🎶 Desi/Patriotic BGM & Hook SFX Mix</span><span class="fns-badge-soon">AUTO-MIX</span></div>
-                <input type="range" min="0" max="100" value="20" style="width:100%;accent-color:#38bdf8;" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================================================================= -->
-      <!-- SCREEN 3: ACCOUNTS, COOKIE SHIELD, ANALYTICS & AUTO-SCHEDULER     -->
-      <!-- ================================================================= -->
-      <div class="fns-screen" id="fns-screen-3">
-        <div class="fns-s3-grid">
-          <div class="fns-pipeline-card">
-            <div style="font-size:0.92rem;font-weight:800;color:#00f5d4;margin-bottom:12px;">🛡️ Accounts & Cookie Health Shield</div>
-
-            <div class="fns-acc-row">
-              <div>
-                <div style="font-size:0.82rem;font-weight:800;color:#fff;">🌐 Google Gemini Pro #1</div>
-                <div style="font-size:0.7rem;color:#94a3b8;">ramandhuwan7520@gmail.com</div>
-              </div>
-              <span class="fns-badge-live">AUTHENTICATED</span>
-            </div>
-
-            <div class="fns-acc-row">
-              <div>
-                <div style="font-size:0.82rem;font-weight:800;color:#fff;">📸 IG @ai_foji_lovelife</div>
-                <div style="font-size:0.7rem;color:#94a3b8;">Chrome Session + Auto-Thumb</div>
-              </div>
-              <span class="fns-badge-live">HEALTHY</span>
-            </div>
-
-            <div class="fns-acc-row">
-              <div>
-                <div style="font-size:0.82rem;font-weight:800;color:#fff;">🌐 Backup Gemini Account #2</div>
-                <div style="font-size:0.7rem;color:#94a3b8;">Auto-Failover on Daily Quota</div>
-              </div>
-              <span class="fns-badge-soon">COMING SOON</span>
-            </div>
-
-            <div class="fns-acc-row">
-              <div>
-                <div style="font-size:0.82rem;font-weight:800;color:#fff;">🎭 IG @gabru.mouse.comedy</div>
-                <div style="font-size:0.7rem;color:#94a3b8;">Multi-Channel Reel Sync</div>
-              </div>
-              <span class="fns-badge-soon">COMING SOON</span>
-            </div>
-
-            <div class="fns-acc-row">
-              <div>
-                <div style="font-size:0.82rem;font-weight:800;color:#fff;">▶️ YT Shorts (Kal Ka Sach)</div>
-                <div style="font-size:0.7rem;color:#94a3b8;">Auto-Crosspost Pipeline</div>
-              </div>
-              <span class="fns-badge-soon">COMING SOON</span>
-            </div>
-          </div>
-
-          <div class="fns-pipeline-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-              <span style="font-size:0.92rem;font-weight:800;color:#38bdf8;">📈 Reel Views & Completed Episode History</span>
-              <span class="fns-badge-live">REAL DATA</span>
-            </div>
-
-            <svg viewBox="0 0 400 130" style="width:100%;height:125px;background:rgba(6,12,24,0.8);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
-              <defs>
-                <linearGradient id="fnsGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#00f5d4" stop-opacity="0.45"/>
-                  <stop offset="100%" stop-color="#00f5d4" stop-opacity="0.0"/>
-                </linearGradient>
-              </defs>
-              <path d="M0,95 Q55,35 110,75 T220,30 T330,60 T400,20 L400,130 L0,130 Z" fill="url(#fnsGrad)"/>
-              <path d="M0,95 Q55,35 110,75 T220,30 T330,60 T400,20" fill="none" stroke="#00f5d4" stroke-width="3"/>
-              <path d="M0,110 Q70,65 140,90 T260,55 T400,45" fill="none" stroke="#a855f7" stroke-width="2.5"/>
-              <circle cx="220" cy="30" r="5" fill="#00f5d4"/>
-            </svg>
-
-            <div style="margin-top:12px;font-size:0.78rem;font-weight:800;color:#cbd5e1;">📜 Completed Episodes (Locked in data/history.json):</div>
-            <div id="fns-recent-history-list" style="margin-top:8px;max-height:210px;overflow-y:auto;font-size:0.74rem;color:#94a3b8;"></div>
-          </div>
-
-          <div class="fns-pipeline-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.92rem;font-weight:800;color:#a855f7;">📅 Auto-Publishing Scheduler</span>
-              <span class="fns-badge-live">IST SLOTS</span>
-            </div>
-            <div style="font-size:0.72rem;color:#94a3b8;margin-top:4px;">5 Foji Tracks rotate automatically across daily IST slots:</div>
-
-            <div class="fns-cal-grid">
-              <div class="fns-cal-col"><b>Mon</b><div class="fns-cal-slot">07:00 AM<br/>❤️ Love</div><div class="fns-cal-slot">07:30 PM<br/>🔥 Ragda</div></div>
-              <div class="fns-cal-col"><b>Tue</b><div class="fns-cal-slot">07:00 AM<br/>⚔️ Train</div><div class="fns-cal-slot">07:30 PM<br/>😂 Masti</div></div>
-              <div class="fns-cal-col"><b>Wed</b><div class="fns-cal-slot">07:00 AM<br/>🏔️ LOC</div><div class="fns-cal-slot">07:30 PM<br/>❤️ Love</div></div>
-              <div class="fns-cal-col"><b>Thu</b><div class="fns-cal-slot">07:00 AM<br/>🔥 Ragda</div><div class="fns-cal-slot">07:30 PM<br/>⚔️ Train</div></div>
-              <div class="fns-cal-col"><b>Fri</b><div class="fns-cal-slot">07:00 AM<br/>😂 Masti</div><div class="fns-cal-slot">07:30 PM<br/>🏔️ LOC</div></div>
-              <div class="fns-cal-col"><b>Sat</b><div class="fns-cal-slot">07:00 AM<br/>❤️ Love</div><div class="fns-cal-slot">07:30 PM<br/>🔥 Ragda</div></div>
-              <div class="fns-cal-col"><b>Sun</b><div class="fns-cal-slot">08:00 AM<br/>😂 Bada Khana</div><div class="fns-cal-slot">08:00 PM<br/>🏔️ Border</div></div>
-            </div>
-
-            <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
-              <div style="font-size:0.78rem;font-weight:800;color:#fff;margin-bottom:6px;">⏰ Custom Daily Auto-Pilot Slots (IST):</div>
-              <div style="display:flex;gap:8px;">
-                <input type="time" id="fns-slot-1" value="07:00" style="flex:1;background:#081020;border:1px solid rgba(255,255,255,0.15);color:#fff;padding:8px;border-radius:8px;" />
-                <input type="time" id="fns-slot-2" value="19:30" style="flex:1;background:#081020;border:1px solid rgba(255,255,255,0.15);color:#fff;padding:8px;border-radius:8px;" />
-                <button class="fns-tab-btn active" onclick="fnsSaveScheduleSlots()">💾 Save</button>
-              </div>
-            </div>
+            <div style="font-size:0.9rem;font-weight:800;color:#a855f7;margin-bottom:10px;">📜 Recently Completed Episodes</div>
+            <div id="fns-recent-history-list" style="max-height:360px;overflow-y:auto;font-size:0.75rem;color:#94a3b8;"></div>
           </div>
         </div>
       </div>
@@ -2450,15 +2427,75 @@ function fnsShowToast(msg, isError=false) {
   const t = document.getElementById('fns-action-toast');
   if (!t) return;
   t.style.display = 'block';
-  t.style.borderColor = isError ? '#f87171' : '#00f5d4';
+  t.style.borderColor = isError ? '#ef4444' : '#00f5d4';
   t.innerHTML = msg;
-  setTimeout(() => { t.style.display = 'none'; }, 7000);
+  setTimeout(() => { t.style.display = 'none'; }, 8000);
 }
 
 function fnsSwitchTab(num) {
   for (let i = 1; i <= 3; i++) {
     document.getElementById('fns-screen-' + i).classList.toggle('active', i === num);
     document.getElementById('fns-btn-tab' + i).classList.toggle('active', i === num);
+  }
+}
+
+function fnsUpdateConnectedPipelineRoad(telemetry, notifications) {
+  const stepNum = parseInt(telemetry.step_num || 0, 10);
+  const status = (telemetry.status || 'ready').toLowerCase();
+  const title = telemetry.step_title || 'System Idle & Ready';
+  const detail = telemetry.sub_detail || '';
+
+  document.getElementById('fns-radar-subtitle').innerText =
+    `[${status.toUpperCase()}] ${title} — ${detail} (Updated: ${telemetry.updated_at || 'Now'})`;
+
+  // Map telemetry step_num (0..6) to the 8 visual road nodes
+  let activeStage = 8;
+  if (status === 'ready' || status === 'completed' || stepNum === 0) activeStage = 8;
+  else if (stepNum === 1) activeStage = 2;
+  else if (stepNum === 2) activeStage = 3;
+  else if (stepNum === 3) activeStage = 4;
+  else if (stepNum === 4) activeStage = 5;
+  else if (stepNum === 5) activeStage = 6;
+  else if (stepNum >= 6) activeStage = 7;
+
+  for (let i = 1; i <= 8; i++) {
+    const nd = document.getElementById('fns-pnode-' + i);
+    if (!nd) continue;
+    nd.className = 'fns-road-node';
+    if (status === 'error') {
+      if (i < activeStage) nd.classList.add('done');
+      else if (i === activeStage) nd.classList.add('error');
+    } else if (status === 'active') {
+      if (i < activeStage) nd.classList.add('done');
+      else if (i === activeStage) nd.classList.add('active');
+    } else {
+      nd.classList.add('done');
+    }
+  }
+
+  for (let c = 1; c <= 7; c++) {
+    const cn = document.getElementById('fns-pconn-' + c);
+    if (!cn) continue;
+    cn.className = 'fns-road-connector';
+    if (c < activeStage || (status !== 'active' && status !== 'error')) cn.classList.add('done');
+    else if (status === 'error' && c === activeStage) cn.classList.add('error');
+  }
+  const turn = document.getElementById('fns-pturn-1');
+  if (turn) {
+    turn.className = 'fns-road-turn' + ((activeStage > 4 || status === 'ready' || status === 'completed') ? ' done' : '');
+  }
+
+  // Show Red Error Diagnostic Banner if telemetry is in error state OR latest notification is an error
+  const errBox = document.getElementById('fns-error-banner');
+  const errTxt = document.getElementById('fns-error-reason-text');
+  if (status === 'error') {
+    errBox.style.display = 'block';
+    errTxt.innerHTML = `<b>Failed at ${title}:</b> ${detail}`;
+  } else if (notifications && notifications.length > 0 && notifications[0].status === 'error') {
+    errBox.style.display = 'block';
+    errTxt.innerHTML = `<b>Latest Alert (${notifications[0].title} at ${notifications[0].time_str}):</b> ${notifications[0].message}`;
+  } else {
+    errBox.style.display = 'none';
   }
 }
 
@@ -2469,18 +2506,125 @@ async function fnsRefreshHub() {
     _fnsState = d.director_state || _fnsState;
     _fnsTracks = d.tracks || [];
     document.getElementById('fns-ep-total').innerText = d.total_episodes_completed || 0;
+    if (d.server_time_ist) document.getElementById('fns-server-clock').innerText = d.server_time_ist;
+    if (d.next_open_slot) document.getElementById('fns-next-slot-sidebar').innerText = d.next_open_slot.display_time;
 
-    if (d.telemetry) {
-      const sNum = d.telemetry.step_num || 0;
-      document.getElementById('fns-radar-subtitle').innerText =
-        'Step #' + sNum + ': ' + (d.telemetry.step_title || 'Ready') + ' — ' + (d.telemetry.sub_detail || '');
-      document.getElementById('fns-main-prog-bar').style.width = (d.telemetry.progress || 100) + '%';
-    }
-
+    fnsUpdateConnectedPipelineRoad(d.telemetry || {}, d.notifications || []);
     fnsRenderTrackSelectors();
     fnsRenderHistory(d.recent_history || []);
     fnsRenderNotifications(d.notifications || []);
+    fnsRenderQueueLists(d.queue || {});
   } catch (e) {}
+}
+
+function fnsRenderQueueLists(q) {
+  const unList = q.unapproved_videos || [];
+  const scList = q.scheduled_posts || [];
+
+  document.getElementById('fns-unapproved-cnt').innerText = unList.length + ' Ready';
+  document.getElementById('fns-scheduled-cnt').innerText = scList.length + ' Scheduled';
+  document.getElementById('fns-q-badge').innerText = scList.length;
+
+  const uBox = document.getElementById('fns-unapproved-list');
+  if (uBox) {
+    if (!unList.length) {
+      uBox.innerHTML = '<div style="padding:12px;color:#64748b;font-size:0.78rem;">No unapproved videos waiting. Click <b>Generate 1 Reel Now</b> or wait for 02:30 AM / T-30 Min auto-generation!</div>';
+    } else {
+      uBox.innerHTML = unList.map(v => `
+        <div class="fns-queue-card">
+          <div style="flex:1;min-width:180px;">
+            <div style="font-size:0.83rem;font-weight:800;color:#fff;">🎬 ${v.title}</div>
+            <div style="font-size:0.72rem;color:#cbd5e1;margin-top:3px;">"${(v.dialogue || '').slice(0, 85)}"</div>
+            <div style="font-size:0.66rem;color:#00f5d4;margin-top:4px;">File: ${v.video_file} • Created: ${v.created_at}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="fns-tab-btn" style="padding:6px 10px;font-size:0.72rem;" onclick="fnsPreviewSpecificVideo('${v.video_file}', '${(v.title||'').replace(/'/g, '')}')">▶️ Watch</button>
+            <button class="fns-cta-schedule" style="padding:7px 12px;font-size:0.74rem;" onclick="fnsApproveAndScheduleSpecific('${v.video_file}')">📅 Approve & Schedule</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  const sBox = document.getElementById('fns-scheduled-list');
+  if (sBox) {
+    if (!scList.length) {
+      sBox.innerHTML = '<div style="padding:12px;color:#64748b;font-size:0.78rem;">No posts currently in schedule queue. Click <b>Approve & Schedule</b> on any ready video to lock it into the next slot!</div>';
+    } else {
+      sBox.innerHTML = scList.map((v, idx) => `
+        <div class="fns-queue-card" style="border-color:#a855f7;background:rgba(28,18,52,0.75);">
+          <div style="flex:1;min-width:180px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="background:#a855f7;color:#fff;font-size:0.66rem;font-weight:900;padding:2px 8px;border-radius:99px;">SLOT #${idx+1}: ${v.scheduled_display}</span>
+            </div>
+            <div style="font-size:0.83rem;font-weight:800;color:#fff;margin-top:5px;">🎬 ${v.title}</div>
+            <div style="font-size:0.71rem;color:#cbd5e1;margin-top:2px;">File: ${v.video_file}</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button class="fns-cta-post" style="padding:6px 10px;font-size:0.72rem;" onclick="fnsPublishSpecificNow('${v.video_file}')">📲 Post Now</button>
+            <button class="fns-tab-btn" style="padding:6px 10px;font-size:0.72rem;color:#f87171;" onclick="fnsRemoveScheduled('${v.id}')">✖ Unschedule</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+}
+
+function fnsPreviewSpecificVideo(vfile, title) {
+  fnsSwitchTab(1);
+  const vid = document.getElementById('fns-preview-video');
+  if (vid) {
+    vid.style.display = 'block';
+    vid.src = '/api/universe/video_file/' + encodeURIComponent(vfile);
+    vid.play();
+  }
+  document.getElementById('fns-phone-ep-title').innerText = title || vfile;
+}
+
+async function fnsApproveAndScheduleLatest() {
+  await fnsApproveAndScheduleSpecific('');
+}
+
+async function fnsApproveAndScheduleSpecific(vfile) {
+  fnsShowToast('📅 Locking video into the next available IST schedule slot...');
+  try {
+    const r = await fetch('/api/universe/approve_and_schedule', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ video_file: vfile })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      fnsShowToast('✅ ' + d.message);
+      fnsSwitchTab(2);
+      fnsRefreshHub();
+    } else {
+      fnsShowToast('❌ ' + (d.error || 'Could not schedule'), true);
+    }
+  } catch (e) {
+    fnsShowToast('❌ Error: ' + e, true);
+  }
+}
+
+async function fnsRemoveScheduled(id) {
+  await fetch('/api/universe/remove_scheduled', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ id: id })
+  });
+  fnsRefreshHub();
+}
+
+async function fnsPublishSpecificNow(vfile) {
+  fnsShowToast('📲 Publishing ' + vfile + ' to Instagram now...');
+  const r = await fetch('/api/universe/publish_latest_reel', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ video_file: vfile })
+  });
+  const d = await r.json();
+  if (d.ok) fnsShowToast('🎉 ' + d.message);
+  else fnsShowToast('❌ ' + (d.error || 'Failed'), true);
 }
 
 function fnsRenderTrackSelectors() {
@@ -2499,8 +2643,8 @@ function fnsRenderTrackSelectors() {
   if (qBox) {
     qBox.innerHTML = _fnsTracks.map(t => {
       const isSel = (_fnsState.active_mode === 'locked_track' && _fnsState.selected_track_id === t.id);
-      return `<div class="fns-track-item ${isSel ? 'active' : ''}" style="margin:0;" onclick="fnsSelectTrack('${t.id}')">
-        <div style="font-size:0.82rem;font-weight:800;color:#fff;">${t.name}</div>
+      return `<div class="fns-track-item ${isSel ? 'active' : ''}" onclick="fnsSelectTrack('${t.id}')">
+        <div style="font-size:0.81rem;font-weight:800;color:#fff;">${t.name}</div>
         <div style="font-size:0.68rem;color:#00f5d4;margin-top:3px;">Next Up: <b>Part #${t.next_part}</b> ${isSel ? '• 📌 LOCKED' : ''}</div>
       </div>`;
     }).join('');
@@ -2509,12 +2653,11 @@ function fnsRenderTrackSelectors() {
   if (s2Box) {
     s2Box.innerHTML = _fnsTracks.map(t => {
       const isSel = (_fnsState.active_mode === 'locked_track' && _fnsState.selected_track_id === t.id);
-      return `<div class="fns-track-item ${isSel ? 'active' : ''}" onclick="fnsSelectTrack('${t.id}')">
+      return `<div class="fns-track-item ${isSel ? 'active' : ''}" style="margin-bottom:8px;" onclick="fnsSelectTrack('${t.id}')">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:0.84rem;font-weight:800;color:#fff;">${t.name}</span>
+          <span style="font-size:0.83rem;font-weight:800;color:#fff;">${t.name}</span>
           <span class="fns-badge-live">Next: Part #${t.next_part}</span>
         </div>
-        <div style="font-size:0.71rem;color:#94a3b8;margin-top:4px;">${t.theme_brief.slice(0, 110)}...</div>
       </div>`;
     }).join('');
   }
@@ -2524,7 +2667,7 @@ function fnsRenderHistory(items) {
   const hBox = document.getElementById('fns-recent-history-list');
   if (!hBox) return;
   if (!items.length) {
-    hBox.innerHTML = '<div style="padding:8px;">No completed episodes recorded yet. Next run starts at Part #1!</div>';
+    hBox.innerHTML = '<div style="padding:8px;">No completed episodes recorded yet.</div>';
     return;
   }
   hBox.innerHTML = items.map(it => `
@@ -2542,8 +2685,8 @@ function fnsRenderNotifications(list) {
     nBox.innerHTML = '<div style="color:#64748b;">System ready. No recent alerts.</div>';
     return;
   }
-  nBox.innerHTML = list.slice(0, 8).map(n => `
-    <div style="padding:7px 10px;background:rgba(15,23,42,0.75);border-radius:8px;border-left:3px solid ${n.status==='error'?'#f87171':'#00f5d4'};display:flex;justify-content:space-between;gap:10px;">
+  nBox.innerHTML = list.slice(0, 10).map(n => `
+    <div style="padding:7px 10px;background:rgba(15,23,42,0.75);border-radius:8px;border-left:3px solid ${n.status==='error'?'#ef4444':'#00f5d4'};display:flex;justify-content:space-between;gap:10px;">
       <span><b>${n.title || 'Event'}:</b> ${n.message || ''}</span>
       <span style="color:#64748b;white-space:nowrap;">${n.time_str || ''}</span>
     </div>
@@ -2575,69 +2718,69 @@ async function fnsLockTwist() {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ custom_idea: val })
   });
-  fnsShowToast('✅ Next Part Twist Locked! Agli video isi twist ko pichle part se jod kar banegi!');
+  fnsShowToast('✅ Next Part Twist Locked!');
 }
 
-async function fnsStartFullVideoGeneration() {
+async function fnsStartFullVideoGeneration(cnt=1) {
   const twist = document.getElementById('fns-custom-twist').value;
-  fnsShowToast('🚀 Launching 13-Step Gemini Video Pipeline... Live progress will update on Radar & Telegram!');
+  fnsShowToast('🚀 Starting 13-Step Video Engine (' + cnt + ' Video' + (cnt>1?'s':'') + ')... Watch the Connected Pipeline Map!');
   try {
     const r = await fetch('/api/universe/trigger_pipeline', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ custom_idea: twist })
+      body: JSON.stringify({ custom_idea: twist, count: cnt })
     });
     const d = await r.json();
     if (d.ok) {
       fnsShowToast('✅ ' + d.message);
       fnsRefreshHub();
     } else {
-      fnsShowToast('❌ Error: ' + (d.error || 'Could not start pipeline'), true);
+      fnsShowToast('❌ Error: ' + (d.error || 'Failed'), true);
     }
   } catch (e) {
-    fnsShowToast('❌ Network error triggering pipeline: ' + e, true);
+    fnsShowToast('❌ Error: ' + e, true);
   }
 }
 
 async function fnsPublishLatestReel() {
-  const s2Ed = document.getElementById('fns-s2-script-editor');
-  const cap = s2Ed ? s2Ed.value.trim() : '';
-  fnsShowToast('📲 Uploading latest 9:16 Reel to Instagram (@ai_foji_lovelife) with Auto-Thumbnail...');
+  fnsShowToast('📲 Uploading latest 9:16 Reel to Instagram (@ai_foji_lovelife)...');
   try {
     const r = await fetch('/api/universe/publish_latest_reel', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ caption: cap })
+      body: JSON.stringify({})
     });
     const d = await r.json();
-    if (d.ok) {
-      fnsShowToast('🎉 ' + d.message);
-    } else {
-      fnsShowToast('❌ Instagram Upload Error: ' + (d.error || 'Failed'), true);
-    }
+    if (d.ok) fnsShowToast('🎉 ' + d.message);
+    else fnsShowToast('❌ ' + (d.error || 'Failed'), true);
   } catch (e) {
-    fnsShowToast('❌ Request Error: ' + e, true);
+    fnsShowToast('❌ Error: ' + e, true);
   }
 }
 
 async function fnsSaveScheduleSlots() {
-  const s1 = document.getElementById('fns-slot-1').value;
-  const s2 = document.getElementById('fns-slot-2').value;
+  const nt = document.getElementById('fns-cfg-night-time').value || '02:30';
+  const s1 = document.getElementById('fns-slot-1').value || '07:00';
+  const s2 = document.getElementById('fns-slot-2').value || '13:30';
+  const s3 = document.getElementById('fns-slot-3').value || '19:30';
   await fetch('/api/universe/save_schedule', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ slots: [s1, s2], auto_pilot: true })
+    body: JSON.stringify({
+      night_batch_time: nt,
+      night_batch_count: 3,
+      pre_slot_minutes: 30,
+      daily_slots: [s1, s2, s3]
+    })
   });
-  fnsShowToast('⏰ Auto-Pilot IST Time Slots (' + s1 + ', ' + s2 + ') Saved!');
+  fnsShowToast('✅ Saved! 02:30 AM Batch (3 Videos) + T-30 Min Auto-Trigger + Daily Slots (' + s1 + ', ' + s2 + ', ' + s3 + ') Locked!');
+  fnsRefreshHub();
 }
 
 async function fnsGenerateLiveScriptPreview() {
   const outBox = document.getElementById('fns-live-script-output');
-  const s2Ed = document.getElementById('fns-s2-script-editor');
   outBox.style.display = 'block';
   outBox.innerHTML = '⏳ <b>Calling your .env API key to write a 100% original script for the next Part...</b>';
-  if (s2Ed) s2Ed.value = 'Calling Live API...';
-
   const twist = document.getElementById('fns-custom-twist').value;
   try {
     const r = await fetch('/api/universe/generate_preview_script', {
@@ -2654,11 +2797,6 @@ async function fnsGenerateLiveScriptPreview() {
         <div style="color:#fff;margin-bottom:6px;"><b>🗣️ Spoken Hinglish Dialogue:</b> "${p.dialogue_line_1_hinglish}"</div>
         <div style="color:#fbbf24;white-space:pre-line;"><b>🔥 Hindi Shayari:</b>\n${p.shayari_hindi}</div>
       `;
-      if (s2Ed) {
-        s2Ed.value = p.caption || `${p.emotion_name}\n\n"${p.dialogue_line_1_hinglish}"\n\n${p.shayari_hindi}`;
-      }
-      document.getElementById('fns-phone-ep-title').innerText = p.emotion_name;
-      document.getElementById('fns-phone-ep-diag').innerText = p.dialogue_line_1_hinglish;
     } else {
       outBox.innerHTML = '<span style="color:#f87171;">❌ API Error: ' + (d.error || 'Unknown error') + '</span>';
     }
@@ -2673,7 +2811,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.insertBefore(shell, document.body.firstChild);
   }
   fnsRefreshHub();
-  setInterval(fnsRefreshHub, 8000);
+  setInterval(fnsRefreshHub, 5000);
 });
 </script>
 """
