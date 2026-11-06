@@ -247,15 +247,16 @@ def _load_past_episodes_for_track(track_id):
         return [], []
 
 
-def _get_live_gemini_api_key():
+def _get_all_live_gemini_api_keys():
     load_dotenv(override=True)
+    keys = []
     for k_name in [
         "GEMINI_API_KEY", "GOOGLE_API_KEY", "GEMINI_KEY", "GENAI_API_KEY",
         "API_KEY", "OPENAI_API_KEY", "GROQ_API_KEY", "OPENROUTER_API_KEY", "AI_API_KEY"
     ]:
         val = (os.getenv(k_name) or "").strip().strip('"').strip("'")
-        if len(val) > 8:
-            return val
+        if len(val) > 8 and val not in keys:
+            keys.append(val)
 
     if os.path.exists(".env"):
         try:
@@ -269,33 +270,56 @@ def _get_live_gemini_api_key():
                     v_clean = v.strip().strip('"').strip("'")
                     if any(w in k_up for w in ["GEMINI", "GOOGLE_API", "GENAI", "OPENAI", "GROQ", "OPENROUTER", "API_KEY"]) and len(v_clean) > 8:
                         if "TELEGRAM" not in k_up and "GITHUB" not in k_up and "INSTA" not in k_up:
-                            return v_clean
+                            if v_clean not in keys:
+                                keys.append(v_clean)
         except Exception:
             pass
-    return ""
+    return keys
+
+
+def _get_live_gemini_api_key():
+    keys = _get_all_live_gemini_api_keys()
+    return keys[0] if keys else ""
 
 
 def _parse_ai_json(raw_text):
     if not raw_text:
         return None
     txt = raw_text.strip()
+    txt = re.sub(r"^```(?:json)?\s*", "", txt, flags=re.IGNORECASE)
+    txt = re.sub(r"\s*```$", "", txt)
     if "{" in txt and "}" in txt:
         txt = txt[txt.find("{"):txt.rfind("}") + 1]
-    try:
-        data = json.loads(txt)
-        if isinstance(data, dict) and data.get("dialogue_hinglish") and data.get("visual_scene_description"):
-            return data
-    except Exception:
-        pass
+    for candidate in [txt, re.sub(r",[\s\n]*}", "}", txt)]:
+        try:
+            data = json.loads(candidate, strict=False)
+            if isinstance(data, dict) and (data.get("dialogue_hinglish") or data.get("visual_scene_description")):
+                return data
+        except Exception:
+            pass
+    # Regex fallback if model returned unescaped quotes inside JSON strings
+    ep_m = re.search(r'"episode_title"\s*:\s*"([^"]+)"', txt)
+    vs_m = re.search(r'"visual_scene_description"\s*:\s*"([^"]+)"', txt)
+    dl_m = re.search(r'"dialogue_hinglish"\s*:\s*"([^"]+)"', txt)
+    sh_m = re.search(r'"shayari_hindi"\s*:\s*"([^"]+)"', txt)
+    ht_m = re.search(r'"hashtags"\s*:\s*"([^"]+)"', txt)
+    if dl_m and vs_m:
+        return {
+            "episode_title": ep_m.group(1) if ep_m else "New Foji Episode",
+            "visual_scene_description": vs_m.group(1),
+            "dialogue_hinglish": dl_m.group(1),
+            "shayari_hindi": sh_m.group(1) if sh_m else "???? ?? ????? ??? ?????? ?? ??? ??, ???? ?? ??? ?? ?????????? ?? ??? ???",
+            "hashtags": ht_m.group(1) if ht_m else "#indianarmy #faujilife #agniveer #fojifojan #armyreels #desifauji"
+        }
     return None
 
 
 def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, used_dialogues, custom_idea=""):
-    api_key = _get_live_gemini_api_key()
-    if not api_key:
+    all_keys = _get_all_live_gemini_api_keys()
+    if not all_keys:
         raise RuntimeError("No API key found in .env! Please check your .env file.")
 
-    avoid_sample = " | ".join([d for d in used_dialogues[-25:] if d])
+    avoid_sample = " | ".join([d for d in used_dialogues[-20:] if d])
     user_direction = f"\nDIRECTOR SPECIAL TWIST FOR PART #{ep_num}: {custom_idea}\n" if custom_idea.strip() else ""
     unique_nonce = f"{int(time.time()*1000)}-part{ep_num}"
 
@@ -314,7 +338,7 @@ STORY CONTINUITY FROM PAST VIDEOS:
 MANDATORY RULES:
 1. Write 100% original, never-before-seen content for Part #{ep_num}. Move the plot forward to a new incident/location!
 2. NEVER repeat or paraphrase any of these past dialogues: [{avoid_sample}]
-3. Output ONLY a valid JSON object with these exact keys:
+3. Output ONLY a valid JSON object (no markdown fences) with these exact keys:
 {{
   "episode_title": "Part {ep_num}: [Short Catchy Hinglish Title]",
   "visual_scene_description": "Detailed 3D Pixar-style 9:16 vertical scene description: camera movement, lighting, Indian Army uniform/environment details, character facial expressions and physical action.",
@@ -323,127 +347,106 @@ MANDATORY RULES:
   "hashtags": "6 viral Instagram hashtags"
 }}"""
 
-    last_err = ""
+    base_host = "[https://generativelanguage.googleapis.com](https://generativelanguage.googleapis.com)"
+    error_log = []
 
-    if api_key.startswith("gsk_") or api_key.startswith("sk-"):
-        if api_key.startswith("gsk_"):
-            oa_url = "https://api.groq.com/openai/v1/chat/completions"
-            oa_models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
-        elif api_key.startswith("sk-or-"):
-            oa_url = "https://openrouter.ai/api/v1/chat/completions"
-            oa_models = ["google/gemini-3.5-flash", "google/gemini-2.5-flash", "meta-llama/llama-3.3-70b-instruct"]
-        else:
-            oa_url = "https://api.openai.com/v1/chat/completions"
-            oa_models = ["gpt-4o-mini", "gpt-4o"]
+    for api_key in all_keys:
+        if api_key.startswith("gsk_") or api_key.startswith("sk-"):
+            if api_key.startswith("gsk_"):
+                oa_url = "[https://api.groq.com/openai/v1/chat/completions](https://api.groq.com/openai/v1/chat/completions)"
+                oa_models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
+            elif api_key.startswith("sk-or-"):
+                oa_url = "[https://openrouter.ai/api/v1/chat/completions](https://openrouter.ai/api/v1/chat/completions)"
+                oa_models = ["google/gemini-2.5-flash", "meta-llama/llama-3.3-70b-instruct"]
+            else:
+                oa_url = "[https://api.openai.com/v1/chat/completions](https://api.openai.com/v1/chat/completions)"
+                oa_models = ["gpt-4o-mini", "gpt-4o"]
 
-        for m_name in oa_models:
-            try:
-                r = requests.post(
-                    oa_url,
-                    headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-                    json={"model": m_name, "messages": [{"role": "user", "content": system_prompt}], "temperature": 0.95},
-                    timeout=25
-                )
-                if r.status_code == 200:
-                    cand_txt = r.json()["choices"][0]["message"]["content"]
-                    parsed = _parse_ai_json(cand_txt)
-                    if parsed:
-                        return parsed
-                else:
-                    last_err = f"HTTP {r.status_code}: {r.text[:220]}"
-            except Exception as e:
-                last_err = str(e)
+            for m_name in oa_models:
+                try:
+                    r = requests.post(
+                        oa_url,
+                        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                        json={"model": m_name, "messages": [{"role": "user", "content": system_prompt}], "temperature": 0.9},
+                        timeout=25
+                    )
+                    if r.status_code == 200:
+                        cand_txt = r.json()["choices"][0]["message"]["content"]
+                        parsed = _parse_ai_json(cand_txt)
+                        if parsed:
+                            print(f"? [AI Scriptwriter] Script generated via {m_name}!")
+                            return parsed
+                    else:
+                        error_log.append(f"{m_name}: HTTP {r.status_code}")
+                except Exception as e:
+                    error_log.append(f"{m_name}: {e}")
+            continue
 
-    base_host = "https://generativelanguage.googleapis.com"
-
-    # Priority 1: Active 2026 Gemini 3.x models specified by user
-    priority_3x_models = [
-        "gemini-3.8-flash",
-        "gemini-3.8-flash-preview",
-        "gemini-3.5-flash-lite",
-        "gemini-3.5-flash-lite-preview",
-        "gemini-3.5-flash",
-        "gemini-3.5-flash-preview",
-        "gemini-3.1-pro",
-        "gemini-3.1-pro-preview",
-        "gemini-3.1-flash-lite-preview",
-        "gemini-3.0-flash",
-        "gemini-flash-latest",
-        "gemini-flash-lite-latest",
-        "gemini-pro-latest",
-        "gemini-2.5-flash",
-        "gemini-2.5-flash-lite"
-    ]
-
-    # Priority 2: Query Google API directly for every available model on this exact key
-    discovered_models = []
-    for api_ver in ["v1beta", "v1"]:
+        # Query ONLY real models supported by this exact Google API key!
+        discovered = []
         try:
-            m_resp = requests.get(f"{base_host}/{api_ver}/models?key={api_key}", timeout=10)
+            m_resp = requests.get(f"{base_host}/v1beta/models?key={api_key}", timeout=10)
             if m_resp.status_code == 200:
                 for m_obj in m_resp.json().get("models", []):
                     m_id = m_obj.get("name", "").replace("models/", "")
                     methods = m_obj.get("supportedGenerationMethods", [])
                     if "generateContent" in methods and ("gemini" in m_id.lower() or "gemma" in m_id.lower()):
-                        if not any(skip in m_id.lower() for skip in ["vision", "embedding", "imagen", "veo", "aqa", "tts", "audio", "robotics", "computer-use"]):
-                            if m_id not in discovered_models:
-                                discovered_models.append(m_id)
-        except Exception:
-            pass
-
-    if discovered_models:
-        print(f"🔎 [API Models Available on Key]: {', '.join(discovered_models[:10])}")
-        # Sort discovered models so 3.8 / 3.5 / 3.1 / flash come first!
-        discovered_models.sort(
-            key=lambda x: (
-                "3.8" in x or "3.5" in x or "3.1" in x or "3.0" in x or "3-" in x,
-                "flash" in x.lower(),
-                "latest" in x.lower(),
-                "2.5" in x
-            ),
-            reverse=True
-        )
-
-    # Put discovered live models FIRST, followed by priority_3x_models
-    candidate_models = []
-    for cm in (discovered_models + priority_3x_models):
-        if cm not in candidate_models:
-            candidate_models.append(cm)
-
-    tried_set = set()
-    idx = 0
-    while idx < len(candidate_models):
-        model_name = candidate_models[idx]
-        idx += 1
-        if model_name in tried_set:
-            continue
-        tried_set.add(model_name)
-
-        try:
-            url = f"{base_host}/v1beta/models/{model_name}:generateContent?key={api_key}"
-            payload = {"contents": [{"parts": [{"text": system_prompt}]}], "generationConfig": {"temperature": 0.95}}
-            r = requests.post(url, json=payload, timeout=25)
-            if r.status_code == 200:
-                cand_txt = r.json()["candidates"][0]["content"]["parts"][0]["text"]
-                parsed = _parse_ai_json(cand_txt)
-                if parsed:
-                    print(f"✅ [AI Scriptwriter] Script generated using live model: {model_name}")
-                    return parsed
-            else:
-                err_body = r.text
-                last_err = f"({model_name}) HTTP {r.status_code}: {err_body[:240]}"
-                # If Google's error message tells us which model to use (e.g. "use models/gemini-3.5-flash-lite"), extract & try it immediately!
-                suggested = re.findall(r"models/([a-zA-Z0-9\.\-_]+)", err_body)
-                for s_mod in suggested:
-                    if s_mod != model_name and s_mod not in tried_set:
-                        candidate_models.insert(idx, s_mod)
-                if r.status_code in (429, 403) and ("quota" in err_body.lower() or "key" in err_body.lower() or "leaked" in err_body.lower()):
-                    # Keep trying other models in case it's per-model quota, but preserve clear error message
-                    pass
+                        if not any(skip in m_id.lower() for skip in [
+                            "vision", "embedding", "imagen", "veo", "aqa", "tts",
+                            "audio", "robotics", "computer-use", "image", "learnlm"
+                        ]):
+                            discovered.append(m_id)
         except Exception as e:
-            last_err = str(e)
+            error_log.append(f"ListModels error: {e}")
 
-    raise RuntimeError(f"API Script Generation Error: {last_err}")
+        # Preferred exact order of real models from your key
+        preferred_order = [
+            "gemini-3-flash-preview",
+            "gemini-2.5-flash-lite",
+            "gemini-flash-lite-latest",
+            "gemini-2.5-flash",
+            "gemini-flash-latest",
+            "gemma-4-31b-it",
+            "gemma-4-26b-a4b-it",
+            "gemini-2.5-pro",
+            "gemini-pro-latest"
+        ]
+
+        ordered_models = []
+        for pm in preferred_order:
+            if not discovered or pm in discovered:
+                ordered_models.append(pm)
+        for dm in discovered:
+            if dm not in ordered_models:
+                ordered_models.append(dm)
+
+        print(f"?? [Trying Verified Active Models]: {', '.join(ordered_models[:8])}")
+
+        for model_name in ordered_models:
+            try:
+                url = f"{base_host}/v1beta/models/{model_name}:generateContent?key={api_key}"
+                gen_cfg = {"temperature": 0.9}
+                if "gemini" in model_name.lower():
+                    gen_cfg["responseMimeType"] = "application/json"
+                payload = {"contents": [{"parts": [{"text": system_prompt}]}], "generationConfig": gen_cfg}
+                r = requests.post(url, json=payload, timeout=25)
+                if r.status_code == 200:
+                    parts = r.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
+                    cand_txt = "".join([p.get("text", "") for p in parts if "text" in p])
+                    parsed = _parse_ai_json(cand_txt)
+                    if parsed:
+                        print(f"? [AI Scriptwriter] Script generated using live model: {model_name}")
+                        return parsed
+                    else:
+                        error_log.append(f"{model_name}: JSON parse failed ({cand_txt[:80]})")
+                else:
+                    short_msg = r.text[:140].replace("\n", " ")
+                    print(f"?? [{model_name}] HTTP {r.status_code} -> trying next active model...")
+                    error_log.append(f"{model_name}: HTTP {r.status_code} ({short_msg})")
+            except Exception as e:
+                error_log.append(f"{model_name}: {e}")
+
+    raise RuntimeError("API Script Generation Error: " + " | ".join(error_log[-3:]))
 
 
 def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_idea="", is_preview=False):
