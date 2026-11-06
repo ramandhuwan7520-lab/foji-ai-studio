@@ -347,19 +347,19 @@ MANDATORY RULES:
   "hashtags": "6 viral Instagram hashtags"
 }}"""
 
-    base_host = "[https://generativelanguage.googleapis.com](https://generativelanguage.googleapis.com)"
+    base_host = "https://generativelanguage.googleapis.com"
     error_log = []
 
     for api_key in all_keys:
         if api_key.startswith("gsk_") or api_key.startswith("sk-"):
             if api_key.startswith("gsk_"):
-                oa_url = "[https://api.groq.com/openai/v1/chat/completions](https://api.groq.com/openai/v1/chat/completions)"
+                oa_url = "https://api.groq.com/openai/v1/chat/completions"
                 oa_models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
             elif api_key.startswith("sk-or-"):
-                oa_url = "[https://openrouter.ai/api/v1/chat/completions](https://openrouter.ai/api/v1/chat/completions)"
+                oa_url = "https://openrouter.ai/api/v1/chat/completions"
                 oa_models = ["google/gemini-2.5-flash", "meta-llama/llama-3.3-70b-instruct"]
             else:
-                oa_url = "[https://api.openai.com/v1/chat/completions](https://api.openai.com/v1/chat/completions)"
+                oa_url = "https://api.openai.com/v1/chat/completions"
                 oa_models = ["gpt-4o-mini", "gpt-4o"]
 
             for m_name in oa_models:
