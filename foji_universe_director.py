@@ -331,7 +331,7 @@ MANDATORY RULES:
             oa_models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
         elif api_key.startswith("sk-or-"):
             oa_url = "https://openrouter.ai/api/v1/chat/completions"
-            oa_models = ["google/gemini-2.0-flash-001", "meta-llama/llama-3.3-70b-instruct"]
+            oa_models = ["google/gemini-2.5-flash", "meta-llama/llama-3.3-70b-instruct"]
         else:
             oa_url = "https://api.openai.com/v1/chat/completions"
             oa_models = ["gpt-4o-mini", "gpt-4o"]
@@ -355,7 +355,43 @@ MANDATORY RULES:
                 last_err = str(e)
 
     base_host = "https://generativelanguage.googleapis.com"
-    candidate_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
+    
+    # 1. DYNAMIC LIVE MODEL DISCOVERY: Ask Google API for all active Flash/Gemini models on this key!
+    discovered_models = []
+    try:
+        m_resp = requests.get(f"{base_host}/v1beta/models?key={api_key}", timeout=10)
+        if m_resp.status_code == 200:
+            for m_obj in m_resp.json().get("models", []):
+                m_id = m_obj.get("name", "").replace("models/", "")
+                methods = m_obj.get("supportedGenerationMethods", [])
+                if "generateContent" in methods and "gemini" in m_id.lower():
+                    if not any(skip in m_id.lower() for skip in ["vision", "embedding", "imagen", "veo", "aqa", "tts", "audio"]):
+                        discovered_models.append(m_id)
+            # Prioritize newest flash models (3.8 / 3.5 / 3.0 / 2.5 / flash-latest)
+            discovered_models.sort(
+                key=lambda x: (
+                    "flash" in x.lower(),
+                    "3.8" in x or "3.5" in x or "3.0" in x or "3-" in x or "2.5" in x,
+                    "latest" in x.lower()
+                ),
+                reverse=True
+            )
+    except Exception:
+        pass
+
+    fallback_models = [
+        "gemini-3.8-flash",
+        "gemini-3.0-flash",
+        "gemini-2.5-flash",
+        "gemini-flash-latest",
+        "gemini-2.0-flash",
+        "gemini-pro-latest"
+    ]
+    candidate_models = []
+    for cm in (discovered_models + fallback_models):
+        if cm not in candidate_models:
+            candidate_models.append(cm)
+
     for model_name in candidate_models:
         try:
             url = f"{base_host}/v1beta/models/{model_name}:generateContent?key={api_key}"
@@ -365,9 +401,10 @@ MANDATORY RULES:
                 cand_txt = r.json()["candidates"][0]["content"]["parts"][0]["text"]
                 parsed = _parse_ai_json(cand_txt)
                 if parsed:
+                    print(f"✅ [AI Scriptwriter] Script generated using live model: {model_name}")
                     return parsed
             else:
-                last_err = f"HTTP {r.status_code}: {r.text[:160]}"
+                last_err = f"({model_name}) HTTP {r.status_code}: {r.text[:140]}"
         except Exception as e:
             last_err = str(e)
 
