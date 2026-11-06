@@ -614,12 +614,15 @@ def sync_raw_videos_into_unapproved_queue():
     scheduled_files = {item.get("video_file") for item in q.get("scheduled_posts", []) if item.get("video_file")}
     published_files = {item.get("video_file") for item in q.get("published_posts", []) if item.get("video_file")}
 
+    raw_dir = "output/raw_videos"
+    os.makedirs(raw_dir, exist_ok=True)
+    valid_disk_mp4s = {f for f in os.listdir(raw_dir) if f.endswith(".mp4") and os.path.getsize(os.path.join(raw_dir, f)) > 100 * 1024}
     clean_unapproved = []
     seen_unapproved = set()
     changed = False
     for item in q.get("unapproved_videos", []):
         vf = item.get("video_file")
-        if not vf or vf in scheduled_files or vf in published_files or vf in seen_unapproved:
+        if not vf or vf not in valid_disk_mp4s or vf in scheduled_files or vf in published_files or vf in seen_unapproved:
             changed = True
             continue
         seen_unapproved.add(vf)
@@ -647,11 +650,8 @@ def sync_raw_videos_into_unapproved_queue():
         reverse=True
     )
 
-    # Include all MP4s on disk + any recorded completed videos in history.json
-    all_candidate_files = list(mp4_files)
-    for h_vfile, h_meta in reversed(list(hist_map.items())):
-        if h_vfile not in all_candidate_files and (h_meta.get("completed_at") or h_meta.get("video_file")):
-            all_candidate_files.append(h_vfile)
+    # ONLY include real MP4 files (>100KB) that actually exist on disk (no failed/ghost entries!)
+    all_candidate_files = [f for f in mp4_files if os.path.getsize(os.path.join(raw_dir, f)) > 100 * 1024]
 
     for fname in all_candidate_files:
         if fname not in scheduled_files and fname not in published_files and fname not in seen_unapproved:

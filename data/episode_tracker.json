@@ -1,12 +1,22 @@
 {
-  "completed_parts": {
-    "funny": 1,
-    "fighting": 1,
-    "romantic": 1,
-    "patriotic": 2,
-    "emotional": 1,
-    "comedy": 1,
-    "border_action": 1
+  "love_meera": {
+    "completed_part": 0,
+    "next_part": 1
   },
-  "pending_attempt": null
+  "training_ustad": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "unit_ragda": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "fauji_masti": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "border_duty": {
+    "completed_part": 0,
+    "next_part": 1
+  }
 }

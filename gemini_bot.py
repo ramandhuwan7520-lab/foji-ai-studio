@@ -1,3 +1,4 @@
+_ACTIVE_COOKIE_ACCOUNT_SLOT = 1
 ﻿# -*- coding: utf-8 -*-
 # pyright: reportOptionalMemberAccess=false, reportGeneralTypeIssues=false
 import os
@@ -1482,6 +1483,24 @@ def export_fresh_gemini_cookies_from_local():
 
 
 def generate_video_in_gemini(pending_pkg=None):
+    global _ACTIVE_COOKIE_ACCOUNT_SLOT
+    _ACTIVE_COOKIE_ACCOUNT_SLOT = 1
+    try:
+        return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
+    except Exception as first_err:
+        has_second_acc = os.path.exists("gemini_cookies_secret_2.txt") or bool(os.getenv("GEMINI_COOKIES_JSON_2", "").strip())
+        if has_second_acc:
+            msg = f"Account #1 Limit/Issue ({str(first_err)[:90]}). Switching to 2nd Account Cookies automatically!"
+            print(f"?? [AUTO-FAILOVER] {msg}")
+            update_3d_telemetry(2, "?? Switching to Account #2 Cookies", msg, "active", 20)
+            push_app_notification("warning", "?? 1st Account Limit -> Using 2nd Account!", msg, "success")
+            send_alert(f"?? *Account #1 Limit Reached!*\nAb *2nd Account Cookies* ka use karke video banayi ja rahi hai!")
+            _ACTIVE_COOKIE_ACCOUNT_SLOT = 2
+            return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
+        raise first_err
+
+
+def _single_attempt_generate_video_in_gemini(pending_pkg=None):
     os.makedirs("data", exist_ok=True)
     if not os.path.exists("data/history.json"):
         with open("data/history.json", "w", encoding="utf-8") as f:
