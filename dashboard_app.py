@@ -1647,24 +1647,107 @@ def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", 
     _threading.Thread(target=_worker, daemon=True).start()
 
 
-def _publish_specific_video_to_ig(video_path, caption_text):
-    for ig_fn_name in ["post_to_instagram", "upload_reel_to_instagram", "publish_to_instagram", "upload_to_ig"]:
-        ig_fn = globals().get(ig_fn_name)
-        if callable(ig_fn):
-            res = ig_fn(video_path, caption_text)
-            if isinstance(res, dict) and res.get("ok") is False:
-                raise RuntimeError(res.get("error") or "Instagram upload returned false")
-            return res
+def _sanitize_mp4_for_instagram_no_green_line(input_mp4_path):
+    """
+    Fixes the horizontal green line glitch on Instagram Reels by normalizing the MP4
+    to macroblock-aligned 16x16 divisible dimensions (720x1280), 8-bit yuv420p color space,
+    H.264 High Profile, and faststart header right before Instagram upload.
+    """
+    if not os.path.exists(input_mp4_path):
+        return input_mp4_path
 
-    from instagrapi import Client
-    cl = Client()
-    if os.path.exists("data/ig_session.json"):
-        cl.load_settings("data/ig_session.json")
-    thumb_fn = globals().get("_ensure_reel_thumbnail")
-    thumb_path = thumb_fn(video_path) if callable(thumb_fn) else None
-    if thumb_path and os.path.exists(str(thumb_path)):
-        return cl.clip_upload(video_path, caption_text, thumbnail=thumb_path)
-    return cl.clip_upload(video_path, caption_text)
+    # Find ffmpeg executable (system ffmpeg or imageio_ffmpeg)
+    ffmpeg_bin = shutil.which("ffmpeg")
+    if not ffmpeg_bin:
+        try:
+            import imageio_ffmpeg
+            ffmpeg_bin = imageio_ffmpeg.get_ffmpeg_exe()
+        except Exception:
+            ffmpeg_bin = None
+
+    if not ffmpeg_bin:
+        return input_mp4_path
+
+    clean_dir = os.path.abspath("output/ig_ready")
+    os.makedirs(clean_dir, exist_ok=True)
+    base_name = os.path.basename(input_mp4_path)
+    clean_out_path = os.path.join(clean_dir, f"ig_clean_{base_name}")
+
+    if os.path.exists(clean_out_path) and os.path.getsize(clean_out_path) > 100 * 1024:
+        return clean_out_path
+
+    try:
+        import subprocess
+        print(f"🛠️ [IG Anti-Green-Line Fix] Optimizing {base_name} to 720x1280 (16x16 macroblock aligned yuv420p)...")
+        cmd = [
+            ffmpeg_bin, "-y",
+            "-i", input_mp4_path,
+            "-vf", "scale=720:1280:force_original_aspect_ratio=decrease,pad=720:1280:(ow-iw)/2:(oh-ih)/2:black,format=yuv420p",
+            "-c:v", "libx264",
+            "-preset", "fast",
+            "-crf", "18",
+            "-profile:v", "high",
+            "-level", "4.1",
+            "-pix_fmt", "yuv420p",
+            "-movflags", "+faststart",
+            "-c:a", "aac",
+            "-b:a", "192k",
+            "-ar", "44100",
+            clean_out_path
+        ]
+        subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=90, check=True)
+        if os.path.exists(clean_out_path) and os.path.getsize(clean_out_path) > 100 * 1024:
+            print(f"✅ [IG Anti-Green-Line Fix] Ready: {clean_out_path}")
+            return clean_out_path
+    except Exception as e:
+        print(f"⚠️ [IG Sanitizer Warning] Using original MP4 ({e})")
+
+    return input_mp4_path
+
+
+def _publish_specific_video_to_ig(video_file, custom_caption=""):
+    vname = os.path.basename(str(video_file))
+    vpath = os.path.abspath(os.path.join("output/raw_videos", vname))
+    if not os.path.exists(vpath):
+        _fud.pull_latest_cloud_state_for_frontend()
+    if not os.path.exists(vpath):
+        raise FileNotFoundError(f"Video file {vname} not found in output/raw_videos!")
+
+    if not custom_caption:
+        for it in _fud.build_master_all_reels_vault():
+            if it.get("video_file") == vname and it.get("caption"):
+                custom_caption = it["caption"]
+                break
+    if not custom_caption:
+        custom_caption = "🎖️ Foji & Fojan 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife #agniveer #armyreels"
+
+    # Pass video through Anti-Green-Line Macroblock Sanitizer before uploading to Instagram!
+    ig_safe_vpath = _sanitize_mp4_for_instagram_no_green_line(vpath)
+
+    import insta_bot
+    if hasattr(insta_bot, "upload_reel_to_instagram"):
+        res = insta_bot.upload_reel_to_instagram(ig_safe_vpath, custom_caption)
+    elif hasattr(insta_bot, "post_reel"):
+        res = insta_bot.post_reel(ig_safe_vpath, custom_caption)
+    elif hasattr(insta_bot, "upload_to_instagram"):
+        res = insta_bot.upload_to_instagram(ig_safe_vpath, custom_caption)
+    else:
+        from instagrapi import Client
+        cl = Client()
+        sess_file = "data/ig_session.json"
+        if os.path.exists(sess_file):
+            cl.load_settings(sess_file)
+        media = cl.clip_upload(ig_safe_vpath, custom_caption)
+        res = getattr(media, "pk", "LIVE_ON_IG")
+
+    pub_item = _fud.mark_video_as_published_in_vault(vname, custom_caption, media_pk=res)
+    try:
+        import gemini_bot
+        gemini_bot.push_app_notification("success", "📸 Reel Posted on Instagram!", f"{vname} is now LIVE on @ai_foji_lovelife (Zero Green-Line HD)!", "success")
+        gemini_bot.send_alert(f"📸 *Reel Published on Instagram!*\n🎬 Video: `{vname}`\n✅ Status: *LIVE ON @ai_foji_lovelife*")
+    except Exception:
+        pass
+    return pub_item
 
 # Bridge any legacy Telegram Bot schedule function into our Unified Sequential Scheduler!
 for _legacy_sched_fn in ["schedule_video_for_next_slot", "add_to_schedule_queue", "schedule_reel", "queue_video_for_schedule"]:

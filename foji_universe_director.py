@@ -331,7 +331,7 @@ MANDATORY RULES:
             oa_models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
         elif api_key.startswith("sk-or-"):
             oa_url = "https://openrouter.ai/api/v1/chat/completions"
-            oa_models = ["google/gemini-2.5-flash", "meta-llama/llama-3.3-70b-instruct"]
+            oa_models = ["google/gemini-3.5-flash", "google/gemini-2.5-flash", "meta-llama/llama-3.3-70b-instruct"]
         else:
             oa_url = "https://api.openai.com/v1/chat/completions"
             oa_models = ["gpt-4o-mini", "gpt-4o"]
@@ -350,49 +350,75 @@ MANDATORY RULES:
                     if parsed:
                         return parsed
                 else:
-                    last_err = f"HTTP {r.status_code}: {r.text[:160]}"
+                    last_err = f"HTTP {r.status_code}: {r.text[:220]}"
             except Exception as e:
                 last_err = str(e)
 
     base_host = "https://generativelanguage.googleapis.com"
-    
-    # 1. DYNAMIC LIVE MODEL DISCOVERY: Ask Google API for all active Flash/Gemini models on this key!
-    discovered_models = []
-    try:
-        m_resp = requests.get(f"{base_host}/v1beta/models?key={api_key}", timeout=10)
-        if m_resp.status_code == 200:
-            for m_obj in m_resp.json().get("models", []):
-                m_id = m_obj.get("name", "").replace("models/", "")
-                methods = m_obj.get("supportedGenerationMethods", [])
-                if "generateContent" in methods and "gemini" in m_id.lower():
-                    if not any(skip in m_id.lower() for skip in ["vision", "embedding", "imagen", "veo", "aqa", "tts", "audio"]):
-                        discovered_models.append(m_id)
-            # Prioritize newest flash models (3.8 / 3.5 / 3.0 / 2.5 / flash-latest)
-            discovered_models.sort(
-                key=lambda x: (
-                    "flash" in x.lower(),
-                    "3.8" in x or "3.5" in x or "3.0" in x or "3-" in x or "2.5" in x,
-                    "latest" in x.lower()
-                ),
-                reverse=True
-            )
-    except Exception:
-        pass
 
-    fallback_models = [
+    # Priority 1: Active 2026 Gemini 3.x models specified by user
+    priority_3x_models = [
         "gemini-3.8-flash",
+        "gemini-3.8-flash-preview",
+        "gemini-3.5-flash-lite",
+        "gemini-3.5-flash-lite-preview",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-preview",
+        "gemini-3.1-pro",
+        "gemini-3.1-pro-preview",
+        "gemini-3.1-flash-lite-preview",
         "gemini-3.0-flash",
-        "gemini-2.5-flash",
         "gemini-flash-latest",
-        "gemini-2.0-flash",
-        "gemini-pro-latest"
+        "gemini-flash-lite-latest",
+        "gemini-pro-latest",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite"
     ]
+
+    # Priority 2: Query Google API directly for every available model on this exact key
+    discovered_models = []
+    for api_ver in ["v1beta", "v1"]:
+        try:
+            m_resp = requests.get(f"{base_host}/{api_ver}/models?key={api_key}", timeout=10)
+            if m_resp.status_code == 200:
+                for m_obj in m_resp.json().get("models", []):
+                    m_id = m_obj.get("name", "").replace("models/", "")
+                    methods = m_obj.get("supportedGenerationMethods", [])
+                    if "generateContent" in methods and ("gemini" in m_id.lower() or "gemma" in m_id.lower()):
+                        if not any(skip in m_id.lower() for skip in ["vision", "embedding", "imagen", "veo", "aqa", "tts", "audio", "robotics", "computer-use"]):
+                            if m_id not in discovered_models:
+                                discovered_models.append(m_id)
+        except Exception:
+            pass
+
+    if discovered_models:
+        print(f"🔎 [API Models Available on Key]: {', '.join(discovered_models[:10])}")
+        # Sort discovered models so 3.8 / 3.5 / 3.1 / flash come first!
+        discovered_models.sort(
+            key=lambda x: (
+                "3.8" in x or "3.5" in x or "3.1" in x or "3.0" in x or "3-" in x,
+                "flash" in x.lower(),
+                "latest" in x.lower(),
+                "2.5" in x
+            ),
+            reverse=True
+        )
+
+    # Put discovered live models FIRST, followed by priority_3x_models
     candidate_models = []
-    for cm in (discovered_models + fallback_models):
+    for cm in (discovered_models + priority_3x_models):
         if cm not in candidate_models:
             candidate_models.append(cm)
 
-    for model_name in candidate_models:
+    tried_set = set()
+    idx = 0
+    while idx < len(candidate_models):
+        model_name = candidate_models[idx]
+        idx += 1
+        if model_name in tried_set:
+            continue
+        tried_set.add(model_name)
+
         try:
             url = f"{base_host}/v1beta/models/{model_name}:generateContent?key={api_key}"
             payload = {"contents": [{"parts": [{"text": system_prompt}]}], "generationConfig": {"temperature": 0.95}}
@@ -404,7 +430,16 @@ MANDATORY RULES:
                     print(f"✅ [AI Scriptwriter] Script generated using live model: {model_name}")
                     return parsed
             else:
-                last_err = f"({model_name}) HTTP {r.status_code}: {r.text[:140]}"
+                err_body = r.text
+                last_err = f"({model_name}) HTTP {r.status_code}: {err_body[:240]}"
+                # If Google's error message tells us which model to use (e.g. "use models/gemini-3.5-flash-lite"), extract & try it immediately!
+                suggested = re.findall(r"models/([a-zA-Z0-9\.\-_]+)", err_body)
+                for s_mod in suggested:
+                    if s_mod != model_name and s_mod not in tried_set:
+                        candidate_models.insert(idx, s_mod)
+                if r.status_code in (429, 403) and ("quota" in err_body.lower() or "key" in err_body.lower() or "leaked" in err_body.lower()):
+                    # Keep trying other models in case it's per-model quota, but preserve clear error message
+                    pass
         except Exception as e:
             last_err = str(e)
 
