@@ -1493,20 +1493,12 @@ def generate_video_in_gemini(pending_pkg=None):
     update_3d_telemetry(1, "Stage 1: AI Episodic Script", "Generating fresh connected script from .env API...", "active", 12)
 
     if not pending_pkg:
-        try:
-            import foji_universe_director as _fud
-            new_id = int(history_data.get("generated_count", 0)) + 1
-            pending_pkg = _fud.build_real_foji_universe_package(video_id=new_id, is_preview=False)
-        except Exception:
-            import dashboard_app
-            track, next_part = dashboard_app.get_next_track_and_part(history_data)
-            new_id = int(history_data.get("generated_count", 0)) + 1
-            used_lines = [item.get("dialogue_line_1_hinglish", "") for item in history_data.get("history", [])]
-            used_lines.extend(history_data.get("failed_dialogues", []))
-            pending_pkg = dashboard_app.build_fresh_prompt_package(track, next_part, new_id, used_lines)
+        import foji_universe_director as _fud
+        new_id = int(history_data.get("generated_count", 0)) + 1
+        pending_pkg = _fud.build_real_foji_universe_package(video_id=new_id, is_preview=False)
 
     rotate_track_and_script_in_history(pending_pkg)
-    video_num = pending_pkg.get("video_id", int(history_data.get("generated_count", 0)) + 1)
+    video_num = pending_pkg.get("video_id", f"{int(time.time())}")
 
     foji_img = find_image("foji")
     fojan_img = find_image("fojan")
@@ -1519,10 +1511,11 @@ def generate_video_in_gemini(pending_pkg=None):
 
     raw_dir = os.path.abspath("output/raw_videos")
     os.makedirs(raw_dir, exist_ok=True)
-    output_video_path = os.path.join(raw_dir, f"raw_video_{video_num}.mp4")
+    unique_fname = pending_pkg.get("video_file") or f"raw_video_{video_num}.mp4"
+    output_video_path = os.path.join(raw_dir, unique_fname)
     base_video_prompt = pending_pkg["gemini_video_prompt"]
 
-    print(f"🚀 [Stage 2/8] Launching Pure-Cookie 13-Step Gemini Engine for: {pending_pkg.get('emotion_name', f'Reel #{video_num}')}...")
+    print(f"🚀 [Stage 2/8] Launching Pure-Cookie 13-Step Gemini Engine for: {pending_pkg.get('emotion_name')} ({unique_fname})...")
     update_3d_telemetry(2, "Stage 2: Cookie Sign-In & Flash", "Logging in via Pure Cookies & selecting Flash...", "active", 25)
     driver, chrome_proc = launch_resilient_chrome_session(raw_dir, start_blank=True)
 
@@ -1620,18 +1613,24 @@ def generate_video_in_gemini(pending_pkg=None):
 
         if video_saved and is_valid_mp4(output_video_path):
             print(f"🎉 SUCCESS! Gemini 9:16 Video Saved at {output_video_path}")
-            rel_vid_path = f"output/raw_videos/{os.path.basename(output_video_path)}"
+            bname = os.path.basename(output_video_path)
+            rel_vid_path = f"output/raw_videos/{bname}"
 
+            # 1. Upload the unique MP4 file to GitHub first so Render Frontend can stream it!
+            print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Vault...")
+            sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {bname} for Frontend")
+
+            # 2. Record completed video & advance Part Number in history.json, episode_tracker.json & scheduled_queue.json!
             try:
                 with open("data/history.json", "r", encoding="utf-8") as f:
                     h_now = json.load(f)
-                h_now["generated_count"] = max(int(h_now.get("generated_count", 0)), int(video_num))
-                pending_pkg["video_file"] = os.path.basename(output_video_path)
-                pending_pkg["completed_at"] = datetime.now(IST).strftime("%d %b %Y, %I:%M %p")
+                h_now["generated_count"] = int(h_now.get("generated_count", 0)) + 1
+                pending_pkg["video_file"] = bname
+                pending_pkg["completed_at"] = datetime.now(IST).strftime("%d %b %Y, %I:%M %p IST")
                 h_now.setdefault("history", []).append(pending_pkg)
                 with open("data/history.json", "w", encoding="utf-8") as f:
                     json.dump(h_now, f, indent=2, ensure_ascii=False)
-                sync_file_to_github("data/history.json", f"Record completed video #{video_num}")
+                sync_file_to_github("data/history.json", f"Record completed video {bname}")
             except Exception:
                 pass
 
@@ -1639,16 +1638,12 @@ def generate_video_in_gemini(pending_pkg=None):
                 import foji_universe_director as _fud
                 _fud.mark_episode_part_completed(pending_pkg.get("track_id", "love_meera"), pending_pkg.get("part_number", 1))
                 _fud.sync_raw_videos_into_unapproved_queue()
-                sync_file_to_github("data/episode_tracker.json", "Sync episode part tracker")
-                sync_file_to_github("data/scheduled_queue.json", "Sync ready video into frontend approval queue")
+                _fud.push_json_to_github_instantly("data/scheduled_queue.json", f"Add {bname} to Frontend Ready Queue")
             except Exception:
                 pass
 
-            print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Scheduling...")
-            sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {os.path.basename(output_video_path)} for Frontend")
-
-            update_3d_telemetry(8, "Stage 8: Video Ready in Studio!", f"Video ({os.path.basename(output_video_path)}) ready on Frontend & Telegram!", "completed", 100)
-            push_app_notification("success", "🎉 New 3D Reel Ready!", f"{pending_pkg.get('emotion_name')} is ready in Frontend Preview & Queue!", "success")
+            update_3d_telemetry(8, "Stage 8: Video Ready in Studio!", f"Video ({bname}) ready on Frontend & Telegram!", "completed", 100)
+            push_app_notification("success", "🎉 New 3D Reel Ready!", f"{pending_pkg.get('emotion_name')} ({bname}) is ready in Preview & Vault!", "success")
             return output_video_path
 
     finally:

@@ -1666,6 +1666,14 @@ def _publish_specific_video_to_ig(video_path, caption_text):
         return cl.clip_upload(video_path, caption_text, thumbnail=thumb_path)
     return cl.clip_upload(video_path, caption_text)
 
+# Bridge any legacy Telegram Bot schedule function into our Unified Sequential Scheduler!
+for _legacy_sched_fn in ["schedule_video_for_next_slot", "add_to_schedule_queue", "schedule_reel", "queue_video_for_schedule"]:
+    if _legacy_sched_fn in globals():
+        def _unified_tg_schedule_bridge(video_path=None, caption="", *args, **kwargs):
+            vfile = os.path.basename(str(video_path)) if video_path else None
+            item = _fud.approve_and_schedule_video_item(video_file=vfile, custom_caption=caption, source_label="Telegram Bot")
+            return item["scheduled_display"]
+        globals()[_legacy_sched_fn] = _unified_tg_schedule_bridge
 
 def _background_master_scheduler_daemon():
     while True:
@@ -2860,6 +2868,8 @@ function fnsRenderTrackSelectors() {
   }
 }
 
+let _fnsLastSeenNotifId = '';
+
 function fnsRenderNotifications(list) {
   const nBox = document.getElementById('fns-notif-feed');
   if (!nBox) return;
@@ -2867,7 +2877,25 @@ function fnsRenderNotifications(list) {
     nBox.innerHTML = '<div style="color:#64748b;">System ready. No recent alerts.</div>';
     return;
   }
-  nBox.innerHTML = list.slice(0, 10).map(n => `
+
+  // Trigger Center Screen Popup Modal for ANY new notification (Video Ready, Scheduled from Telegram/Frontend, Posted, or Error!)
+  const newest = list[0];
+  if (newest && newest.id) {
+    if (_fnsFirstLoadDone && _fnsLastSeenNotifId && _fnsLastSeenNotifId !== newest.id) {
+      const isErr = (newest.status === 'error');
+      const icon = isErr ? '🚨' : (newest.type === 'schedule' ? '📅' : '🎉');
+      fnsOpenModal(
+        icon,
+        newest.title || 'STUDIO NOTIFICATION',
+        `<div style="font-size:0.92rem;color:#fff;font-weight:700;margin-bottom:8px;">${newest.message || ''}</div>
+         <div style="font-size:0.75rem;color:#00f5d4;">Time: ${newest.time_str || 'Just Now'}</div>`,
+        isErr
+      );
+    }
+    _fnsLastSeenNotifId = newest.id;
+  }
+
+  nBox.innerHTML = list.slice(0, 12).map(n => `
     <div style="padding:7px 10px;background:rgba(15,23,42,0.75);border-radius:8px;border-left:3px solid ${n.status==='error'?'#ef4444':(n.status==='success'?'#10b981':'#00f5d4')};display:flex;justify-content:space-between;gap:10px;">
       <span><b>${n.title || 'Event'}:</b> ${n.message || ''}</span>
       <span style="color:#64748b;white-space:nowrap;">${n.time_str || ''}</span>

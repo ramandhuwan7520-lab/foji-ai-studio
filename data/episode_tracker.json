@@ -1,0 +1,12 @@
+{
+  "completed_parts": {
+    "funny": 1,
+    "fighting": 1,
+    "romantic": 1,
+    "patriotic": 2,
+    "emotional": 1,
+    "comedy": 1,
+    "border_action": 1
+  },
+  "pending_attempt": null
+}

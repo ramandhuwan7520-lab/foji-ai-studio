@@ -1,96 +1,152 @@
-﻿# -*- coding: utf-8 -*-
-import os
+﻿import os
 import re
 import json
 import time
+import base64 as _b64
 import requests
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
+
 IST = timezone(timedelta(hours=5, minutes=30))
+
 DIRECTOR_STATE_FILE = "data/director_state.json"
-HISTORY_FILE = "data/history.json"
 EPISODE_TRACKER_FILE = "data/episode_tracker.json"
+HISTORY_FILE = "data/history.json"
+TELEMETRY_FILE = "data/live_telemetry.json"
+QUEUE_FILE = "data/scheduled_queue.json"
+SCHEDULE_CFG_FILE = "data/schedule_config.json"
+
+_LAST_CLOUD_PULL_TS = 0.0
+_LOCAL_QUEUE_MODIFIED_TS = 0.0
 
 FOJI_UNIVERSE_TRACKS = {
     "love_meera": {
         "id": "love_meera",
-        "name": "❤️ Makra & Meera (Foji Love Story)",
-        "badge": "LOVE & EMOTION",
-        "color": "#ff4d79",
+        "name": "❤️ Foji Makra & Fojan Meera Love Story",
+        "badge": "Romantic & Emotional Series",
+        "characters": ["Foji Makra (Young Haryanvi Agniveer Soldier)", "Fojan Meera (Devoted Village Love Interest)"],
         "theme_brief": (
-            "Romantic and emotional long-distance love story between Indian Army soldier Makra (Foji) "
-            "and his village love Meera (Fojan). Cover real emotions: leave (chhutti) getting cancelled, "
-            "secret late-night calls from border bunker, Meera waiting at village courtyard, funny Haryanvi/Desi "
-            "banter, emotional reunion, and pride in the uniform."
+            "Heart-touching long-distance romance and emotional separation between Indian Army Agniveer soldier Makra "
+            "and his beloved Meera. Include authentic fauji chutti moments, border letters, video call glitches, "
+            "railway station farewells, village waiting scenes, and deep love for both uniform (Tiranga) and soulmate."
+        )
+    },
+    "training_ustad": {
+        "id": "training_ustad",
+        "name": "⚔️ Agniveer Training Center & Drill",
+        "badge": "High-Energy Academy Series",
+        "characters": ["Foji Makra (Recruit)", "Strict Moustached Drill Ustad", "Unit Coursemates"],
+        "theme_brief": (
+            "Intense yet relatable Indian Army training academy life: 4 AM whistle parade, obstacle course, "
+            "firing range accuracy, chest-high mud crawl, rifle drill inspection, and the transformation of a "
+            "raw village boy into a steel-hearted soldier."
         )
     },
     "unit_ragda": {
         "id": "unit_ragda",
         "name": "🔥 Ustad Ka Ragda & Punishment",
-        "badge": "UNIT PUNISHMENT",
-        "color": "#ff9f1c",
+        "badge": "Viral Fauji Ragda Series",
+        "characters": ["Foji Makra", "Strict Drill Ustad", "Funny Unit Buddy"],
         "theme_brief": (
-            "Raw, authentic and humorous Indian Army unit ragda (punishment) and discipline life of Makra. "
-            "Cover real army unit moments: Ustad catching Makra late for morning PT, frog jumps with "
-            "full pitthu (rucksack), murga punishment, rifle/boot inspection, barrack bistar-bandi check, "
-            "lower back strain after heavy load, and brotherhood during punishment."
+            "Authentic Indian Army 'Ragda' (tough disciplinary physical punishment with brotherhood and humor): "
+            "frog jumps with full 20kg pithu bag, front-rolls in parade ground dust, pushups in rain because of "
+            "one unpolished boot or late fall-in, and Ustad's iconic Haryanvi/Hindi dialogues."
         )
     },
-    "training_grind": {
-        "id": "training_grind",
-        "name": "⚔️ Hardcore Training & Obstacle",
-        "badge": "EXTREME TRAINING",
-        "color": "#00f5d4",
+    "fauji_masti": {
+        "id": "fauji_masti",
+        "name": "😂 Barrack Masti, Mess & Brotherhood",
+        "badge": "Desi Fauji Comedy Series",
+        "characters": ["Foji Makra", "Bihari & Punjabi Unit Brothers", "Mess Havildar"],
         "theme_brief": (
-            "High-adrenaline Indian Army training, obstacle course, and physical endurance of Makra. "
-            "Crawling through mud and rain under barbed wire, rope climbing, 10km battle physical efficiency test (BPET), "
-            "firing range bullseye target, overcoming exhaustion through pure fauji willpower."
+            "Hilarious and heartwarming barrack life: stealing extra gulab jamun from the army mess, "
+            "bada khana dance, funny haircut day, hiding phone during night roll-call, trunk inspection panic, "
+            "and unbreakable brotherhood among soldiers."
         )
     },
-    "barrack_fun": {
-        "id": "barrack_fun",
-        "name": "😂 Unit Masti, Chai & Bada Khana",
-        "badge": "UNIT COMEDY",
-        "color": "#a855f7",
+    "border_duty": {
+        "id": "border_duty",
+        "name": "🏔️ LOC Border Patrol & Maa KaPyar",
+        "badge": "Goosebumps Patriotic Series",
+        "characters": ["Foji Makra (Snow/Border Post)", "Post Commander", "Meera / Maa in Village"],
         "theme_brief": (
-            "Desi Haryanvi/fauji comedy and brotherhood inside the army barrack and langar. "
-            "Steaming steel glass chai sessions, teasing coursemates about marriage and leave applications, "
-            "Sunday military haircut comedy, Bada Khana excitement, and funny survival tricks when CO Sahab comes for rounds."
-        )
-    },
-    "border_reality": {
-        "id": "border_reality",
-        "name": "🏔️ Forward Post Harsh Reality (-15°C)",
-        "badge": "HARSH DUTY",
-        "color": "#38bdf8",
-        "theme_brief": (
-            "Emotional, goosebump-inducing harsh reality of forward Line of Control (LOC) and high-altitude snow posts. "
-            "Freezing -15°C winds, night sentry duty with rifle, eating hot food in bunker, missing mother's food "
-            "and festival at home, yet standing unshakeable for the Indian Tricolour."
+            "High-altitude snowy Siachen/Jammu LOC bunker duty at -25°C, night ambush patrol, drinking गरम chai "
+            "in a freezing bunker, protecting the Tricolor flag during a blizzard, and emotional memories of home."
         )
     }
 }
 
+TRACK_ORDER = ["love_meera", "unit_ragda", "training_ustad", "fauji_masti", "border_duty"]
+
+
+def push_json_to_github_instantly(rel_path, commit_msg):
+    """Pushes JSON state files to GitHub main branch with automatic retry on SHA conflict."""
+    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+    rel_clean = rel_path.replace("\\", "/")
+    full_p = os.path.abspath(rel_path)
+    if not gh_pat or not os.path.exists(full_p):
+        return False
+    for _attempt in range(3):
+        try:
+            with open(full_p, "rb") as f:
+                b64_content = _b64.b64encode(f.read()).decode("utf-8")
+            url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
+            headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
+            r = requests.get(f"{url}?ref=main&t={int(time.time()*1000)}", headers=headers, timeout=10)
+            sha = r.json().get("sha") if r.status_code == 200 else None
+            payload = {"message": commit_msg, "content": b64_content, "branch": "main"}
+            if sha:
+                payload["sha"] = sha
+            put_r = requests.put(url, headers=headers, json=payload, timeout=20)
+            if put_r.status_code in (200, 201):
+                return True
+            time.sleep(1.2)
+        except Exception:
+            time.sleep(1.0)
+    return False
+
+
+def _fetch_github_json_zero_cache(rel_path):
+    """Zero-cache GitHub Contents API reader so Render and Cloud Workers always share real-time state."""
+    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    rel_clean = rel_path.replace("\\", "/")
+    headers = {"Accept": "application/vnd.github+json", "Cache-Control": "no-cache"}
+    if gh_pat:
+        headers["Authorization"] = f"Bearer {gh_pat}"
+    try:
+        url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}?ref=main&t={int(time.time()*1000)}"
+        r = requests.get(url, headers=headers, timeout=7)
+        if r.status_code == 200:
+            content_b64 = r.json().get("content", "")
+            if content_b64:
+                raw_bytes = _b64.b64decode(content_b64)
+                return json.loads(raw_bytes.decode("utf-8"))
+    except Exception:
+        pass
+    return None
+
 
 def get_director_state():
     os.makedirs("data", exist_ok=True)
-    if os.path.exists(DIRECTOR_STATE_FILE):
-        try:
-            with open(DIRECTOR_STATE_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
     default_state = {
         "active_mode": "auto_rotate",
         "selected_track_id": "love_meera",
+        "last_rotated_index": -1,
         "custom_idea": "",
         "bgm_volume": 20,
-        "dialog_volume": 100,
-        "last_track_index": 0
+        "dialog_volume": 100
     }
-    save_director_state(default_state)
+    if os.path.exists(DIRECTOR_STATE_FILE):
+        try:
+            with open(DIRECTOR_STATE_FILE, "r", encoding="utf-8") as f:
+                saved = json.load(f)
+                default_state.update(saved)
+        except Exception:
+            pass
     return default_state
 
 
@@ -98,115 +154,101 @@ def save_director_state(state):
     os.makedirs("data", exist_ok=True)
     with open(DIRECTOR_STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2, ensure_ascii=False)
+    push_json_to_github_instantly(DIRECTOR_STATE_FILE, "Sync director state")
 
 
-def _load_episode_tracker():
+def get_episode_tracker():
+    """
+    100% STRICT PART CONTINUITY ENGINE:
+    Reconciles local `episode_tracker.json`, remote GitHub `episode_tracker.json`,
+    AND `data/history.json` so that once Part N is generated, it ALWAYS advances to Part N+1
+    and NEVER repeats Part 1!
+    """
     os.makedirs("data", exist_ok=True)
+    default_tracker = {
+        tid: {"completed_part": 0, "next_part": 1}
+        for tid in FOJI_UNIVERSE_TRACKS.keys()
+    }
+
+    # 1. Load local tracker
     if os.path.exists(EPISODE_TRACKER_FILE):
         try:
             with open(EPISODE_TRACKER_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                saved = json.load(f)
+            for k, v in saved.items():
+                if k in default_tracker and isinstance(v, dict):
+                    cp = int(v.get("completed_part", 0))
+                    np = int(v.get("next_part", cp + 1))
+                    default_tracker[k]["completed_part"] = max(default_tracker[k]["completed_part"], cp)
+                    default_tracker[k]["next_part"] = max(default_tracker[k]["next_part"], np, cp + 1)
         except Exception:
             pass
-    return {"completed_parts": {}, "pending_attempt": None}
 
-
-def _save_episode_tracker(tracker):
-    os.makedirs("data", exist_ok=True)
-    with open(EPISODE_TRACKER_FILE, "w", encoding="utf-8") as f:
-        json.dump(tracker, f, indent=2, ensure_ascii=False)
-
-
-def get_exact_next_part_for_track(track_id):
-    """
-    STRICT PART CONTINUITY RULE:
-    - Counts how many videos of `track_id` have ACTUALLY succeeded and saved MP4s in `data/history.json`.
-    - If Part N succeeded -> returns N + 1.
-    - If Part N failed (video was not created) -> returns N again so no part is ever skipped!
-    """
-    tracker = _load_episode_tracker()
-    completed_for_track = int(tracker.get("completed_parts", {}).get(track_id, 0))
-
+    # 2. Reconcile with data/history.json so even if episode_tracker.json wasn't synced, history advances the part!
     if os.path.exists(HISTORY_FILE):
         try:
             with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-                hdata = json.load(f)
-            hist_list = hdata.get("history", [])
-            verified_parts = []
-            for item in hist_list:
-                if item.get("track_id") == track_id:
-                    # Only count if it was actually generated/completed
-                    p_num = int(item.get("part_number", 0))
-                    verified_parts.append(p_num)
-            if verified_parts:
-                completed_for_track = max(completed_for_track, max(verified_parts), len(verified_parts))
+                hd = json.load(f)
+            for item in hd.get("history", []):
+                tid = item.get("track_id")
+                pnum = int(item.get("part_number", 0))
+                # Only count if it has a video_file or completed_at OR exists in raw_videos
+                vfile = item.get("video_file", "")
+                vid_id = item.get("video_id")
+                has_mp4 = False
+                if vfile and os.path.exists(os.path.join("output/raw_videos", vfile)):
+                    has_mp4 = True
+                elif vid_id and os.path.exists(os.path.join("output/raw_videos", f"raw_video_{vid_id}.mp4")):
+                    has_mp4 = True
+                elif item.get("completed_at"):
+                    has_mp4 = True
+
+                if tid in default_tracker and pnum > 0 and has_mp4:
+                    if pnum > default_tracker[tid]["completed_part"]:
+                        default_tracker[tid]["completed_part"] = pnum
+                        default_tracker[tid]["next_part"] = pnum + 1
         except Exception:
             pass
 
-    return completed_for_track + 1
+    return default_tracker
 
 
-def mark_episode_part_completed(track_id, part_number):
-    """Called when a video is successfully created so the next run moves to Part N+1."""
-    tracker = _load_episode_tracker()
-    comp = tracker.setdefault("completed_parts", {})
-    curr = int(comp.get(track_id, 0))
-    if int(part_number) > curr:
-        comp[track_id] = int(part_number)
-    tracker["pending_attempt"] = None
-    _save_episode_tracker(tracker)
+def save_episode_tracker(tracker):
+    os.makedirs("data", exist_ok=True)
+    with open(EPISODE_TRACKER_FILE, "w", encoding="utf-8") as f:
+        json.dump(tracker, f, indent=2, ensure_ascii=False)
+    push_json_to_github_instantly(EPISODE_TRACKER_FILE, "Advance episode part tracker")
 
 
-def _get_recent_episode_context(track_id):
-    next_ep_num = get_exact_next_part_for_track(track_id)
+def mark_episode_part_completed(track_id, completed_part_num):
+    """Advances the track to Part N+1 and syncs immediately to GitHub!"""
+    tracker = get_episode_tracker()
+    if track_id not in tracker:
+        tracker[track_id] = {"completed_part": 0, "next_part": 1}
+    c_num = max(int(completed_part_num), int(tracker[track_id].get("completed_part", 0)))
+    tracker[track_id]["completed_part"] = c_num
+    tracker[track_id]["next_part"] = c_num + 1
+    save_episode_tracker(tracker)
+    print(f"📈 [Part Tracker Locked] Track '{track_id}' Part #{c_num} DONE -> Next run will build Part #{c_num + 1}!")
 
+
+def _load_past_episodes_for_track(track_id):
     if not os.path.exists(HISTORY_FILE):
-        return next_ep_num, f"This is Part #{next_ep_num} (Opening Episode). Start the story with high impact.", []
-
+        return [], []
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            hdata = json.load(f)
+            data = json.load(f)
+        items = data.get("history", [])
+        all_used_dialogues = [x.get("dialogue_line_1_hinglish", "") for x in items if x.get("dialogue_line_1_hinglish")]
+        all_used_dialogues.extend(data.get("failed_dialogues", []))
+        track_eps = [x for x in items if x.get("track_id") == track_id]
+        return track_eps, all_used_dialogues
     except Exception:
-        return next_ep_num, f"This is Part #{next_ep_num}.", []
-
-    hist_list = hdata.get("history", [])
-    used_dialogues = [item.get("dialogue_line_1_hinglish", "") for item in hist_list if item.get("dialogue_line_1_hinglish")]
-    used_dialogues.extend(hdata.get("failed_dialogues", []))
-
-    # Automatically sync completed part numbers from verified history entries
-    for item in hist_list:
-        t_id = item.get("track_id")
-        p_no = item.get("part_number")
-        if t_id and p_no:
-            mark_episode_part_completed(t_id, p_no)
-
-    next_ep_num = get_exact_next_part_for_track(track_id)
-    track_history = [item for item in hist_list if item.get("track_id") == track_id]
-    recent_context_items = track_history[-3:] if track_history else hist_list[-3:]
-
-    if not recent_context_items:
-        return next_ep_num, f"This is Part #{next_ep_num}. Establish Makra's fauji character with an unforgettable opening scene.", used_dialogues
-
-    summary_lines = []
-    for ep in recent_context_items:
-        ep_title = ep.get("emotion_name", "Previous Part")
-        ep_diag = ep.get("dialogue_line_1_hinglish", "")
-        ep_scene = ep.get("scene_summary", ep.get("gemini_video_prompt", "")[:200])
-        summary_lines.append(f"- Completed {ep_title}: Visual='{ep_scene}' | Spoken Dialogue='{ep_diag}'")
-
-    continuity_text = (
-        f"CURRENT TARGET: Write Part #{next_ep_num} of '{FOJI_UNIVERSE_TRACKS[track_id]['name']}'.\n"
-        f"PREVIOUSLY COMPLETED PARTS IN THIS STORY ARC:\n" + "\n".join(summary_lines) + "\n"
-        f"STRICT STORY CONTINUITY RULE: Part #{next_ep_num} MUST pick up directly from the aftermath/events of Part #{next_ep_num - 1}. "
-        f"Advance the plot forward with a 100% brand-new scene, new physical action, and completely original dialogue."
-    )
-    return next_ep_num, continuity_text, used_dialogues
+        return [], []
 
 
 def _get_live_gemini_api_key():
-    """Reads ANY API key from .env without forcing 'AIza' prefix!"""
     load_dotenv(override=True)
-    # 1. Check standard key names first
     for k_name in [
         "GEMINI_API_KEY", "GOOGLE_API_KEY", "GEMINI_KEY", "GENAI_API_KEY",
         "API_KEY", "OPENAI_API_KEY", "GROQ_API_KEY", "OPENROUTER_API_KEY", "AI_API_KEY"
@@ -215,7 +257,6 @@ def _get_live_gemini_api_key():
         if len(val) > 8:
             return val
 
-    # 2. Scan .env directly for any key name containing GEMINI, API, or KEY
     if os.path.exists(".env"):
         try:
             with open(".env", "r", encoding="utf-8", errors="ignore") as f:
@@ -250,35 +291,30 @@ def _parse_ai_json(raw_text):
 
 
 def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, used_dialogues, custom_idea=""):
-    """
-    100% REAL LIVE AI WRITER:
-    Reads your exact API key from .env (regardless of prefix/format) and writes a brand-new connected episode!
-    """
     api_key = _get_live_gemini_api_key()
     if not api_key:
         raise RuntimeError("No API key found in .env! Please check your .env file.")
 
-    avoid_sample = " | ".join([d for d in used_dialogues[-20:] if d])
+    avoid_sample = " | ".join([d for d in used_dialogues[-25:] if d])
     user_direction = f"\nDIRECTOR SPECIAL TWIST FOR PART #{ep_num}: {custom_idea}\n" if custom_idea.strip() else ""
-    unique_nonce = f"{int(time.time())}-{ep_num}"
+    unique_nonce = f"{int(time.time()*1000)}-part{ep_num}"
 
-    system_prompt = f"""You are the Lead Showrunner & Scriptwriter for 'Foji AI Studio' (Generation Seed: {unique_nonce}), a 3D Pixar-style Indian Army series starring:
+    system_prompt = f"""You are the Lead Showrunner & Scriptwriter for 'Foji AI Studio' (Seed: {unique_nonce}), a 3D Pixar-style Indian Army series starring:
 - Makra (Foji): Young, energetic Haryanvi Indian Army soldier (Agniveer).
 - Meera (Fojan): Makra's devoted, expressive village love interest.
 - Ustad & Unit Brothers: Strict moustached drill instructor and funny coursemates.
 
 SERIES TRACK: {track['name']} ({track['badge']})
 TRACK BRIEF: {track['theme_brief']}
-CURRENT EPISODE PART TO WRITE: Part #{ep_num}
+CURRENT EPISODE PART TO WRITE: Part #{ep_num} (Continue the story forward from Part #{max(1, ep_num - 1)}!)
 
 STORY CONTINUITY FROM PAST VIDEOS:
 {continuity_context}
 {user_direction}
 MANDATORY RULES:
-1. Write 100% original, never-before-seen content for Part #{ep_num}.
+1. Write 100% original, never-before-seen content for Part #{ep_num}. Move the plot forward to a new incident/location!
 2. NEVER repeat or paraphrase any of these past dialogues: [{avoid_sample}]
-3. Connect the story naturally to the previous part while placing the characters in a fresh visual action.
-4. Output ONLY a valid JSON object with these exact keys:
+3. Output ONLY a valid JSON object with these exact keys:
 {{
   "episode_title": "Part {ep_num}: [Short Catchy Hinglish Title]",
   "visual_scene_description": "Detailed 3D Pixar-style 9:16 vertical scene description: camera movement, lighting, Indian Army uniform/environment details, character facial expressions and physical action.",
@@ -289,14 +325,13 @@ MANDATORY RULES:
 
     last_err = ""
 
-    # Route A: If key is Groq (gsk_...), OpenRouter (sk-or-...), or OpenAI (sk-...)
     if api_key.startswith("gsk_") or api_key.startswith("sk-"):
         if api_key.startswith("gsk_"):
             oa_url = "https://api.groq.com/openai/v1/chat/completions"
-            oa_models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"]
+            oa_models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
         elif api_key.startswith("sk-or-"):
             oa_url = "https://openrouter.ai/api/v1/chat/completions"
-            oa_models = ["google/gemini-2.0-flash-001", "google/gemini-flash-1.5", "meta-llama/llama-3.3-70b-instruct"]
+            oa_models = ["google/gemini-2.0-flash-001", "meta-llama/llama-3.3-70b-instruct"]
         else:
             oa_url = "https://api.openai.com/v1/chat/completions"
             oa_models = ["gpt-4o-mini", "gpt-4o"]
@@ -306,262 +341,138 @@ MANDATORY RULES:
                 r = requests.post(
                     oa_url,
                     headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-                    json={
-                        "model": m_name,
-                        "messages": [{"role": "user", "content": system_prompt}],
-                        "temperature": 0.92
-                    },
+                    json={"model": m_name, "messages": [{"role": "user", "content": system_prompt}], "temperature": 0.95},
                     timeout=25
                 )
                 if r.status_code == 200:
                     cand_txt = r.json()["choices"][0]["message"]["content"]
                     parsed = _parse_ai_json(cand_txt)
                     if parsed:
-                        print(f"   ✅ Live API ({m_name}) generated 100% fresh script for Part #{ep_num}!")
                         return parsed
                 else:
                     last_err = f"HTTP {r.status_code}: {r.text[:160]}"
             except Exception as e:
                 last_err = str(e)
 
-    # Route B: Standard Google Gemini REST API (works with any Google/Gemini API key format)
     base_host = "https://generativelanguage.googleapis.com"
     candidate_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
-
-    try:
-        list_r = requests.get(f"{base_host}/v1beta/models?key={api_key}", timeout=10)
-        if list_r.status_code == 200:
-            avail = []
-            for m_obj in list_r.json().get("models", []):
-                methods = m_obj.get("supportedGenerationMethods", [])
-                m_name = m_obj.get("name", "").replace("models/", "")
-                if "generateContent" in methods and "gemini" in m_name and "vision" not in m_name and "embedding" not in m_name:
-                    avail.append(m_name)
-            if avail:
-                flash_first = sorted(avail, key=lambda x: (0 if "flash" in x else 1))
-                for fm in flash_first:
-                    if fm not in candidate_models:
-                        candidate_models.insert(0, fm)
-    except Exception:
-        pass
-
     for model_name in candidate_models:
         try:
             url = f"{base_host}/v1beta/models/{model_name}:generateContent?key={api_key}"
-            payload = {
-                "contents": [{"parts": [{"text": system_prompt}]}],
-                "generationConfig": {"temperature": 0.95}
-            }
+            payload = {"contents": [{"parts": [{"text": system_prompt}]}], "generationConfig": {"temperature": 0.95}}
             r = requests.post(url, json=payload, timeout=25)
             if r.status_code == 200:
                 cand_txt = r.json()["candidates"][0]["content"]["parts"][0]["text"]
                 parsed = _parse_ai_json(cand_txt)
                 if parsed:
-                    print(f"   ✅ Live Gemini API ({model_name}) generated 100% fresh script for Part #{ep_num}!")
                     return parsed
             else:
                 last_err = f"HTTP {r.status_code}: {r.text[:160]}"
         except Exception as e:
             last_err = str(e)
 
-    raise RuntimeError(f"API Script Generation Error (Key prefix '{api_key[:5]}...'): {last_err}")
+    raise RuntimeError(f"API Script Generation Error: {last_err}")
 
 
 def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_idea="", is_preview=False):
-    state = get_director_state()
-    track_keys = list(FOJI_UNIVERSE_TRACKS.keys())
-    tracker = _load_episode_tracker()
+    # Sync latest remote tracker & history before choosing next part!
+    if not is_preview:
+        try:
+            rem_tr = _fetch_github_json_zero_cache(EPISODE_TRACKER_FILE)
+            if isinstance(rem_tr, dict):
+                loc_tr = get_episode_tracker()
+                for tk, tv in rem_tr.items():
+                    if tk in loc_tr and isinstance(tv, dict):
+                        loc_tr[tk]["completed_part"] = max(int(loc_tr[tk]["completed_part"]), int(tv.get("completed_part", 0)))
+                        loc_tr[tk]["next_part"] = max(int(loc_tr[tk]["next_part"]), int(tv.get("next_part", 1)), loc_tr[tk]["completed_part"] + 1)
+                with open(EPISODE_TRACKER_FILE, "w", encoding="utf-8") as wf:
+                    json.dump(loc_tr, wf, indent=2, ensure_ascii=False)
+        except Exception:
+            pass
 
-    # If the previous run failed before completing its video, retry the SAME track & SAME part!
-    pending = tracker.get("pending_attempt")
-    if not is_preview and not force_track_id and pending and pending.get("track_id") in FOJI_UNIVERSE_TRACKS:
-        chosen_key = pending["track_id"]
-        print(f"🔄 [Smart Retry] Previous Part #{pending.get('part_number')} did not finish video generation. Retrying same Part #{pending.get('part_number')} with fresh AI script!")
-    elif force_track_id and force_track_id in FOJI_UNIVERSE_TRACKS:
+    state = get_director_state()
+    tracker = get_episode_tracker()
+
+    if force_track_id and force_track_id in FOJI_UNIVERSE_TRACKS:
         chosen_key = force_track_id
     elif state.get("active_mode") == "locked_track" and state.get("selected_track_id") in FOJI_UNIVERSE_TRACKS:
         chosen_key = state["selected_track_id"]
     else:
-        idx = int(state.get("last_track_index", 0)) % len(track_keys)
-        chosen_key = track_keys[idx]
+        next_idx = (int(state.get("last_rotated_index", -1)) + 1) % len(TRACK_ORDER)
+        chosen_key = TRACK_ORDER[next_idx]
         if not is_preview:
-            state["last_track_index"] = idx + 1
+            state["last_rotated_index"] = next_idx
+            state["selected_track_id"] = chosen_key
             save_director_state(state)
 
     track = FOJI_UNIVERSE_TRACKS[chosen_key]
-    ep_num, continuity_context, used_dialogues = _get_recent_episode_context(chosen_key)
-    idea_to_use = custom_idea.strip() or state.get("custom_idea", "").strip()
+    past_eps, used_dialogues = _load_past_episodes_for_track(chosen_key)
+    ep_num = int(tracker.get(chosen_key, {}).get("next_part", 1))
 
-    print(f"🧠 [Live Gemini API Showrunner] Writing 100% Fresh Connected Script for {track['name']} (Part #{ep_num})...")
+    if past_eps:
+        recent_summaries = []
+        for idx, pe in enumerate(past_eps[-4:], start=max(1, len(past_eps) - 3)):
+            p_num = pe.get("part_number", idx)
+            recent_summaries.append(
+                f"- Part #{p_num} ({pe.get('emotion_name', '')}): Scene='{pe.get('scene_summary', '')[:120]}' | "
+                f"Spoken Dialogue='{pe.get('dialogue_line_1_hinglish', '')}'"
+            )
+        continuity_context = "PREVIOUSLY COMPLETED EPISODES IN THIS TRACK:\n" + "\n".join(recent_summaries)
+    else:
+        continuity_context = "This is Part #1 (Series Premiere of this track). Establish an unforgettable opening hook!"
+
+    idea_to_use = custom_idea.strip() or state.get("custom_idea", "").strip()
+    print(f"🧠 [Live AI Showrunner] Writing Connected Script for {track['name']} (Part #{ep_num})...")
     ai_story = _call_pure_gemini_api_writer(chosen_key, track, ep_num, continuity_context, used_dialogues, idea_to_use)
 
-    if not is_preview:
-        tracker["pending_attempt"] = {
-            "track_id": chosen_key,
-            "part_number": ep_num,
-            "video_id": video_id,
-            "started_at": time.time()
-        }
-        _save_episode_tracker(tracker)
-        if state.get("custom_idea"):
-            state["custom_idea"] = ""
-            save_director_state(state)
+    if not is_preview and state.get("custom_idea"):
+        state["custom_idea"] = ""
+        save_director_state(state)
 
-    ep_title = ai_story.get("episode_title", f"Part {ep_num}: {track['badge']}")
-    if not ep_title.lower().startswith("part") and not ep_title.lower().startswith("ep"):
+    ep_title = ai_story.get("episode_title", f"Part {ep_num}: {track['name']}").strip()
+    if f"Part {ep_num}" not in ep_title and f"Part #{ep_num}" not in ep_title:
         ep_title = f"Part {ep_num}: {ep_title}"
 
-    vis_scene = ai_story.get("visual_scene_description", "")
-    dialogue = ai_story.get("dialogue_hinglish", "")
-    shayari = ai_story.get("shayari_hindi", "")
-    hashtags = ai_story.get("hashtags", "#indianarmy #faujilife #makrameera #agniveer #armyreels")
+    visual_scene = ai_story.get("visual_scene_description", "").strip()
+    dialogue_line = ai_story.get("dialogue_hinglish", "").strip()
+    shayari = ai_story.get("shayari_hindi", "").strip()
+    hashtags = ai_story.get("hashtags", "#indianarmy #faujilife #agniveer #fojifojan #armyreels #desifauji").strip()
 
-    gemini_prompt = (
-        f"Create a vertical 9:16 high-definition 3D Pixar-style animated video using the uploaded reference character images "
-        f"for character face and uniform consistency. "
-        f"Series Track: {track['name']} ({ep_title}). "
-        f"Scene & Action: {vis_scene} "
-        f"Spoken Lip-Sync Dialogue & Emotion: The lead character speaks with natural lip-sync and intense real emotion in Hindi/Hinglish: "
-        f"\"{dialogue}\". "
-        f"Cinematic 3D lighting, realistic Indian Army textures, vertical 9:16 reel aspect ratio."
+    # Generate a 100% UNIQUE video_id (Timestamp + Part) so 2:30 AM batch of 3 videos NEVER overwrite each other!
+    unique_vid_id = f"{datetime.now(IST).strftime('%m%d_%H%M%S')}_p{ep_num}"
+    unique_mp4_name = f"raw_video_{unique_vid_id}.mp4"
+
+    gemini_video_prompt = (
+        f"Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images "
+        f"(Image 1: Indian Army soldier Makra in uniform/training gear; Image 2: Fojan Meera). "
+        f"EPISODE: {track['name']} - {ep_title}. "
+        f"SCENE & ACTION: {visual_scene} "
+        f"LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"{dialogue_line}\" "
+        f"CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format."
     )
 
     caption = (
-        f"🎖️ {ep_title} | {track['badge']}\n\n"
-        f"🗣️ \"{dialogue}\"\n\n"
-        f"{shayari}\n\n"
-        f"Follow 👉 @ai_foji_lovelife for Part {ep_num + 1}! 🇮🇳🔥\n\n"
+        f"🎖️ {ep_title} | {track['name']}\n\n"
+        f"🗣️ \"{dialogue_line}\"\n\n"
+        f"🔥 {shayari}\n\n"
+        f"🇮🇳 Follow @ai_foji_lovelife for Part #{ep_num + 1}!\n\n"
         f"{hashtags}"
     )
 
     return {
-        "video_id": video_id,
+        "video_id": unique_vid_id,
+        "video_file": unique_mp4_name,
         "track_id": chosen_key,
+        "track_name": track["name"],
         "part_number": ep_num,
         "emotion_name": f"{track['name']} — {ep_title}",
-        "badge": track["badge"],
-        "scene_summary": vis_scene,
-        "dialogue_line_1_hinglish": dialogue,
+        "scene_summary": visual_scene,
+        "dialogue_line_1_hinglish": dialogue_line,
         "shayari_hindi": shayari,
-        "gemini_video_prompt": gemini_prompt,
+        "gemini_video_prompt": gemini_video_prompt,
         "caption": caption,
-        "created_at": datetime.now(IST).strftime("%d %b %Y, %I:%M %p")
+        "created_at": datetime.now(IST).strftime("%d %b %Y, %I:%M %p IST")
     }
-
-
-def get_real_system_health():
-    cookie_ok = os.path.exists("gemini_cookies_secret.txt") and os.path.getsize("gemini_cookies_secret.txt") > 200
-    ig_ok = os.path.exists("data/ig_session.json") and os.path.getsize("data/ig_session.json") > 100
-    blueprint_ok = os.path.exists("data/gemini_learned_blueprint.json")
-
-    telemetry = {
-        "step_num": 0,
-        "step_title": "System Idle & Ready",
-        "sub_detail": "All 13 steps locked & verified",
-        "status": "ready",
-        "progress": 100,
-        "updated_at": datetime.now(IST).strftime("%I:%M:%S %p")
-    }
-    if os.path.exists("data/live_telemetry.json"):
-        try:
-            with open("data/live_telemetry.json", "r", encoding="utf-8") as f:
-                telemetry = json.load(f)
-        except Exception:
-            pass
-
-    # Find latest generated MP4 video for live 9:16 mobile preview frame
-    latest_video_file = ""
-    raw_dir = "output/raw_videos"
-    if os.path.exists(raw_dir):
-        mp4s = [os.path.join(raw_dir, f) for f in os.listdir(raw_dir) if f.endswith(".mp4")]
-        if mp4s:
-            newest = max(mp4s, key=os.path.getmtime)
-            latest_video_file = os.path.basename(newest)
-
-    # Calculate next part number for each track
-    tracks_with_parts = []
-    for t_id, t_obj in FOJI_UNIVERSE_TRACKS.items():
-        copy_t = dict(t_obj)
-        copy_t["next_part"] = get_exact_next_part_for_track(t_id)
-        tracks_with_parts.append(copy_t)
-
-    hist_count = 0
-    recent_history = []
-    if os.path.exists(HISTORY_FILE):
-        try:
-            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-                hd = json.load(f)
-                recent_history = hd.get("history", [])[-6:]
-                hist_count = len(hd.get("history", []))
-        except Exception:
-            pass
-
-    return {
-        "gemini_cookies_healthy": cookie_ok,
-        "ig_session_healthy": ig_ok,
-        "blueprint_locked": blueprint_ok,
-        "telemetry": telemetry,
-        "tracks": tracks_with_parts,
-        "director_state": get_director_state(),
-        "latest_video_file": latest_video_file,
-        "total_episodes_completed": hist_count,
-        "recent_history": list(reversed(recent_history))
-    }
-
-# ==============================================================================
-# ⏰ SMART 2:30 AM BATCH + T-30 MIN + MASTER REELS VAULT + ZERO-CACHE CLOUD SYNC
-# ==============================================================================
-import base64 as _b64
-
-QUEUE_FILE = "data/scheduled_queue.json"
-SCHEDULE_CFG_FILE = "data/schedule_config.json"
-_LAST_CLOUD_PULL_TS = 0.0
-_LOCAL_QUEUE_MODIFIED_TS = 0.0
-
-
-def push_json_to_github_instantly(rel_path, commit_msg):
-    """Immediately pushes local queue/schedule/status changes to GitHub so Cloud never overwrites your actions!"""
-    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
-    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-    rel_clean = rel_path.replace("\\", "/")
-    full_p = os.path.abspath(rel_path)
-    if not gh_pat or not os.path.exists(full_p):
-        return False
-    try:
-        with open(full_p, "rb") as f:
-            b64_content = _b64.b64encode(f.read()).decode("utf-8")
-        url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
-        headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
-        r = requests.get(url, headers=headers, timeout=10)
-        sha = r.json().get("sha") if r.status_code == 200 else None
-        payload = {"message": commit_msg, "content": b64_content, "branch": "main"}
-        if sha:
-            payload["sha"] = sha
-        put_r = requests.put(url, headers=headers, json=payload, timeout=20)
-        return put_r.status_code in (200, 201)
-    except Exception:
-        return False
-
-
-def _fetch_github_json_zero_cache(rel_path):
-    """Fetches JSON via GitHub REST API (0.0s cache) instead of raw.githubusercontent CDN (which lags by 2-3 mins!)."""
-    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
-    rel_clean = rel_path.replace("\\", "/")
-    headers = {"Accept": "application/vnd.github+json", "Cache-Control": "no-cache"}
-    if gh_pat:
-        headers["Authorization"] = f"Bearer {gh_pat}"
-    try:
-        url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}?ref=main&t={int(time.time()*1000)}"
-        r = requests.get(url, headers=headers, timeout=6)
-        if r.status_code == 200:
-            content_b64 = r.json().get("content", "")
-            if content_b64:
-                raw_bytes = _b64.b64decode(content_b64)
-                return json.loads(raw_bytes.decode("utf-8"))
-    except Exception:
-        pass
-    return None
 
 
 def get_schedule_config():
@@ -570,7 +481,7 @@ def get_schedule_config():
         "night_batch_time": "02:30",
         "night_batch_count": 3,
         "pre_slot_minutes": 30,
-        "daily_slots": ["07:00", "13:30", "19:30"],
+        "daily_slots": ["06:30", "12:30", "19:30"],
         "auto_pilot_enabled": True,
         "last_triggered_keys": []
     }
@@ -621,32 +532,24 @@ def save_scheduled_queue(qdata, sync_cloud=True):
 
 def sync_raw_videos_into_unapproved_queue():
     """
-    Ensures every MP4 in `output/raw_videos` is tracked.
-    CRITICAL FIX: If a video is ALREADY in `scheduled_posts` or `published_posts`,
-    it will NEVER be put back into `unapproved_videos`!
+    Scans BOTH `output/raw_videos/*.mp4` AND `data/history.json` so EVERY video ever generated
+    (including all 3 night-batch videos at 2:30 AM and 6:00 AM) is visible in the Frontend!
     """
     q = get_scheduled_queue()
     scheduled_files = {item.get("video_file") for item in q.get("scheduled_posts", []) if item.get("video_file")}
     published_files = {item.get("video_file") for item in q.get("published_posts", []) if item.get("video_file")}
 
-    # Clean any duplicate out of unapproved_videos if it is already scheduled or published
     clean_unapproved = []
     seen_unapproved = set()
     changed = False
     for item in q.get("unapproved_videos", []):
         vf = item.get("video_file")
-        if vf in scheduled_files or vf in published_files or vf in seen_unapproved:
+        if not vf or vf in scheduled_files or vf in published_files or vf in seen_unapproved:
             changed = True
             continue
         seen_unapproved.add(vf)
         clean_unapproved.append(item)
     q["unapproved_videos"] = clean_unapproved
-
-    raw_dir = "output/raw_videos"
-    if not os.path.exists(raw_dir):
-        if changed:
-            save_scheduled_queue(q, sync_cloud=False)
-        return q
 
     hist_map = {}
     if os.path.exists(HISTORY_FILE):
@@ -655,22 +558,51 @@ def sync_raw_videos_into_unapproved_queue():
                 hd = json.load(f)
             for h in hd.get("history", []):
                 vid_id = h.get("video_id")
-                if vid_id:
-                    hist_map[f"raw_video_{vid_id}.mp4"] = h
-                if h.get("video_file"):
-                    hist_map[h["video_file"]] = h
+                vfile = h.get("video_file") or (f"raw_video_{vid_id}.mp4" if vid_id else "")
+                if vfile:
+                    hist_map[vfile] = h
         except Exception:
             pass
 
+    raw_dir = "output/raw_videos"
+    os.makedirs(raw_dir, exist_ok=True)
     mp4_files = sorted(
         [f for f in os.listdir(raw_dir) if f.endswith(".mp4")],
         key=lambda x: os.path.getmtime(os.path.join(raw_dir, x)),
         reverse=True
     )
-    for fname in mp4_files:
+
+    # Include all MP4s on disk + any recorded completed videos in history.json
+    all_candidate_files = list(mp4_files)
+    for h_vfile, h_meta in reversed(list(hist_map.items())):
+        if h_vfile not in all_candidate_files and (h_meta.get("completed_at") or h_meta.get("video_file")):
+            all_candidate_files.append(h_vfile)
+
+    for fname in all_candidate_files:
         if fname not in scheduled_files and fname not in published_files and fname not in seen_unapproved:
             meta = hist_map.get(fname, {})
-            mtime_ist = datetime.fromtimestamp(os.path.getmtime(os.path.join(raw_dir, fname)), IST)
+            if meta.get("posted") or meta.get("status") == "published":
+                q["published_posts"].append({
+                    "id": f"pub_{fname}",
+                    "video_file": fname,
+                    "title": meta.get("emotion_name", f"Foji 3D Reel ({fname})"),
+                    "track_id": meta.get("track_id", "love_meera"),
+                    "part_number": meta.get("part_number", 1),
+                    "dialogue": meta.get("dialogue_line_1_hinglish", ""),
+                    "caption": meta.get("caption", ""),
+                    "published_at": meta.get("posted_at") or meta.get("completed_at") or "Posted on IG",
+                    "status": "published"
+                })
+                published_files.add(fname)
+                changed = True
+                continue
+
+            full_p = os.path.join(raw_dir, fname)
+            mtime_str = (
+                datetime.fromtimestamp(os.path.getmtime(full_p), IST).strftime("%d %b %Y, %I:%M %p")
+                if os.path.exists(full_p)
+                else (meta.get("created_at") or "Today")
+            )
             q["unapproved_videos"].append({
                 "id": f"vid_{fname}",
                 "video_file": fname,
@@ -680,7 +612,7 @@ def sync_raw_videos_into_unapproved_queue():
                 "dialogue": meta.get("dialogue_line_1_hinglish", "Fresh 3D Foji Episode Ready"),
                 "shayari": meta.get("shayari_hindi", ""),
                 "caption": meta.get("caption", "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife"),
-                "created_at": meta.get("created_at") or mtime_ist.strftime("%d %b %Y, %I:%M %p"),
+                "created_at": meta.get("completed_at") or meta.get("created_at") or mtime_str,
                 "status": "awaiting_approval"
             })
             seen_unapproved.add(fname)
@@ -692,13 +624,6 @@ def sync_raw_videos_into_unapproved_queue():
 
 
 def build_master_all_reels_vault():
-    """
-    Builds the Permanent All-Time Reels Vault:
-    Every reel ever generated stays here permanently with its real live status:
-    - 'published' (🟢 POSTED ON INSTAGRAM)
-    - 'scheduled' (🟣 SCHEDULED FOR SLOT)
-    - 'awaiting_approval' (🔵 READY TO SCHEDULE / POST)
-    """
     q = sync_raw_videos_into_unapproved_queue()
     vault_map = {}
 
@@ -723,21 +648,44 @@ def build_master_all_reels_vault():
         if vf and vf not in vault_map:
             copy_it = dict(item)
             copy_it["vault_status"] = "awaiting_approval"
-            copy_it["status_badge"] = "🔵 READY (NOT POSTED YET)"
+            copy_it["status_badge"] = "🔵 READY (AWAITING SCHEDULE / POST)"
             vault_map[vf] = copy_it
 
-    # Sort newest first
+    raw_dir = "output/raw_videos"
     def _sort_key(obj):
         vf = obj.get("video_file", "")
-        nums = re.findall(r"\d+", vf)
-        return int(nums[-1]) if nums else 0
+        fp = os.path.join(raw_dir, vf)
+        if os.path.exists(fp):
+            return os.path.getmtime(fp)
+        return float(obj.get("scheduled_epoch", 0))
 
     return sorted(vault_map.values(), key=_sort_key, reverse=True)
 
 
 def calculate_next_available_slot_ist():
+    """
+    STRICT SEQUENTIAL SLOT CALCULATOR:
+    Assigns videos in exact chronological sequence across daily_slots (e.g. 06:30, 12:30, 19:30).
+    If 06:30 and 12:30 are taken, the 3rd video ALWAYS gets 19:30 today (or 06:30 tomorrow)!
+    """
     cfg = get_schedule_config()
-    slots = sorted(cfg.get("daily_slots", ["07:00", "13:30", "19:30"]))
+    raw_slots = cfg.get("daily_slots", ["06:30", "12:30", "19:30"])
+    clean_slots = []
+    for s in raw_slots:
+        s_str = str(s).strip()
+        if ":" in s_str:
+            clean_slots.append(s_str)
+    if not clean_slots:
+        clean_slots = ["06:30", "12:30", "19:30"]
+
+    def _slot_minutes(hm_str):
+        try:
+            h, m = [int(x) for x in hm_str.split(":")[:2]]
+            return h * 60 + m
+        except Exception:
+            return 390
+
+    slots = sorted(list(set(clean_slots)), key=_slot_minutes)
     q = get_scheduled_queue()
     taken_keys = {
         item.get("scheduled_slot_key")
@@ -746,19 +694,19 @@ def calculate_next_available_slot_ist():
     }
 
     now_ist = datetime.now(IST)
-    for day_offset in range(0, 20):
+    for day_offset in range(0, 30):
         target_date = now_ist + timedelta(days=day_offset)
         date_str = target_date.strftime("%Y-%m-%d")
         display_date = target_date.strftime("%d %b %Y")
         for hm in slots:
             try:
-                hh, mm = [int(x) for x in hm.split(":")]
+                hh, mm = [int(x) for x in hm.split(":")[:2]]
             except Exception:
-                hh, mm = 7, 0
+                hh, mm = 6, 30
             slot_dt = target_date.replace(hour=hh, minute=mm, second=0, microsecond=0)
             if slot_dt <= now_ist + timedelta(minutes=1):
                 continue
-            slot_key = f"{date_str}_{hm}"
+            slot_key = f"{date_str}_{hh:02d}:{mm:02d}"
             if slot_key not in taken_keys:
                 return {
                     "slot_key": slot_key,
@@ -780,29 +728,35 @@ def calculate_next_available_slot_ist():
     }
 
 
-def approve_and_schedule_video_item(video_file=None, custom_caption=""):
+def approve_and_schedule_video_item(video_file=None, custom_caption="", source_label="Frontend"):
+    """
+    UNIFIED SCHEDULER FOR BOTH TELEGRAM & FRONTEND:
+    Locks the video into the next sequential slot, updates `scheduled_queue.json`,
+    pushes to GitHub, AND creates a popup notification so Frontend & Telegram both show the exact time!
+    """
     q = sync_raw_videos_into_unapproved_queue()
     unapproved = q.get("unapproved_videos", [])
 
     target_item = None
     if video_file:
+        vbase = os.path.basename(str(video_file))
         for it in unapproved:
-            if it.get("video_file") == video_file:
+            if it.get("video_file") == vbase:
                 target_item = it
                 break
         if not target_item:
             for it in build_master_all_reels_vault():
-                if it.get("video_file") == video_file:
+                if it.get("video_file") == vbase:
                     target_item = dict(it)
                     break
 
     if not target_item and unapproved:
-        target_item = unapproved[0]
+        # Pick oldest unapproved video first so Part 1 -> Part 2 -> Part 3 schedule in exact order!
+        target_item = unapproved[-1]
 
     if not target_item:
         raise RuntimeError("Sabhi videos pehle se Schedule ya Post ho chuki hain! Nayi video generate karein.")
 
-    # Permanently remove from unapproved_videos
     q["unapproved_videos"] = [
         x for x in unapproved
         if x.get("video_file") != target_item.get("video_file")
@@ -813,13 +767,13 @@ def approve_and_schedule_video_item(video_file=None, custom_caption=""):
 
     slot_info = calculate_next_available_slot_ist()
     target_item["status"] = "scheduled"
+    target_item["scheduled_by"] = source_label
     target_item["scheduled_slot_key"] = slot_info["slot_key"]
     target_item["scheduled_epoch"] = slot_info["scheduled_epoch"]
     target_item["scheduled_display"] = slot_info["display_time"]
     target_item["date_label"] = slot_info["date_label"]
     target_item["time_label"] = slot_info["time_label"]
 
-    # Avoid duplicate scheduling of same file
     q["scheduled_posts"] = [
         x for x in q.get("scheduled_posts", [])
         if x.get("video_file") != target_item.get("video_file")
@@ -827,15 +781,26 @@ def approve_and_schedule_video_item(video_file=None, custom_caption=""):
     q["scheduled_posts"].append(target_item)
     q["scheduled_posts"].sort(key=lambda x: float(x.get("scheduled_epoch", 0)))
 
-    # Save locally AND push to GitHub immediately so it NEVER reverts!
     save_scheduled_queue(q, sync_cloud=True)
+
+    # Push live notification so Frontend immediately pops up a Center Modal even if scheduled from Telegram!
+    try:
+        import gemini_bot
+        gemini_bot.push_app_notification(
+            "schedule",
+            f"📅 Video Scheduled ({source_label})!",
+            f"{target_item.get('title', target_item['video_file'])} locked for {slot_info['display_time']}!",
+            "success"
+        )
+    except Exception:
+        pass
+
     return target_item
 
 
 def mark_video_as_published_in_vault(video_file, caption="", media_pk=""):
-    """Moves a video into `published_posts` permanently so it shows as '✅ POSTED ON IG' in the Master Reels Vault!"""
     q = sync_raw_videos_into_unapproved_queue()
-    vname = os.path.basename(video_file)
+    vname = os.path.basename(str(video_file))
     now_str = datetime.now(IST).strftime("%d %b %Y, %I:%M %p IST")
 
     found_item = None
@@ -869,22 +834,31 @@ def mark_video_as_published_in_vault(video_file, caption="", media_pk=""):
     ]
     q["published_posts"].insert(0, found_item)
     save_scheduled_queue(q, sync_cloud=True)
+
+    # Also mark posted in history.json
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                hd = json.load(f)
+            for h in hd.get("history", []):
+                if h.get("video_file") == vname or f"raw_video_{h.get('video_id')}.mp4" == vname:
+                    h["posted"] = True
+                    h["posted_at"] = now_str
+            with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+                json.dump(hd, f, indent=2, ensure_ascii=False)
+        except Exception:
+            pass
+
     return found_item
 
 
 def pull_latest_cloud_state_for_frontend():
-    """
-    Zero-Cache Real-Time Cloud Pull:
-    - Uses GitHub REST API (0s lag) for `live_telemetry.json` and `notifications.json`.
-    - NEVER overwrites local `scheduled_queue.json` if the user modified schedules recently!
-    """
     global _LAST_CLOUD_PULL_TS
-    if (time.time() - _LAST_CLOUD_PULL_TS) < 2.2:
+    if (time.time() - _LAST_CLOUD_PULL_TS) < 2.5:
         return
     _LAST_CLOUD_PULL_TS = time.time()
 
-    # 1. Zero-cache pull of live_telemetry.json & notifications.json
-    for rel_json in ["data/live_telemetry.json", "data/notifications.json", "data/history.json"]:
+    for rel_json in ["data/live_telemetry.json", "data/notifications.json", "data/history.json", "data/episode_tracker.json"]:
         remote_data = _fetch_github_json_zero_cache(rel_json)
         if remote_data is not None:
             local_p = os.path.abspath(rel_json)
@@ -902,8 +876,7 @@ def pull_latest_cloud_state_for_frontend():
                 with open(local_p, "w", encoding="utf-8") as wf:
                     json.dump(remote_data, wf, indent=2, ensure_ascii=False)
 
-    # 2. Only merge new videos from remote scheduled_queue.json without overwriting local scheduled/published moves!
-    if (time.time() - _LOCAL_QUEUE_MODIFIED_TS) > 15.0:
+    if (time.time() - _LOCAL_QUEUE_MODIFIED_TS) > 12.0:
         remote_q = _fetch_github_json_zero_cache(QUEUE_FILE)
         if isinstance(remote_q, dict):
             loc_q = get_scheduled_queue()
@@ -911,7 +884,7 @@ def pull_latest_cloud_state_for_frontend():
                 with open(QUEUE_FILE, "w", encoding="utf-8") as wf:
                     json.dump(remote_q, wf, indent=2, ensure_ascii=False)
 
-    # 3. Auto-download any new MP4 from GitHub output/raw_videos into local folder
+    # Download ALL MP4 files from GitHub output/raw_videos that are missing locally!
     repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
     gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
     api_headers = {"Accept": "application/vnd.github+json", "Cache-Control": "no-cache"}
@@ -920,7 +893,7 @@ def pull_latest_cloud_state_for_frontend():
     try:
         os.makedirs("output/raw_videos", exist_ok=True)
         api_url = f"https://api.github.com/repos/{repo}/contents/output/raw_videos?ref=main&t={int(time.time())}"
-        r_list = requests.get(api_url, headers=api_headers, timeout=6)
+        r_list = requests.get(api_url, headers=api_headers, timeout=8)
         if r_list.status_code == 200 and isinstance(r_list.json(), list):
             for item in r_list.json():
                 fname = item.get("name", "")
@@ -933,6 +906,73 @@ def pull_latest_cloud_state_for_frontend():
                             if vr.status_code == 200 and len(vr.content) > 100 * 1024:
                                 with open(local_vid, "wb") as vf:
                                     vf.write(vr.content)
-                                print(f"📥 [Live Vault Sync] Downloaded {fname} into local studio!")
+                                print(f"📥 [Vault Sync] Pulled {fname} into local studio!")
     except Exception:
         pass
+
+
+def get_real_system_health():
+    state = get_director_state()
+    tracker = get_episode_tracker()
+
+    telemetry = {
+        "step_num": 0,
+        "step_title": "System Idle & Ready",
+        "sub_detail": "Waiting for next generation",
+        "status": "idle",
+        "progress": 0,
+        "updated_at": ""
+    }
+    if os.path.exists(TELEMETRY_FILE):
+        try:
+            with open(TELEMETRY_FILE, "r", encoding="utf-8") as f:
+                telemetry.update(json.load(f))
+        except Exception:
+            pass
+
+    recent_history = []
+    total_generated = 0
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                hd = json.load(f)
+                hist_list = hd.get("history", [])
+                total_generated = len(hist_list)
+                recent_history = list(reversed(hist_list[-12:]))
+        except Exception:
+            pass
+
+    raw_videos = []
+    if os.path.exists("output/raw_videos"):
+        mp4s = [
+            os.path.join("output/raw_videos", f)
+            for f in os.listdir("output/raw_videos")
+            if f.endswith(".mp4") and os.path.getsize(os.path.join("output/raw_videos", f)) > 100 * 1024
+        ]
+        mp4s.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+        raw_videos = [os.path.basename(p) for p in mp4s]
+
+    tracks_summary = []
+    for tid in TRACK_ORDER:
+        t_info = FOJI_UNIVERSE_TRACKS[tid]
+        t_prog = tracker.get(tid, {"completed_part": 0, "next_part": 1})
+        tracks_summary.append({
+            "id": tid,
+            "name": t_info["name"],
+            "badge": t_info["badge"],
+            "completed_part": t_prog.get("completed_part", 0),
+            "next_part": t_prog.get("next_part", 1),
+            "theme_brief": t_info["theme_brief"]
+        })
+
+    return {
+        "director_state": state,
+        "tracks": tracks_summary,
+        "telemetry": telemetry,
+        "total_episodes_completed": max(total_generated, len(raw_videos)),
+        "recent_history": recent_history,
+        "latest_video_file": raw_videos[0] if raw_videos else None,
+        "all_raw_videos": raw_videos,
+        "gemini_cookie_ready": os.path.exists("gemini_cookies_secret.txt") or bool(os.getenv("GEMINI_COOKIES_JSON")),
+        "ig_session_ready": os.path.exists("data/ig_session.json") or bool(os.getenv("IG_SESSION_JSON"))
+    }
