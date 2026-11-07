@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794063031552",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "08:20 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794063031.5526266
+  },
+  {
     "id": "notif_1794063009918",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "09:52 AM",
     "date_str": "27 Oct 2026",
     "timestamp": 1793074979.8100219
-  },
-  {
-    "id": "notif_1793074852221",
-    "type": "error",
-    "title": "Error at Step #2: Project Workspace",
-    "message": "Prompt box ('What do you want to create?') did not appear.",
-    "status": "error",
-    "time_str": "09:50 AM",
-    "date_str": "27 Oct 2026",
-    "timestamp": 1793074852.2219787
   }
 ]
