@@ -1,33 +1,43 @@
 [
   {
-    "id": "notif_1794063084260",
+    "id": "notif_1794063094288",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "08:21 PM",
     "date_str": "07 Nov 2026",
-    "timestamp": 1794063084.26049
+    "timestamp": 1794063094.2887702
   },
   {
-    "id": "notif_1794063062416",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "08:21 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794063062.416163
-  },
-  {
-    "id": "notif_1794063040338",
+    "id": "notif_1794063031552",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "08:20 PM",
     "date_str": "07 Nov 2026",
-    "timestamp": 1794063040.3388052
+    "timestamp": 1794063031.5526266
+  },
+  {
+    "id": "notif_1794063009918",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "08:20 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794063009.9182587
+  },
+  {
+    "id": "notif_1794062988210",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "08:19 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794062988.210205
   },
   {
     "id": "notif_1794062965953",
@@ -788,15 +798,5 @@
     "time_str": "10:04 AM",
     "date_str": "27 Oct 2026",
     "timestamp": 1793075648.0254946
-  },
-  {
-    "id": "notif_1793074979809",
-    "type": "error",
-    "title": "Error at Step #2: Project Workspace",
-    "message": "Prompt box ('What do you want to create?') did not appear.",
-    "status": "error",
-    "time_str": "09:52 AM",
-    "date_str": "27 Oct 2026",
-    "timestamp": 1793074979.8100219
   }
 ]
