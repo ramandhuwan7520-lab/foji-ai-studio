@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794077006373",
+    "type": "warning",
+    "title": "?? 1st Account Limit -> Using 2nd Account!",
+    "message": "Account #1 Limit/Issue (Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cooki). Switching to 2nd Account Cookies automatically!",
+    "status": "success",
+    "time_str": "12:13 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794077006.3733425
+  },
+  {
     "id": "notif_1794077004076",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "11:17 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794073640.5848856
-  },
-  {
-    "id": "notif_1794073618373",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "11:16 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794073618.3737948
   }
 ]
