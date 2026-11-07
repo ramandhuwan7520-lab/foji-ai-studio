@@ -1,4 +1,4 @@
-_ACTIVE_COOKIE_ACCOUNT_SLOT = 1
+﻿_ACTIVE_COOKIE_ACCOUNT_SLOT = 1
 # -*- coding: utf-8 -*-
 # pyright: reportOptionalMemberAccess=false, reportGeneralTypeIssues=false
 import os
@@ -223,16 +223,21 @@ def ensure_clean_matching_chromedriver_in_python():
 
 
 def _load_saved_session_bundle():
-    """Loads saved cookies + exact Windows User-Agent + LocalStorage from gemini_cookies_secret.txt."""
+    """Loads saved cookies + exact Windows User-Agent + LocalStorage for Account #1 or Account #2."""
+    slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+    target_file = "gemini_cookies_secret_2.txt" if slot == 2 else COOKIE_FILE
+    target_env = "GEMINI_COOKIES_JSON_2" if slot == 2 else "GEMINI_COOKIES_JSON"
+
+    print(f"🔐 [Cookie Loader] Active Account Slot #{slot} -> Reading from '{target_file}'...")
     raw = ""
-    if os.path.exists(COOKIE_FILE):
+    if os.path.exists(target_file):
         try:
-            with open(COOKIE_FILE, "r", encoding="utf-8") as f:
+            with open(target_file, "r", encoding="utf-8") as f:
                 raw = f.read().strip()
         except Exception:
             pass
     if not raw:
-        raw = os.getenv("GEMINI_COOKIES_JSON", "").strip()
+        raw = os.getenv(target_env, "").strip()
     if not raw:
         return {"cookies": [], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
     try:
