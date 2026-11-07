@@ -1,5 +1,5 @@
 _ACTIVE_COOKIE_ACCOUNT_SLOT = 1
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # pyright: reportOptionalMemberAccess=false, reportGeneralTypeIssues=false
 import os
 import sys

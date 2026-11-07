@@ -72,13 +72,4 @@ jobs:
           FORCE_TRACK_ID: ${{ github.event.inputs.track_id || '' }}
           CUSTOM_IDEA: ${{ github.event.inputs.custom_idea || '' }}
         run: |
-          xvfb-run -a --server-args="-screen 0 1920x1080x24 -ac +extension GLX +render -noreset" python -c "
-          import os, foji_universe_director as fud, gemini_bot
-          cnt = max(1, min(5, int(os.getenv('BATCH_COUNT', '1') or '1')))
-          tid = os.getenv('FORCE_TRACK_ID', '').strip() or None
-          idea = os.getenv('CUSTOM_IDEA', '').strip()
-          for i in range(cnt):
-              print(f'=== Starting Video {i+1}/{cnt} ===')
-              pkg = fud.build_real_foji_universe_package(force_track_id=tid, custom_idea=(idea if i==0 else ''), is_preview=False)
-              gemini_bot.generate_video_in_gemini(pending_pkg=pkg)
-          "
+          xvfb-run -a --server-args="-screen 0 1920x1080x24 -ac +extension GLX +render -noreset" python cloud_runner.py
