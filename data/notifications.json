@@ -1,5 +1,25 @@
 [
   {
+    "id": "notif_1794085365414",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Baraf Ki Choti Aur Yaadon Ki Garmi is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "02:32 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794085365.41475
+  },
+  {
+    "id": "notif_1794085266703",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Baraf Ki Choti Aur Yaadon Ki Garmi | Cast: Makra + Meera (Sunset Orange & Red Bridal-Style Heavy...)",
+    "status": "info",
+    "time_str": "02:31 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794085266.7033684
+  },
+  {
     "id": "notif_1794078452997",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -778,25 +798,5 @@
     "time_str": "11:42 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794075152.740576
-  },
-  {
-    "id": "notif_1794075085174",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "11:41 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794075085.174718
-  },
-  {
-    "id": "notif_1794075027856",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "11:40 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794075027.8562183
   }
 ]
