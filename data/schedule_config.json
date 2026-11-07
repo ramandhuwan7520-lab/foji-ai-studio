@@ -8,7 +8,9 @@
     "18:30"
   ],
   "auto_pilot_enabled": true,
-  "last_triggered_keys": [],
+  "last_triggered_keys": [
+    "PRE30_2026-11-07_18:30"
+  ],
   "enabled": true,
   "times": [
     "06:30",
