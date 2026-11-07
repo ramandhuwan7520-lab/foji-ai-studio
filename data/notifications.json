@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794063551530",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "08:29 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794063551.5301821
+  },
+  {
     "id": "notif_1794063529295",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "05:53 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794054221.882958
-  },
-  {
-    "id": "notif_1794054031801",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 1: 4 AM Ka Murga & Ustad ki Garaj locked for 07 Nov 2026 at 07:30 PM IST!",
-    "status": "success",
-    "time_str": "05:50 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794054031.8011944
   }
 ]
