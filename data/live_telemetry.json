@@ -1,9 +1,9 @@
 {
   "step_num": 6,
   "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering raw_video_1108_023053_p1.mp4 in Gemini (Zero Timeout)...",
+  "sub_detail": "Rendering raw_video_1108_023112_p1.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
   "progress": 75,
-  "updated_at": "02:32:56 AM",
-  "epoch": 1794085376.1008914
+  "updated_at": "02:33:04 AM",
+  "epoch": 1794085384.0379655
 }
