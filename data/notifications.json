@@ -1,73 +1,23 @@
 [
   {
-    "id": "notif_1794077043072",
+    "id": "notif_1794077045052",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "12:14 AM",
     "date_str": "08 Nov 2026",
-    "timestamp": 1794077043.0721087
+    "timestamp": 1794077045.0520988
   },
   {
-    "id": "notif_1794077020698",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "12:13 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794077020.698073
-  },
-  {
-    "id": "notif_1794077010021",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:13 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794077010.0216105
-  },
-  {
-    "id": "notif_1794077006373",
-    "type": "warning",
-    "title": "?? 1st Account Limit -> Using 2nd Account!",
-    "message": "Account #1 Limit/Issue (Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cooki). Switching to 2nd Account Cookies automatically!",
-    "status": "success",
-    "time_str": "12:13 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794077006.3733425
-  },
-  {
-    "id": "notif_1794077004076",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop.",
-    "status": "error",
-    "time_str": "12:13 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794077004.0768626
-  },
-  {
-    "id": "notif_1794076983869",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:13 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794076983.8691604
-  },
-  {
-    "id": "notif_1794076938804",
+    "id": "notif_1794076976583",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "12:12 AM",
     "date_str": "08 Nov 2026",
-    "timestamp": 1794076938.8045669
+    "timestamp": 1794076976.5838447
   },
   {
     "id": "notif_1794076917134",
@@ -798,5 +748,55 @@
     "time_str": "11:20 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794073850.001443
+  },
+  {
+    "id": "notif_1794073785129",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "11:19 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794073785.129504
+  },
+  {
+    "id": "notif_1794073715988",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "11:18 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794073715.988284
+  },
+  {
+    "id": "notif_1794073640584",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "11:17 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794073640.5848856
+  },
+  {
+    "id": "notif_1794073618373",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "11:16 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794073618.3737948
+  },
+  {
+    "id": "notif_1794073596523",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "11:16 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794073596.5238316
   }
 ]
