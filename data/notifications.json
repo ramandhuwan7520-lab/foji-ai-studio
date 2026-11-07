@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794060014071",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "07:30 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794060014.0717733
+  },
+  {
     "id": "notif_1794054607051",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
