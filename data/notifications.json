@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794060468351",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "07:37 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794060468.3514106
+  },
+  {
     "id": "notif_1794060446640",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
