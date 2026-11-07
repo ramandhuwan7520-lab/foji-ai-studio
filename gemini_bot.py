@@ -944,8 +944,12 @@ def fill_gemini_prompt_box_and_verify(driver, prompt_text):
     return False
 
 
-def inject_character_files_into_gemini(driver, foji_img, fojan_img):
+def inject_character_files_into_gemini(driver, foji_img, fojan_img=None):
     install_file_dialog_blocker(driver)
+    valid_paths = [os.path.abspath(p) for p in [foji_img, fojan_img] if p and os.path.exists(str(p))]
+    cast_desc = "BOTH Foji Makra & Fojan Meera" if len(valid_paths) > 1 else "ONLY Foji Makra (Solo Army Scene)"
+    update_3d_telemetry(4, "Stage 4: Uploading Characters", f"Injecting {cast_desc} into Gemini...", "active", 55)
+
     file_inputs = []
     for _ in range(30):
         file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type=file]")
@@ -954,27 +958,28 @@ def inject_character_files_into_gemini(driver, foji_img, fojan_img):
         time.sleep(0.25)
 
     uploaded = False
-    if file_inputs:
+    if file_inputs and valid_paths:
         target_inp = file_inputs[-1]
         try:
-            target_inp.send_keys(f"{foji_img}\n{fojan_img}")
-            print("   📸 [Step #10] Injected BOTH Foji & Fojan character images via <input type=file>!")
+            target_inp.send_keys("\n".join(valid_paths))
+            print(f"   📸 [Step #10] Injected {cast_desc} via <input type=file>!")
             uploaded = True
         except Exception:
             try:
-                target_inp.send_keys(foji_img)
+                target_inp.send_keys(valid_paths[0])
                 time.sleep(1.8)
-                inputs_2 = driver.find_elements(By.CSS_SELECTOR, "input[type=file]")
-                if inputs_2:
-                    inputs_2[-1].send_keys(fojan_img)
-                print("   📸 [Step #10] Injected Foji & Fojan sequentially via <input type=file>!")
+                if len(valid_paths) > 1:
+                    inputs_2 = driver.find_elements(By.CSS_SELECTOR, "input[type=file]")
+                    if inputs_2:
+                        inputs_2[-1].send_keys(valid_paths[1])
+                print(f"   📸 [Step #10] Injected {cast_desc} sequentially via <input type=file>!")
                 uploaded = True
             except Exception:
                 pass
 
-    if not uploaded:
+    if not uploaded and valid_paths:
         files_payload = []
-        for p in [foji_img, fojan_img]:
+        for p in valid_paths:
             with open(p, "rb") as f:
                 b64 = base64.b64encode(f.read()).decode("utf-8")
             ext = os.path.splitext(p)[1].lower().lstrip(".")
@@ -992,25 +997,12 @@ def inject_character_files_into_gemini(driver, foji_img, fojan_img):
             for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
             dt.items.add(new File([new Uint8Array(byteNumbers)], item.name, { type: item.mime, lastModified: Date.now() }));
         }
-        target.dispatchEvent(new ClipboardEvent('paste', { bubbles: true, cancelable: true, clipboardData: dt }));
-        return true;
+        target.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
         """
         driver.execute_script(js_paste, files_payload)
+        print(f"   📸 [Step #10] Injected {cast_desc} via Clipboard DataTransfer fallback!")
 
-    time.sleep(2.5)
-    while True:
-        uploading = driver.execute_script(
-            """
-            const spinners = Array.from(document.querySelectorAll('mat-spinner, mat-progress-spinner, [role="progressbar"]'))
-                .filter(e => e.offsetParent !== null && e.getBoundingClientRect().top > window.innerHeight * 0.45);
-            return spinners.length > 0;
-            """
-        )
-        if not uploading:
-            break
-        time.sleep(0.5)
-    print("   ✅ [Step #10] Both Character Images Uploaded & Ready!")
-    return True
+    time.sleep(3.5)
 
 
 def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_prompt):
@@ -1514,7 +1506,7 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
     with open("data/history.json", "r", encoding="utf-8") as f:
         history_data = json.load(f)
 
-    update_3d_telemetry(1, "Stage 1: AI Episodic Script", "Generating fresh connected script from .env API...", "active", 12)
+    update_3d_telemetry(1, "Stage 1: AI Episodic Script", "Generating fresh connected script & wardrobe...", "active", 12)
 
     if not pending_pkg:
         import foji_universe_director as _fud
@@ -1523,10 +1515,12 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
 
     rotate_track_and_script_in_history(pending_pkg)
     video_num = pending_pkg.get("video_id", f"{int(time.time())}")
+    include_meera = pending_pkg.get("include_meera", True)
+    meera_outfit = pending_pkg.get("meera_outfit", "Fresh Haryanvi Suit")
 
     foji_img = find_image("foji")
-    fojan_img = find_image("fojan")
-    if not foji_img or not fojan_img:
+    fojan_img = find_image("fojan") if include_meera else None
+    if not foji_img or (include_meera and not fojan_img):
         err = "Character photos missing in assets/characters."
         update_3d_telemetry(1, "Assets Missing", err, "error", 0)
         push_app_notification("error", "Assets Missing", err, "error")
@@ -1539,8 +1533,13 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
     output_video_path = os.path.join(raw_dir, unique_fname)
     base_video_prompt = pending_pkg["gemini_video_prompt"]
 
-    print(f"🚀 [Stage 2/8] Launching Pure-Cookie 13-Step Gemini Engine for: {pending_pkg.get('emotion_name')} ({unique_fname})...")
-    update_3d_telemetry(2, "Stage 2: Cookie Sign-In & Flash", "Logging in via Pure Cookies & selecting Flash...", "active", 25)
+    cast_info = f"Makra + Meera ({meera_outfit[:38]}...)" if include_meera else "Makra Only (Solo Army Scene)"
+    slot_num = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+
+    print(f"🚀 [Stage 2/8] Launching Gemini Engine (Account #{slot_num}) | Cast: {cast_info} | File: {unique_fname}")
+    update_3d_telemetry(2, f"Stage 2: Cookie Sign-In (Account #{slot_num})", f"Logging into Gemini & preparing {cast_info}...", "active", 25)
+    push_app_notification("info", f"🎬 Step 2: Gemini Login (Acc #{slot_num})", f"Episode: {pending_pkg.get('emotion_name')} | Cast: {cast_info}", "info")
+
     driver, chrome_proc = launch_resilient_chrome_session(raw_dir, start_blank=True)
 
     try:
@@ -1550,10 +1549,11 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
         initial_status = get_gemini_reply_and_video_status(driver, set())
         ignored_video_urls = set(initial_status.get("new_video_urls", []))
 
-        update_3d_telemetry(3, "Stage 3: Create Video & 9:16", "Selecting Create Video + Portrait (9:16) + Uploading Characters...", "active", 45)
+        update_3d_telemetry(3, "Stage 3: Create Video & 9:16 Portrait", f"Selecting Create Video + 9:16 + Uploading ({cast_info})...", "active", 45)
         execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, base_video_prompt)
 
-        update_3d_telemetry(5, "Stage 5: Prompt Injected & Sent", "Script submitted to Gemini! Starting 3D Veo Render...", "active", 68)
+        update_3d_telemetry(5, "Stage 5: Prompt Sent -> Rendering Started!", f"Gemini Veo is rendering {unique_fname}...", "active", 68)
+        push_app_notification("info", "🚀 Step 5: 3D Video Rendering Started!", f"{pending_pkg.get('emotion_name')} is now rendering in Gemini!", "info")
         time.sleep(4)
         snap_start = "data/gemini_started.png"
         try:
@@ -1561,12 +1561,15 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             sync_file_to_github(snap_start, "Update live Gemini started screenshot")
             send_telegram_photo(
                 snap_start,
-                f"🎬 *Google Gemini Video (Portrait 9:16) Started!*\n📌 *{pending_pkg.get('emotion_name')}*\n🗣️ _{pending_pkg.get('dialogue_line_1_hinglish')}_"
+                f"🎬 *Google Gemini Video (Portrait 9:16) Started!*\n"
+                f"📌 *{pending_pkg.get('emotion_name')}*\n"
+                f"👥 *Cast:* `{cast_info}`\n"
+                f"🗣️ _{pending_pkg.get('dialogue_line_1_hinglish')}_"
             )
         except Exception:
             pass
 
-        update_3d_telemetry(6, "Stage 6: 3D Video Rendering", "Gemini is rendering your 9:16 video (Zero Timeout)...", "active", 82)
+        update_3d_telemetry(6, "Stage 6: 3D Video Rendering (0.1 min)", f"Rendering {unique_fname} in Gemini (Zero Timeout)...", "active", 75)
         video_saved = False
         gen_start_t = time.time()
         idle_without_video_ticks = 0
@@ -1611,7 +1614,8 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
 
             if dl_btn is not None or (len(new_vids) > 0 and not is_gen):
                 print("✅ [Stage 7/8] Video Ready on Screen! Clicking 'Download video'...")
-                update_3d_telemetry(7, "Stage 7: Downloading MP4", "Video rendered! Clicking Download button...", "active", 94)
+                update_3d_telemetry(7, "Stage 7: Video Rendered! Downloading MP4...", f"Saving {unique_fname} & pushing to Telegram/Frontend...", "active", 94)
+                push_app_notification("info", "📥 Step 7: Video Rendered! Downloading...", f"Downloading {unique_fname} from Gemini...", "info")
                 time.sleep(2.5)
                 vid_url = new_vids[-1] if (new_vids and new_vids[-1] != "DOM_VIDEO_ELEMENT_VISIBLE") else ""
                 if execute_step13_download_video(driver, dl_btn, vid_url, raw_dir, existing_mp4s, output_video_path):
@@ -1631,20 +1635,56 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             else:
                 idle_without_video_ticks = 0
 
-            if tick % 4 == 0:
-                prog = min(92, 75 + int(tick / 6))
-                update_3d_telemetry(6, "Stage 6: 3D Video Rendering", f"Rendering in Gemini... ({elapsed_mins} min elapsed)", "active", prog)
+            # Push live telemetry every 12 seconds so Frontend progress bar moves continuously!
+            if tick % 3 == 0:
+                prog = min(92, 74 + int(tick / 4))
+                update_3d_telemetry(
+                    6,
+                    f"Stage 6: Rendering 3D Video ({elapsed_mins} min)",
+                    f"Gemini Veo rendering {unique_fname}... ({elapsed_sec}s elapsed)",
+                    "active",
+                    prog
+                )
 
         if video_saved and is_valid_mp4(output_video_path):
             print(f"🎉 SUCCESS! Gemini 9:16 Video Saved at {output_video_path}")
             bname = os.path.basename(output_video_path)
             rel_vid_path = f"output/raw_videos/{bname}"
 
-            # 1. Upload the unique MP4 file to GitHub first so Render Frontend can stream it!
+            # 1. Send the MP4 Video directly to Telegram Bot with Approve/Schedule Caption!
+            tg_caption = (
+                f"🎉 *New 3D Foji Reel Ready!*\n"
+                f"🎬 *Episode:* {pending_pkg.get('emotion_name')}\n"
+                f"👥 *Cast:* `{cast_info}`\n"
+                f"📁 *File:* `{bname}`\n\n"
+                f"🗣️ _{pending_pkg.get('dialogue_line_1_hinglish')}_\n\n"
+                f"✅ Video Frontend Vault & Ready Queue mein bhi aa gayi hai!"
+            )
+            try:
+                print(f"📲 Sending completed MP4 ({bname}) to Telegram...")
+                if "send_telegram_video" in globals():
+                    send_telegram_video(output_video_path, tg_caption)
+                else:
+                    # Direct Telegram sendVideo API call so video ALWAYS arrives on Telegram!
+                    tg_tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
+                    tg_cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+                    if tg_tok and tg_cid:
+                        with open(output_video_path, "rb") as vf_tg:
+                            requests.post(
+                                f"https://api.telegram.org/bot{tg_tok}/sendVideo",
+                                data={"chat_id": tg_cid, "caption": tg_caption, "parse_mode": "Markdown"},
+                                files={"video": (bname, vf_tg, "video/mp4")},
+                                timeout=90
+                            )
+                print("✅ Video successfully delivered to Telegram!")
+            except Exception as tg_e:
+                print(f"⚠️ Telegram video send warning: {tg_e}")
+
+            # 2. Upload the unique MP4 file to GitHub so Render/Local Frontend can stream it immediately!
             print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Vault...")
             sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {bname} for Frontend")
 
-            # 2. Record completed video & advance Part Number in history.json, episode_tracker.json & scheduled_queue.json!
+            # 3. Record completed video & advance Part Number in history.json, episode_tracker.json & scheduled_queue.json!
             try:
                 with open("data/history.json", "r", encoding="utf-8") as f:
                     h_now = json.load(f)
@@ -1666,8 +1706,8 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             except Exception:
                 pass
 
-            update_3d_telemetry(8, "Stage 8: Video Ready in Studio!", f"Video ({bname}) ready on Frontend & Telegram!", "completed", 100)
-            push_app_notification("success", "🎉 New 3D Reel Ready!", f"{pending_pkg.get('emotion_name')} ({bname}) is ready in Preview & Vault!", "success")
+            update_3d_telemetry(8, "Stage 8: Video Ready on Telegram & Frontend!", f"{bname} delivered to Telegram & Studio Vault!", "completed", 100)
+            push_app_notification("success", "🎉 New 3D Reel Ready!", f"{pending_pkg.get('emotion_name')} ({bname}) is live on Telegram & Frontend Vault!", "success")
             return output_video_path
 
     finally:

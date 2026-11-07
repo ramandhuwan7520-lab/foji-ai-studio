@@ -1,4 +1,4 @@
-import os
+﻿import os
 import re
 import json
 import time
@@ -323,6 +323,22 @@ def _parse_ai_json(raw_text):
     return None
 
 
+MEERA_WARDROBE_CATALOG = [
+    "Royal Crimson Red Punjabi Salwar Kameez with golden Phulkari dupatta and jhumkas",
+    "Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair",
+    "Emerald Green Velvet Haryanvi Daman-Kurti with silver oxidized jewelry and sheer chunni",
+    "Pastel Peach & Mint Chikankari Anarkali Suit with pearl earrings and flowing scarf",
+    "Deep Royal Blue Silk Patiala Suit with heavy Zari border dupatta and glass bangles",
+    "Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and parandi",
+    "Ivory White & Gold Festive Sharara Suit with colorful Leheriya dupatta",
+    "Maroon & Teal Embroidered Festive Lehenga Choli with traditional matha-patti",
+    "Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas",
+    "Turquoise Cyan Cotton Village Suit with bright orange phulkari chunni",
+    "Sunset Orange & Red Bridal-Style Heavy Suit with golden kaleere and nose ring (nath)",
+    "Wine Berry Silk Kurti with cream Banarasi dupatta and traditional kundan earrings"
+]
+
+
 def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, used_dialogues, custom_idea=""):
     all_keys = _get_all_live_gemini_api_keys()
     if not all_keys:
@@ -332,14 +348,24 @@ def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, us
     user_direction = f"\nDIRECTOR SPECIAL TWIST FOR PART #{ep_num}: {custom_idea}\n" if custom_idea.strip() else ""
     unique_nonce = f"{int(time.time()*1000)}-part{ep_num}"
 
+    # Pick a guaranteed different outfit for Meera based on episode number + history count
+    dress_idx = (ep_num + len(used_dialogues)) % len(MEERA_WARDROBE_CATALOG)
+    assigned_meera_dress = MEERA_WARDROBE_CATALOG[dress_idx]
+
+    # Decide default character requirement by track
+    solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti"}
+    default_needs_meera = (track_id not in solo_army_tracks)
+
     system_prompt = f"""You are the Lead Showrunner & Scriptwriter for 'Foji AI Studio' (Seed: {unique_nonce}), a 3D Pixar-style Indian Army series starring:
 - Makra (Foji): Young, energetic Haryanvi Indian Army soldier (Agniveer).
-- Meera (Fojan): Makra's devoted, expressive village love interest.
+- Meera (Fojan): Makra's devoted village love interest (ONLY include Meera when the scene genuinely involves romance, home leave, railway farewell, letter/video call, or village memory. Do NOT force Meera into pure Army parade/ragda/barrack scenes!).
 - Ustad & Unit Brothers: Strict moustached drill instructor and funny coursemates.
 
 SERIES TRACK: {track['name']} ({track['badge']})
 TRACK BRIEF: {track['theme_brief']}
 CURRENT EPISODE PART TO WRITE: Part #{ep_num} (Continue the story forward from Part #{max(1, ep_num - 1)}!)
+DEFAULT INCLUDE MEERA IN THIS TRACK: {"YES (Both Makra & Meera)" if default_needs_meera else "NO (Only Foji Makra & Army Ustad/Brothers unless custom twist mentions Meera)"}
+IF MEERA APPEARS, HER MANDATORY NEW OUTFIT FOR THIS VIDEO: "{assigned_meera_dress}" (NEVER use her old dress!)
 
 STORY CONTINUITY FROM PAST VIDEOS:
 {continuity_context}
@@ -347,10 +373,13 @@ STORY CONTINUITY FROM PAST VIDEOS:
 MANDATORY RULES:
 1. Write 100% original, never-before-seen content for Part #{ep_num}. Move the plot forward to a new incident/location!
 2. NEVER repeat or paraphrase any of these past dialogues: [{avoid_sample}]
-3. Output ONLY a valid JSON object (no markdown fences) with these exact keys:
+3. If Meera is in the scene, explicitly describe her wearing "{assigned_meera_dress}" in `visual_scene_description`. If the scene is pure Army training/ragda/barrack comedy without Meera, set `"include_meera": false` and focus 100% on Foji Makra!
+4. Output ONLY a valid JSON object (no markdown fences) with these exact keys:
 {{
   "episode_title": "Part {ep_num}: [Short Catchy Hinglish Title]",
-  "visual_scene_description": "Detailed 3D Pixar-style 9:16 vertical scene description: camera movement, lighting, Indian Army uniform/environment details, character facial expressions and physical action.",
+  "include_meera": {"true" if default_needs_meera else "false"},
+  "meera_outfit": "{assigned_meera_dress}",
+  "visual_scene_description": "Detailed 3D Pixar-style 9:16 vertical scene description: camera movement, lighting, Indian Army uniform/environment details, exact outfits, character facial expressions and physical action.",
   "dialogue_hinglish": "1 powerful, emotional or hilarious spoken Hinglish dialogue line (16 to 28 words) with authentic Haryanvi/Fauji soul.",
   "shayari_hindi": "2-line original goosebump-inducing or witty Hindi shayari matching this exact scene.",
   "hashtags": "6 viral Instagram hashtags"
@@ -383,7 +412,8 @@ MANDATORY RULES:
                         cand_txt = r.json()["choices"][0]["message"]["content"]
                         parsed = _parse_ai_json(cand_txt)
                         if parsed:
-                            print(f"? [AI Scriptwriter] Script generated via {m_name}!")
+                            parsed.setdefault("include_meera", default_needs_meera)
+                            parsed.setdefault("meera_outfit", assigned_meera_dress)
                             return parsed
                     else:
                         error_log.append(f"{m_name}: HTTP {r.status_code}")
@@ -391,7 +421,6 @@ MANDATORY RULES:
                     error_log.append(f"{m_name}: {e}")
             continue
 
-        # Query ONLY real models supported by this exact Google API key!
         discovered = []
         try:
             m_resp = requests.get(f"{base_host}/v1beta/models?key={api_key}", timeout=10)
@@ -408,7 +437,6 @@ MANDATORY RULES:
         except Exception as e:
             error_log.append(f"ListModels error: {e}")
 
-        # Preferred exact order of real models from your key
         preferred_order = [
             "gemini-3-flash-preview",
             "gemini-2.5-flash-lite",
@@ -429,7 +457,7 @@ MANDATORY RULES:
             if dm not in ordered_models:
                 ordered_models.append(dm)
 
-        print(f"?? [Trying Verified Active Models]: {', '.join(ordered_models[:8])}")
+        print(f"🔎 [Trying Verified Active Models]: {', '.join(ordered_models[:8])}")
 
         for model_name in ordered_models:
             try:
@@ -444,13 +472,15 @@ MANDATORY RULES:
                     cand_txt = "".join([p.get("text", "") for p in parts if "text" in p])
                     parsed = _parse_ai_json(cand_txt)
                     if parsed:
-                        print(f"? [AI Scriptwriter] Script generated using live model: {model_name}")
+                        print(f"✅ [AI Scriptwriter] Script generated using live model: {model_name}")
+                        parsed.setdefault("include_meera", default_needs_meera)
+                        parsed.setdefault("meera_outfit", assigned_meera_dress)
                         return parsed
                     else:
-                        error_log.append(f"{model_name}: JSON parse failed ({cand_txt[:80]})")
+                        error_log.append(f"{model_name}: JSON parse failed")
                 else:
                     short_msg = r.text[:140].replace("\n", " ")
-                    print(f"?? [{model_name}] HTTP {r.status_code} -> trying next active model...")
+                    print(f"⚠️ [{model_name}] HTTP {r.status_code} -> trying next active model...")
                     error_log.append(f"{model_name}: HTTP {r.status_code} ({short_msg})")
             except Exception as e:
                 error_log.append(f"{model_name}: {e}")
@@ -459,7 +489,6 @@ MANDATORY RULES:
 
 
 def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_idea="", is_preview=False):
-    # Sync latest remote tracker & history before choosing next part!
     if not is_preview:
         try:
             rem_tr = _fetch_github_json_zero_cache(EPISODE_TRACKER_FILE)
@@ -522,13 +551,38 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     shayari = ai_story.get("shayari_hindi", "").strip()
     hashtags = ai_story.get("hashtags", "#indianarmy #faujilife #agniveer #fojifojan #armyreels #desifauji").strip()
 
-    # Generate a 100% UNIQUE video_id (Timestamp + Part) so 2:30 AM batch of 3 videos NEVER overwrite each other!
+    # Smart Character Cast Decision: Should Meera be uploaded in this video or ONLY Foji Makra?
+    solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti"}
+    raw_inc = ai_story.get("include_meera", chosen_key not in solo_army_tracks)
+    if isinstance(raw_inc, str):
+        include_meera = raw_inc.strip().lower() in ("true", "yes", "1")
+    else:
+        include_meera = bool(raw_inc)
+    # If Meera's name is explicitly in the dialogue/scene, include her; if it's a pure solo track without her name, keep solo Makra!
+    if chosen_key in solo_army_tracks and "meera" not in (visual_scene + " " + dialogue_line).lower():
+        include_meera = False
+
+    dress_idx = (ep_num + len(used_dialogues)) % len(MEERA_WARDROBE_CATALOG)
+    meera_outfit = ai_story.get("meera_outfit") or MEERA_WARDROBE_CATALOG[dress_idx]
+
     unique_vid_id = f"{datetime.now(IST).strftime('%m%d_%H%M%S')}_p{ep_num}"
     unique_mp4_name = f"raw_video_{unique_vid_id}.mp4"
 
+    if include_meera:
+        char_instruction = (
+            f"Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images "
+            f"(Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). "
+            f"IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! "
+            f"In this episode, Meera MUST wear a brand-new outfit: {meera_outfit}. "
+        )
+    else:
+        char_instruction = (
+            f"Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image "
+            f"(Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). "
+        )
+
     gemini_video_prompt = (
-        f"Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images "
-        f"(Image 1: Indian Army soldier Makra in uniform/training gear; Image 2: Fojan Meera). "
+        f"{char_instruction}"
         f"EPISODE: {track['name']} - {ep_title}. "
         f"SCENE & ACTION: {visual_scene} "
         f"LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"{dialogue_line}\" "
@@ -549,6 +603,8 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
         "track_id": chosen_key,
         "track_name": track["name"],
         "part_number": ep_num,
+        "include_meera": include_meera,
+        "meera_outfit": meera_outfit if include_meera else "N/A (Makra Solo Army Scene)",
         "emotion_name": f"{track['name']} — {ep_title}",
         "scene_summary": visual_scene,
         "dialogue_line_1_hinglish": dialogue_line,

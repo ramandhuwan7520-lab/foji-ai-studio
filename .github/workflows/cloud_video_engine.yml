@@ -25,6 +25,8 @@ env:
 jobs:
   generate_foji_reel:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     timeout-minutes: 45
 
     steps:
