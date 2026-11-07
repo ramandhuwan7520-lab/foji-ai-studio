@@ -1,23 +1,13 @@
 [
   {
-    "id": "notif_1794063332226",
+    "id": "notif_1794063348506",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "08:25 PM",
     "date_str": "07 Nov 2026",
-    "timestamp": 1794063332.226283
-  },
-  {
-    "id": "notif_1794063310506",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "08:25 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794063310.5063066
+    "timestamp": 1794063348.506068
   },
   {
     "id": "notif_1794063288313",
@@ -798,5 +788,15 @@
     "time_str": "07:26 PM",
     "date_str": "27 Oct 2026",
     "timestamp": 1793109399.4986186
+  },
+  {
+    "id": "notif_1793108868126_767",
+    "type": "generated",
+    "title": "New Reel Ready",
+    "message": "Foji Nok-Jhok & Chai • Part 1 is ready.",
+    "status": "success",
+    "time_str": "07:17 PM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793108868.1266243
   }
 ]
