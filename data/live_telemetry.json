@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (15.5 min)",
-  "sub_detail": "Gemini Veo rendering raw_video_1108_023053_p1.mp4... (928s elapsed)",
+  "step_title": "Stage 6: Rendering 3D Video (15.4 min)",
+  "sub_detail": "Gemini Veo rendering raw_video_1108_023112_p1.mp4... (927s elapsed)",
   "status": "active",
   "progress": 92,
-  "updated_at": "02:48:26 AM",
-  "epoch": 1794086306.1280935
+  "updated_at": "02:48:32 AM",
+  "epoch": 1794086312.6227512
 }
