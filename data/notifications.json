@@ -1,23 +1,13 @@
 [
   {
-    "id": "notif_1794063266623",
+    "id": "notif_1794063288313",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "08:24 PM",
     "date_str": "07 Nov 2026",
-    "timestamp": 1794063266.6235564
-  },
-  {
-    "id": "notif_1794063244569",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "08:24 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794063244.5695655
+    "timestamp": 1794063288.3131318
   },
   {
     "id": "notif_1794063222448",
@@ -798,5 +788,15 @@
     "time_str": "07:17 PM",
     "date_str": "27 Oct 2026",
     "timestamp": 1793108868.1266243
+  },
+  {
+    "id": "notif_1793107607460_786",
+    "type": "generated",
+    "title": "New Reel Ready",
+    "message": "Chithi & Homecoming • Part 1 is ready.",
+    "status": "success",
+    "time_str": "06:56 PM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793107607.4608822
   }
 ]
