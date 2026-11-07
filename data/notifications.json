@@ -1,33 +1,13 @@
 [
   {
-    "id": "notif_1794063031552",
+    "id": "notif_1794063040338",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "08:20 PM",
     "date_str": "07 Nov 2026",
-    "timestamp": 1794063031.5526266
-  },
-  {
-    "id": "notif_1794063009918",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "08:20 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794063009.9182587
-  },
-  {
-    "id": "notif_1794062988210",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "08:19 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794062988.210205
+    "timestamp": 1794063040.3388052
   },
   {
     "id": "notif_1794062965953",
@@ -798,5 +778,25 @@
     "time_str": "09:52 AM",
     "date_str": "27 Oct 2026",
     "timestamp": 1793074979.8100219
+  },
+  {
+    "id": "notif_1793074852221",
+    "type": "error",
+    "title": "Error at Step #2: Project Workspace",
+    "message": "Prompt box ('What do you want to create?') did not appear.",
+    "status": "error",
+    "time_str": "09:50 AM",
+    "date_str": "27 Oct 2026",
+    "timestamp": 1793074852.2219787
+  },
+  {
+    "id": "notif_1792561439974",
+    "type": "error",
+    "title": "Gemini Response",
+    "message": "I can create more videos as soon as your limit resets. Check your usage in Settings.",
+    "status": "error",
+    "time_str": "11:13 AM",
+    "date_str": "21 Oct 2026",
+    "timestamp": 1792561439.9749103
   }
 ]
