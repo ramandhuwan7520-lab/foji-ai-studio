@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Stage 2: Cloud Engine Dispatched",
-  "sub_detail": "GitHub Actions Chrome Worker is starting Cookie Login...",
+  "step_num": 6,
+  "step_title": "Stage 6: Rendering 3D Video (39.3 min)",
+  "sub_detail": "Gemini Veo rendering raw_video_1107_180103_p2.mp4... (2358s elapsed)",
   "status": "active",
-  "progress": 24,
-  "updated_at": "06:00:32 PM",
-  "epoch": 1794054632.5854263
+  "progress": 92,
+  "updated_at": "06:45:06 PM",
+  "epoch": 1794057306.4966257
 }
