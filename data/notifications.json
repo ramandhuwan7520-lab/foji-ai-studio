@@ -1,13 +1,13 @@
 [
   {
-    "id": "notif_1794076998695",
+    "id": "notif_1794077004076",
     "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
+    "title": "Gemini Cookie Expired",
+    "message": "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop.",
     "status": "error",
     "time_str": "12:13 AM",
     "date_str": "08 Nov 2026",
-    "timestamp": 1794076998.6952624
+    "timestamp": 1794077004.0768626
   },
   {
     "id": "notif_1794076983869",
