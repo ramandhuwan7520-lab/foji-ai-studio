@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794063244569",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "08:24 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794063244.5695655
+  },
+  {
     "id": "notif_1794063222448",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "06:56 PM",
     "date_str": "27 Oct 2026",
     "timestamp": 1793107607.4608822
-  },
-  {
-    "id": "notif_1793102547348",
-    "type": "error",
-    "title": "Error at Step #3: Open Settings Menu",
-    "message": "Settings popup did not open after multiple clicks.",
-    "status": "error",
-    "time_str": "05:32 PM",
-    "date_str": "27 Oct 2026",
-    "timestamp": 1793102547.3489544
   }
 ]
