@@ -1,13 +1,23 @@
 [
   {
-    "id": "notif_1794076976583",
+    "id": "notif_1794076983869",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:13 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794076983.8691604
+  },
+  {
+    "id": "notif_1794076938804",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "12:12 AM",
     "date_str": "08 Nov 2026",
-    "timestamp": 1794076976.5838447
+    "timestamp": 1794076938.8045669
   },
   {
     "id": "notif_1794076917134",
@@ -788,15 +798,5 @@
     "time_str": "11:16 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794073596.5238316
-  },
-  {
-    "id": "notif_1794073537347",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "11:15 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794073537.3476627
   }
 ]
