@@ -274,6 +274,15 @@ def _get_all_live_gemini_api_keys():
                                 keys.append(v_clean)
         except Exception:
             pass
+    if not keys and os.path.exists("data/studio_key_vault.json"):
+        try:
+            with open("data/studio_key_vault.json", "r", encoding="utf-8") as vf:
+                for b64k in json.load(vf).get("vault", []):
+                    dec = _b64.b64decode(b64k.encode("utf-8")).decode("utf-8").strip()
+                    if len(dec) > 8 and dec not in keys:
+                        keys.append(dec)
+        except Exception:
+            pass
     return keys
 
 

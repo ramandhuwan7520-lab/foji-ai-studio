@@ -1,88 +1,84 @@
-name: AutoReels 3D Google Gemini Cloud Engine
+name: Foji 3D Cloud Studio Worker
 
 on:
   workflow_dispatch:
     inputs:
-      action_type:
-        description: "Action Type (generate_only / generate_and_publish)"
+      batch_count:
+        description: 'Number of videos to generate'
         required: false
-        default: "generate_only"
-      custom_topic:
-        description: "Optional Custom Topic or REGEN_ID"
+        default: '1'
+      track_id:
+        description: 'Series Track ID'
         required: false
-        default: ""
+        default: ''
+      custom_idea:
+        description: 'Custom Director Twist'
+        required: false
+        default: ''
   schedule:
-    # 1. Night Batch at 02:30 AM IST (21:00 UTC previous day) -> Generates all 3 videos one-by-one
-    - cron: "0 21 * * *"
-    # 2. Morning Slot: 06:00 AM IST Fallback Gen (00:30 UTC) & 06:30 AM IST Post (01:00 UTC)
-    - cron: "30 0 * * *"
-    - cron: "0 1 * * *"
-    # 3. Afternoon Slot: 12:00 PM IST Fallback Gen (06:30 UTC) & 12:30 PM IST Post (07:00 UTC)
-    - cron: "30 6 * * *"
-    - cron: "0 7 * * *"
-    # 4. Evening Slot: 06:00 PM IST Fallback Gen (12:30 UTC) & 06:30 PM IST Post (13:00 UTC)
-    - cron: "30 12 * * *"
-    - cron: "0 13 * * *"
-    # Safety check
-    - cron: "15,45 * * * *"
+    - cron: '0 21 * * *'
 
-permissions:
-  contents: write
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  PYTHONUNBUFFERED: "1"
 
 jobs:
-  build_and_post_reel:
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
+  generate_foji_reel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
-      - name: Set up Python 3.11
+      - name: Set up Python 3.11 (Cached & Fast)
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-          cache: "pip"
+          python-version: '3.11'
+          cache: 'pip'
 
-      - name: Install Google Chrome & Setup Xvfb (Ubuntu 24.04 Ready)
+      - name: Fast Verify Pre-Installed Chrome & Xvfb (Takes 5 Seconds instead of 1 Hour!)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget xvfb fonts-liberation
-          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt-get install -y ./google-chrome-stable_current_amd64.deb || sudo apt-get install -f -y
-          sudo rm -f /usr/bin/chromedriver /usr/local/bin/chromedriver || true
+          if ! command -v xvfb-run &> /dev/null; then
+            sudo apt-get update -o Acquire::Retries=2 && sudo apt-get install -y --no-install-recommends xvfb ffmpeg
+          fi
+          google-chrome --version
+          ffmpeg -version | head -n 1
 
       - name: Install Python Dependencies
         run: |
-          pip install --upgrade pip
-          pip install --upgrade flask requests python-dotenv selenium instagrapi pillow
+          pip install --upgrade pip -q
+          if [ -f requirements.txt ]; then pip install -r requirements.txt -q; fi
+          pip install requests selenium python-dotenv instagrapi imageio-ffmpeg flask -q
 
-      - name: Execute Google Gemini 13-Step Engine under Virtual Display
+      - name: Run 13-Step Gemini 3D Video Pipeline Inside Virtual Display
         env:
-          CLOUD_EVENT_NAME: ${{ github.event_name }}
-          CLOUD_ACTION_TYPE: ${{ github.event.inputs.action_type }}
-          CLOUD_CUSTOM_TOPIC: ${{ github.event.inputs.custom_topic }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # GEMINI_COOKIES_JSON: ${{ secrets.GEMINI_COOKIES_JSON }}
-          GOOGLE_PASSWORD: ${{ secrets.GOOGLE_PASSWORD }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_COOKIES_JSON: ${{ secrets.GEMINI_COOKIES_JSON }}
+          GEMINI_COOKIES_JSON_2: ${{ secrets.GEMINI_COOKIES_JSON_2 }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          INSTAGRAM_USERNAME: ${{ secrets.INSTAGRAM_USERNAME }}
-          INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
-          INSTAGRAM_SESSIONID: ${{ secrets.INSTAGRAM_SESSIONID }}
-          GITHUB_PAT: ${{ secrets.GH_TOKEN || secrets.GITHUB_PAT || github.token }}
-          GITHUB_REPO: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT || secrets.GH_TOKEN || github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_PAT || secrets.GH_TOKEN || github.token }}
+          IG_USERNAME: ${{ secrets.IG_USERNAME }}
+          IG_PASSWORD: ${{ secrets.IG_PASSWORD }}
+          IG_SESSION_JSON: ${{ secrets.IG_SESSION_JSON }}
+          BATCH_COUNT: ${{ github.event.inputs.batch_count || '1' }}
+          FORCE_TRACK_ID: ${{ github.event.inputs.track_id || '' }}
+          CUSTOM_IDEA: ${{ github.event.inputs.custom_idea || '' }}
         run: |
-          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" python cloud_worker.py
-
-      - name: Commit & Sync Generated Videos and State back to Repo
-        run: |
-          git config user.name "AutoReels3D-Cloud"
-          git config user.email "cloud@autoreels3d.ai"
-          git add -f data/* output/raw_videos/*.mp4 || true
-          git diff --staged --quiet || git commit -m "Sync cloud generated Gemini reel & state"
-          git pull --rebase origin main || true
-          git push origin HEAD:main --force || true
+          xvfb-run -a --server-args="-screen 0 1920x1080x24 -ac +extension GLX +render -noreset" python -c "
+          import os, foji_universe_director as fud, gemini_bot
+          cnt = max(1, min(5, int(os.getenv('BATCH_COUNT', '1') or '1')))
+          tid = os.getenv('FORCE_TRACK_ID', '').strip() or None
+          idea = os.getenv('CUSTOM_IDEA', '').strip()
+          for i in range(cnt):
+              print(f'=== Starting Video {i+1}/{cnt} ===')
+              pkg = fud.build_real_foji_universe_package(force_track_id=tid, custom_idea=(idea if i==0 else ''), is_preview=False)
+              gemini_bot.generate_video_in_gemini(pending_pkg=pkg)
+          "
