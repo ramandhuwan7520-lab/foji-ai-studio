@@ -1,43 +1,43 @@
 [
   {
-    "id": "notif_1794077174352",
+    "id": "notif_1794077191930",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "12:16 AM",
     "date_str": "08 Nov 2026",
-    "timestamp": 1794077174.3527422
+    "timestamp": 1794077191.9303281
   },
   {
-    "id": "notif_1794077152356",
+    "id": "notif_1794077111560",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "12:15 AM",
     "date_str": "08 Nov 2026",
-    "timestamp": 1794077152.3568645
+    "timestamp": 1794077111.5604773
   },
   {
-    "id": "notif_1794077136312",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad (raw_video_1108_001301_p2.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "12:15 AM",
+    "id": "notif_1794077089054",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "12:14 AM",
     "date_str": "08 Nov 2026",
-    "timestamp": 1794077136.3129053
+    "timestamp": 1794077089.054905
   },
   {
-    "id": "notif_1794077118769",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1108_001301_p2.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "12:15 AM",
+    "id": "notif_1794077067374",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "12:14 AM",
     "date_str": "08 Nov 2026",
-    "timestamp": 1794077118.7694519
+    "timestamp": 1794077067.3744042
   },
   {
     "id": "notif_1794077057139",
