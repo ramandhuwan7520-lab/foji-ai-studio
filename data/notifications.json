@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794063116213",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "name 'shutil' is not defined",
+    "status": "error",
+    "time_str": "08:21 PM",
+    "date_str": "07 Nov 2026",
+    "timestamp": 1794063116.2131362
+  },
+  {
     "id": "notif_1794063094288",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "10:07 AM",
     "date_str": "27 Oct 2026",
     "timestamp": 1793075826.814001
-  },
-  {
-    "id": "notif_1793075648025",
-    "type": "error",
-    "title": "Error at Step #12: Character File Input",
-    "message": "No <input type='file'> appeared after clicking Upload media.",
-    "status": "error",
-    "time_str": "10:04 AM",
-    "date_str": "27 Oct 2026",
-    "timestamp": 1793075648.0254946
   }
 ]
