@@ -1,5 +1,5 @@
 {
-  "generated_count": 8,
+  "generated_count": 9,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -46,7 +46,8 @@
     "romantic",
     "border_action",
     "emotional",
-    "emotional"
+    "emotional",
+    "unit_ragda"
   ],
   "history": [
     {
@@ -254,6 +255,23 @@
       "video_url": "/videos/raw_video_10.mp4?t=1793509888",
       "file_size_kb": 4205.9,
       "video_file": "raw_video_10.mp4"
+    },
+    {
+      "video_id": "1107_174735_p1",
+      "video_file": "raw_video_1107_174735_p1.mp4",
+      "track_id": "unit_ragda",
+      "track_name": "🔥 Ustad Ka Ragda & Punishment",
+      "part_number": 1,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "🔥 Ustad Ka Ragda & Punishment — Part 1: 4 AM Ka Murga & Ustad ki Garaj",
+      "scene_summary": "A high-octane 3D Pixar-style 9:16 vertical shot. The scene is set at 04:00 AM on a misty Indian Army parade ground, lit by harsh overhead floodlights. Makra, in his rugged olive green combat fatigues and a massive 20kg 'pithu' bag, is captured mid-action performing a grueling front roll through the loose brown dust. His face is a mix of exhaustion and Haryanvi grit, sweat dripping from his forehead. Standing over him is the formidable Ustad, sporting a thick, sharp moustache and a perfectly starched uniform, tapping his swagger stick against his boots. The background shows blurry silhouettes of other recruits in a 'murga' position under the blue-toned pre-dawn sky.",
+      "dialogue_line_1_hinglish": "Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!",
+      "shayari_hindi": "Maidaan-e-jung ho ya training ka ghera, ragda hi chamkaata hai naseeb mera. \nDhool se sana badan gawaahi dega, ki fauji banne chala hai beta tera.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 🔥 Ustad Ka Ragda & Punishment - Part 1: 4 AM Ka Murga & Ustad ki Garaj. SCENE & ACTION: A high-octane 3D Pixar-style 9:16 vertical shot. The scene is set at 04:00 AM on a misty Indian Army parade ground, lit by harsh overhead floodlights. Makra, in his rugged olive green combat fatigues and a massive 20kg 'pithu' bag, is captured mid-action performing a grueling front roll through the loose brown dust. His face is a mix of exhaustion and Haryanvi grit, sweat dripping from his forehead. Standing over him is the formidable Ustad, sporting a thick, sharp moustache and a perfectly starched uniform, tapping his swagger stick against his boots. The background shows blurry silhouettes of other recruits in a 'murga' position under the blue-toned pre-dawn sky. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 1: 4 AM Ka Murga & Ustad ki Garaj | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!\"\n\n🔥 Maidaan-e-jung ho ya training ka ghera, ragda hi chamkaata hai naseeb mera. \nDhool se sana badan gawaahi dega, ki fauji banne chala hai beta tera.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FaujiLife #IndianArmy #Agniveer #UstadKaRagda #ArmyTraining #DesiHumor",
+      "created_at": "07 Nov 2026, 05:47 PM IST",
+      "completed_at": "07 Nov 2026, 05:49 PM IST"
     }
   ],
   "failed_dialogues": [
@@ -300,7 +318,8 @@
     "Meera, is bar chutti par tere hath ka churma pakka khayenge!",
     "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
     "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
-    "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!"
+    "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+    "Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!"
   ],
   "deleted_ids": [],
   "track_parts": {
