@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra + Meera (Maroon & Teal Embroidered Festive Lehe...))...",
+  "step_num": 1,
+  "step_title": "Stage 1: AI Script (1/1)",
+  "sub_detail": "Writing fresh script via .env API (T-30 Min Pre-Schedule Trigger (Before 18:30))...",
   "status": "active",
-  "progress": 45,
-  "updated_at": "06:00:15 PM",
-  "epoch": 1794054615.0903933
+  "progress": 12,
+  "updated_at": "06:00:19 PM",
+  "epoch": 1794054619.0889418
 }
