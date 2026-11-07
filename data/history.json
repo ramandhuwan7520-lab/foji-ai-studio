@@ -1,5 +1,5 @@
 {
-  "generated_count": 9,
+  "generated_count": 10,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -47,6 +47,8 @@
     "border_action",
     "emotional",
     "emotional",
+    "unit_ragda",
+    "unit_ragda",
     "unit_ragda"
   ],
   "history": [
@@ -272,6 +274,23 @@
       "caption": "🎖️ Part 1: 4 AM Ka Murga & Ustad ki Garaj | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!\"\n\n🔥 Maidaan-e-jung ho ya training ka ghera, ragda hi chamkaata hai naseeb mera. \nDhool se sana badan gawaahi dega, ki fauji banne chala hai beta tera.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FaujiLife #IndianArmy #Agniveer #UstadKaRagda #ArmyTraining #DesiHumor",
       "created_at": "07 Nov 2026, 05:47 PM IST",
       "completed_at": "07 Nov 2026, 05:49 PM IST"
+    },
+    {
+      "video_id": "1108_001301_p2",
+      "video_file": "raw_video_1108_001301_p2.mp4",
+      "track_id": "unit_ragda",
+      "track_name": "🔥 Ustad Ka Ragda & Punishment",
+      "part_number": 2,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad",
+      "scene_summary": "A high-octane 3D Pixar-style 9:16 vertical shot. Midday sun blazes over the dusty Indian Army training ground. Makra, in a sweat-soaked olive green combat uniform, is captured mid-motion performing a grueling 'Front Roll' (Palti) through a patch of fine brown dust. His face is a mask of grit and determination, smeared with grime and sweat, teeth clenched. In the mid-ground, the stern Ustad with a thick moustache and camo cap stands with hands on his belt, watching like a hawk. The air is thick with kicked-up soil, creating a cinematic golden-hour haze despite the harsh noon light, highlighting the texture of the uniform and the intensity of the struggle.",
+      "dialogue_line_1_hinglish": "Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!",
+      "shayari_hindi": "रगड़े में जो पसीना बहाता है, वही सरहद पर तिरंगा फहराता है,\nये वर्दी नहीं फौलाद का ज़ेवर है, जो सिर्फ़ खुद्दारों को सुहाता है।",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 🔥 Ustad Ka Ragda & Punishment - Part 2: Palti Ka Bhooth & Dhool Ka Swad. SCENE & ACTION: A high-octane 3D Pixar-style 9:16 vertical shot. Midday sun blazes over the dusty Indian Army training ground. Makra, in a sweat-soaked olive green combat uniform, is captured mid-motion performing a grueling 'Front Roll' (Palti) through a patch of fine brown dust. His face is a mask of grit and determination, smeared with grime and sweat, teeth clenched. In the mid-ground, the stern Ustad with a thick moustache and camo cap stands with hands on his belt, watching like a hawk. The air is thick with kicked-up soil, creating a cinematic golden-hour haze despite the harsh noon light, highlighting the texture of the uniform and the intensity of the struggle. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 2: Palti Ka Bhooth & Dhool Ka Swad | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!\"\n\n🔥 रगड़े में जो पसीना बहाता है, वही सरहद पर तिरंगा फहराता है,\nये वर्दी नहीं फौलाद का ज़ेवर है, जो सिर्फ़ खुद्दारों को सुहाता है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#IndianArmy #FaujiLife #Agniveer #UstadKaRagda #MakraFoji #ArmyTraining",
+      "created_at": "08 Nov 2026, 12:13 AM IST",
+      "completed_at": "08 Nov 2026, 12:15 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -319,7 +338,9 @@
     "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
     "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
     "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
-    "Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!"
+    "Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!",
+    "Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!",
+    "Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!"
   ],
   "deleted_ids": [],
   "track_parts": {
