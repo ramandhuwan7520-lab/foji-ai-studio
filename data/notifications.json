@@ -1,33 +1,13 @@
 [
   {
-    "id": "notif_1794062323673",
+    "id": "notif_1794062330267",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
     "message": "name 'shutil' is not defined",
     "status": "error",
     "time_str": "08:08 PM",
     "date_str": "07 Nov 2026",
-    "timestamp": 1794062323.6731613
-  },
-  {
-    "id": "notif_1794062301891",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "08:08 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794062301.8912137
-  },
-  {
-    "id": "notif_1794062280237",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "08:08 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794062280.2374132
+    "timestamp": 1794062330.2673573
   },
   {
     "id": "notif_1794062258658",
