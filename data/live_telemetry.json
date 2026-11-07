@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (40.1 min)",
-  "sub_detail": "Gemini Veo rendering raw_video_1107_180110_p1.mp4... (2405s elapsed)",
+  "step_num": 1,
+  "step_title": "Stage 1: AI Script (1/1)",
+  "sub_detail": "Writing fresh script via .env API (Dashboard Manual Trigger (1 Video))...",
   "status": "active",
-  "progress": 92,
-  "updated_at": "06:45:48 PM",
-  "epoch": 1794057348.3783498
+  "progress": 12,
+  "updated_at": "12:12:16 AM",
+  "epoch": 1794076936.8045485
 }
