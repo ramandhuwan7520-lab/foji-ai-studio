@@ -1,6 +1,121 @@
 {
-  "unapproved_videos": [],
+  "unapproved_videos": [
+    {
+      "id": "vid_raw_video_10.mp4",
+      "video_file": "raw_video_10.mp4",
+      "title": "LOC Vigil & Braveheart • Part 1",
+      "track_id": "border_action",
+      "part_number": 1,
+      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+      "shayari": "",
+      "caption": "❤️ LOC Vigil & Braveheart • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "01 Nov 2026, 10:33 AM",
+      "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_9.mp4",
+      "video_file": "raw_video_9.mp4",
+      "title": "Tiranga Shaan & Duty • Part 2",
+      "track_id": "patriotic",
+      "part_number": 2,
+      "dialogue": "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+      "shayari": "",
+      "caption": "❤️ Tiranga Shaan & Duty • Part 2 🇮🇳✨\n🪖 \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\"\n💖 \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "27 Oct 2026, 07:18 PM",
+      "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_8.mp4",
+      "video_file": "raw_video_8.mp4",
+      "title": "Foji Nok-Jhok & Chai • Part 1",
+      "track_id": "comedy",
+      "part_number": 1,
+      "dialogue": "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+      "shayari": "",
+      "caption": "❤️ Foji Nok-Jhok & Chai • Part 1 🇮🇳✨\n🪖 \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\"\n💖 \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "27 Oct 2026, 07:10 PM",
+      "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_7.mp4",
+      "video_file": "raw_video_7.mp4",
+      "title": "Chithi & Homecoming • Part 1",
+      "track_id": "emotional",
+      "part_number": 1,
+      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+      "shayari": "",
+      "caption": "❤️ Chithi & Homecoming • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "27 Oct 2026, 06:45 PM",
+      "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_6.mp4",
+      "video_file": "raw_video_6.mp4",
+      "title": "Tiranga Shaan & Duty • Part 1",
+      "track_id": "patriotic",
+      "part_number": 1,
+      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+      "shayari": "",
+      "caption": "❤️ Tiranga Shaan & Duty • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "26 Oct 2026, 07:59 PM",
+      "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_5.mp4",
+      "video_file": "raw_video_5.mp4",
+      "title": "Foji & Fojan Love Saga • Part 1",
+      "track_id": "romantic",
+      "part_number": 1,
+      "dialogue": "Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!",
+      "shayari": "",
+      "caption": "❤️ Foji & Fojan Love Saga • Part 1 🇮🇳✨\n🪖 \"Meera, sarhad ki har subah tumhari yaad se shuru hoti hai!\"\n💖 \"Aur meri har shaam aapke laut aane ki dua se, Foji sahab!\"\n.\n#FojiFojan #IndianArmy #3DAnimation #FojiLoveStory #ReelsIndia",
+      "created_at": "26 Oct 2026, 06:53 PM",
+      "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_4.mp4",
+      "video_file": "raw_video_4.mp4",
+      "title": "Foji & Fojan: Shaq aur Haq (Part 1)",
+      "track_id": "fighting",
+      "part_number": 1,
+      "dialogue": "Raat ko kiska phone aa raha hai?",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "15 Oct 2026, 03:54 PM",
+      "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_3.mp4",
+      "video_file": "raw_video_3.mp4",
+      "title": "Foji & Fojan: Fauji Discipline vs Biwi ke Nakhre (Part 1)",
+      "track_id": "funny",
+      "part_number": 1,
+      "dialogue": "Subah ka PT shuru, fauji style mein!",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "15 Oct 2026, 03:22 PM",
+      "status": "awaiting_approval"
+    }
+  ],
   "scheduled_posts": [
+    {
+      "id": "vid_raw_video_1108_060049_p1.mp4",
+      "video_file": "raw_video_1108_060049_p1.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
+      "shayari": "Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.",
+      "caption": "🎖️ Part 1: Judai Ka Pehla Mod | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.\"\n\n🔥 Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMakra #MeeraKiPreet #IndianArmyLove #AgniveerLife #PixarStyleIndia #FojanStatus",
+      "created_at": "08 Nov 2026, 06:02 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-08_12:30",
+      "scheduled_epoch": 1794121200.0,
+      "scheduled_display": "08 Nov 2026 at 12:30 PM IST",
+      "date_label": "08 Nov 2026",
+      "time_label": "12:30 PM"
+    },
     {
       "id": "vid_raw_video_1108_001301_p2.mp4",
       "video_file": "raw_video_1108_001301_p2.mp4",
@@ -40,16 +155,6 @@
   ],
   "published_posts": [
     {
-      "id": "pub_1794121410818",
-      "video_file": "raw_video_1108_060049_p1.mp4",
-      "title": "Foji 3D Reel (raw_video_1108_060049_p1.mp4)",
-      "dialogue": "Published to Instagram (@ai_foji_lovelife)",
-      "caption": "🎖️ Part 1: Judai Ka Pehla Mod | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.\"\n\n🔥 Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMakra #MeeraKiPreet #IndianArmyLove #AgniveerLife #PixarStyleIndia #FojanStatus",
-      "status": "published",
-      "published_at": "08 Nov 2026, 12:33 PM IST",
-      "ig_media_pk": "LIVE"
-    },
-    {
       "id": "pub_1794111406132",
       "video_file": "raw_video_1107_174735_p1_ig_clean.mp4",
       "title": "Foji 3D Reel (raw_video_1107_174735_p1_ig_clean.mp4)",
@@ -70,5 +175,5 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794121410.8180923
+  "updated_epoch": 1794129570.8318117
 }

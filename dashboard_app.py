@@ -982,9 +982,60 @@ def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
     }
 
 
+def _stream_mp4_instantly(filename):
+    from flask import request, Response, send_file
+    safe_name = os.path.basename(str(filename))
+    raw_dir = os.path.abspath("output/raw_videos")
+    os.makedirs(raw_dir, exist_ok=True)
+    p = os.path.join(raw_dir, safe_name)
+
+    # If file was generated on Cloud and not yet on local/Render disk, fetch it once and cache it!
+    if not os.path.exists(p) or os.path.getsize(p) < 1000:
+        try:
+            _fud.pull_latest_cloud_state_for_frontend()
+        except Exception:
+            pass
+    if not os.path.exists(p) or os.path.getsize(p) < 1000:
+        try:
+            import requests as _req
+            gh_raw_url = f"https://raw.githubusercontent.com/ramandhuwan7520-lab/foji-ai-studio/main/output/raw_videos/{safe_name}"
+            r = _req.get(gh_raw_url, timeout=20)
+            if r.status_code == 200 and len(r.content) > 10000:
+                with open(p, "wb") as vf:
+                    vf.write(r.content)
+        except Exception:
+            pass
+
+    if not os.path.exists(p):
+        return ("Video not found", 404)
+
+    file_size = os.path.getsize(p)
+    range_header = request.headers.get("Range", None)
+    if range_header:
+        m = re.search(r"bytes=(\\d+)-(\\d*)", range_header)
+        if m:
+            byte1 = int(m.group(1))
+            byte2 = int(m.group(2)) if m.group(2) else file_size - 1
+            byte2 = min(byte2, file_size - 1)
+            length = byte2 - byte1 + 1
+            with open(p, "rb") as f:
+                f.seek(byte1)
+                data = f.read(length)
+            rv = Response(data, 206, mimetype="video/mp4", direct_passthrough=True)
+            rv.headers.add("Content-Range", f"bytes {byte1}-{byte2}/{file_size}")
+            rv.headers.add("Accept-Ranges", "bytes")
+            rv.headers.add("Content-Length", str(length))
+            rv.headers.add("Cache-Control", "public, max-age=86400")
+            return rv
+
+    rv = send_file(p, mimetype="video/mp4", conditional=True, max_age=86400)
+    rv.headers["Accept-Ranges"] = "bytes"
+    return rv
+
+
 @app.route("/videos/<path:filename>")
 def serve_video(filename):
-    return send_from_directory(os.path.abspath("output/raw_videos"), filename)
+    return _stream_mp4_instantly(filename)
 
 
 @app.route("/api/telemetry_3d", methods=["GET"])
@@ -1717,7 +1768,21 @@ def _publish_specific_video_to_ig(video_file, custom_caption=""):
     vname = os.path.basename(str(video_file))
     vpath = os.path.abspath(os.path.join("output/raw_videos", vname))
     if not os.path.exists(vpath):
-        _fud.pull_latest_cloud_state_for_frontend()
+        try:
+            _fud.pull_latest_cloud_state_for_frontend()
+        except Exception:
+            pass
+    if not os.path.exists(vpath):
+        try:
+            import requests as _req
+            gh_raw_url = f"https://raw.githubusercontent.com/ramandhuwan7520-lab/foji-ai-studio/main/output/raw_videos/{vname}"
+            r = _req.get(gh_raw_url, timeout=25)
+            if r.status_code == 200 and len(r.content) > 10000:
+                os.makedirs(os.path.dirname(vpath), exist_ok=True)
+                with open(vpath, "wb") as vf:
+                    vf.write(r.content)
+        except Exception:
+            pass
     if not os.path.exists(vpath):
         raise FileNotFoundError(f"Video file {vname} not found in output/raw_videos!")
 
@@ -1729,16 +1794,30 @@ def _publish_specific_video_to_ig(video_file, custom_caption=""):
     if not custom_caption:
         custom_caption = "🎖️ Foji & Fojan 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife #agniveer #armyreels"
 
-    # Pass video through Anti-Green-Line Macroblock Sanitizer before uploading to Instagram!
+    try:
+        import gemini_bot
+        gemini_bot.update_3d_telemetry(2, "Sanitizing Reel for IG", f"Optimizing {vname} (720x1280 HD)...", "active", 35)
+    except Exception:
+        pass
+
     ig_safe_vpath = _sanitize_mp4_for_instagram_no_green_line(vpath)
 
+    try:
+        import gemini_bot
+        gemini_bot.update_3d_telemetry(5, "Uploading to Instagram", f"Publishing {vname} to @ai_foji_lovelife...", "active", 70)
+    except Exception:
+        pass
+
     import insta_bot
+    res = None
     if hasattr(insta_bot, "upload_reel_to_instagram"):
         res = insta_bot.upload_reel_to_instagram(ig_safe_vpath, custom_caption)
     elif hasattr(insta_bot, "post_reel"):
         res = insta_bot.post_reel(ig_safe_vpath, custom_caption)
     elif hasattr(insta_bot, "upload_to_instagram"):
         res = insta_bot.upload_to_instagram(ig_safe_vpath, custom_caption)
+    elif hasattr(insta_bot, "post_reel_to_instagram"):
+        res = insta_bot.post_reel_to_instagram(ig_safe_vpath, custom_caption)
     else:
         from instagrapi import Client
         cl = Client()
@@ -1748,11 +1827,15 @@ def _publish_specific_video_to_ig(video_file, custom_caption=""):
         media = cl.clip_upload(ig_safe_vpath, custom_caption)
         res = getattr(media, "pk", "LIVE_ON_IG")
 
-    pub_item = _fud.mark_video_as_published_in_vault(vname, custom_caption, media_pk=res)
+    if res is False or res is None:
+        raise RuntimeError("Instagram rejected upload or session expired! Reel kept safely in Unposted Vault.")
+
+    pub_item = _fud.mark_video_as_published_in_vault(vname, custom_caption, media_pk=str(res))
     try:
         import gemini_bot
-        gemini_bot.push_app_notification("success", "📸 Reel Posted on Instagram!", f"{vname} is now LIVE on @ai_foji_lovelife (Zero Green-Line HD)!", "success")
-        gemini_bot.send_alert(f"📸 *Reel Published on Instagram!*\n🎬 Video: `{vname}`\n✅ Status: *LIVE ON @ai_foji_lovelife*")
+        gemini_bot.update_3d_telemetry(8, "Reel Published on IG!", f"✅ {vname} is LIVE on Instagram!", "completed", 100)
+        gemini_bot.push_app_notification("success", "📸 Reel Posted on Instagram!", f"{vname} is now LIVE on @ai_foji_lovelife!", "success")
+        gemini_bot.send_alert(f"📸 Reel Published on Instagram! Video: {vname} | LIVE ON @ai_foji_lovelife")
     except Exception:
         pass
     return pub_item
@@ -1954,18 +2037,22 @@ def api_universe_remove_scheduled():
 @app.route("/api/universe/publish_latest_reel", methods=["POST"])
 def api_universe_publish_latest_reel():
     from flask import request, jsonify
+    import threading
     try:
         data = request.get_json(force=True, silent=True) or {}
         custom_caption = (data.get("caption") or "").strip()
         vfile = (data.get("video_file") or "").strip()
 
         raw_dir = "output/raw_videos"
-        if vfile and os.path.exists(os.path.join(raw_dir, vfile)):
-            newest_vid = os.path.join(raw_dir, vfile)
+        os.makedirs(raw_dir, exist_ok=True)
+        if vfile and os.path.exists(os.path.join(raw_dir, os.path.basename(vfile))):
+            newest_vid = os.path.join(raw_dir, os.path.basename(vfile))
+        elif vfile:
+            newest_vid = os.path.join(raw_dir, os.path.basename(vfile))
         else:
-            mp4s = [os.path.join(raw_dir, f) for f in os.listdir(raw_dir) if f.endswith(".mp4")] if os.path.exists(raw_dir) else []
+            mp4s = [os.path.join(raw_dir, f) for f in os.listdir(raw_dir) if f.endswith(".mp4")]
             if not mp4s:
-                return jsonify({"ok": False, "error": "No generated MP4 video found in output/raw_videos yet!"}), 404
+                return jsonify({"ok": False, "error": "No generated MP4 video found in output/raw_videos yet!"}), 200
             newest_vid = max(mp4s, key=os.path.getmtime)
 
         vname = os.path.basename(newest_vid)
@@ -1977,23 +2064,35 @@ def api_universe_publish_latest_reel():
         if not custom_caption:
             custom_caption = "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife for Next Part! 🇮🇳🔥 #indianarmy #faujilife #armyreels"
 
-        media = _publish_specific_video_to_ig(newest_vid, custom_caption)
-        pk_val = getattr(media, "pk", "LIVE")
-        pub_item = _fud.mark_video_as_published_in_vault(vname, custom_caption, pk_val)
-
         try:
             import gemini_bot
-            gemini_bot.push_app_notification("success", "📲 Reel Posted on Instagram!", f"{vname} is now LIVE on @ai_foji_lovelife!", "success")
+            gemini_bot.update_3d_telemetry(1, "Starting IG Upload", f"Preparing {vname} for Instagram HD...", "active", 15)
+            gemini_bot.push_app_notification("info", "🚀 Uploading Reel to Instagram...", f"Sanitizing & publishing {vname} in background (Live tracking active)...", "info")
         except Exception:
             pass
 
+        def _bg_publish_worker(target_vid, target_cap, target_name):
+            try:
+                _publish_specific_video_to_ig(target_vid, target_cap)
+            except Exception as bg_err:
+                try:
+                    import gemini_bot
+                    gemini_bot.update_3d_telemetry(0, "IG Upload Error", str(bg_err)[:180], "error", 0)
+                    gemini_bot.push_app_notification("error", "❌ IG Upload Failed (Reel Safe in Vault)", f"{target_name}: {str(bg_err)[:160]}", "error")
+                except Exception:
+                    pass
+
+        threading.Thread(target=_bg_publish_worker, args=(newest_vid, custom_caption, vname), daemon=True).start()
+
         return jsonify({
             "ok": True,
-            "message": f"🎉 100% CONFIRMED! Reel ({vname}) Published on Instagram (@ai_foji_lovelife) at {pub_item['published_at']}!",
-            "published_item": pub_item
-        })
+            "started": True,
+            "video_file": vname,
+            "message": f"🚀 Instant Start! Uploading {vname} to Instagram & Facebook — Watch Live Status Popup!"
+        }), 200
     except Exception as e:
-        return jsonify({"ok": False, "error": f"Instagram Upload Failed: {str(e)}"}), 500
+        return jsonify({"ok": False, "error": str(e), "message": str(e)}), 200
+
 
 
 @app.route("/api/universe/save_schedule", methods=["POST"])
@@ -2036,11 +2135,8 @@ def api_universe_char_img(name):
 
 @app.route("/api/universe/video_file/<filename>", methods=["GET"])
 def api_universe_video_file(filename):
-    safe_name = os.path.basename(filename)
-    p = os.path.join("output/raw_videos", safe_name)
-    if os.path.exists(p):
-        return _send_file(os.path.abspath(p), mimetype="video/mp4")
-    return ("Not found", 404)
+    return _stream_mp4_instantly(filename)
+
 
 
 @app.route("/api/universe/latest_video", methods=["GET"])
@@ -3111,6 +3207,24 @@ document.addEventListener('DOMContentLoaded', () => {
         pass
     return response
 
+
+
+
+@app.errorhandler(Exception)
+def _handle_all_api_exceptions_as_json(e):
+    from flask import request, jsonify
+    if request.path.startswith("/api/"):
+        return jsonify({"ok": False, "status": "error", "error": str(e), "message": str(e)}), 200
+    raise e
+
+@app.errorhandler(500)
+@app.errorhandler(502)
+@app.errorhandler(504)
+def _handle_5xx_as_json(e):
+    from flask import request, jsonify
+    if request.path.startswith("/api/"):
+        return jsonify({"ok": False, "status": "error", "error": str(e), "message": str(e)}), 200
+    return str(e), 500
 
 
 if __name__ == "__main__":
