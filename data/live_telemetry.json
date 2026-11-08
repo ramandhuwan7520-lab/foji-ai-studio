@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Stage 2: Cookie Sign-In (Account #2)",
-  "sub_detail": "Logging into Gemini & preparing Makra Only (Solo Army Scene)...",
-  "status": "active",
-  "progress": 25,
-  "updated_at": "06:01:40 PM",
-  "epoch": 1794141100.0079389
+  "step_num": 0,
+  "step_title": "Gemini Cookie Expired",
+  "sub_detail": "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "06:01:59 PM",
+  "epoch": 1794141119.6441867
 }
