@@ -537,22 +537,103 @@ def generate_single_reel_package(custom_topic=None, send_for_approval=True, forc
 # 🚀 INSTAGRAM + FACEBOOK REEL PUBLISHER (@ai_foji_lovelife + Connected FB Page)
 # ==============================================================================
 def _ensure_reel_thumbnail(video_file_path):
-    import os, subprocess
+    """
+    Smart Best-Frame Thumbnail Extractor:
+    Extracts multiple candidate frames from the actual video (1.5s to 6.8s),
+    scores each frame on Sharpness (edge variance), Brightness, Contrast, and Color Vibrancy,
+    and saves the highest-scoring HD frame as the Reel thumbnail.
+    NEVER uses the static character image unless the video file itself is unreadable.
+    """
+    import os
+    import shutil
+    import subprocess
+    from PIL import Image, ImageStat, ImageFilter
+
     thumb_p = str(video_file_path) + ".jpg"
-    if not os.path.exists(thumb_p):
+    # Always delete any old cached thumbnail so we fresh-pick from the video
+    if os.path.exists(thumb_p):
         try:
-            subprocess.run(
-                ["ffmpeg", "-y", "-ss", "00:00:01", "-i", str(video_file_path), "-frames:v", "1", "-q:v", "2", thumb_p],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15
-            )
+            os.remove(thumb_p)
         except Exception:
             pass
-    if not os.path.exists(thumb_p):
-        from PIL import Image
-        fb = "assets/characters/foji_character.jpg"
-        img = Image.open(fb).convert("RGB").resize((1080, 1920)) if os.path.exists(fb) else Image.new("RGB", (1080, 1920), (18, 18, 24))
-        img.save(thumb_p, "JPEG", quality=92)
+
+    ffmpeg_bin = shutil.which("ffmpeg")
+    if not ffmpeg_bin:
+        try:
+            import imageio_ffmpeg
+            ffmpeg_bin = imageio_ffmpeg.get_ffmpeg_exe()
+        except Exception:
+            ffmpeg_bin = None
+
+    best_img = None
+    best_score = -1.0
+    best_ts = "00:00:02.50"
+
+    if ffmpeg_bin and os.path.exists(str(video_file_path)):
+        candidate_timestamps = ["00:00:01.50", "00:00:02.80", "00:00:04.10", "00:00:05.40", "00:00:06.70"]
+        for idx, ts in enumerate(candidate_timestamps):
+            cand_path = f"{video_file_path}_cand_{idx}.jpg"
+            try:
+                subprocess.run(
+                    [
+                        ffmpeg_bin, "-y",
+                        "-ss", ts,
+                        "-i", str(video_file_path),
+                        "-frames:v", "1",
+                        "-q:v", "2",
+                        cand_path
+                    ],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=12
+                )
+                if os.path.exists(cand_path) and os.path.getsize(cand_path) > 5000:
+                    with Image.open(cand_path) as im:
+                        rgb = im.convert("RGB")
+                        # 1. Brightness & Contrast check (avoid black/fade-in/washed-out frames)
+                        gray = rgb.convert("L")
+                        stat_g = ImageStat.Stat(gray)
+                        mean_lum = stat_g.mean[0]       # Ideal: 60 to 200
+                        std_contrast = stat_g.stddev[0] # Higher = better dynamic range
+
+                        # Penalize very dark (<35) or overexposed (>235) frames
+                        lum_penalty = 0.2 if (mean_lum < 35 or mean_lum > 235) else 1.0
+
+                        # 2. Sharpness check (Laplacian/Edge variance)
+                        edges = gray.filter(ImageFilter.FIND_EDGES)
+                        sharpness = ImageStat.Stat(edges).stddev[0]
+
+                        # 3. Color vibrancy check
+                        stat_rgb = ImageStat.Stat(rgb)
+                        color_spread = sum(stat_rgb.stddev) / 3.0
+
+                        total_score = (sharpness * 2.2 + std_contrast * 1.5 + color_spread * 1.2) * lum_penalty
+                        if total_score > best_score:
+                            best_score = total_score
+                            best_img = rgb.copy()
+                            best_ts = ts
+            except Exception:
+                pass
+            finally:
+                if os.path.exists(cand_path):
+                    try:
+                        os.remove(cand_path)
+                    except Exception:
+                        pass
+
+    if best_img is not None:
+        best_img = best_img.resize((1080, 1920), Image.Resampling.LANCZOS)
+        best_img.save(thumb_p, "JPEG", quality=95)
+        print(f"🖼️ [Smart Thumbnail] Selected best video frame at {best_ts} (Score: {best_score:.1f}) -> { os.path.basename(thumb_p) }")
+        return thumb_p
+
+    # Emergency fallback only if video had 0 readable frames
+    from PIL import Image
+    fb = "assets/characters/foji_character.jpg"
+    img = Image.open(fb).convert("RGB").resize((1080, 1920)) if os.path.exists(fb) else Image.new("RGB", (1080, 1920), (18, 18, 24))
+    img.save(thumb_p, "JPEG", quality=92)
     return thumb_p
+
 
 def get_authenticated_ig_client():
     import os

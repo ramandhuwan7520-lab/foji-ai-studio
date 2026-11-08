@@ -340,7 +340,26 @@ def launch_resilient_chrome_session(download_dir, start_blank=True):
             driver.execute_cdp_cmd("Network.setUserAgentOverride", {
                 "userAgent": saved_ua,
                 "platform": "Win32",
-                "acceptLanguage": "en-US,en;q=0.9"
+                "acceptLanguage": "en-US,en;q=0.9",
+                "userAgentMetadata": {
+                    "brands": [
+                        {"brand": "Google Chrome", "version": "135"},
+                        {"brand": "Not-A.Brand", "version": "8"},
+                        {"brand": "Chromium", "version": "135"}
+                    ],
+                    "fullVersionList": [
+                        {"brand": "Google Chrome", "version": "135.0.0.0"},
+                        {"brand": "Not-A.Brand", "version": "8.0.0.0"},
+                        {"brand": "Chromium", "version": "135.0.0.0"}
+                    ],
+                    "platform": "Windows",
+                    "platformVersion": "10.0.0",
+                    "architecture": "x86",
+                    "model": "",
+                    "mobile": False,
+                    "bitness": "64",
+                    "wow64": False
+                }
             })
     except Exception:
         pass
@@ -1745,76 +1764,18 @@ if __name__ == "__main__":
 
 
 def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
-    """If Cloud IP triggers Google's 'Verify it's you / Enter password' screen, auto-fills password & clicks Next!"""
+    """Pure Cookie Mode: Never types password (avoids human verification). Clicks account chooser tile or RotateCookies if needed."""
     try:
-        import os, time
+        import time
         from selenium.webdriver.common.by import By
-        from selenium.webdriver.common.keys import Keys
-
         curr_url = (driver.current_url or "").lower()
-        page_src = (driver.page_source or "").lower()
-        is_sign_in_page = (
-            "accounts.google.com" in curr_url
-            or "servicelogin" in curr_url
-            or "challenge/pwd" in curr_url
-            or 'type="password"' in page_src
-        )
-        if not is_sign_in_page:
-            return True
-
-        print(f"🔐 [Auto-Login Healer] Detected Google Sign-In/Password prompt on Account #{account_slot}. Attempting auto-fill...")
-
-        acc_email = (
-            os.getenv(f"GEMINI_ACC{account_slot}_EMAIL")
-            or os.getenv("GEMINI_EMAIL" if account_slot == 1 else "GEMINI_EMAIL_2")
-            or ""
-        ).strip()
-        acc_pass = (
-            os.getenv(f"GEMINI_ACC{account_slot}_PASSWORD")
-            or os.getenv("GEMINI_PASSWORD" if account_slot == 1 else "GEMINI_PASSWORD_2")
-            or os.getenv("GOOGLE_PASSWORD")
-            or ""
-        ).strip()
-
-        # 1. If email input is visible and empty, fill email first
-        email_inputs = driver.find_elements(By.CSS_SELECTOR, 'input[type="email"], input#identifierId')
-        for inp in email_inputs:
-            if inp.is_displayed() and acc_email:
-                inp.clear()
-                inp.send_keys(acc_email)
-                inp.send_keys(Keys.ENTER)
-                time.sleep(4)
-                break
-
-        # 2. If "Choose an account" tile is shown on screen, click the first signed-out/Verify account tile
-        try:
-            tiles = driver.find_elements(By.CSS_SELECTOR, 'div[data-identifier], li div[role="link"]')
+        if "accounts.google.com" in curr_url:
+            tiles = driver.find_elements(By.CSS_SELECTOR, '[data-identifier], [data-email]')
             for t in tiles:
-                if t.is_displayed() and "@" in (t.text or ""):
+                if t.is_displayed():
                     t.click()
-                    time.sleep(4)
-                    break
-        except Exception:
-            pass
-
-        # 3. If password input is visible, enter password and submit!
-        pwd_inputs = driver.find_elements(By.CSS_SELECTOR, 'input[type="password"], input[name="Passwd"]')
-        for pinp in pwd_inputs:
-            if pinp.is_displayed():
-                if not acc_pass:
-                    print(f"⚠️ Password screen detected for Account #{account_slot}, but GEMINI_ACC{account_slot}_PASSWORD is not set in .env!")
-                    return False
-                pinp.clear()
-                pinp.send_keys(acc_pass)
-                pinp.send_keys(Keys.ENTER)
-                print(f"✅ [Auto-Login Healer] Entered password for Account #{account_slot}! Waiting for Gemini redirect...")
-                time.sleep(7)
-                if "gemini.google.com" not in (driver.current_url or "").lower():
-                    driver.get("https://gemini.google.com/app")
-                    time.sleep(5)
-                return "accounts.google.com" not in (driver.current_url or "").lower()
-
-        return "accounts.google.com" not in (driver.current_url or "").lower()
-    except Exception as e:
-        print(f"⚠️ Auto-password helper note: {e}")
-        return False
+                    time.sleep(3)
+                    return True
+    except Exception:
+        pass
+    return False
