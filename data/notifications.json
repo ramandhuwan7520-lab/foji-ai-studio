@@ -1,5 +1,25 @@
 [
   {
+    "id": "notif_1794108359982",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "08:55 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794108359.9823914
+  },
+  {
+    "id": "notif_1794108359679",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod locked for 08 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "08:55 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794108359.6791852
+  },
+  {
     "id": "notif_1794108182321",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -778,25 +798,5 @@
     "time_str": "07:32 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794103347.6132288
-  },
-  {
-    "id": "notif_1794103175471",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "No module named 'insta_bot'",
-    "status": "error",
-    "time_str": "07:29 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794103175.4720113
-  },
-  {
-    "id": "notif_1794103153562",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "No module named 'insta_bot'",
-    "status": "error",
-    "time_str": "07:29 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794103153.5624993
   }
 ]
