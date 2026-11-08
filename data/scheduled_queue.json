@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_raw_video_1108_001301_p2.mp4",
-      "video_file": "raw_video_1108_001301_p2.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad",
-      "track_id": "unit_ragda",
-      "part_number": 2,
-      "dialogue": "Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!",
-      "shayari": "रगड़े में जो पसीना बहाता है, वही सरहद पर तिरंगा फहराता है,\nये वर्दी नहीं फौलाद का ज़ेवर है, जो सिर्फ़ खुद्दारों को सुहाता है।",
-      "caption": "🎖️ Part 2: Palti Ka Bhooth & Dhool Ka Swad | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!\"\n\n🔥 रगड़े में जो पसीना बहाता है, वही सरहद पर तिरंगा फहराता है,\nये वर्दी नहीं फौलाद का ज़ेवर है, जो सिर्फ़ खुद्दारों को सुहाता है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#IndianArmy #FaujiLife #Agniveer #UstadKaRagda #MakraFoji #ArmyTraining",
-      "created_at": "08 Nov 2026, 12:15 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_1108_053928_p1.mp4",
       "video_file": "raw_video_1108_053928_p1.mp4",
       "title": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor",
@@ -43,6 +31,24 @@
       "scheduled_display": "08 Nov 2026 at 12:30 PM IST",
       "date_label": "08 Nov 2026",
       "time_label": "12:30 PM"
+    },
+    {
+      "id": "vid_raw_video_1108_001301_p2.mp4",
+      "video_file": "raw_video_1108_001301_p2.mp4",
+      "title": "🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad",
+      "track_id": "unit_ragda",
+      "part_number": 2,
+      "dialogue": "Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!",
+      "shayari": "रगड़े में जो पसीना बहाता है, वही सरहद पर तिरंगा फहराता है,\nये वर्दी नहीं फौलाद का ज़ेवर है, जो सिर्फ़ खुद्दारों को सुहाता है।",
+      "caption": "🎖️ Part 2: Palti Ka Bhooth & Dhool Ka Swad | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!\"\n\n🔥 रगड़े में जो पसीना बहाता है, वही सरहद पर तिरंगा फहराता है,\nये वर्दी नहीं फौलाद का ज़ेवर है, जो सिर्फ़ खुद्दारों को सुहाता है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#IndianArmy #FaujiLife #Agniveer #UstadKaRagda #MakraFoji #ArmyTraining",
+      "created_at": "08 Nov 2026, 12:15 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-08_18:30",
+      "scheduled_epoch": 1794142800.0,
+      "scheduled_display": "08 Nov 2026 at 06:30 PM IST",
+      "date_label": "08 Nov 2026",
+      "time_label": "06:30 PM"
     }
   ],
   "published_posts": [
@@ -67,5 +73,5 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794111499.0169058
+  "updated_epoch": 1794111522.7973366
 }
