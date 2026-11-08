@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "raw_video_1108_053928_p1.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "05:41:40 AM",
-  "epoch": 1794096700.5699494
+  "step_num": 1,
+  "step_title": "Stage 1: AI Script (1/1)",
+  "sub_detail": "Writing fresh script via .env API (T-30 Min Pre-Schedule Trigger (Before 06:30))...",
+  "status": "active",
+  "progress": 12,
+  "updated_at": "06:00:03 AM",
+  "epoch": 1794097803.193468
 }
