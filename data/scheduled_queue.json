@@ -23,7 +23,9 @@
       "caption": "🎖️ Part 1: Mess Ka Gulab Jamun Chor | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!\"\n\n🔥 Vardi ki shaan apni jagah, ye meetha ishq apni jagah,\nUstad ka ragda seh lenge, par ye swad nahi chodenge bhaiya!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMasti #ArmyMess #BadaKhana #IndianArmyComedy #AgniveerLife #FojiLife",
       "created_at": "08 Nov 2026, 05:41 AM IST",
       "status": "awaiting_approval"
-    },
+    }
+  ],
+  "scheduled_posts": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
       "video_file": "raw_video_1108_060049_p1.mp4",
@@ -34,10 +36,15 @@
       "shayari": "Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.",
       "caption": "🎖️ Part 1: Judai Ka Pehla Mod | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.\"\n\n🔥 Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMakra #MeeraKiPreet #IndianArmyLove #AgniveerLife #PixarStyleIndia #FojanStatus",
       "created_at": "08 Nov 2026, 06:02 AM IST",
-      "status": "awaiting_approval"
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-08_12:30",
+      "scheduled_epoch": 1794121200.0,
+      "scheduled_display": "08 Nov 2026 at 12:30 PM IST",
+      "date_label": "08 Nov 2026",
+      "time_label": "12:30 PM"
     }
   ],
-  "scheduled_posts": [],
   "published_posts": [
     {
       "id": "pub_1794111406132",
@@ -60,5 +67,5 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794111406.1325052
+  "updated_epoch": 1794111499.0169058
 }
