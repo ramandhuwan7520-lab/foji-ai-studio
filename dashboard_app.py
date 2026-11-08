@@ -69,6 +69,23 @@ def trim_system_memory():
         gc.collect()
         if os.name != "nt":
             ctypes.CDLL("libc.so.6").malloc_trim(0)
+        # Auto-clean temporary ig_ready copies (>45 mins old) & candidate frame jpgs so disk NEVER fills up!
+        now_t = time.time()
+        if os.path.exists("output/ig_ready"):
+            for fn in os.listdir("output/ig_ready"):
+                fp = os.path.join("output/ig_ready", fn)
+                if os.path.isfile(fp) and (now_t - os.path.getmtime(fp)) > 2700:
+                    try:
+                        os.remove(fp)
+                    except Exception:
+                        pass
+        if os.path.exists("output/raw_videos"):
+            for fn in os.listdir("output/raw_videos"):
+                if "_cand_" in fn and fn.endswith(".jpg"):
+                    try:
+                        os.remove(os.path.join("output/raw_videos", fn))
+                    except Exception:
+                        pass
     except Exception:
         pass
 
@@ -2088,6 +2105,49 @@ def api_universe_generate_preview_script():
         return jsonify({"ok": False, "error": str(e)}), 500
 
 
+
+@app.route("/api/universe/stop_pipeline", methods=["POST"])
+def api_universe_stop_pipeline():
+    from flask import jsonify
+    try:
+        globals()["_FOJI_CANCEL_REQUESTED"] = True
+        # 1. Reset telemetry immediately to idle so UI stops right away
+        t_path = "data/live_telemetry.json"
+        idle_state = {
+            "step_num": 0,
+            "step_title": "STANDBY",
+            "sub_detail": "Generation stopped by user — Foji back on guard duty",
+            "status": "idle",
+            "progress": 0,
+            "epoch": time.time()
+        }
+        with open(t_path, "w", encoding="utf-8") as f:
+            json.dump(idle_state, f, indent=2)
+        push_file_to_github_api(t_path, "User stopped pipeline")
+
+        # 2. If running on GitHub Actions Cloud Worker, cancel any in_progress workflow runs!
+        gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
+        repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+        if gh_pat:
+            def _cancel_gh_runs():
+                try:
+                    headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
+                    r = requests.get(f"https://api.github.com/repos/{repo}/actions/runs?status=in_progress", headers=headers, timeout=8)
+                    if r.status_code == 200:
+                        for run in r.json().get("workflow_runs", []):
+                            rid = run.get("id")
+                            if rid:
+                                requests.post(f"https://api.github.com/repos/{repo}/actions/runs/{rid}/cancel", headers=headers, timeout=8)
+                except Exception:
+                    pass
+            threading.Thread(target=_cancel_gh_runs, daemon=True).start()
+
+        log_notification("stopped", "Generation Stopped", "Video generation cancelled by user.", "warning")
+        return jsonify({"ok": True, "message": "Pipeline stopped cleanly."})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 200
+
+
 @app.route("/api/universe/trigger_pipeline", methods=["POST"])
 def api_universe_trigger_pipeline():
     from flask import request, jsonify
@@ -2266,16 +2326,24 @@ def pwa_app_icon():
     from flask import Response
     svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       <defs>
-        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+        <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#0f2942"/>
+          <stop offset="100%" stop-color="#040814"/>
+        </radialGradient>
+        <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#10b981"/>
-          <stop offset="50%" stop-color="#0ea5e9"/>
-          <stop offset="100%" stop-color="#6366f1"/>
+          <stop offset="50%" stop-color="#06b6d4"/>
+          <stop offset="100%" stop-color="#f59e0b"/>
         </linearGradient>
       </defs>
-      <rect width="512" height="512" rx="115" fill="#050b14"/>
-      <rect x="24" y="24" width="464" height="464" rx="96" fill="url(#g)" opacity="0.18"/>
-      <circle cx="256" cy="256" r="170" fill="url(#g)"/>
-      <path d="M215 175 L335 256 L215 337 Z" fill="#ffffff"/>
+      <rect width="512" height="512" rx="115" fill="url(#bg)"/>
+      <circle cx="256" cy="256" r="210" fill="none" stroke="url(#ring)" stroke-width="18"/>
+      <circle cx="256" cy="256" r="175" fill="#071324" stroke="rgba(16,185,129,0.35)" stroke-width="4"/>
+      <!-- Stylized Tactical Beret & Star -->
+      <path d="M145 215 C155 145, 340 135, 375 205 C330 190, 190 195, 145 215 Z" fill="#10b981"/>
+      <polygon points="256,152 264,170 284,172 269,185 273,204 256,194 239,204 243,185 228,172 248,170" fill="#fbbf24"/>
+      <!-- Play Shield Emblem -->
+      <path d="M210 235 L330 295 L210 355 Z" fill="url(#ring)"/>
     </svg>"""
     return Response(svg, mimetype="image/svg+xml")
 
@@ -2286,11 +2354,11 @@ def pwa_manifest():
     return jsonify({
         "name": "Foji AI Studio",
         "short_name": "Foji Studio",
-        "description": "3D AI Reels Studio & Auto-Scheduler",
+        "description": "3D Tactical AI Reels Studio & Auto-Scheduler",
         "start_url": "/",
         "display": "standalone",
-        "background_color": "#050912",
-        "theme_color": "#050912",
+        "background_color": "#040814",
+        "theme_color": "#040814",
         "orientation": "portrait-primary",
         "icons": [
             {"src": "/app-icon.svg", "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable"}
@@ -2305,7 +2373,6 @@ def pwa_service_worker():
     self.addEventListener('install', e => self.skipWaiting());
     self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
     self.addEventListener('fetch', e => {
-      // Network-first so backend updates always reflect immediately in the installed App!
       e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
     });
     """
@@ -2320,22 +2387,20 @@ def _inject_foji_universe_command_hub(response):
             if "</body>" in html_text and "id=\"foji-nextgen-studio-shell\"" not in html_text:
                 widget_html = """
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#050912">
+<meta name="theme-color" content="#040814">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="/app-icon.svg">
 
 <style>
-body > *:not(#foji-nextgen-studio-shell):not(#fns-center-modal-backdrop):not(script):not(style):not(link) { display: none !important; }
+body > *:not(#foji-nextgen-studio-shell):not(#fns-center-modal-backdrop):not(#fns-app-splash):not(#fns-blast-overlay):not(script):not(style):not(link) { display: none !important; }
 :root {
-    --bg-main: #060b16;
-    --bg-card: rgba(15, 23, 42, 0.78);
-    --bg-elevated: rgba(23, 35, 61, 0.85);
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-accent: rgba(16, 185, 129, 0.35);
+    --bg-main: #050a14;
+    --bg-card: rgba(13, 22, 40, 0.84);
+    --border-subtle: rgba(255, 255, 255, 0.09);
     --primary: #10b981;
     --cyan: #06b6d4;
-    --purple: #8b5cf6;
+    --gold: #f59e0b;
     --danger: #ef4444;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
@@ -2346,59 +2411,139 @@ html, body {
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif !important;
     min-height: 100vh; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
 }
+
+/* 🎬 1.8s APP LAUNCH SPLASH SCREEN */
+#fns-app-splash {
+    position: fixed; inset: 0; z-index: 999999;
+    background: radial-gradient(circle at 50% 40%, #0d253f 0%, #040812 75%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+#fns-app-splash.hide { opacity: 0; transform: scale(1.06); pointer-events: none; }
+.fns-splash-avatar-ring {
+    width: 118px; height: 118px; border-radius: 32px; padding: 4px;
+    background: linear-gradient(135deg, #10b981, #06b6d4, #f59e0b);
+    box-shadow: 0 0 45px rgba(16, 185, 129, 0.55);
+    animation: fnsSplashPulse 1.2s infinite alternate ease-in-out;
+}
+@keyframes fnsSplashPulse {
+    0% { transform: scale(0.96) rotate(-2deg); box-shadow: 0 0 25px rgba(16,185,129,0.4); }
+    100% { transform: scale(1.04) rotate(2deg); box-shadow: 0 0 55px rgba(6,182,212,0.85); }
+}
+.fns-splash-bar {
+    width: 190px; height: 6px; background: rgba(255,255,255,0.1);
+    border-radius: 99px; overflow: hidden; margin-top: 18px;
+}
+.fns-splash-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #10b981, #06b6d4, #f59e0b);
+    animation: fnsSplashLoad 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes fnsSplashLoad { to { width: 100%; } }
+
+/* 💥 FULL-SCREEN BOMB BLAST & CONFETTI CELEBRATION OVERLAY */
+#fns-blast-overlay {
+    display: none; position: fixed; inset: 0; z-index: 99998; pointer-events: none;
+    align-items: center; justify-content: center; overflow: hidden;
+}
+.fns-shockwave {
+    position: absolute; width: 40px; height: 40px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(251,191,36,0.9), rgba(239,68,68,0.6), rgba(16,185,129,0.2), transparent 70%);
+    animation: fnsExplodeWave 1.1s ease-out forwards;
+}
+@keyframes fnsExplodeWave {
+    0% { transform: scale(0.2); opacity: 1; }
+    70% { opacity: 0.9; }
+    100% { transform: scale(45); opacity: 0; }
+}
+.fns-screen-shake { animation: fnsShakeAnim 0.55s cubic-bezier(.36,.07,.19,.97) both; }
+@keyframes fnsShakeAnim {
+    10%, 90% { transform: translate3d(-4px, 2px, 0); }
+    20%, 80% { transform: translate3d(6px, -3px, 0); }
+    30%, 50%, 70% { transform: translate3d(-8px, 4px, 0); }
+    40%, 60% { transform: translate3d(8px, -4px, 0); }
+}
+
 #foji-nextgen-studio-shell {
     background: radial-gradient(circle at 15% 0%, rgba(14, 165, 233, 0.12) 0%, transparent 45%),
                 radial-gradient(circle at 85% 10%, rgba(16, 185, 129, 0.1) 0%, transparent 45%),
-                #060b16;
+                #050a14;
     min-height: 100vh; width: 100%; display: flex; flex-direction: column; box-sizing: border-box;
 }
+
+/* 👆 REAL TACTILE 3D PUSH BUTTONS (FEEL EVERY CLICK!) */
+.fns-tab-btn, .fns-cta-generate, .fns-cta-stop, .fns-cta-schedule, .fns-cta-post, .fns-mnav-item {
+    position: relative; overflow: hidden;
+    transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, filter 0.15s ease !important;
+    user-select: none; -webkit-user-select: none;
+}
+.fns-tab-btn:active, .fns-cta-generate:active, .fns-cta-stop:active, .fns-cta-schedule:active, .fns-cta-post:active, .fns-mnav-item:active {
+    transform: translateY(3px) scale(0.95) !important;
+    filter: brightness(1.22) !important;
+}
+.fns-click-ripple {
+    position: absolute; border-radius: 50%; transform: scale(0);
+    background: rgba(255, 255, 255, 0.45); pointer-events: none;
+    animation: fnsRippleAnim 0.5s ease-out;
+}
+@keyframes fnsRippleAnim { to { transform: scale(3.5); opacity: 0; } }
 
 /* TOP NAVIGATION */
 .fns-topbar {
     display: flex; justify-content: space-between; align-items: center;
-    gap: 12px; padding: 12px 24px; background: rgba(8, 14, 28, 0.88);
+    gap: 12px; padding: 12px 24px; background: rgba(7, 13, 26, 0.9);
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-subtle); position: sticky; top: 0; z-index: 1000;
 }
 .fns-brand { display: flex; align-items: center; gap: 12px; }
 .fns-logo-orb {
-    width: 38px; height: 38px; border-radius: 11px;
-    background: linear-gradient(135deg, #10b981, #0ea5e9);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 900; font-size: 1.15rem; color: #fff;
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35); flex-shrink: 0;
+    width: 42px; height: 42px; border-radius: 12px; overflow: hidden;
+    border: 2px solid #10b981;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4); flex-shrink: 0;
+    background: #071426; display: flex; align-items: center; justify-content: center;
 }
-.fns-tabs { display: flex; gap: 6px; background: rgba(15, 23, 42, 0.75); padding: 5px; border-radius: 13px; border: 1px solid var(--border-subtle); }
+.fns-logo-orb img { width: 100%; height: 100%; object-fit: cover; }
+.fns-tabs { display: flex; gap: 6px; background: rgba(15, 23, 42, 0.78); padding: 5px; border-radius: 13px; border: 1px solid var(--border-subtle); }
 .fns-tab-btn {
     background: transparent; border: 1px solid transparent;
     color: var(--text-muted); padding: 8px 14px; border-radius: 9px;
-    font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;
+    font-size: 0.8rem; font-weight: 700; cursor: pointer;
     display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
 }
 .fns-tab-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
 .fns-tab-btn.active {
-    background: rgba(16, 185, 129, 0.16);
-    border-color: rgba(16, 185, 129, 0.45); color: #34d399;
+    background: rgba(16, 185, 129, 0.18);
+    border-color: rgba(16, 185, 129, 0.5); color: #34d399;
+    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.2);
 }
 
-/* ACTION BUTTONS */
+/* ACTION BUTTONS (3D DEPTH) */
 .fns-cta-generate {
-    background: linear-gradient(135deg, #10b981, #0ea5e9); color: #fff;
-    border: none; padding: 9px 16px; border-radius: 10px;
-    font-size: 0.81rem; font-weight: 800; cursor: pointer;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: transform 0.15s;
+    background: linear-gradient(135deg, #10b981, #059669); color: #fff;
+    border: none; border-bottom: 3px solid #047857; padding: 9px 17px; border-radius: 11px;
+    font-size: 0.82rem; font-weight: 800; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
 }
-.fns-cta-generate:active { transform: scale(0.97); }
+.fns-cta-stop {
+    background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff;
+    border: none; border-bottom: 3px solid #991b1b; padding: 9px 17px; border-radius: 11px;
+    font-size: 0.82rem; font-weight: 900; cursor: pointer;
+    box-shadow: 0 0 22px rgba(239, 68, 68, 0.65);
+    animation: fnsStopPulse 1s infinite alternate;
+}
+@keyframes fnsStopPulse {
+    from { box-shadow: 0 0 12px rgba(239,68,68,0.5); }
+    to { box-shadow: 0 0 26px rgba(239,68,68,0.95); }
+}
 .fns-cta-schedule {
-    background: linear-gradient(135deg, #8b5cf6, #ec4899); color: #fff;
-    border: none; padding: 9px 15px; border-radius: 10px;
-    font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: transform 0.15s;
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff;
+    border: none; border-bottom: 3px solid #5b21b6; padding: 9px 15px; border-radius: 11px;
+    font-size: 0.8rem; font-weight: 700; cursor: pointer;
 }
-.fns-cta-schedule:active { transform: scale(0.97); }
 .fns-cta-post {
-    background: rgba(16, 185, 129, 0.18); color: #34d399;
-    border: 1px solid rgba(16, 185, 129, 0.45); padding: 9px 15px; border-radius: 10px;
-    font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.15s;
+    background: rgba(16, 185, 129, 0.16); color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.45); border-bottom: 3px solid rgba(16, 185, 129, 0.6);
+    padding: 8px 15px; border-radius: 11px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
 }
 .fns-cta-post:hover { background: #10b981; color: #04130e; }
 
@@ -2416,7 +2561,7 @@ html, body {
     background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4);
     color: #34d399; font-size: 0.68rem; font-weight: 800; padding: 3px 9px; border-radius: 99px;
 }
-.fns-main-panel { padding: 22px 26px; overflow-y: auto; flex: 1; }
+.fns-main-panel { padding: 20px 24px; overflow-y: auto; flex: 1; }
 .fns-screen { display: none; animation: fnsFadeIn 0.2s ease; }
 .fns-screen.active { display: block; }
 @keyframes fnsFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -2428,28 +2573,123 @@ html, body {
 .fns-pipeline-card {
     background: var(--bg-card); border: 1px solid var(--border-subtle);
     backdrop-filter: blur(12px); border-radius: 18px; padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-/* PIPELINE STEPS GRID (RESPONSIVE ON BOTH DESKTOP & MOBILE) */
+/* =========================================================================
+   🎖️ 3D TACTICAL FOJI BATTLEFIELD PIPELINE ARENA
+   ========================================================================= */
+.fns-battlefield-arena {
+    position: relative; margin: 16px 0; padding: 20px 16px 18px 16px;
+    background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.14), rgba(5, 10, 22, 0.96) 75%);
+    border: 1px solid rgba(16, 185, 129, 0.32); border-radius: 18px;
+    box-shadow: inset 0 0 35px rgba(0,0,0,0.8), 0 12px 30px rgba(0,0,0,0.45);
+    perspective: 900px; overflow: hidden;
+}
+/* Tactical Radar Grid Overlay */
+.fns-battlefield-arena::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* Active Foji Commander Status Bar inside Arena */
+.fns-commander-hud {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 14px; margin-bottom: 16px; border-radius: 13px;
+    background: rgba(8, 17, 32, 0.9); border: 1px solid rgba(6, 182, 212, 0.3);
+    position: relative; z-index: 3; flex-wrap: wrap;
+}
+.fns-foji-hero-unit {
+    display: flex; align-items: center; gap: 12px;
+}
+.fns-foji-avatar-3d {
+    position: relative; width: 52px; height: 52px; border-radius: 14px;
+    border: 2px solid #10b981; background: #061224;
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.5);
+    animation: fnsPatrolBob 2s infinite ease-in-out; flex-shrink: 0;
+}
+.fns-foji-avatar-3d img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+.fns-foji-weapon-badge {
+    position: absolute; bottom: -5px; right: -8px;
+    background: #0f172a; border: 1.5px solid #f59e0b; border-radius: 8px;
+    padding: 1px 5px; font-size: 0.78rem; box-shadow: 0 0 10px rgba(245,158,11,0.6);
+}
+@keyframes fnsPatrolBob {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(1.5deg); }
+}
+
+/* Muzzle Flash & Bullet Stream When Pipeline is Active */
+.fns-bullet-track {
+    flex: 1; min-width: 120px; height: 18px; position: relative; overflow: hidden;
+    background: rgba(255,255,255,0.03); border-radius: 99px; border: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; padding: 0 10px;
+}
+.fns-laser-bullet {
+    position: absolute; width: 28px; height: 4px; border-radius: 99px;
+    background: linear-gradient(90deg, transparent, #fbbf24, #ef4444);
+    box-shadow: 0 0 12px #f59e0b; opacity: 0;
+}
+.fns-battlefield-arena.firing .fns-laser-bullet {
+    opacity: 1; animation: fnsBulletFly 0.65s linear infinite;
+}
+@keyframes fnsBulletFly {
+    0% { left: 5%; transform: scaleX(0.7); opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 92%; transform: scaleX(1.3); opacity: 0; }
+}
+
+/* 8 Tactical Bunker Checkpoints Grid */
 .fns-steps-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-    margin: 16px 0; padding: 14px; background: rgba(6, 11, 22, 0.75);
-    border: 1px solid var(--border-subtle); border-radius: 14px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    position: relative; z-index: 3;
 }
 .fns-road-node {
-    background: rgba(17, 26, 46, 0.85); border: 1px solid var(--border-subtle);
-    border-radius: 11px; padding: 10px 12px; text-align: left; transition: all 0.25s;
+    position: relative;
+    background: linear-gradient(160deg, rgba(19, 30, 54, 0.92), rgba(10, 17, 32, 0.95));
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 4px solid rgba(255, 255, 255, 0.14);
+    border-radius: 13px; padding: 12px; text-align: left;
+    transform: rotateX(6deg); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.fns-road-node.duty-guard {
+    border-color: rgba(16, 185, 129, 0.65);
+    border-bottom-color: #059669;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.22);
 }
 .fns-road-node.done {
-    border-color: rgba(16, 185, 129, 0.5); background: rgba(16, 185, 129, 0.1);
+    border-color: #10b981; border-bottom-color: #047857;
+    background: linear-gradient(160deg, rgba(16, 185, 129, 0.22), rgba(10, 24, 38, 0.95));
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
 }
 .fns-road-node.active {
-    border-color: #06b6d4; background: rgba(6, 182, 212, 0.16);
-    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    border-color: #f59e0b; border-bottom-color: #b45309;
+    background: linear-gradient(160deg, rgba(245, 158, 11, 0.26), rgba(20, 28, 48, 0.96));
+    box-shadow: 0 0 28px rgba(245, 158, 11, 0.55);
+    transform: rotateX(0deg) translateY(-4px) scale(1.03);
 }
 .fns-road-node.error {
-    border-color: #ef4444; background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444; border-bottom-color: #991b1b;
+    background: rgba(127, 29, 29, 0.35);
+}
+.fns-node-soldier-pin {
+    position: absolute; top: -10px; right: 8px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: #fff; font-size: 0.65rem; font-weight: 900;
+    padding: 2px 7px; border-radius: 99px;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
+    animation: fnsPinBounce 0.6s infinite alternate;
+}
+@keyframes fnsPinBounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+
+/* Step Cleared Celebration Pop Animation */
+.fns-step-celebrate { animation: fnsCelebratePop 0.65s ease-out; }
+@keyframes fnsCelebratePop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.12); box-shadow: 0 0 35px #10b981; }
+    100% { transform: scale(1); }
 }
 
 .fns-error-box {
@@ -2496,23 +2736,23 @@ html, body {
 .fns-vault-card {
     background: rgba(13, 21, 38, 0.92); border: 1px solid var(--border-subtle);
     border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4); transition: transform 0.2s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 .fns-vault-card.published { border-color: rgba(16, 185, 129, 0.55); }
 .fns-vault-card.scheduled { border-color: rgba(139, 92, 246, 0.55); }
 
 /* MODAL POPUP */
 #fns-center-modal-backdrop {
-    display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.8);
+    display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.82);
     backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center; padding: 16px;
 }
 .fns-center-modal {
-    background: #0d1629; border: 1px solid rgba(16, 185, 129, 0.45);
+    background: #0d1629; border: 1.5px solid rgba(16, 185, 129, 0.5);
     border-radius: 20px; max-width: 440px; width: 100%;
     padding: 24px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.85);
 }
 
-/* MOBILE BOTTOM NAVIGATION BAR (NATIVE APP FEEL) */
+/* MOBILE BOTTOM NAVIGATION BAR */
 .fns-mobile-bottom-nav {
     display: none; position: fixed; bottom: 0; left: 0; right: 0;
     background: rgba(8, 13, 26, 0.96); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
@@ -2528,7 +2768,7 @@ html, body {
 .fns-mnav-item.active { color: #10b981; }
 .fns-mnav-icon { font-size: 1.15rem; }
 
-/* MOBILE RESPONSIVE BREAKPOINTS */
+/* MOBILE BREAKPOINTS */
 @media (max-width: 1024px) {
     .fns-body { grid-template-columns: 1fr; }
     .fns-sidebar { display: none; }
@@ -2546,13 +2786,26 @@ html, body {
 }
 </style>
 
-<!-- CLEAN CENTER MODAL -->
+<!-- 🎬 1.8-SECOND NATIVE APP BOOT SPLASH SCREEN -->
+<div id="fns-app-splash">
+  <div class="fns-splash-avatar-ring">
+    <img src="/api/universe/char_img/foji" onerror="this.src='/app-icon.svg'" style="width:100%;height:100%;object-fit:cover;border-radius:28px;" />
+  </div>
+  <div style="font-size:1.35rem;font-weight:900;color:#fff;margin-top:16px;letter-spacing:0.02em;">FOJI AI STUDIO</div>
+  <div style="font-size:0.75rem;color:#34d399;font-weight:700;margin-top:4px;">3D TACTICAL ENGINE • @ai_foji_lovelife</div>
+  <div class="fns-splash-bar"><div class="fns-splash-fill"></div></div>
+</div>
+
+<!-- 💥 BOMB BLAST CELEBRATION OVERLAY -->
+<div id="fns-blast-overlay"></div>
+
+<!-- CENTER MODAL (SUPPORTS CONFIRMATION BUTTONS TOO) -->
 <div id="fns-center-modal-backdrop">
   <div class="fns-center-modal" id="fns-center-modal-box">
-    <div id="fns-modal-icon" style="font-size:2.2rem;margin-bottom:8px;">✨</div>
-    <div id="fns-modal-title" style="font-size:1.12rem;font-weight:800;color:#fff;margin-bottom:6px;">Update</div>
+    <div id="fns-modal-icon" style="font-size:2.3rem;margin-bottom:8px;">✨</div>
+    <div id="fns-modal-title" style="font-size:1.14rem;font-weight:800;color:#fff;margin-bottom:6px;">Update</div>
     <div id="fns-modal-body" style="font-size:0.86rem;color:#cbd5e1;line-height:1.5;margin-bottom:18px;word-break:break-word;"></div>
-    <div style="display:flex;gap:10px;justify-content:center;" id="fns-modal-actions">
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;" id="fns-modal-actions">
       <button class="fns-cta-generate" style="min-width:110px;" onclick="fnsCloseModal()">Done</button>
     </div>
   </div>
@@ -2562,10 +2815,12 @@ html, body {
   <!-- TOP BAR -->
   <div class="fns-topbar">
     <div class="fns-brand">
-      <div class="fns-logo-orb">F</div>
+      <div class="fns-logo-orb">
+        <img src="/api/universe/char_img/foji" onerror="this.src='/app-icon.svg'" alt="Foji" />
+      </div>
       <div>
         <div style="font-size:1.05rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">Foji AI Studio</div>
-        <div style="font-size:0.7rem;color:#34d399;font-weight:600;" id="fns-top-clock-sub">@ai_foji_lovelife • Auto-Pilot Active</div>
+        <div style="font-size:0.7rem;color:#34d399;font-weight:600;" id="fns-top-clock-sub">@ai_foji_lovelife • Command Hub</div>
       </div>
     </div>
 
@@ -2578,7 +2833,8 @@ html, body {
 
     <div class="fns-topbar-actions" style="display:flex;gap:8px;align-items:center;">
       <button class="fns-tab-btn" id="fns-pwa-install-btn" style="display:none;border-color:#06b6d4;color:#22d3ee;" onclick="fnsInstallPwaApp()">📲 Install App</button>
-      <button class="fns-cta-generate" onclick="fnsStartFullVideoGeneration(1)">⚡ New Reel</button>
+      <!-- DYNAMIC GENERATE / STOP BUTTON -->
+      <button class="fns-cta-generate" id="fns-primary-gen-btn" onclick="fnsHandlePrimaryGenOrStopClick()">🚀 Generate Reel</button>
       <button class="fns-cta-schedule" onclick="fnsApproveAndScheduleLatest()">📅 Schedule</button>
       <button class="fns-cta-post" onclick="fnsPublishLatestReel()">📲 Post</button>
     </div>
@@ -2596,17 +2852,17 @@ html, body {
       </div>
 
       <div class="fns-side-box">
-        <div style="font-size:0.74rem;font-weight:800;color:#94a3b8;margin-bottom:8px;">QUICK ACTIONS</div>
-        <button class="fns-tab-btn" style="width:100%;margin-bottom:6px;justify-content:flex-start;" onclick="fnsStartFullVideoGeneration(1)">⚡ Generate 1 Reel</button>
+        <div style="font-size:0.74rem;font-weight:800;color:#94a3b8;margin-bottom:8px;">QUICK COMMANDS</div>
+        <button class="fns-tab-btn" id="fns-side-gen-btn" style="width:100%;margin-bottom:6px;justify-content:flex-start;color:#34d399;" onclick="fnsHandlePrimaryGenOrStopClick()">🚀 Generate Reel</button>
         <button class="fns-tab-btn" style="width:100%;margin-bottom:6px;justify-content:flex-start;" onclick="fnsStartFullVideoGeneration(3)">🌙 Generate 3 Reels</button>
         <button class="fns-tab-btn" style="width:100%;margin-bottom:6px;justify-content:flex-start;" onclick="fnsApproveAndScheduleLatest()">📅 Schedule Latest</button>
-        <button class="fns-tab-btn" style="width:100%;justify-content:flex-start;" onclick="fnsSwitchTab(3)">🎞️ View All Reels (<span id="fns-ep-total">0</span>)</button>
+        <button class="fns-tab-btn" style="width:100%;justify-content:flex-start;" onclick="fnsSwitchTab(3)">🎞️ All Reels (<span id="fns-ep-total">0</span>)</button>
       </div>
 
       <div class="fns-side-box" style="margin-top:auto;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <span style="font-size:0.72rem;color:#94a3b8;font-weight:700;">Instagram Sync</span>
-          <span class="fns-badge-live">Connected</span>
+          <span style="font-size:0.72rem;color:#94a3b8;font-weight:700;">Auto-Cleaner & IG</span>
+          <span class="fns-badge-live">Protected</span>
         </div>
       </div>
     </div>
@@ -2615,51 +2871,76 @@ html, body {
     <div class="fns-main-panel">
       <div id="fns-action-toast" style="display:none;margin-bottom:14px;padding:11px 15px;border-radius:11px;background:rgba(16,185,129,0.16);border:1px solid #10b981;color:#fff;font-weight:700;font-size:0.83rem;"></div>
 
-      <!-- TAB 1: STUDIO & PREVIEW -->
+      <!-- TAB 1: 3D TACTICAL STUDIO & PREVIEW -->
       <div class="fns-screen active" id="fns-screen-1">
         <div class="fns-s1-grid">
           <div class="fns-pipeline-card">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
               <div>
-                <div style="font-size:1.02rem;font-weight:800;color:#fff;">Production Pipeline</div>
-                <div style="font-size:0.78rem;color:#34d399;margin-top:2px;" id="fns-radar-subtitle">Ready to generate</div>
+                <div style="font-size:1.04rem;font-weight:900;color:#fff;">🎖️ 3D Foji Tactical Pipeline</div>
+                <div style="font-size:0.78rem;color:#34d399;margin-top:2px;" id="fns-radar-subtitle">Foji Makra on Guard Duty at Post #1</div>
               </div>
-              <a href="/api/universe/live_screenshot" target="_blank" class="fns-tab-btn" style="text-decoration:none;font-size:0.74rem;border-color:rgba(255,255,255,0.12);">📸 Cloud View ↗</a>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <a href="/api/universe/live_screenshot" target="_blank" class="fns-tab-btn" style="text-decoration:none;font-size:0.74rem;border-color:rgba(255,255,255,0.12);">📸 Cloud View ↗</a>
+              </div>
             </div>
 
-            <!-- CLEAN 8-STEP PROGRESS GRID -->
-            <div class="fns-steps-grid">
-              <div class="fns-road-node" id="fns-pnode-1">
-                <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">STEP 1</div>
-                <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">AI Script</div>
+            <!-- 🎖️ 3D TACTICAL BATTLEFIELD ARENA -->
+            <div class="fns-battlefield-arena" id="fns-battle-arena">
+              <!-- Live Foji Commando Unit Bar -->
+              <div class="fns-commander-hud">
+                <div class="fns-foji-hero-unit">
+                  <div class="fns-foji-avatar-3d" id="fns-foji-hero-box">
+                    <img src="/api/universe/char_img/foji" onerror="this.src='/app-icon.svg'" alt="Foji Makra" />
+                    <span class="fns-foji-weapon-badge" id="fns-foji-weapon-icon">🛡️</span>
+                  </div>
+                  <div>
+                    <div style="font-size:0.82rem;font-weight:900;color:#fff;" id="fns-foji-soldier-title">🪖 Commando Makra • Guard Duty (Post #1)</div>
+                    <div style="font-size:0.71rem;color:#34d399;font-weight:700;" id="fns-foji-soldier-sub">Standing by — Click "Generate Reel" to start mission</div>
+                  </div>
+                </div>
+
+                <!-- Animated Laser Bullet Stream -->
+                <div class="fns-bullet-track" id="fns-bullet-stream">
+                  <div class="fns-laser-bullet"></div>
+                  <span style="font-size:0.68rem;font-weight:800;color:#94a3b8;margin-left:auto;" id="fns-mission-pct-badge">READY</span>
+                </div>
               </div>
-              <div class="fns-road-node" id="fns-pnode-2">
-                <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">STEP 2</div>
-                <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">Auth Session</div>
-              </div>
-              <div class="fns-road-node" id="fns-pnode-3">
-                <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">STEP 3</div>
-                <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">9:16 Setup</div>
-              </div>
-              <div class="fns-road-node" id="fns-pnode-4">
-                <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">STEP 4</div>
-                <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">Characters</div>
-              </div>
-              <div class="fns-road-node" id="fns-pnode-5">
-                <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">STEP 5</div>
-                <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">Scene Prompt</div>
-              </div>
-              <div class="fns-road-node" id="fns-pnode-6">
-                <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">STEP 6</div>
-                <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">3D Render</div>
-              </div>
-              <div class="fns-road-node" id="fns-pnode-7">
-                <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">STEP 7</div>
-                <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">MP4 Export</div>
-              </div>
-              <div class="fns-road-node" id="fns-pnode-8">
-                <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">STEP 8</div>
-                <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">Saved in Vault</div>
+
+              <!-- 8 3D Tactical Bunker Checkpoints -->
+              <div class="fns-steps-grid">
+                <div class="fns-road-node duty-guard" id="fns-pnode-1">
+                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 1</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📝 AI Script</div>
+                </div>
+                <div class="fns-road-node" id="fns-pnode-2">
+                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 2</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🔐 Auth Lock</div>
+                </div>
+                <div class="fns-road-node" id="fns-pnode-3">
+                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 3</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📐 9:16 Setup</div>
+                </div>
+                <div class="fns-road-node" id="fns-pnode-4">
+                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 4</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">👫 Characters</div>
+                </div>
+                <div class="fns-road-node" id="fns-pnode-5">
+                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 5</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🎯 Scene Prompt</div>
+                </div>
+                <div class="fns-road-node" id="fns-pnode-6">
+                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 6</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🎬 3D Render</div>
+                </div>
+                <div class="fns-road-node" id="fns-pnode-7">
+                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 7</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📥 MP4 Save</div>
+                </div>
+                <div class="fns-road-node" id="fns-pnode-8">
+                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 8</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">💥 Mission Complete</div>
+                </div>
               </div>
             </div>
 
@@ -2717,7 +2998,7 @@ html, body {
               <button class="fns-cta-schedule" style="width:100%;margin-bottom:8px;padding:11px;font-size:0.82rem;" onclick="fnsApproveAndScheduleLatest()">📅 Schedule Next Slot</button>
               <button class="fns-cta-post" style="width:100%;margin-bottom:8px;padding:11px;font-size:0.82rem;" id="fns-side-post-btn" onclick="fnsPublishLatestReel()">📲 Post to Instagram Now</button>
               <div style="display:flex;gap:8px;">
-                <button class="fns-tab-btn" style="flex:1;justify-content:center;font-size:0.75rem;border-color:rgba(255,255,255,0.1);" onclick="fnsStartFullVideoGeneration(1)">🔄 Regenerate</button>
+                <button class="fns-tab-btn" id="fns-card-gen-btn" style="flex:1;justify-content:center;font-size:0.75rem;border-color:rgba(255,255,255,0.1);" onclick="fnsHandlePrimaryGenOrStopClick()">🚀 Generate Reel</button>
                 <a href="/api/universe/latest_video" download="foji_reel.mp4" class="fns-tab-btn" style="flex:1;justify-content:center;font-size:0.75rem;text-decoration:none;color:#34d399;border-color:rgba(16,185,129,0.3);">📥 Download</a>
               </div>
             </div>
@@ -2761,7 +3042,7 @@ html, body {
         </div>
       </div>
 
-      <!-- TAB 3: ALL REELS VAULT (INSTANT STREAMING + ZERO FLICKER) -->
+      <!-- TAB 3: ALL REELS VAULT -->
       <div class="fns-screen" id="fns-screen-3">
         <div class="fns-pipeline-card">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
@@ -2825,8 +3106,113 @@ let _fnsActivePreviewFile = '';
 let _fnsLastVaultSignature = '';
 let _fnsLastQueueSignature = '';
 let _fnsDeferredPwaPrompt = null;
+let _fnsPipelineIsRunning = false;
+let _fnsLastCompletedStep = 0;
 
-// Register Service Worker for Native Mobile App & Live Updates
+// 🎬 Hide App Launch Splash Screen smoothly after 1.65 seconds
+setTimeout(() => {
+  const sp = document.getElementById('fns-app-splash');
+  if (sp) {
+    sp.classList.add('hide');
+    setTimeout(() => { sp.style.display = 'none'; }, 500);
+  }
+}, 1650);
+
+// 🔊 WebAudio Synthesizer for Button Clicks, Step Cleared Flare & Final Bomb Blast!
+function fnsPlaySoundFX(type) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    if (type === 'click') {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(520, now);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.045);
+      g.gain.setValueAtTime(0.08, now);
+      g.gain.linearRampToValueAtTime(0.01, now + 0.045);
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.05);
+    } else if (type === 'step_up') {
+      [587.33, 880].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+        g.gain.setValueAtTime(0.14, now + idx * 0.08);
+        g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.18);
+        osc.connect(g); g.connect(ctx.destination);
+        osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.19);
+      });
+    } else if (type === 'bomb_blast') {
+      // Deep explosion boom + victory chord
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(140, now);
+      osc.frequency.exponentialRampToValueAtTime(28, now + 0.65);
+      g.gain.setValueAtTime(0.32, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.72);
+    }
+  } catch (e) {}
+}
+
+// Global tactile ripple + click sound on every button tap
+document.addEventListener('pointerdown', function(e) {
+  const btn = e.target.closest('button, .fns-tab-btn, .fns-cta-generate, .fns-cta-stop, .fns-cta-schedule, .fns-cta-post');
+  if (!btn) return;
+  fnsPlaySoundFX('click');
+  const rect = btn.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  ripple.className = 'fns-click-ripple';
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 520);
+});
+
+// 💥 Trigger Grand Bomb Blast + Tiranga Confetti Celebration on Step 8 Completion!
+function fnsTriggerGrandBombBlastCelebration(reelTitle) {
+  fnsPlaySoundFX('bomb_blast');
+  const ov = document.getElementById('fns-blast-overlay');
+  const shell = document.getElementById('foji-nextgen-studio-shell');
+  if (shell) {
+    shell.classList.remove('fns-screen-shake');
+    void shell.offsetWidth;
+    shell.classList.add('fns-screen-shake');
+  }
+  if (ov) {
+    ov.style.display = 'flex';
+    ov.innerHTML = '<div class="fns-shockwave"></div>';
+    const colors = ['#ff9933', '#ffffff', '#138808', '#10b981', '#06b6d4', '#fbbf24'];
+    for (let i = 0; i < 55; i++) {
+      const p = document.createElement('div');
+      const col = colors[i % colors.length];
+      const angle = (Math.PI * 2 * i) / 55;
+      const dist = 140 + Math.random() * 380;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      p.style.cssText = `position:absolute;width:10px;height:10px;border-radius:3px;background:${col};box-shadow:0 0 10px ${col};transition:all 1.15s cubic-bezier(0.16,1,0.3,1);transform:translate(0,0) scale(1);opacity:1;`;
+      ov.appendChild(p);
+      requestAnimationFrame(() => {
+        p.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.random()*520}deg) scale(0.2)`;
+        p.style.opacity = '0';
+      });
+    }
+    setTimeout(() => { ov.style.display = 'none'; ov.innerHTML = ''; }, 1350);
+  }
+  fnsOpenModal(
+    '💥',
+    'MISSION ACCOMPLISHED — REEL READY!',
+    `<div style="font-weight:800;color:#34d399;font-size:0.95rem;margin-bottom:6px;">🎬 ${reelTitle || 'New 3D Foji Reel'}</div>
+     <div style="font-size:0.82rem;color:#cbd5e1;">Commando Makra completed all 8 stages! Your reel is ready in the preview player and All Reels Vault.</div>`
+  );
+}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
@@ -2846,18 +3232,33 @@ async function fnsInstallPwaApp() {
     _fnsDeferredPwaPrompt = null;
     document.getElementById('fns-pwa-install-btn').style.display = 'none';
   } else {
-    fnsOpenModal('📲', 'Install Foji Studio App', 'In Chrome mobile menu (⋮), tap <b>"Add to Home screen"</b> or <b>"Install app"</b> for fullscreen native mode.', false);
+    fnsOpenModal('📲', 'Install Foji Studio App', 'In Chrome mobile menu (⋮), tap <b>"Add to Home screen"</b> or <b>"Install app"</b> for fullscreen native mode.');
   }
 }
 
-function fnsOpenModal(icon, title, bodyHtml, isError=false) {
+function fnsOpenModal(icon, title, bodyHtml, isError=false, customButtons=null) {
   const bd = document.getElementById('fns-center-modal-backdrop');
   const box = document.getElementById('fns-center-modal-box');
   document.getElementById('fns-modal-icon').innerText = icon;
   document.getElementById('fns-modal-title').innerText = title;
   document.getElementById('fns-modal-title').style.color = isError ? '#f87171' : '#34d399';
   document.getElementById('fns-modal-body').innerHTML = bodyHtml;
-  box.style.borderColor = isError ? '#ef4444' : 'rgba(16, 185, 129, 0.45)';
+  box.style.borderColor = isError ? '#ef4444' : 'rgba(16, 185, 129, 0.5)';
+
+  const act = document.getElementById('fns-modal-actions');
+  if (customButtons && Array.isArray(customButtons)) {
+    act.innerHTML = '';
+    customButtons.forEach(b => {
+      const btn = document.createElement('button');
+      btn.className = b.cls || 'fns-cta-generate';
+      btn.style.minWidth = '115px';
+      btn.innerHTML = b.label;
+      btn.onclick = b.onClick;
+      act.appendChild(btn);
+    });
+  } else {
+    act.innerHTML = '<button class="fns-cta-generate" style="min-width:110px;" onclick="fnsCloseModal()">Done</button>';
+  }
   bd.style.display = 'flex';
 }
 
@@ -2885,7 +3286,6 @@ function fnsSwitchTab(num) {
   }
 }
 
-// Play only one video at a time so browser bandwidth is 100% focused on the clicked video
 document.addEventListener('play', function(e) {
   if (e.target && e.target.tagName === 'VIDEO') {
     document.querySelectorAll('video').forEach(v => {
@@ -2893,6 +3293,55 @@ document.addEventListener('play', function(e) {
     });
   }
 }, true);
+
+// 🔄 Sync Generate vs Stop Button State across Topbar, Sidebar & Card
+function fnsSyncGenerateStopButtons(isActive) {
+  _fnsPipelineIsRunning = isActive;
+  const topBtn = document.getElementById('fns-primary-gen-btn');
+  const sideBtn = document.getElementById('fns-side-gen-btn');
+  const cardBtn = document.getElementById('fns-card-gen-btn');
+
+  if (isActive) {
+    if (topBtn) { topBtn.className = 'fns-cta-stop'; topBtn.innerHTML = '🛑 Stop Generation'; }
+    if (sideBtn) { sideBtn.style.color = '#f87171'; sideBtn.innerHTML = '🛑 Stop Generation'; }
+    if (cardBtn) { cardBtn.style.color = '#f87171'; cardBtn.innerHTML = '🛑 Stop'; }
+  } else {
+    if (topBtn) { topBtn.className = 'fns-cta-generate'; topBtn.innerHTML = '🚀 Generate Reel'; }
+    if (sideBtn) { sideBtn.style.color = '#34d399'; sideBtn.innerHTML = '🚀 Generate Reel'; }
+    if (cardBtn) { cardBtn.style.color = '#e2e8f0'; cardBtn.innerHTML = '🚀 Generate Reel'; }
+  }
+}
+
+function fnsHandlePrimaryGenOrStopClick() {
+  if (_fnsPipelineIsRunning) {
+    fnsOpenModal(
+      '🛑',
+      'Stop Reel Generation?',
+      'Do you want to stop the current video generation right now and return Commando Makra to Standby Duty?',
+      true,
+      [
+        {
+          label: '🛑 Yes, Stop Now',
+          cls: 'fns-cta-stop',
+          onClick: async () => {
+            fnsCloseModal();
+            fnsShowToast('Stopping pipeline...');
+            await fetch('/api/universe/stop_pipeline', { method: 'POST' });
+            fnsSyncGenerateStopButtons(false);
+            fnsRefreshHub();
+          }
+        },
+        {
+          label: 'Continue Mission',
+          cls: 'fns-tab-btn',
+          onClick: fnsCloseModal
+        }
+      ]
+    );
+  } else {
+    fnsStartFullVideoGeneration(1);
+  }
+}
 
 function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFile) {
   const stepNum = parseInt(telemetry.step_num || 0, 10);
@@ -2904,15 +3353,67 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
   if (status === 'active' && ageSeconds > 300) status = 'idle';
   if (stepNum === 0 && status !== 'error') status = 'idle';
 
-  const title = (status === 'idle') ? 'Ready' : (telemetry.step_title || 'Processing');
-  const detail = (status === 'idle') ? 'Tap "New Reel" to generate' : (telemetry.sub_detail || '');
+  const isRunning = (status === 'active' && stepNum >= 1);
+  fnsSyncGenerateStopButtons(isRunning);
 
-  document.getElementById('fns-radar-subtitle').innerText = `${title} • ${detail}`;
+  const arena = document.getElementById('fns-battle-arena');
+  const soldierTitle = document.getElementById('fns-foji-soldier-title');
+  const soldierSub = document.getElementById('fns-foji-soldier-sub');
+  const weaponIcon = document.getElementById('fns-foji-weapon-icon');
+  const pctBadge = document.getElementById('fns-mission-pct-badge');
+
+  if (arena) arena.classList.toggle('firing', isRunning);
+
+  if (status === 'idle') {
+    _fnsLastCompletedStep = 0;
+    document.getElementById('fns-radar-subtitle').innerText = 'Commando Makra on Guard Duty at Post #1';
+    if (soldierTitle) soldierTitle.innerText = '🪖 Commando Makra • Guard Duty (Post #1)';
+    if (soldierSub) soldierSub.innerText = 'Standing guard — Tap "Generate Reel" to launch mission';
+    if (weaponIcon) weaponIcon.innerText = '🛡️';
+    if (pctBadge) pctBadge.innerText = 'ON DUTY';
+  } else if (status === 'active') {
+    const title = telemetry.step_title || `Post #${stepNum}`;
+    const detail = telemetry.sub_detail || 'Advancing...';
+    document.getElementById('fns-radar-subtitle').innerText = `${title} • ${detail}`;
+    if (soldierTitle) soldierTitle.innerText = `🔫 Commando Makra • Firing at Post #${stepNum} (${title})`;
+    if (soldierSub) soldierSub.innerText = detail;
+    if (weaponIcon) weaponIcon.innerText = '🔥';
+    if (pctBadge) pctBadge.innerText = `${Math.min(99, Math.max(12, stepNum * 12))}%`;
+
+    // Celebrate each newly cleared step!
+    if (stepNum > _fnsLastCompletedStep && _fnsLastCompletedStep > 0) {
+      fnsPlaySoundFX('step_up');
+      const prevNode = document.getElementById('fns-pnode-' + (stepNum - 1));
+      if (prevNode) {
+        prevNode.classList.remove('fns-step-celebrate');
+        void prevNode.offsetWidth;
+        prevNode.classList.add('fns-step-celebrate');
+      }
+    }
+    _fnsLastCompletedStep = stepNum;
+  } else if (status === 'completed') {
+    if (_fnsLastCompletedStep > 0 && _fnsLastCompletedStep < 8) {
+      _fnsLastCompletedStep = 8;
+      fnsTriggerGrandBombBlastCelebration(latestVideoFile);
+    }
+    if (soldierTitle) soldierTitle.innerText = '🏆 Commando Makra • Mission Accomplished!';
+    if (soldierSub) soldierSub.innerText = 'Target Reel secured in Vault!';
+    if (weaponIcon) weaponIcon.innerText = '🇮🇳';
+    if (pctBadge) pctBadge.innerText = '100% DONE';
+  } else if (status === 'error') {
+    if (soldierTitle) soldierTitle.innerText = '⚠️ Mission Paused — Check Alert Below';
+    if (soldierSub) soldierSub.innerText = telemetry.sub_detail || '';
+    if (weaponIcon) weaponIcon.innerText = '⚠️';
+    if (pctBadge) pctBadge.innerText = 'PAUSED';
+  }
 
   for (let i = 1; i <= 8; i++) {
     const nd = document.getElementById('fns-pnode-' + i);
     if (!nd) continue;
     nd.className = 'fns-road-node';
+
+    const oldPin = nd.querySelector('.fns-node-soldier-pin');
+    if (oldPin) oldPin.remove();
 
     let badgeEl = nd.querySelector('.fns-stage-state-badge');
     if (!badgeEl) {
@@ -2923,37 +3424,52 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     }
 
     if (status === 'idle') {
-      badgeEl.innerText = 'Standby';
-      badgeEl.style.color = '#64748b';
+      if (i === 1) {
+        nd.classList.add('duty-guard');
+        badgeEl.innerText = '🪖 Foji On Duty';
+        badgeEl.style.color = '#34d399';
+        const pin = document.createElement('span');
+        pin.className = 'fns-node-soldier-pin';
+        pin.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+        pin.innerText = '🪖 GUARDING';
+        nd.appendChild(pin);
+      } else {
+        badgeEl.innerText = 'Standby';
+        badgeEl.style.color = '#64748b';
+      }
     } else if (status === 'active') {
       if (i < stepNum) {
         nd.classList.add('done');
-        badgeEl.innerText = '✓ Done';
+        badgeEl.innerText = '🎖️ Cleared!';
         badgeEl.style.color = '#34d399';
       } else if (i === stepNum) {
         nd.classList.add('active');
-        badgeEl.innerText = '● Active';
-        badgeEl.style.color = '#22d3ee';
+        badgeEl.innerText = '🔫 Firing Live...';
+        badgeEl.style.color = '#fbbf24';
+        const pin = document.createElement('span');
+        pin.className = 'fns-node-soldier-pin';
+        pin.innerText = '🪖🔥 FIRING';
+        nd.appendChild(pin);
       } else {
-        badgeEl.innerText = 'Pending';
+        badgeEl.innerText = 'Locked';
         badgeEl.style.color = '#64748b';
       }
     } else if (status === 'completed') {
       nd.classList.add('done');
-      badgeEl.innerText = '✓ Done';
+      badgeEl.innerText = '💥 Victory!';
       badgeEl.style.color = '#34d399';
     } else if (status === 'error') {
       const errStage = stepNum > 0 ? stepNum : 2;
       if (i < errStage) {
         nd.classList.add('done');
-        badgeEl.innerText = '✓ Done';
+        badgeEl.innerText = '🎖️ Cleared';
         badgeEl.style.color = '#34d399';
       } else if (i === errStage) {
         nd.classList.add('error');
-        badgeEl.innerText = '✕ Failed';
+        badgeEl.innerText = '✕ Halted';
         badgeEl.style.color = '#fca5a5';
       } else {
-        badgeEl.innerText = 'Stopped';
+        badgeEl.innerText = 'Standby';
         badgeEl.style.color = '#64748b';
       }
     }
@@ -2963,7 +3479,7 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
   const errTxt = document.getElementById('fns-error-reason-text');
   if (status === 'error') {
     errBox.style.display = 'block';
-    errTxt.innerHTML = `<b>${title}:</b> ${detail}`;
+    errTxt.innerHTML = `<b>${telemetry.step_title || 'Notice'}:</b> ${telemetry.sub_detail || ''}`;
   } else {
     errBox.style.display = 'none';
   }
@@ -2991,12 +3507,11 @@ function fnsRenderMasterVault(vaultList) {
     if (vf && !_fnsKnownVaultFiles.has(vf)) {
       _fnsKnownVaultFiles.add(vf);
       if (_fnsFirstLoadDone) {
-        fnsOpenModal('🎬', 'New Reel Ready', `<div style="font-weight:700;color:#fff;">${item.title || vf}</div>`, false);
+        fnsTriggerGrandBombBlastCelebration(item.title || vf);
       }
     }
   }
 
-  // SMART DIFFING: Never re-create <video> DOM elements unless vault data actually changed!
   const sig = JSON.stringify(vaultList.map(v => `${v.video_file}_${v.vault_status}_${v.status_badge}`));
   if (sig === _fnsLastVaultSignature) return;
   _fnsLastVaultSignature = sig;
@@ -3004,7 +3519,7 @@ function fnsRenderMasterVault(vaultList) {
   const grid = document.getElementById('fns-master-vault-grid');
   if (!grid) return;
   if (!vaultList.length) {
-    grid.innerHTML = '<div style="padding:18px;color:#64748b;">No reels yet. Tap "New Reel" to start.</div>';
+    grid.innerHTML = '<div style="padding:18px;color:#64748b;">No reels yet. Tap "Generate Reel" to start.</div>';
     return;
   }
 
@@ -3147,7 +3662,7 @@ async function fnsApproveAndScheduleSpecific(vfile) {
     const d = await r.json();
     if (d.ok) {
       const slotTxt = (d.scheduled_item && d.scheduled_item.scheduled_display) ? d.scheduled_item.scheduled_display : 'Next Slot';
-      fnsOpenModal('📅', 'Scheduled', `Reel locked for <b>${slotTxt}</b>.`, false);
+      fnsOpenModal('📅', 'Scheduled', `Reel locked for <b>${slotTxt}</b>.`);
       fnsRefreshHub();
     } else {
       fnsOpenModal('⚠️', 'Schedule Notice', d.error || 'Could not schedule reel.', true);
@@ -3171,7 +3686,7 @@ async function fnsPublishLatestReel() {
 }
 
 async function fnsPublishSpecificNow(vfile) {
-  fnsOpenModal('🚀', 'Publishing to Instagram...', 'Optimizing cover frame and uploading to <b>@ai_foji_lovelife</b>...', false);
+  fnsOpenModal('🚀', 'Publishing to Instagram...', 'Selecting best video frame and uploading to <b>@ai_foji_lovelife</b>...');
   try {
     const r = await fetch('/api/universe/publish_latest_reel', {
       method: 'POST',
@@ -3181,7 +3696,7 @@ async function fnsPublishSpecificNow(vfile) {
     const d = await r.json();
     if (d.ok) {
       const linkHtml = d.permalink ? `<div style="margin-top:10px;"><a href="${d.permalink}" target="_blank" style="color:#34d399;font-weight:800;">View on Instagram ↗</a></div>` : '';
-      fnsOpenModal('✅', 'Published on Instagram', `Reel is now live on <b>@ai_foji_lovelife</b>.${linkHtml}`, false);
+      fnsOpenModal('✅', 'Published on Instagram', `Reel is now live on <b>@ai_foji_lovelife</b>.${linkHtml}`);
       fnsRefreshHub();
     } else {
       fnsOpenModal('❌', 'Upload Failed', d.error || 'Could not upload reel.', true);
@@ -3229,8 +3744,6 @@ function fnsRenderTrackSelectors() {
   }
 }
 
-let _fnsLastSeenNotifId = '';
-
 function fnsRenderNotifications(list) {
   const nBox = document.getElementById('fns-notif-feed');
   if (!nBox) return;
@@ -3238,12 +3751,6 @@ function fnsRenderNotifications(list) {
     nBox.innerHTML = '<div style="color:#64748b;">No recent activity.</div>';
     return;
   }
-
-  const newest = list[0];
-  if (newest && newest.id) {
-    _fnsLastSeenNotifId = newest.id;
-  }
-
   nBox.innerHTML = list.slice(0, 8).map(n => `
     <div style="padding:7px 10px;background:rgba(15,23,42,0.65);border-radius:8px;border-left:3px solid ${n.status==='error'?'#ef4444':(n.status==='success'?'#10b981':'#06b6d4')};display:flex;justify-content:space-between;gap:10px;">
       <span><b>${n.title || 'Update'}:</b> ${n.message || ''}</span>
@@ -3282,16 +3789,17 @@ async function fnsLockTwist() {
 
 async function fnsStartFullVideoGeneration(cnt=1) {
   const twist = document.getElementById('fns-custom-twist').value;
+  _fnsLastCompletedStep = 1;
   fnsUpdateConnectedPipelineRoad({
     step_num: 1,
     step_title: 'Generating Script',
-    sub_detail: 'Starting pipeline...',
+    sub_detail: 'Commando Makra advancing to Post #1...',
     status: 'active',
     updated_at: 'Now',
     epoch: Date.now() / 1000
   }, [], '');
 
-  fnsShowToast('Generation started...');
+  fnsShowToast('🪖 Mission started! Commando Makra advancing...');
   try {
     const r = await fetch('/api/universe/trigger_pipeline', {
       method: 'POST',
@@ -3321,7 +3829,7 @@ async function fnsSaveScheduleSlots() {
       daily_slots: [s1, s2, s3]
     })
   });
-  fnsOpenModal('✅', 'Schedule Saved', `Daily slots locked at <b>${s1}, ${s2}, ${s3} IST</b>.`, false);
+  fnsOpenModal('✅', 'Schedule Saved', `Daily slots locked at <b>${s1}, ${s2}, ${s3} IST</b>.`);
   fnsRefreshHub();
 }
 
@@ -3358,7 +3866,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.insertBefore(shell, document.body.firstChild);
   }
   fnsRefreshHub();
-  setInterval(fnsRefreshHub, 3500);
+  setInterval(fnsRefreshHub, 3000);
 });
 </script>
 """
