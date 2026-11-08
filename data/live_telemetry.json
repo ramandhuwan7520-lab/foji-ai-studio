@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1794163457.947386
+  "step_num": 1,
+  "step_title": "Stage 1: AI Script (1/1)",
+  "sub_detail": "Writing original story & dialogues...",
+  "status": "active",
+  "progress": 12,
+  "updated_at": "01:03:14 AM",
+  "epoch": 1794166394.723316
 }
