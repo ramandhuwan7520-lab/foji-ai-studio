@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Stage 1: AI Episodic Script",
-  "sub_detail": "Generating fresh connected script & wardrobe...",
+  "step_num": 2,
+  "step_title": "Stage 2: Cookie Sign-In (Account #1)",
+  "sub_detail": "Logging into Gemini & preparing Makra + Meera (Mustard Yellow Rajasthani Bandhani Kur...)...",
   "status": "active",
-  "progress": 12,
-  "updated_at": "06:00:49 AM",
-  "epoch": 1794097849.9625301
+  "progress": 25,
+  "updated_at": "06:00:51 AM",
+  "epoch": 1794097851.4371417
 }
