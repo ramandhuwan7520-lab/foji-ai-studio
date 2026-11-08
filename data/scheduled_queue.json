@@ -52,26 +52,15 @@
   "scheduled_posts": [],
   "published_posts": [
     {
-      "id": "vid_raw_video_1107_174735_p1.mp4",
+      "id": "pub_1794111384985",
       "video_file": "raw_video_1107_174735_p1.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 1: 4 AM Ka Murga & Ustad ki Garaj",
-      "track_id": "unit_ragda",
-      "part_number": 1,
-      "dialogue": "Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!",
-      "shayari": "Maidaan-e-jung ho ya training ka ghera, ragda hi chamkaata hai naseeb mera. \nDhool se sana badan gawaahi dega, ki fauji banne chala hai beta tera.",
+      "title": "Foji 3D Reel (raw_video_1107_174735_p1.mp4)",
+      "dialogue": "Published to Instagram (@ai_foji_lovelife)",
       "caption": "🎖️ Part 1: 4 AM Ka Murga & Ustad ki Garaj | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!\"\n\n🔥 Maidaan-e-jung ho ya training ka ghera, ragda hi chamkaata hai naseeb mera. \nDhool se sana badan gawaahi dega, ki fauji banne chala hai beta tera.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FaujiLife #IndianArmy #Agniveer #UstadKaRagda #ArmyTraining #DesiHumor",
-      "created_at": "07 Nov 2026, 05:49 PM IST",
       "status": "published",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-07_19:30",
-      "scheduled_epoch": 1794060000.0,
-      "scheduled_display": "07 Nov 2026 at 07:30 PM IST",
-      "date_label": "07 Nov 2026",
-      "time_label": "07:30 PM",
-      "retry_count": 0,
       "published_at": "08 Nov 2026, 09:46 AM IST",
-      "ig_media_pk": "True"
+      "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794111380.2248607
+  "updated_epoch": 1794111384.9853005
 }
