@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794166446939",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "01:04 AM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794166446.939502
+  },
+  {
     "id": "notif_1794150249294",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
