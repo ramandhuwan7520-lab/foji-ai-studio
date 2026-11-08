@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794103850561",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "07:40 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794103850.5618448
+  },
+  {
     "id": "notif_1794103828653",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "05:40 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794096627.691654
-  },
-  {
-    "id": "notif_1794096599974",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "05:39 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794096599.974173
   }
 ]
