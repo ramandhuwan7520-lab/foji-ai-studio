@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794096627691",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "05:40 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794096627.691654
+  },
+  {
     "id": "notif_1794096599974",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "11:46 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794075403.866835
-  },
-  {
-    "id": "notif_1794075342259",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "11:45 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794075342.2596707
   }
 ]
