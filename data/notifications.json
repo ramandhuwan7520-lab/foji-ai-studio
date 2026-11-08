@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794150223639",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod locked for 09 Nov 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "08:33 PM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794150223.639533
+  },
+  {
     "id": "notif_1794150071482",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
