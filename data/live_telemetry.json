@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
-  "sub_detail": "Saving raw_video_1108_102416_p1.mp4 & pushing to Telegram/Frontend...",
+  "step_num": 1,
+  "step_title": "Stage 1: AI Script (1/1)",
+  "sub_detail": "Writing fresh script via .env API (T-30 Min Pre-Schedule Trigger (Before 12:30))...",
   "status": "active",
-  "progress": 94,
-  "updated_at": "11:08:09 AM",
-  "epoch": 1794116289.6507294
+  "progress": 12,
+  "updated_at": "12:00:18 PM",
+  "epoch": 1794119418.0144906
 }
