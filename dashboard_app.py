@@ -1048,7 +1048,7 @@ def api_telemetry_3d():
             age = time.time() - float(data.get("epoch", os.path.getmtime(t_path)))
             if data.get("status") in ("error", "completed", "idle"):
                 data["step_num"] = 0
-            elif data.get("status") == "active" and age > 1200:
+            elif data.get("status") == "active" and age > 180:
                 data["status"] = "idle"
                 data["step_num"] = 0
             return jsonify(data)
@@ -1188,6 +1188,30 @@ CLEAN_FAST_HTML = r"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<script>
+// 🛡️ GLOBAL FETCH JSON GUARD: Prevents "SyntaxError: Unexpected token '<'" if proxy returns HTML during heavy work
+(function() {
+    if (window.__fojiSafeJsonPatched) return;
+    window.__fojiSafeJsonPatched = true;
+    const origJson = Response.prototype.json;
+    Response.prototype.json = async function() {
+        const text = await this.text();
+        try {
+            return JSON.parse(text);
+        } catch (err) {
+            console.warn("Non-JSON response intercepted safely:", text.slice(0, 120));
+            return {
+                ok: false,
+                status: "error",
+                error: "Server busy or restarting — operation continues in background. Check Live Status!",
+                message: "Server processing in background..."
+            };
+        }
+    };
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AutoReels 3D AI — Google Flow Live Engine</title>
@@ -1743,7 +1767,7 @@ def _sanitize_mp4_for_instagram_no_green_line(input_mp4_path):
             "-i", input_mp4_path,
             "-vf", "scale=720:1280:force_original_aspect_ratio=decrease,pad=720:1280:(ow-iw)/2:(oh-ih)/2:black,format=yuv420p",
             "-c:v", "libx264",
-            "-preset", "fast",
+            "-preset", "ultrafast", "-threads", "1",
             "-crf", "18",
             "-profile:v", "high",
             "-level", "4.1",
