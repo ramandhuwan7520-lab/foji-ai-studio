@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794119464664",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Siachen Ki Thand Aur Meera Ki Yaad | Cast: Makra + Meera (Deep Royal Blue Silk Patiala Suit with...)",
+    "status": "info",
+    "time_str": "12:01 PM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794119464.6643517
+  },
+  {
     "id": "notif_1794116290829",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
