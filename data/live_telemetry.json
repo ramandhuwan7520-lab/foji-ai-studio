@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Stage 1: AI Script (1/1)",
-  "sub_detail": "Writing fresh script via .env API (Dashboard Manual Trigger (1 Video))...",
+  "step_num": 2,
+  "step_title": "Stage 2: Cloud Engine Dispatched",
+  "sub_detail": "GitHub Actions Chrome Worker is starting Cookie Login...",
   "status": "active",
-  "progress": 12,
-  "updated_at": "08:24:22 PM",
-  "epoch": 1794149662.420824
+  "progress": 24,
+  "updated_at": "08:24:45 PM",
+  "epoch": 1794149685.6029851
 }
