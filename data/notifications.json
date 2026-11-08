@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794096599974",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "05:39 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794096599.974173
+  },
+  {
     "id": "notif_1794096595014",
     "type": "warning",
     "title": "?? 1st Account Limit -> Using 2nd Account!",
@@ -788,15 +798,5 @@
     "time_str": "11:45 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794075342.2596707
-  },
-  {
-    "id": "notif_1794075271746",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "11:44 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794075271.7469041
   }
 ]
