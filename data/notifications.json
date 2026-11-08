@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794096683680",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading raw_video_1108_053928_p1.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "05:41 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794096683.6808958
+  },
+  {
     "id": "notif_1794096627691",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "11:47 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794075425.6919248
-  },
-  {
-    "id": "notif_1794075403866",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "11:46 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794075403.866835
   }
 ]
