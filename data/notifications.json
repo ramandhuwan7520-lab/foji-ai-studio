@@ -1,33 +1,33 @@
 [
   {
-    "id": "notif_1794171826766",
+    "id": "notif_1794172005133",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1109_023053_p1.mp4 from Gemini...",
+    "message": "Downloading raw_video_1109_023124_p3.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "02:36 AM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794172005.1332166
+  },
+  {
+    "id": "notif_1794171787816",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Sarhad Ki Chitthi Aur Gaon Ka Intezaar is now rendering in Gemini!",
     "status": "info",
     "time_str": "02:33 AM",
     "date_str": "09 Nov 2026",
-    "timestamp": 1794171826.7667646
+    "timestamp": 1794171787.8160353
   },
   {
-    "id": "notif_1794171765686",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Siachen Ki Thand Aur Maa Ka Pyar is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "02:32 AM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794171765.6868536
-  },
-  {
-    "id": "notif_1794171656726",
+    "id": "notif_1794171686928",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Siachen Ki Thand Aur Maa Ka Pyar | Cast: Makra + Meera (Lavender Purple Contemporary Kurti wit...)",
+    "message": "Episode: ❤️ Foji Makra & Fojan Meera Love Story — Part 3: Sarhad Ki Chitthi Aur Gaon Ka Intezaar | Cast: Makra + Meera (Sunset Orange & Red Bridal-Style Heavy...)",
     "status": "info",
-    "time_str": "02:30 AM",
+    "time_str": "02:31 AM",
     "date_str": "09 Nov 2026",
-    "timestamp": 1794171656.726594
+    "timestamp": 1794171686.9285564
   },
   {
     "id": "notif_1794166846151",
