@@ -984,7 +984,7 @@ def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
 
 @app.route("/videos/<path:filename>")
 def serve_video(filename):
-    return send_from_directory(os.path.abspath("output/raw_videos", conditional=True, max_age=3600), filename)
+    return send_from_directory(os.path.abspath("output/raw_videos"), filename)
 
 
 @app.route("/api/telemetry_3d", methods=["GET"])
