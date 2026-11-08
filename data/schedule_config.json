@@ -9,11 +9,12 @@
   ],
   "auto_pilot_enabled": true,
   "last_triggered_keys": [
-    "PRE30_2026-11-08_12:30",
     "PRE30_2026-11-08_06:30",
     "PRE30_2026-11-07_18:30",
+    "NIGHT_BATCH_2026-11-08_02:30",
+    "NIGHT_BATCH_2026-11-09_02:30",
     "PRE30_2026-11-08_18:30",
-    "NIGHT_BATCH_2026-11-08_02:30"
+    "PRE30_2026-11-08_12:30"
   ],
   "enabled": true,
   "times": [
