@@ -1,5 +1,5 @@
 {
-  "generated_count": 10,
+  "generated_count": 11,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -49,7 +49,9 @@
     "emotional",
     "unit_ragda",
     "unit_ragda",
-    "unit_ragda"
+    "unit_ragda",
+    "fauji_masti",
+    "fauji_masti"
   ],
   "history": [
     {
@@ -291,6 +293,23 @@
       "caption": "🎖️ Part 2: Palti Ka Bhooth & Dhool Ka Swad | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!\"\n\n🔥 रगड़े में जो पसीना बहाता है, वही सरहद पर तिरंगा फहराता है,\nये वर्दी नहीं फौलाद का ज़ेवर है, जो सिर्फ़ खुद्दारों को सुहाता है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#IndianArmy #FaujiLife #Agniveer #UstadKaRagda #MakraFoji #ArmyTraining",
       "created_at": "08 Nov 2026, 12:13 AM IST",
       "completed_at": "08 Nov 2026, 12:15 AM IST"
+    },
+    {
+      "video_id": "1108_053928_p1",
+      "video_file": "raw_video_1108_053928_p1.mp4",
+      "track_id": "fauji_masti",
+      "track_name": "😂 Barrack Masti, Mess & Brotherhood",
+      "part_number": 1,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor",
+      "scene_summary": "3D Pixar-style vertical 9:16 shot. Inside a dimly lit Indian Army mess kitchen at midnight. Makra, in his olive-green PT shorts and vest, is tip-toeing towards a giant aluminum container labeled 'BADA KHANA'. His expression is a mix of extreme hunger and terror. Behind him, two coursemates are peeking from behind a wooden pillar, one holding a torch and the other biting his nails. The camera zooms in on a golden-brown, syrup-dripping Gulab Jamun as Makra’s hand inches closer. Suddenly, a shadow of a tall, moustached Ustad with a stick appears on the wall, lit by the moonlight through the window.",
+      "dialogue_line_1_hinglish": "Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!",
+      "shayari_hindi": "Vardi ki shaan apni jagah, ye meetha ishq apni jagah,\nUstad ka ragda seh lenge, par ye swad nahi chodenge bhaiya!",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 😂 Barrack Masti, Mess & Brotherhood - Part 1: Mess Ka Gulab Jamun Chor. SCENE & ACTION: 3D Pixar-style vertical 9:16 shot. Inside a dimly lit Indian Army mess kitchen at midnight. Makra, in his olive-green PT shorts and vest, is tip-toeing towards a giant aluminum container labeled 'BADA KHANA'. His expression is a mix of extreme hunger and terror. Behind him, two coursemates are peeking from behind a wooden pillar, one holding a torch and the other biting his nails. The camera zooms in on a golden-brown, syrup-dripping Gulab Jamun as Makra’s hand inches closer. Suddenly, a shadow of a tall, moustached Ustad with a stick appears on the wall, lit by the moonlight through the window. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 1: Mess Ka Gulab Jamun Chor | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!\"\n\n🔥 Vardi ki shaan apni jagah, ye meetha ishq apni jagah,\nUstad ka ragda seh lenge, par ye swad nahi chodenge bhaiya!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMasti #ArmyMess #BadaKhana #IndianArmyComedy #AgniveerLife #FojiLife",
+      "created_at": "08 Nov 2026, 05:39 AM IST",
+      "completed_at": "08 Nov 2026, 05:41 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -340,7 +359,9 @@
     "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
     "Ustad ji, ye pithu ka wazan toh kuch nahi, asli bhaar toh un umeedon ka hai jo poora gaon mujhse lagaaye baitha hai, aaj rukunga nahi!",
     "Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!",
-    "Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!"
+    "Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!",
+    "Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!",
+    "Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!"
   ],
   "deleted_ids": [],
   "track_parts": {
