@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1794146725.3531754
+  "step_num": 1,
+  "step_title": "Starting IG Upload",
+  "sub_detail": "Preparing raw_video_1107_174735_p1.mp4 for Instagram HD...",
+  "status": "active",
+  "progress": 15,
+  "updated_at": "07:35:59 PM",
+  "epoch": 1794146759.990289
 }
