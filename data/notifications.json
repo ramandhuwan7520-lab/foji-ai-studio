@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794166846151",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda locked for 10 Nov 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "01:10 AM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794166846.1513503
+  },
+  {
     "id": "notif_1794166806355",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
