@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "?? Switching to Account #2 Cookies",
-  "sub_detail": "Account #1 Limit/Issue (Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cooki). Switching to 2nd Account Cookies automatically!",
+  "step_num": 1,
+  "step_title": "Stage 1: AI Episodic Script",
+  "sub_detail": "Generating fresh connected script & wardrobe...",
   "status": "active",
-  "progress": 20,
-  "updated_at": "05:39:53 AM",
-  "epoch": 1794096593.719923
+  "progress": 12,
+  "updated_at": "05:39:57 AM",
+  "epoch": 1794096597.207344
 }
