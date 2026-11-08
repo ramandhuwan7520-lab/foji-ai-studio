@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794130313816",
+    "type": "error",
+    "title": "Gemini Cookie Expired",
+    "message": "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop.",
+    "status": "error",
+    "time_str": "03:01 PM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794130313.816424
+  },
+  {
     "id": "notif_1794130294745",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
