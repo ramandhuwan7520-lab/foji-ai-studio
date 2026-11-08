@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794103630641",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "07:37 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794103630.6412313
+  },
+  {
     "id": "notif_1794103608360",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "05:39 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794096571.1612585
-  },
-  {
-    "id": "notif_1794085367673",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Gulab Jamun Ka Operation Stealth is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "02:32 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794085367.673584
   }
 ]
