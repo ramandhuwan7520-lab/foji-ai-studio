@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794104074262",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "07:44 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794104074.2627013
+  },
+  {
     "id": "notif_1794104052130",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "06:01 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794097872.1478882
-  },
-  {
-    "id": "notif_1794097852522",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod | Cast: Makra + Meera (Mustard Yellow Rajasthani Bandhani Kur...)",
-    "status": "info",
-    "time_str": "06:00 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794097852.5222588
   }
 ]
