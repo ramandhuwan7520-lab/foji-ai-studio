@@ -1,8 +1,8 @@
 {
   "step_num": 0,
   "step_title": "STANDBY",
-  "sub_detail": "Ready",
+  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
   "status": "idle",
   "progress": 0,
-  "epoch": 1794150097.1706882
+  "epoch": 1794163457.947386
 }
