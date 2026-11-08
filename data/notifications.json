@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794104052130",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "07:44 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794104052.1309047
+  },
+  {
     "id": "notif_1794104030657",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "06:00 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794097852.5222588
-  },
-  {
-    "id": "notif_1794096702092",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor (raw_video_1108_053928_p1.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "05:41 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794096702.0926487
   }
 ]
