@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794107324775",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "08:38 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794107324.7752125
+  },
+  {
     "id": "notif_1794107302869",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "07:15 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794102326.956464
-  },
-  {
-    "id": "notif_1794102305118",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "No module named 'insta_bot'",
-    "status": "error",
-    "time_str": "07:15 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794102305.1190093
   }
 ]
