@@ -1,5 +1,5 @@
 {
-  "generated_count": 14,
+  "generated_count": 15,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -55,7 +55,8 @@
     "love_meera",
     "love_meera",
     "love_meera",
-    "training_ustad"
+    "training_ustad",
+    "border_duty"
   ],
   "history": [
     {
@@ -365,6 +366,23 @@
       "caption": "🎖️ Part 1: 4 AM Ki Whistle Aur Pehla Ragda | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!\"\n\n🔥 Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#AgniveerLife #ArmyTraining #FojiMakra #IndianArmy #DesiHumor #JaiHind",
       "created_at": "09 Nov 2026, 01:04 AM IST",
       "completed_at": "09 Nov 2026, 01:10 AM IST"
+    },
+    {
+      "video_id": "1109_023053_p1",
+      "video_file": "raw_video_1109_023053_p1.mp4",
+      "track_id": "border_duty",
+      "track_name": "🏔️ LOC Border Patrol & Maa KaPyar",
+      "part_number": 1,
+      "include_meera": true,
+      "meera_outfit": "Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas",
+      "emotion_name": "🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Siachen Ki Thand Aur Maa Ka Pyar",
+      "scene_summary": "A 3D Pixar-style 9:16 vertical shot inside a dimly lit Indian Army bunker at the LOC during a blizzard. The camera starts with a tight close-up on a smartphone screen showing Meera smiling, dressed in a Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas. The camera slowly pans out to reveal Makra in heavy white winter camouflage gear, a tactical vest, and woollen gloves, propping the phone against a stack of ammunition boxes. Steam swirls from a steel glass of garam chai in his hand. Through the small bunker window, the Himalayan peaks are visible under a harsh snowstorm at -25°C. Makra’s face is weathered but determined, his eyes glowing with the reflection of the phone screen as he prepares for a night ambush patrol.",
+      "dialogue_line_1_hinglish": "Meera, bahar minus pachees ki thand hai par teri muskan aur maa ki duayein mere seene mein wo garmi bhar deti hain ki ye barf bhi angaar lagne lagti hai.",
+      "shayari_hindi": "Suna hai sarhad par barf girti hai par mera junoon nahi girta,\nTeri yaadon ka diya is toofan mein bhi kabhi nahi bujhta.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas. EPISODE: 🏔️ LOC Border Patrol & Maa KaPyar - Part 1: Siachen Ki Thand Aur Maa Ka Pyar. SCENE & ACTION: A 3D Pixar-style 9:16 vertical shot inside a dimly lit Indian Army bunker at the LOC during a blizzard. The camera starts with a tight close-up on a smartphone screen showing Meera smiling, dressed in a Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas. The camera slowly pans out to reveal Makra in heavy white winter camouflage gear, a tactical vest, and woollen gloves, propping the phone against a stack of ammunition boxes. Steam swirls from a steel glass of garam chai in his hand. Through the small bunker window, the Himalayan peaks are visible under a harsh snowstorm at -25°C. Makra’s face is weathered but determined, his eyes glowing with the reflection of the phone screen as he prepares for a night ambush patrol. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Meera, bahar minus pachees ki thand hai par teri muskan aur maa ki duayein mere seene mein wo garmi bhar deti hain ki ye barf bhi angaar lagne lagti hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 1: Siachen Ki Thand Aur Maa Ka Pyar | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, bahar minus pachees ki thand hai par teri muskan aur maa ki duayein mere seene mein wo garmi bhar deti hain ki ye barf bhi angaar lagne lagti hai.\"\n\n🔥 Suna hai sarhad par barf girti hai par mera junoon nahi girta,\nTeri yaadon ka diya is toofan mein bhi kabhi nahi bujhta.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiAIStudio #SiachenWarriors #IndianArmy #AgniveerLife #DeshBhakti #MakraMeera",
+      "created_at": "09 Nov 2026, 02:30 AM IST",
+      "completed_at": "09 Nov 2026, 02:36 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -420,7 +438,8 @@
     "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
     "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
     "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.",
-    "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!"
+    "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!",
+    "Meera, bahar minus pachees ki thand hai par teri muskan aur maa ki duayein mere seene mein wo garmi bhar deti hain ki ye barf bhi angaar lagne lagti hai."
   ],
   "deleted_ids": [],
   "track_parts": {
