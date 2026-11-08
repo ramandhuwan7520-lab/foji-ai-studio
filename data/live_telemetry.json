@@ -1,9 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "Gemini Cookie Expired",
-  "sub_detail": "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop.",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "06:01:11 AM",
-  "epoch": 1794097871.0316892
+  "step_num": 2,
+  "step_title": "?? Switching to Account #2 Cookies",
+  "sub_detail": "Account #1 Limit/Issue (Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cooki). Switching to 2nd Account Cookies automatically!",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "06:01:13 AM",
+  "epoch": 1794097873.3212116
 }
