@@ -1788,7 +1788,7 @@ def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", 
                 gemini_bot.update_3d_telemetry(
                     1,
                     f"Stage 1: AI Script ({i}/{count})",
-                    f"Writing fresh script via .env API ({reason_label})...",
+                    "Writing original story & dialogues...",
                     "active",
                     12
                 )
@@ -1808,8 +1808,8 @@ def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", 
                         dispatched_cloud = True
                         gemini_bot.update_3d_telemetry(
                             2,
-                            "Stage 2: Cloud Engine Dispatched",
-                            "GitHub Actions Chrome Worker is starting Cookie Login...",
+                            "Step 2: Initializing 3D Studio",
+                            "Preparing 3D characters & scene...",
                             "active",
                             24
                         )
@@ -2321,47 +2321,54 @@ def api_universe_latest_video():
     return ("No video yet", 404)
 
 
+@app.route("/icon-192.png", methods=["GET"])
+def pwa_icon_192_png():
+    return _send_file(os.path.abspath("assets/app_icon_192.png"), mimetype="image/png")
+
+
+@app.route("/icon-512.png", methods=["GET"])
+def pwa_icon_512_png():
+    return _send_file(os.path.abspath("assets/app_icon_512.png"), mimetype="image/png")
+
+
 @app.route("/app-icon.svg", methods=["GET"])
 def pwa_app_icon():
-    from flask import Response
-    svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      <defs>
-        <radialGradient id="bg" cx="50%" cy="40%" r="60%">
-          <stop offset="0%" stop-color="#0f2942"/>
-          <stop offset="100%" stop-color="#040814"/>
-        </radialGradient>
-        <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#10b981"/>
-          <stop offset="50%" stop-color="#06b6d4"/>
-          <stop offset="100%" stop-color="#f59e0b"/>
-        </linearGradient>
-      </defs>
-      <rect width="512" height="512" rx="115" fill="url(#bg)"/>
-      <circle cx="256" cy="256" r="210" fill="none" stroke="url(#ring)" stroke-width="18"/>
-      <circle cx="256" cy="256" r="175" fill="#071324" stroke="rgba(16,185,129,0.35)" stroke-width="4"/>
-      <!-- Stylized Tactical Beret & Star -->
-      <path d="M145 215 C155 145, 340 135, 375 205 C330 190, 190 195, 145 215 Z" fill="#10b981"/>
-      <polygon points="256,152 264,170 284,172 269,185 273,204 256,194 239,204 243,185 228,172 248,170" fill="#fbbf24"/>
-      <!-- Play Shield Emblem -->
-      <path d="M210 235 L330 295 L210 355 Z" fill="url(#ring)"/>
-    </svg>"""
-    return Response(svg, mimetype="image/svg+xml")
+    return _send_file(os.path.abspath("assets/app_icon_512.png"), mimetype="image/png")
 
 
 @app.route("/manifest.json", methods=["GET"])
 def pwa_manifest():
     from flask import jsonify
     return jsonify({
+        "id": "/",
         "name": "Foji AI Studio",
         "short_name": "Foji Studio",
-        "description": "3D Tactical AI Reels Studio & Auto-Scheduler",
+        "description": "3D AI Reels Studio & Auto-Scheduler",
         "start_url": "/",
+        "scope": "/",
         "display": "standalone",
         "background_color": "#040814",
         "theme_color": "#040814",
         "orientation": "portrait-primary",
         "icons": [
-            {"src": "/app-icon.svg", "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable"}
+            {
+                "src": "/icon-192.png",
+                "sizes": "192x192",
+                "type": "image/png",
+                "purpose": "any"
+            },
+            {
+                "src": "/icon-512.png",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any"
+            },
+            {
+                "src": "/icon-512.png",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "maskable"
+            }
         ]
     })
 
@@ -2387,16 +2394,17 @@ def _inject_foji_universe_command_hub(response):
             if "</body>" in html_text and "id=\"foji-nextgen-studio-shell\"" not in html_text:
                 widget_html = """
 <link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png">
 <meta name="theme-color" content="#040814">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="/app-icon.svg">
 
 <style>
 body > *:not(#foji-nextgen-studio-shell):not(#fns-center-modal-backdrop):not(#fns-app-splash):not(#fns-blast-overlay):not(script):not(style):not(link) { display: none !important; }
 :root {
-    --bg-main: #050a14;
-    --bg-card: rgba(13, 22, 40, 0.84);
+    --bg-main: #040812;
+    --bg-card: rgba(12, 20, 38, 0.86);
     --border-subtle: rgba(255, 255, 255, 0.09);
     --primary: #10b981;
     --cyan: #06b6d4;
@@ -2412,32 +2420,84 @@ html, body {
     min-height: 100vh; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
 }
 
-/* 🎬 1.8s APP LAUNCH SPLASH SCREEN */
+/* =========================================================================
+   🌌 REAL 3D HOLOGRAPHIC CUBE & RADAR APP LAUNCH ANIMATION (2 SECONDS)
+   ========================================================================= */
 #fns-app-splash {
     position: fixed; inset: 0; z-index: 999999;
-    background: radial-gradient(circle at 50% 40%, #0d253f 0%, #040812 75%);
+    background: radial-gradient(circle at 50% 45%, #0b2239 0%, #03060f 75%);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity 0.45s ease, transform 0.45s ease;
+    perspective: 1000px; overflow: hidden;
+    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1), transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 }
-#fns-app-splash.hide { opacity: 0; transform: scale(1.06); pointer-events: none; }
-.fns-splash-avatar-ring {
-    width: 118px; height: 118px; border-radius: 32px; padding: 4px;
-    background: linear-gradient(135deg, #10b981, #06b6d4, #f59e0b);
-    box-shadow: 0 0 45px rgba(16, 185, 129, 0.55);
-    animation: fnsSplashPulse 1.2s infinite alternate ease-in-out;
+#fns-app-splash.hide { opacity: 0; transform: scale(1.12); pointer-events: none; }
+
+/* 3D Tilted Cyber Floor Grid in Splash */
+.fns-splash-3d-floor {
+    position: absolute; bottom: -30%; width: 200%; height: 85%;
+    background-image:
+        linear-gradient(rgba(16, 185, 129, 0.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.22) 1px, transparent 1px);
+    background-size: 45px 45px;
+    transform: rotateX(72deg);
+    animation: fnsFloorMove 2s linear infinite;
+    mask-image: radial-gradient(circle at 50% 30%, black 15%, transparent 70%);
+    -webkit-mask-image: radial-gradient(circle at 50% 30%, black 15%, transparent 70%);
 }
-@keyframes fnsSplashPulse {
-    0% { transform: scale(0.96) rotate(-2deg); box-shadow: 0 0 25px rgba(16,185,129,0.4); }
-    100% { transform: scale(1.04) rotate(2deg); box-shadow: 0 0 55px rgba(6,182,212,0.85); }
+@keyframes fnsFloorMove {
+    from { background-position: 0 0; }
+    to { background-position: 0 45px; }
 }
+
+/* 3D Gyroscope Rings + Rotating Hologram Core */
+.fns-splash-3d-stage {
+    position: relative; width: 170px; height: 170px;
+    transform-style: preserve-3d; display: flex; align-items: center; justify-content: center;
+}
+.fns-gyro-ring-1, .fns-gyro-ring-2, .fns-gyro-ring-3 {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: 3px solid transparent; transform-style: preserve-3d;
+}
+.fns-gyro-ring-1 {
+    border-top-color: #10b981; border-bottom-color: #10b981;
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+    animation: fnsGyro1 1.8s linear infinite;
+}
+.fns-gyro-ring-2 {
+    inset: 12px; border-left-color: #06b6d4; border-right-color: #06b6d4;
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+    animation: fnsGyro2 2.2s linear infinite;
+}
+.fns-gyro-ring-3 {
+    inset: 24px; border-top-color: #f59e0b; border-right-color: #f59e0b;
+    animation: fnsGyro3 1.5s linear infinite;
+}
+@keyframes fnsGyro1 { 0% { transform: rotateX(65deg) rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateX(65deg) rotateY(360deg) rotateZ(360deg); } }
+@keyframes fnsGyro2 { 0% { transform: rotateX(0deg) rotateY(65deg) rotateZ(0deg); } 100% { transform: rotateX(360deg) rotateY(65deg) rotateZ(360deg); } }
+@keyframes fnsGyro3 { 0% { transform: rotateX(45deg) rotateY(45deg) rotateZ(0deg); } 100% { transform: rotateX(45deg) rotateY(45deg) rotateZ(-360deg); } }
+
+.fns-splash-core-logo {
+    width: 96px; height: 96px; border-radius: 24px; overflow: hidden;
+    border: 2.5px solid #10b981;
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.85);
+    animation: fnsCoreFloat 1.2s ease-in-out infinite alternate;
+    z-index: 5; background: #071324;
+}
+.fns-splash-core-logo img { width: 100%; height: 100%; object-fit: cover; }
+@keyframes fnsCoreFloat {
+    from { transform: translateZ(15px) scale(0.95); }
+    to { transform: translateZ(35px) scale(1.06); }
+}
+
 .fns-splash-bar {
-    width: 190px; height: 6px; background: rgba(255,255,255,0.1);
-    border-radius: 99px; overflow: hidden; margin-top: 18px;
+    width: 210px; height: 6px; background: rgba(255,255,255,0.1);
+    border-radius: 99px; overflow: hidden; margin-top: 20px; position: relative; z-index: 5;
 }
 .fns-splash-fill {
     height: 100%; width: 0%;
     background: linear-gradient(90deg, #10b981, #06b6d4, #f59e0b);
-    animation: fnsSplashLoad 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    box-shadow: 0 0 14px #10b981;
+    animation: fnsSplashLoad 1.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 @keyframes fnsSplashLoad { to { width: 100%; } }
 
@@ -2448,7 +2508,7 @@ html, body {
 }
 .fns-shockwave {
     position: absolute; width: 40px; height: 40px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(251,191,36,0.9), rgba(239,68,68,0.6), rgba(16,185,129,0.2), transparent 70%);
+    background: radial-gradient(circle, rgba(251,191,36,0.95), rgba(239,68,68,0.7), rgba(16,185,129,0.25), transparent 70%);
     animation: fnsExplodeWave 1.1s ease-out forwards;
 }
 @keyframes fnsExplodeWave {
@@ -2467,11 +2527,11 @@ html, body {
 #foji-nextgen-studio-shell {
     background: radial-gradient(circle at 15% 0%, rgba(14, 165, 233, 0.12) 0%, transparent 45%),
                 radial-gradient(circle at 85% 10%, rgba(16, 185, 129, 0.1) 0%, transparent 45%),
-                #050a14;
+                #040812;
     min-height: 100vh; width: 100%; display: flex; flex-direction: column; box-sizing: border-box;
 }
 
-/* 👆 REAL TACTILE 3D PUSH BUTTONS (FEEL EVERY CLICK!) */
+/* 👆 REAL TACTILE 3D PUSH BUTTONS */
 .fns-tab-btn, .fns-cta-generate, .fns-cta-stop, .fns-cta-schedule, .fns-cta-post, .fns-mnav-item {
     position: relative; overflow: hidden;
     transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, filter 0.15s ease !important;
@@ -2491,7 +2551,7 @@ html, body {
 /* TOP NAVIGATION */
 .fns-topbar {
     display: flex; justify-content: space-between; align-items: center;
-    gap: 12px; padding: 12px 24px; background: rgba(7, 13, 26, 0.9);
+    gap: 12px; padding: 12px 24px; background: rgba(7, 13, 26, 0.92);
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-subtle); position: sticky; top: 0; z-index: 1000;
 }
@@ -2514,10 +2574,9 @@ html, body {
 .fns-tab-btn.active {
     background: rgba(16, 185, 129, 0.18);
     border-color: rgba(16, 185, 129, 0.5); color: #34d399;
-    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.2);
 }
 
-/* ACTION BUTTONS (3D DEPTH) */
+/* ACTION BUTTONS */
 .fns-cta-generate {
     background: linear-gradient(135deg, #10b981, #059669); color: #fff;
     border: none; border-bottom: 3px solid #047857; padding: 9px 17px; border-radius: 11px;
@@ -2577,73 +2636,136 @@ html, body {
 }
 
 /* =========================================================================
-   🎖️ 3D TACTICAL FOJI BATTLEFIELD PIPELINE ARENA
+   🏃‍♂️🔫 REAL WALKING & AK-47 FIRING 3D FOJI COMMANDO PIPELINE TRACK
    ========================================================================= */
 .fns-battlefield-arena {
-    position: relative; margin: 16px 0; padding: 20px 16px 18px 16px;
-    background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.14), rgba(5, 10, 22, 0.96) 75%);
-    border: 1px solid rgba(16, 185, 129, 0.32); border-radius: 18px;
-    box-shadow: inset 0 0 35px rgba(0,0,0,0.8), 0 12px 30px rgba(0,0,0,0.45);
-    perspective: 900px; overflow: hidden;
-}
-/* Tactical Radar Grid Overlay */
-.fns-battlefield-arena::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background-image: linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
-    background-size: 24px 24px;
+    position: relative; margin: 16px 0; padding: 18px 16px;
+    background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.15), rgba(4, 9, 20, 0.98) 78%);
+    border: 1.5px solid rgba(16, 185, 129, 0.35); border-radius: 18px;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.85), 0 12px 30px rgba(0,0,0,0.5);
+    overflow: hidden;
 }
 
-/* Active Foji Commander Status Bar inside Arena */
-.fns-commander-hud {
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    padding: 10px 14px; margin-bottom: 16px; border-radius: 13px;
-    background: rgba(8, 17, 32, 0.9); border: 1px solid rgba(6, 182, 212, 0.3);
-    position: relative; z-index: 3; flex-wrap: wrap;
+/* 3D Moving Combat Track Where Soldier Walks From Post #1 -> Post #8 */
+.fns-combat-corridor {
+    position: relative; width: 100%; height: 118px; margin-bottom: 16px;
+    background: linear-gradient(180deg, rgba(8, 18, 36, 0.65) 0%, rgba(12, 28, 48, 0.9) 72%, #0a1929 100%);
+    border: 1px solid rgba(6, 182, 212, 0.28); border-radius: 14px;
+    overflow: hidden; box-shadow: inset 0 -10px 25px rgba(0,0,0,0.7);
 }
-.fns-foji-hero-unit {
-    display: flex; align-items: center; gap: 12px;
+/* Glowing 3D Ground Track Line */
+.fns-combat-ground {
+    position: absolute; bottom: 14px; left: 16px; right: 16px; height: 6px;
+    background: rgba(255,255,255,0.1); border-radius: 99px;
 }
-.fns-foji-avatar-3d {
-    position: relative; width: 52px; height: 52px; border-radius: 14px;
-    border: 2px solid #10b981; background: #061224;
-    box-shadow: 0 0 18px rgba(16, 185, 129, 0.5);
-    animation: fnsPatrolBob 2s infinite ease-in-out; flex-shrink: 0;
-}
-.fns-foji-avatar-3d img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
-.fns-foji-weapon-badge {
-    position: absolute; bottom: -5px; right: -8px;
-    background: #0f172a; border: 1.5px solid #f59e0b; border-radius: 8px;
-    padding: 1px 5px; font-size: 0.78rem; box-shadow: 0 0 10px rgba(245,158,11,0.6);
-}
-@keyframes fnsPatrolBob {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-4px) rotate(1.5deg); }
+.fns-combat-ground-fill {
+    height: 100%; width: 6%; border-radius: 99px;
+    background: linear-gradient(90deg, #10b981, #06b6d4, #f59e0b);
+    box-shadow: 0 0 15px #10b981;
+    transition: width 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Muzzle Flash & Bullet Stream When Pipeline is Active */
-.fns-bullet-track {
-    flex: 1; min-width: 120px; height: 18px; position: relative; overflow: hidden;
-    background: rgba(255,255,255,0.03); border-radius: 99px; border: 1px solid rgba(255,255,255,0.06);
-    display: flex; align-items: center; padding: 0 10px;
+/* Status Pill inside Top-Right of Combat Corridor */
+.fns-corridor-hud-pill {
+    position: absolute; top: 10px; right: 12px; z-index: 4;
+    background: rgba(5, 11, 24, 0.88); border: 1px solid rgba(16, 185, 129, 0.45);
+    padding: 4px 11px; border-radius: 99px; font-size: 0.72rem; font-weight: 800; color: #34d399;
 }
-.fns-laser-bullet {
-    position: absolute; width: 28px; height: 4px; border-radius: 99px;
-    background: linear-gradient(90deg, transparent, #fbbf24, #ef4444);
-    box-shadow: 0 0 12px #f59e0b; opacity: 0;
+
+/* 🏃‍♂️ ARTICULATED 3D COMMANDO RIG (MOVES ACROSS CORRIDOR WITH WALKING LEGS & AK-47) */
+.fns-commando-walker {
+    position: absolute; bottom: 16px; left: 3%;
+    width: 86px; height: 92px; z-index: 5;
+    transition: left 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.85));
 }
-.fns-battlefield-arena.firing .fns-laser-bullet {
-    opacity: 1; animation: fnsBulletFly 0.65s linear infinite;
+.fns-commando-svg { width: 100%; height: 100%; overflow: visible; }
+
+/* IDLE GUARD DUTY BREATHING */
+.fns-commando-body-group {
+    transform-origin: 40px 55px;
+    animation: fnsGuardBreath 1.8s ease-in-out infinite alternate;
 }
-@keyframes fnsBulletFly {
-    0% { left: 5%; transform: scaleX(0.7); opacity: 1; }
-    90% { opacity: 1; }
-    100% { left: 92%; transform: scaleX(1.3); opacity: 0; }
+@keyframes fnsGuardBreath {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-2.5px); }
+}
+
+/* REAL LEG WALKING & AK-47 RECOIL WHEN ACTIVE (.firing) */
+.fns-leg-left, .fns-leg-right { transform-origin: 38px 62px; }
+.fns-arm-gun-group { transform-origin: 38px 42px; }
+
+.fns-battlefield-arena.firing .fns-leg-left {
+    animation: fnsWalkLegL 0.28s ease-in-out infinite alternate;
+}
+.fns-battlefield-arena.firing .fns-leg-right {
+    animation: fnsWalkLegR 0.28s ease-in-out infinite alternate;
+}
+.fns-battlefield-arena.firing .fns-commando-body-group {
+    animation: fnsRunBounce 0.14s ease-in-out infinite alternate;
+}
+.fns-battlefield-arena.firing .fns-arm-gun-group {
+    animation: fnsAk47Recoil 0.16s linear infinite;
+}
+@keyframes fnsWalkLegL {
+    from { transform: rotate(-28deg); }
+    to { transform: rotate(28deg); }
+}
+@keyframes fnsWalkLegR {
+    from { transform: rotate(28deg); }
+    to { transform: rotate(-28deg); }
+}
+@keyframes fnsRunBounce {
+    from { transform: translateY(0px) rotate(2deg); }
+    to { transform: translateY(-3.5px) rotate(4deg); }
+}
+@keyframes fnsAk47Recoil {
+    0%, 100% { transform: translateX(0px) rotate(0deg); }
+    50% { transform: translateX(-3px) rotate(-3deg); }
+}
+
+/* AK-47 Muzzle Flash & Flying Tracer Bullets */
+.fns-muzzle-flame { opacity: 0; transform-origin: 78px 41px; }
+.fns-battlefield-arena.firing .fns-muzzle-flame {
+    animation: fnsMuzzleFlash 0.12s steps(2, end) infinite;
+}
+@keyframes fnsMuzzleFlash {
+    0% { opacity: 1; transform: scale(1.25); }
+    100% { opacity: 0.15; transform: scale(0.7); }
+}
+
+.fns-tracer-stream {
+    position: absolute; left: 78px; top: 38px; width: 220px; height: 10px;
+    pointer-events: none; overflow: hidden; opacity: 0;
+}
+.fns-battlefield-arena.firing .fns-tracer-stream { opacity: 1; }
+.fns-tracer-shot {
+    position: absolute; top: 3px; width: 26px; height: 3.5px; border-radius: 99px;
+    background: linear-gradient(90deg, transparent, #fde047, #ef4444);
+    box-shadow: 0 0 10px #f59e0b;
+    animation: fnsTracerFly 0.28s linear infinite;
+}
+.fns-tracer-shot.s2 { animation-delay: 0.14s; }
+@keyframes fnsTracerFly {
+    from { left: 0px; opacity: 1; }
+    to { left: 195px; opacity: 0; }
+}
+
+/* Ejected Brass Shell Casings */
+.fns-shell-casing {
+    opacity: 0;
+}
+.fns-battlefield-arena.firing .fns-shell-casing {
+    animation: fnsShellEject 0.32s ease-out infinite;
+}
+@keyframes fnsShellEject {
+    0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(-18px, -22px) rotate(-140deg); }
 }
 
 /* 8 Tactical Bunker Checkpoints Grid */
 .fns-steps-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
     position: relative; z-index: 3;
 }
 .fns-road-node {
@@ -2651,8 +2773,8 @@ html, body {
     background: linear-gradient(160deg, rgba(19, 30, 54, 0.92), rgba(10, 17, 32, 0.95));
     border: 1.5px solid rgba(255, 255, 255, 0.1);
     border-bottom: 4px solid rgba(255, 255, 255, 0.14);
-    border-radius: 13px; padding: 12px; text-align: left;
-    transform: rotateX(6deg); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 13px; padding: 11px 12px; text-align: left;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .fns-road-node.duty-guard {
     border-color: rgba(16, 185, 129, 0.65);
@@ -2662,29 +2784,17 @@ html, body {
 .fns-road-node.done {
     border-color: #10b981; border-bottom-color: #047857;
     background: linear-gradient(160deg, rgba(16, 185, 129, 0.22), rgba(10, 24, 38, 0.95));
-    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
 }
 .fns-road-node.active {
     border-color: #f59e0b; border-bottom-color: #b45309;
     background: linear-gradient(160deg, rgba(245, 158, 11, 0.26), rgba(20, 28, 48, 0.96));
-    box-shadow: 0 0 28px rgba(245, 158, 11, 0.55);
-    transform: rotateX(0deg) translateY(-4px) scale(1.03);
+    box-shadow: 0 0 26px rgba(245, 158, 11, 0.5);
+    transform: translateY(-3px) scale(1.02);
 }
 .fns-road-node.error {
     border-color: #ef4444; border-bottom-color: #991b1b;
     background: rgba(127, 29, 29, 0.35);
 }
-.fns-node-soldier-pin {
-    position: absolute; top: -10px; right: 8px;
-    background: linear-gradient(135deg, #f59e0b, #ef4444);
-    color: #fff; font-size: 0.65rem; font-weight: 900;
-    padding: 2px 7px; border-radius: 99px;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
-    animation: fnsPinBounce 0.6s infinite alternate;
-}
-@keyframes fnsPinBounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
-
-/* Step Cleared Celebration Pop Animation */
 .fns-step-celebrate { animation: fnsCelebratePop 0.65s ease-out; }
 @keyframes fnsCelebratePop {
     0% { transform: scale(1); }
@@ -2768,7 +2878,6 @@ html, body {
 .fns-mnav-item.active { color: #10b981; }
 .fns-mnav-icon { font-size: 1.15rem; }
 
-/* MOBILE BREAKPOINTS */
 @media (max-width: 1024px) {
     .fns-body { grid-template-columns: 1fr; }
     .fns-sidebar { display: none; }
@@ -2786,20 +2895,26 @@ html, body {
 }
 </style>
 
-<!-- 🎬 1.8-SECOND NATIVE APP BOOT SPLASH SCREEN -->
+<!-- 🌌 REAL 3D HOLOGRAPHIC GYROSCOPE BOOT SPLASH SCREEN -->
 <div id="fns-app-splash">
-  <div class="fns-splash-avatar-ring">
-    <img src="/api/universe/char_img/foji" onerror="this.src='/app-icon.svg'" style="width:100%;height:100%;object-fit:cover;border-radius:28px;" />
+  <div class="fns-splash-3d-floor"></div>
+  <div class="fns-splash-3d-stage">
+    <div class="fns-gyro-ring-1"></div>
+    <div class="fns-gyro-ring-2"></div>
+    <div class="fns-gyro-ring-3"></div>
+    <div class="fns-splash-core-logo">
+      <img src="/icon-512.png" alt="Foji AI Studio" />
+    </div>
   </div>
-  <div style="font-size:1.35rem;font-weight:900;color:#fff;margin-top:16px;letter-spacing:0.02em;">FOJI AI STUDIO</div>
-  <div style="font-size:0.75rem;color:#34d399;font-weight:700;margin-top:4px;">3D TACTICAL ENGINE • @ai_foji_lovelife</div>
+  <div style="font-size:1.38rem;font-weight:900;color:#fff;margin-top:22px;letter-spacing:0.04em;text-shadow:0 0 20px rgba(16,185,129,0.6);position:relative;z-index:5;">FOJI AI STUDIO</div>
+  <div style="font-size:0.74rem;color:#34d399;font-weight:800;margin-top:4px;letter-spacing:0.12em;position:relative;z-index:5;">3D COMMAND ENGINE</div>
   <div class="fns-splash-bar"><div class="fns-splash-fill"></div></div>
 </div>
 
 <!-- 💥 BOMB BLAST CELEBRATION OVERLAY -->
 <div id="fns-blast-overlay"></div>
 
-<!-- CENTER MODAL (SUPPORTS CONFIRMATION BUTTONS TOO) -->
+<!-- CLEAN MODAL -->
 <div id="fns-center-modal-backdrop">
   <div class="fns-center-modal" id="fns-center-modal-box">
     <div id="fns-modal-icon" style="font-size:2.3rem;margin-bottom:8px;">✨</div>
@@ -2816,11 +2931,11 @@ html, body {
   <div class="fns-topbar">
     <div class="fns-brand">
       <div class="fns-logo-orb">
-        <img src="/api/universe/char_img/foji" onerror="this.src='/app-icon.svg'" alt="Foji" />
+        <img src="/icon-192.png" alt="Foji Studio" />
       </div>
       <div>
         <div style="font-size:1.05rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">Foji AI Studio</div>
-        <div style="font-size:0.7rem;color:#34d399;font-weight:600;" id="fns-top-clock-sub">@ai_foji_lovelife • Command Hub</div>
+        <div style="font-size:0.7rem;color:#34d399;font-weight:600;" id="fns-top-clock-sub">@ai_foji_lovelife</div>
       </div>
     </div>
 
@@ -2832,8 +2947,8 @@ html, body {
     </div>
 
     <div class="fns-topbar-actions" style="display:flex;gap:8px;align-items:center;">
+      <button class="fns-tab-btn" id="fns-sound-toggle-btn" onclick="fnsToggleSound()" style="padding:8px 10px;" title="Sound FX">🔊</button>
       <button class="fns-tab-btn" id="fns-pwa-install-btn" style="display:none;border-color:#06b6d4;color:#22d3ee;" onclick="fnsInstallPwaApp()">📲 Install App</button>
-      <!-- DYNAMIC GENERATE / STOP BUTTON -->
       <button class="fns-cta-generate" id="fns-primary-gen-btn" onclick="fnsHandlePrimaryGenOrStopClick()">🚀 Generate Reel</button>
       <button class="fns-cta-schedule" onclick="fnsApproveAndScheduleLatest()">📅 Schedule</button>
       <button class="fns-cta-post" onclick="fnsPublishLatestReel()">📲 Post</button>
@@ -2844,10 +2959,10 @@ html, body {
     <!-- DESKTOP LEFT SIDEBAR -->
     <div class="fns-sidebar">
       <div class="fns-side-box">
-        <div style="font-size:0.74rem;font-weight:800;color:#34d399;margin-bottom:6px;">⏱️ LIVE SCHEDULE</div>
-        <div style="font-size:0.72rem;color:#cbd5e1;line-height:1.5;">
-          Next Slot: <b id="fns-next-slot-sidebar" style="color:#fff;">--:--</b><br/>
-          IST Time: <b id="fns-server-clock" style="color:#38bdf8;">--:--</b>
+        <div style="font-size:0.74rem;font-weight:800;color:#34d399;margin-bottom:6px;">⏱️ SCHEDULE STATUS</div>
+        <div style="font-size:0.72rem;color:#cbd5e1;line-height:1.6;">
+          Next Post: <b id="fns-next-slot-sidebar" style="color:#fff;">--:--</b><br/>
+          IST Clock: <b id="fns-server-clock" style="color:#38bdf8;">--:--</b>
         </div>
       </div>
 
@@ -2861,8 +2976,8 @@ html, body {
 
       <div class="fns-side-box" style="margin-top:auto;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <span style="font-size:0.72rem;color:#94a3b8;font-weight:700;">Auto-Cleaner & IG</span>
-          <span class="fns-badge-live">Protected</span>
+          <span style="font-size:0.72rem;color:#94a3b8;font-weight:700;">Instagram Status</span>
+          <span class="fns-badge-live">Active</span>
         </div>
       </div>
     </div>
@@ -2877,69 +2992,138 @@ html, body {
           <div class="fns-pipeline-card">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
               <div>
-                <div style="font-size:1.04rem;font-weight:900;color:#fff;">🎖️ 3D Foji Tactical Pipeline</div>
-                <div style="font-size:0.78rem;color:#34d399;margin-top:2px;" id="fns-radar-subtitle">Foji Makra on Guard Duty at Post #1</div>
+                <div style="font-size:1.04rem;font-weight:900;color:#fff;" id="fns-foji-soldier-title">🪖 Commando Makra • Guard Duty</div>
+                <div style="font-size:0.78rem;color:#34d399;margin-top:2px;" id="fns-radar-subtitle">Standing guard at Post #1 — Tap "Generate Reel" to start</div>
               </div>
-              <div style="display:flex;gap:8px;align-items:center;">
-                <a href="/api/universe/live_screenshot" target="_blank" class="fns-tab-btn" style="text-decoration:none;font-size:0.74rem;border-color:rgba(255,255,255,0.12);">📸 Cloud View ↗</a>
-              </div>
+              <a href="/api/universe/live_screenshot" target="_blank" class="fns-tab-btn" style="text-decoration:none;font-size:0.74rem;border-color:rgba(255,255,255,0.12);">📸 Live Screen ↗</a>
             </div>
 
-            <!-- 🎖️ 3D TACTICAL BATTLEFIELD ARENA -->
+            <!-- 🏃‍♂️🔫 3D WALKING & AK-47 FIRING COMMANDO BATTLEFIELD ARENA -->
             <div class="fns-battlefield-arena" id="fns-battle-arena">
-              <!-- Live Foji Commando Unit Bar -->
-              <div class="fns-commander-hud">
-                <div class="fns-foji-hero-unit">
-                  <div class="fns-foji-avatar-3d" id="fns-foji-hero-box">
-                    <img src="/api/universe/char_img/foji" onerror="this.src='/app-icon.svg'" alt="Foji Makra" />
-                    <span class="fns-foji-weapon-badge" id="fns-foji-weapon-icon">🛡️</span>
+
+              <!-- 3D Combat Track where Foji walks on legs & fires AK-47 -->
+              <div class="fns-combat-corridor">
+                <div class="fns-corridor-hud-pill" id="fns-mission-pct-badge">🛡️ ON DUTY • POST #1</div>
+
+                <!-- ARTICULATED 3D WALKING SOLDIER WITH AK-47, MUZZLE FLASH & TRACER BULLETS -->
+                <div class="fns-commando-walker" id="fns-commando-walker">
+                  <div class="fns-tracer-stream">
+                    <div class="fns-tracer-shot"></div>
+                    <div class="fns-tracer-shot s2"></div>
                   </div>
-                  <div>
-                    <div style="font-size:0.82rem;font-weight:900;color:#fff;" id="fns-foji-soldier-title">🪖 Commando Makra • Guard Duty (Post #1)</div>
-                    <div style="font-size:0.71rem;color:#34d399;font-weight:700;" id="fns-foji-soldier-sub">Standing by — Click "Generate Reel" to start mission</div>
-                  </div>
+                  <svg class="fns-commando-svg" viewBox="0 0 100 105">
+                    <!-- Ground Shadow -->
+                    <ellipse cx="38" cy="96" rx="20" ry="4" fill="rgba(0,0,0,0.55)" />
+
+                    <!-- RIGHT LEG (Back Leg Walking Joint) -->
+                    <g class="fns-leg-right">
+                      <rect x="34" y="60" width="9" height="22" rx="4" fill="#1b4332" stroke="#081c15" stroke-width="1.5"/>
+                      <rect x="33" y="80" width="13" height="8" rx="3" fill="#111827"/>
+                    </g>
+
+                    <!-- LEFT LEG (Front Leg Walking Joint) -->
+                    <g class="fns-leg-left">
+                      <rect x="28" y="60" width="9.5" height="23" rx="4" fill="#2d6a4f" stroke="#081c15" stroke-width="1.5"/>
+                      <rect x="27" y="81" width="14" height="8" rx="3" fill="#1f2937"/>
+                    </g>
+
+                    <!-- UPPER BODY + HEAD + AK-47 -->
+                    <g class="fns-commando-body-group">
+                      <!-- Tactical Backpack -->
+                      <rect x="14" y="34" width="11" height="22" rx="4" fill="#1b4332" stroke="#081c15" stroke-width="1.5"/>
+                      <!-- Camo Torso & Bulletproof Vest -->
+                      <rect x="23" y="32" width="24" height="31" rx="6" fill="#2d6a4f" stroke="#081c15" stroke-width="1.5"/>
+                      <rect x="26" y="36" width="18" height="21" rx="4" fill="#1e293b" stroke="#10b981" stroke-width="1"/>
+                      <!-- Tiranga Badge on Chest -->
+                      <rect x="31" y="40" width="8" height="2" fill="#ff9933"/>
+                      <rect x="31" y="42" width="8" height="2" fill="#ffffff"/>
+                      <rect x="31" y="44" width="8" height="2" fill="#138808"/>
+
+                      <!-- Neck & 3D Soldier Head -->
+                      <rect x="31" y="25" width="8" height="8" rx="2" fill="#d97742"/>
+                      <circle cx="36" cy="18" r="11" fill="#e08b56" stroke="#7c2d12" stroke-width="1"/>
+                      <!-- Eyes & Determined Mustache/Smile -->
+                      <circle cx="40" cy="16" r="1.8" fill="#0f172a"/>
+                      <path d="M36 22 Q40 20 44 22" stroke="#27272a" stroke-width="2" fill="none" stroke-linecap="round"/>
+                      <!-- Indian Army Maroon/Green Commando Beret & Golden Crest -->
+                      <path d="M23 14 C24 5, 46 4, 50 13 C42 11, 28 12, 23 14 Z" fill="#15803d" stroke="#052e16" stroke-width="1.5"/>
+                      <circle cx="41" cy="10" r="2.2" fill="#fbbf24"/>
+
+                      <!-- ARMS + AK-47 RIFLE + MUZZLE FIRE -->
+                      <g class="fns-arm-gun-group">
+                        <!-- Back Arm Supporting Rifle Handguard -->
+                        <path d="M36 39 L54 43" stroke="#2d6a4f" stroke-width="6" stroke-linecap="round"/>
+                        <circle cx="55" cy="43" r="3.5" fill="#e08b56"/>
+
+                        <!-- AK-47 Assault Rifle -->
+                        <!-- Wooden Buttstock -->
+                        <polygon points="26,43 38,40 38,46 26,48" fill="#92400e"/>
+                        <!-- Metal Receiver & Barrel -->
+                        <rect x="37" y="38" width="24" height="6" rx="1.5" fill="#1f2937" stroke="#475569" stroke-width="1"/>
+                        <!-- Curved Banana Magazine -->
+                        <path d="M48 44 Q51 54 57 56 L60 53 Q55 48 53 44 Z" fill="#b45309" stroke="#78350f" stroke-width="1"/>
+                        <!-- Wooden Front Handguard -->
+                        <rect x="56" y="39" width="11" height="4.5" rx="1" fill="#b45309"/>
+                        <!-- Steel Rifle Barrel & Front Sight -->
+                        <rect x="67" y="39.5" width="14" height="2.6" fill="#334155"/>
+                        <polygon points="77,36 79,36 79,40 77,40" fill="#334155"/>
+
+                        <!-- Front Trigger Arm -->
+                        <path d="M30 40 L42 45" stroke="#40916c" stroke-width="6.5" stroke-linecap="round"/>
+                        <circle cx="43" cy="45" r="3.5" fill="#e08b56"/>
+
+                        <!-- Ejecting Brass Bullet Shell -->
+                        <rect class="fns-shell-casing" x="48" y="36" width="4" height="2" fill="#fbbf24"/>
+
+                        <!-- Explosive AK-47 Muzzle Flash Star -->
+                        <g class="fns-muzzle-flame">
+                          <polygon points="81,41 96,33 91,41 99,41 91,43 96,49 81,42" fill="#ef4444"/>
+                          <polygon points="81,41 92,36 89,41 95,41 89,43 92,46 81,42" fill="#fde047"/>
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
                 </div>
 
-                <!-- Animated Laser Bullet Stream -->
-                <div class="fns-bullet-track" id="fns-bullet-stream">
-                  <div class="fns-laser-bullet"></div>
-                  <span style="font-size:0.68rem;font-weight:800;color:#94a3b8;margin-left:auto;" id="fns-mission-pct-badge">READY</span>
+                <!-- Ground Progress Track -->
+                <div class="fns-combat-ground">
+                  <div class="fns-combat-ground-fill" id="fns-combat-ground-fill"></div>
                 </div>
               </div>
 
-              <!-- 8 3D Tactical Bunker Checkpoints -->
+              <!-- 8 3D Tactical Checkpoints -->
               <div class="fns-steps-grid">
                 <div class="fns-road-node duty-guard" id="fns-pnode-1">
-                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 1</div>
-                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📝 AI Script</div>
+                  <div style="font-size:0.62rem;color:#94a3b8;font-weight:700;">STEP 1</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📝 Story Script</div>
                 </div>
                 <div class="fns-road-node" id="fns-pnode-2">
-                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 2</div>
-                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🔐 Auth Lock</div>
+                  <div style="font-size:0.62rem;color:#94a3b8;font-weight:700;">STEP 2</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🔐 Studio Connect</div>
                 </div>
                 <div class="fns-road-node" id="fns-pnode-3">
-                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 3</div>
-                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📐 9:16 Setup</div>
+                  <div style="font-size:0.62rem;color:#94a3b8;font-weight:700;">STEP 3</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📐 9:16 Canvas</div>
                 </div>
                 <div class="fns-road-node" id="fns-pnode-4">
-                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 4</div>
+                  <div style="font-size:0.62rem;color:#94a3b8;font-weight:700;">STEP 4</div>
                   <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">👫 Characters</div>
                 </div>
                 <div class="fns-road-node" id="fns-pnode-5">
-                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 5</div>
-                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🎯 Scene Prompt</div>
+                  <div style="font-size:0.62rem;color:#94a3b8;font-weight:700;">STEP 5</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🎯 Scene Setup</div>
                 </div>
                 <div class="fns-road-node" id="fns-pnode-6">
-                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 6</div>
-                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🎬 3D Render</div>
+                  <div style="font-size:0.62rem;color:#94a3b8;font-weight:700;">STEP 6</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">🎬 3D Animation</div>
                 </div>
                 <div class="fns-road-node" id="fns-pnode-7">
-                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 7</div>
-                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📥 MP4 Save</div>
+                  <div style="font-size:0.62rem;color:#94a3b8;font-weight:700;">STEP 7</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">📥 HD Mastering</div>
                 </div>
                 <div class="fns-road-node" id="fns-pnode-8">
-                  <div style="font-size:0.63rem;color:#94a3b8;font-weight:700;">POST 8</div>
-                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">💥 Mission Complete</div>
+                  <div style="font-size:0.62rem;color:#94a3b8;font-weight:700;">STEP 8</div>
+                  <div style="font-size:0.76rem;font-weight:800;color:#fff;margin-top:2px;">💥 Reel Ready</div>
                 </div>
               </div>
             </div>
@@ -2947,8 +3131,8 @@ html, body {
             <!-- ERROR DIAGNOSTIC -->
             <div class="fns-error-box" id="fns-error-banner">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-                <div style="font-size:0.85rem;font-weight:800;color:#fca5a5;">⚠️ Pipeline Alert</div>
-                <a href="/api/universe/live_screenshot" target="_blank" style="color:#fff;background:#ef4444;padding:4px 10px;border-radius:7px;text-decoration:none;font-size:0.72rem;font-weight:700;">View Screenshot ↗</a>
+                <div style="font-size:0.85rem;font-weight:800;color:#fca5a5;">⚠️ Generation Paused</div>
+                <a href="/api/universe/live_screenshot" target="_blank" style="color:#fff;background:#ef4444;padding:4px 10px;border-radius:7px;text-decoration:none;font-size:0.72rem;font-weight:700;">View Screen ↗</a>
               </div>
               <div id="fns-error-reason-text" style="font-size:0.8rem;color:#fee2e2;margin-top:5px;"></div>
             </div>
@@ -2972,7 +3156,7 @@ html, body {
             <!-- RECENT ACTIVITY -->
             <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border-subtle);">
               <div style="font-size:0.76rem;font-weight:700;color:#94a3b8;margin-bottom:6px;">Recent Activity</div>
-              <div id="fns-notif-feed" style="max-height:120px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;font-size:0.74rem;"></div>
+              <div id="fns-notif-feed" style="max-height:110px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;font-size:0.74rem;"></div>
             </div>
           </div>
 
@@ -2983,7 +3167,7 @@ html, body {
               <div class="fns-iphone-screen">
                 <video id="fns-preview-video" src="/api/universe/latest_video" controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;background:#000;" onerror="this.style.display='none';document.getElementById('fns-vid-fallback').style.display='flex';"></video>
                 <div id="fns-vid-fallback" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;">
-                  <img src="/api/universe/char_img/foji" style="width:96px;height:96px;object-fit:cover;border-radius:50%;border:2px solid #10b981;margin-bottom:10px;" />
+                  <img src="/icon-192.png" style="width:88px;height:88px;object-fit:cover;border-radius:22px;border:2px solid #10b981;margin-bottom:10px;" />
                   <div style="font-size:0.82rem;font-weight:800;color:#fff;">Foji AI Studio</div>
                   <div style="font-size:0.7rem;color:#94a3b8;margin-top:4px;">Select or generate a reel to preview</div>
                 </div>
@@ -3048,7 +3232,7 @@ html, body {
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
             <div>
               <div style="font-size:1.05rem;font-weight:800;color:#fff;">All Reels Library</div>
-              <div style="font-size:0.76rem;color:#94a3b8;margin-top:2px;">Click any reel to play immediately, schedule, or post to Instagram.</div>
+              <div style="font-size:0.76rem;color:#94a3b8;margin-top:2px;">Tap any reel to play immediately, copy caption, schedule, or post.</div>
             </div>
           </div>
           <div class="fns-vault-grid" id="fns-master-vault-grid"></div>
@@ -3101,25 +3285,31 @@ let _fnsState = { active_mode: 'auto_rotate', selected_track_id: 'love_meera' };
 let _fnsTracks = [];
 let _fnsKnownVaultFiles = new Set();
 let _fnsFirstLoadDone = false;
-let _fnsLastErrorKey = '';
 let _fnsActivePreviewFile = '';
 let _fnsLastVaultSignature = '';
 let _fnsLastQueueSignature = '';
 let _fnsDeferredPwaPrompt = null;
 let _fnsPipelineIsRunning = false;
 let _fnsLastCompletedStep = 0;
+let _fnsSoundEnabled = true;
 
-// 🎬 Hide App Launch Splash Screen smoothly after 1.65 seconds
+// Hide 3D Holographic Boot Splash after 1.85 seconds
 setTimeout(() => {
   const sp = document.getElementById('fns-app-splash');
   if (sp) {
     sp.classList.add('hide');
-    setTimeout(() => { sp.style.display = 'none'; }, 500);
+    setTimeout(() => { sp.style.display = 'none'; }, 550);
   }
-}, 1650);
+}, 1850);
 
-// 🔊 WebAudio Synthesizer for Button Clicks, Step Cleared Flare & Final Bomb Blast!
+function fnsToggleSound() {
+  _fnsSoundEnabled = !_fnsSoundEnabled;
+  const btn = document.getElementById('fns-sound-toggle-btn');
+  if (btn) btn.innerText = _fnsSoundEnabled ? '🔊' : '🔇';
+}
+
 function fnsPlaySoundFX(type) {
+  if (!_fnsSoundEnabled) return;
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const now = ctx.currentTime;
@@ -3128,30 +3318,29 @@ function fnsPlaySoundFX(type) {
       const g = ctx.createGain();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(520, now);
-      osc.frequency.exponentialRampToValueAtTime(180, now + 0.045);
-      g.gain.setValueAtTime(0.08, now);
-      g.gain.linearRampToValueAtTime(0.01, now + 0.045);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.04);
+      g.gain.setValueAtTime(0.06, now);
+      g.gain.linearRampToValueAtTime(0.01, now + 0.04);
       osc.connect(g); g.connect(ctx.destination);
-      osc.start(now); osc.stop(now + 0.05);
+      osc.start(now); osc.stop(now + 0.045);
     } else if (type === 'step_up') {
       [587.33, 880].forEach((freq, idx) => {
         const osc = ctx.createOscillator();
         const g = ctx.createGain();
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(freq, now + idx * 0.08);
-        g.gain.setValueAtTime(0.14, now + idx * 0.08);
+        g.gain.setValueAtTime(0.12, now + idx * 0.08);
         g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.18);
         osc.connect(g); g.connect(ctx.destination);
         osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.19);
       });
     } else if (type === 'bomb_blast') {
-      // Deep explosion boom + victory chord
       const osc = ctx.createOscillator();
       const g = ctx.createGain();
       osc.type = 'sawtooth';
       osc.frequency.setValueAtTime(140, now);
       osc.frequency.exponentialRampToValueAtTime(28, now + 0.65);
-      g.gain.setValueAtTime(0.32, now);
+      g.gain.setValueAtTime(0.28, now);
       g.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
       osc.connect(g); g.connect(ctx.destination);
       osc.start(now); osc.stop(now + 0.72);
@@ -3159,7 +3348,6 @@ function fnsPlaySoundFX(type) {
   } catch (e) {}
 }
 
-// Global tactile ripple + click sound on every button tap
 document.addEventListener('pointerdown', function(e) {
   const btn = e.target.closest('button, .fns-tab-btn, .fns-cta-generate, .fns-cta-stop, .fns-cta-schedule, .fns-cta-post');
   if (!btn) return;
@@ -3175,7 +3363,18 @@ document.addEventListener('pointerdown', function(e) {
   setTimeout(() => ripple.remove(), 520);
 });
 
-// 💥 Trigger Grand Bomb Blast + Tiranga Confetti Celebration on Step 8 Completion!
+// Clean any backend telemetry message so technical words (.env, GitHub, Cookie, Chrome) NEVER appear!
+const CLEAN_STAGE_NAMES = {
+  1: { title: 'Step 1: Writing Story Script', sub: 'Creating original Hinglish dialogues & scene...' },
+  2: { title: 'Step 2: Connecting 3D Studio', sub: 'Securing studio workspace...' },
+  3: { title: 'Step 3: Setting Up 9:16 Canvas', sub: 'Configuring vertical HD reel frame...' },
+  4: { title: 'Step 4: Loading Characters', sub: 'Preparing Foji Makra & Fojan Meera...' },
+  5: { title: 'Step 5: Directing Scene', sub: 'Applying camera angles & expressions...' },
+  6: { title: 'Step 6: Rendering 3D Animation', sub: 'Generating 3D animation & lip-sync...' },
+  7: { title: 'Step 7: Mastering HD Video', sub: 'Finalizing MP4 video & audio track...' },
+  8: { title: 'Step 8: Reel Ready!', sub: 'Saved in All Reels Library!' }
+};
+
 function fnsTriggerGrandBombBlastCelebration(reelTitle) {
   fnsPlaySoundFX('bomb_blast');
   const ov = document.getElementById('fns-blast-overlay');
@@ -3189,10 +3388,10 @@ function fnsTriggerGrandBombBlastCelebration(reelTitle) {
     ov.style.display = 'flex';
     ov.innerHTML = '<div class="fns-shockwave"></div>';
     const colors = ['#ff9933', '#ffffff', '#138808', '#10b981', '#06b6d4', '#fbbf24'];
-    for (let i = 0; i < 55; i++) {
+    for (let i = 0; i < 60; i++) {
       const p = document.createElement('div');
       const col = colors[i % colors.length];
-      const angle = (Math.PI * 2 * i) / 55;
+      const angle = (Math.PI * 2 * i) / 60;
       const dist = 140 + Math.random() * 380;
       const dx = Math.cos(angle) * dist;
       const dy = Math.sin(angle) * dist;
@@ -3207,9 +3406,9 @@ function fnsTriggerGrandBombBlastCelebration(reelTitle) {
   }
   fnsOpenModal(
     '💥',
-    'MISSION ACCOMPLISHED — REEL READY!',
-    `<div style="font-weight:800;color:#34d399;font-size:0.95rem;margin-bottom:6px;">🎬 ${reelTitle || 'New 3D Foji Reel'}</div>
-     <div style="font-size:0.82rem;color:#cbd5e1;">Commando Makra completed all 8 stages! Your reel is ready in the preview player and All Reels Vault.</div>`
+    'Mission Complete — Reel Ready!',
+    `<div style="font-weight:800;color:#34d399;font-size:0.95rem;margin-bottom:6px;">🎬 ${reelTitle || 'New 3D Reel'}</div>
+     <div style="font-size:0.82rem;color:#cbd5e1;">Your new 3D reel is ready to watch, schedule, or post to Instagram.</div>`
   );
 }
 
@@ -3232,7 +3431,7 @@ async function fnsInstallPwaApp() {
     _fnsDeferredPwaPrompt = null;
     document.getElementById('fns-pwa-install-btn').style.display = 'none';
   } else {
-    fnsOpenModal('📲', 'Install Foji Studio App', 'In Chrome mobile menu (⋮), tap <b>"Add to Home screen"</b> or <b>"Install app"</b> for fullscreen native mode.');
+    fnsOpenModal('📲', 'Install Foji Studio App', 'In Chrome mobile menu (⋮), tap <b>"Add to Home screen"</b> or <b>"Install app"</b>.');
   }
 }
 
@@ -3272,7 +3471,7 @@ function fnsShowToast(msg, isError=false) {
   t.style.display = 'block';
   t.style.borderColor = isError ? '#ef4444' : '#10b981';
   t.innerHTML = msg;
-  setTimeout(() => { t.style.display = 'none'; }, 5000);
+  setTimeout(() => { t.style.display = 'none'; }, 4500);
 }
 
 function fnsSwitchTab(num) {
@@ -3294,7 +3493,6 @@ document.addEventListener('play', function(e) {
   }
 }, true);
 
-// 🔄 Sync Generate vs Stop Button State across Topbar, Sidebar & Card
 function fnsSyncGenerateStopButtons(isActive) {
   _fnsPipelineIsRunning = isActive;
   const topBtn = document.getElementById('fns-primary-gen-btn');
@@ -3302,7 +3500,7 @@ function fnsSyncGenerateStopButtons(isActive) {
   const cardBtn = document.getElementById('fns-card-gen-btn');
 
   if (isActive) {
-    if (topBtn) { topBtn.className = 'fns-cta-stop'; topBtn.innerHTML = '🛑 Stop Generation'; }
+    if (topBtn) { topBtn.className = 'fns-cta-stop'; topBtn.innerHTML = '🛑 Stop'; }
     if (sideBtn) { sideBtn.style.color = '#f87171'; sideBtn.innerHTML = '🛑 Stop Generation'; }
     if (cardBtn) { cardBtn.style.color = '#f87171'; cardBtn.innerHTML = '🛑 Stop'; }
   } else {
@@ -3316,23 +3514,23 @@ function fnsHandlePrimaryGenOrStopClick() {
   if (_fnsPipelineIsRunning) {
     fnsOpenModal(
       '🛑',
-      'Stop Reel Generation?',
-      'Do you want to stop the current video generation right now and return Commando Makra to Standby Duty?',
+      'Stop Generation?',
+      'Stop current reel generation and return Commando Makra to Step 1?',
       true,
       [
         {
-          label: '🛑 Yes, Stop Now',
+          label: '🛑 Yes, Stop',
           cls: 'fns-cta-stop',
           onClick: async () => {
             fnsCloseModal();
-            fnsShowToast('Stopping pipeline...');
+            fnsShowToast('Stopping generation...');
             await fetch('/api/universe/stop_pipeline', { method: 'POST' });
             fnsSyncGenerateStopButtons(false);
             fnsRefreshHub();
           }
         },
         {
-          label: 'Continue Mission',
+          label: 'Keep Running',
           cls: 'fns-tab-btn',
           onClick: fnsCloseModal
         }
@@ -3344,7 +3542,7 @@ function fnsHandlePrimaryGenOrStopClick() {
 }
 
 function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFile) {
-  const stepNum = parseInt(telemetry.step_num || 0, 10);
+  const stepNum = Math.min(8, Math.max(0, parseInt(telemetry.step_num || 0, 10)));
   const rawStatus = (telemetry.status || 'idle').toLowerCase();
   const epoch = parseFloat(telemetry.epoch || 0);
   const ageSeconds = epoch > 0 ? ((Date.now() / 1000) - epoch) : 999999;
@@ -3357,30 +3555,33 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
   fnsSyncGenerateStopButtons(isRunning);
 
   const arena = document.getElementById('fns-battle-arena');
+  const walker = document.getElementById('fns-commando-walker');
+  const groundFill = document.getElementById('fns-combat-ground-fill');
   const soldierTitle = document.getElementById('fns-foji-soldier-title');
-  const soldierSub = document.getElementById('fns-foji-soldier-sub');
-  const weaponIcon = document.getElementById('fns-foji-weapon-icon');
+  const subTitle = document.getElementById('fns-radar-subtitle');
   const pctBadge = document.getElementById('fns-mission-pct-badge');
 
   if (arena) arena.classList.toggle('firing', isRunning);
 
   if (status === 'idle') {
     _fnsLastCompletedStep = 0;
-    document.getElementById('fns-radar-subtitle').innerText = 'Commando Makra on Guard Duty at Post #1';
-    if (soldierTitle) soldierTitle.innerText = '🪖 Commando Makra • Guard Duty (Post #1)';
-    if (soldierSub) soldierSub.innerText = 'Standing guard — Tap "Generate Reel" to launch mission';
-    if (weaponIcon) weaponIcon.innerText = '🛡️';
-    if (pctBadge) pctBadge.innerText = 'ON DUTY';
+    if (walker) walker.style.left = '3%';
+    if (groundFill) groundFill.style.width = '6%';
+    if (soldierTitle) soldierTitle.innerText = '🪖 Commando Makra • On Guard Duty';
+    if (subTitle) subTitle.innerText = 'Standing guard at Step 1 — Tap "Generate Reel" to start';
+    if (pctBadge) pctBadge.innerText = '🛡️ ON DUTY • STEP 1';
   } else if (status === 'active') {
-    const title = telemetry.step_title || `Post #${stepNum}`;
-    const detail = telemetry.sub_detail || 'Advancing...';
-    document.getElementById('fns-radar-subtitle').innerText = `${title} • ${detail}`;
-    if (soldierTitle) soldierTitle.innerText = `🔫 Commando Makra • Firing at Post #${stepNum} (${title})`;
-    if (soldierSub) soldierSub.innerText = detail;
-    if (weaponIcon) weaponIcon.innerText = '🔥';
-    if (pctBadge) pctBadge.innerText = `${Math.min(99, Math.max(12, stepNum * 12))}%`;
+    // Move Walking 3D Commando proportionally across the corridor (from 3% at Step 1 to 84% at Step 8)
+    const walkPct = 3 + ((stepNum - 1) * 11.5);
+    const barPct = Math.min(100, Math.max(12, stepNum * 12.5));
+    if (walker) walker.style.left = walkPct + '%';
+    if (groundFill) groundFill.style.width = barPct + '%';
 
-    // Celebrate each newly cleared step!
+    const cleanInfo = CLEAN_STAGE_NAMES[stepNum] || { title: `Step ${stepNum}`, sub: 'Advancing...' };
+    if (soldierTitle) soldierTitle.innerText = `🔫 ${cleanInfo.title}`;
+    if (subTitle) subTitle.innerText = cleanInfo.sub;
+    if (pctBadge) pctBadge.innerText = `🔥 STEP ${stepNum}/8 • ${Math.round(barPct)}%`;
+
     if (stepNum > _fnsLastCompletedStep && _fnsLastCompletedStep > 0) {
       fnsPlaySoundFX('step_up');
       const prevNode = document.getElementById('fns-pnode-' + (stepNum - 1));
@@ -3392,28 +3593,25 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     }
     _fnsLastCompletedStep = stepNum;
   } else if (status === 'completed') {
+    if (walker) walker.style.left = '84%';
+    if (groundFill) groundFill.style.width = '100%';
     if (_fnsLastCompletedStep > 0 && _fnsLastCompletedStep < 8) {
       _fnsLastCompletedStep = 8;
       fnsTriggerGrandBombBlastCelebration(latestVideoFile);
     }
-    if (soldierTitle) soldierTitle.innerText = '🏆 Commando Makra • Mission Accomplished!';
-    if (soldierSub) soldierSub.innerText = 'Target Reel secured in Vault!';
-    if (weaponIcon) weaponIcon.innerText = '🇮🇳';
-    if (pctBadge) pctBadge.innerText = '100% DONE';
+    if (soldierTitle) soldierTitle.innerText = '🏆 Mission Complete — Reel Ready!';
+    if (subTitle) subTitle.innerText = 'Saved in All Reels Library';
+    if (pctBadge) pctBadge.innerText = '💥 100% COMPLETE';
   } else if (status === 'error') {
-    if (soldierTitle) soldierTitle.innerText = '⚠️ Mission Paused — Check Alert Below';
-    if (soldierSub) soldierSub.innerText = telemetry.sub_detail || '';
-    if (weaponIcon) weaponIcon.innerText = '⚠️';
-    if (pctBadge) pctBadge.innerText = 'PAUSED';
+    if (soldierTitle) soldierTitle.innerText = '⚠️ Generation Paused';
+    if (subTitle) subTitle.innerText = 'Tap Generate Reel to retry';
+    if (pctBadge) pctBadge.innerText = '⚠️ PAUSED';
   }
 
   for (let i = 1; i <= 8; i++) {
     const nd = document.getElementById('fns-pnode-' + i);
     if (!nd) continue;
     nd.className = 'fns-road-node';
-
-    const oldPin = nd.querySelector('.fns-node-soldier-pin');
-    if (oldPin) oldPin.remove();
 
     let badgeEl = nd.querySelector('.fns-stage-state-badge');
     if (!badgeEl) {
@@ -3426,13 +3624,8 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     if (status === 'idle') {
       if (i === 1) {
         nd.classList.add('duty-guard');
-        badgeEl.innerText = '🪖 Foji On Duty';
+        badgeEl.innerText = '🪖 Guarding';
         badgeEl.style.color = '#34d399';
-        const pin = document.createElement('span');
-        pin.className = 'fns-node-soldier-pin';
-        pin.style.background = 'linear-gradient(135deg,#10b981,#059669)';
-        pin.innerText = '🪖 GUARDING';
-        nd.appendChild(pin);
       } else {
         badgeEl.innerText = 'Standby';
         badgeEl.style.color = '#64748b';
@@ -3440,33 +3633,29 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     } else if (status === 'active') {
       if (i < stepNum) {
         nd.classList.add('done');
-        badgeEl.innerText = '🎖️ Cleared!';
+        badgeEl.innerText = '✓ Cleared';
         badgeEl.style.color = '#34d399';
       } else if (i === stepNum) {
         nd.classList.add('active');
-        badgeEl.innerText = '🔫 Firing Live...';
+        badgeEl.innerText = '🔫 Firing...';
         badgeEl.style.color = '#fbbf24';
-        const pin = document.createElement('span');
-        pin.className = 'fns-node-soldier-pin';
-        pin.innerText = '🪖🔥 FIRING';
-        nd.appendChild(pin);
       } else {
         badgeEl.innerText = 'Locked';
         badgeEl.style.color = '#64748b';
       }
     } else if (status === 'completed') {
       nd.classList.add('done');
-      badgeEl.innerText = '💥 Victory!';
+      badgeEl.innerText = '💥 Cleared';
       badgeEl.style.color = '#34d399';
     } else if (status === 'error') {
       const errStage = stepNum > 0 ? stepNum : 2;
       if (i < errStage) {
         nd.classList.add('done');
-        badgeEl.innerText = '🎖️ Cleared';
+        badgeEl.innerText = '✓ Cleared';
         badgeEl.style.color = '#34d399';
       } else if (i === errStage) {
         nd.classList.add('error');
-        badgeEl.innerText = '✕ Halted';
+        badgeEl.innerText = '✕ Paused';
         badgeEl.style.color = '#fca5a5';
       } else {
         badgeEl.innerText = 'Standby';
@@ -3479,7 +3668,7 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
   const errTxt = document.getElementById('fns-error-reason-text');
   if (status === 'error') {
     errBox.style.display = 'block';
-    errTxt.innerHTML = `<b>${telemetry.step_title || 'Notice'}:</b> ${telemetry.sub_detail || ''}`;
+    errTxt.innerHTML = telemetry.sub_detail || 'Generation paused.';
   } else {
     errBox.style.display = 'none';
   }
@@ -3495,6 +3684,14 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     }
     document.getElementById('fns-phone-ep-title').innerText = latestVideoFile;
   }
+}
+
+function fnsCopyCaptionText(encText) {
+  try {
+    const txt = decodeURIComponent(encText);
+    navigator.clipboard.writeText(txt);
+    fnsShowToast('📋 Caption & hashtags copied!');
+  } catch (e) {}
 }
 
 function fnsRenderMasterVault(vaultList) {
@@ -3530,6 +3727,7 @@ function fnsRenderMasterVault(vaultList) {
     const badgeCol = isPub ? '#34d399' : (isSch ? '#c4b5fd' : '#38bdf8');
     const cleanBadge = isPub ? '✓ Published' : (isSch ? '⏰ Scheduled' : '● Ready');
     const vidUrl = '/api/universe/video_file/' + encodeURIComponent(v.video_file) + '#t=0.1';
+    const encCap = encodeURIComponent(v.caption || v.dialogue || '');
 
     return `
       <div class="fns-vault-card ${v.vault_status || ''}">
@@ -3544,6 +3742,7 @@ function fnsRenderMasterVault(vaultList) {
           <div style="display:flex;gap:6px;margin-top:auto;padding-top:10px;">
             ${!isPub ? `<button class="fns-cta-schedule" style="flex:1;padding:8px;font-size:0.74rem;" onclick="fnsApproveAndScheduleSpecific('${v.video_file}')">Schedule</button>` : ''}
             <button class="fns-cta-post" style="flex:1;padding:8px;font-size:0.74rem;" onclick="fnsPublishSpecificNow('${v.video_file}')">${isPub ? 'Repost' : 'Post Now'}</button>
+            <button class="fns-tab-btn" style="padding:8px 10px;font-size:0.74rem;border-color:rgba(255,255,255,0.1);" onclick="fnsCopyCaptionText('${encCap}')" title="Copy Caption">📋</button>
             <a href="/api/universe/video_file/${encodeURIComponent(v.video_file)}" download="${v.video_file}" class="fns-tab-btn" style="padding:8px 10px;font-size:0.74rem;text-decoration:none;color:#34d399;border-color:rgba(255,255,255,0.1);">📥</a>
           </div>
         </div>
@@ -3751,12 +3950,16 @@ function fnsRenderNotifications(list) {
     nBox.innerHTML = '<div style="color:#64748b;">No recent activity.</div>';
     return;
   }
-  nBox.innerHTML = list.slice(0, 8).map(n => `
-    <div style="padding:7px 10px;background:rgba(15,23,42,0.65);border-radius:8px;border-left:3px solid ${n.status==='error'?'#ef4444':(n.status==='success'?'#10b981':'#06b6d4')};display:flex;justify-content:space-between;gap:10px;">
-      <span><b>${n.title || 'Update'}:</b> ${n.message || ''}</span>
-      <span style="color:#64748b;white-space:nowrap;">${n.time_str || ''}</span>
-    </div>
-  `).join('');
+  nBox.innerHTML = list.slice(0, 8).map(n => {
+    // Strip any technical jargon from activity log messages too
+    let cleanMsg = (n.message || '').replace(/via \.env API/gi, '').replace(/GitHub Actions Chrome Worker/gi, '3D Studio');
+    return `
+      <div style="padding:7px 10px;background:rgba(15,23,42,0.65);border-radius:8px;border-left:3px solid ${n.status==='error'?'#ef4444':(n.status==='success'?'#10b981':'#06b6d4')};display:flex;justify-content:space-between;gap:10px;">
+        <span><b>${n.title || 'Update'}:</b> ${cleanMsg}</span>
+        <span style="color:#64748b;white-space:nowrap;">${n.time_str || ''}</span>
+      </div>
+    `;
+  }).join('');
 }
 
 async function fnsSelectTrack(trackId) {
@@ -3792,14 +3995,14 @@ async function fnsStartFullVideoGeneration(cnt=1) {
   _fnsLastCompletedStep = 1;
   fnsUpdateConnectedPipelineRoad({
     step_num: 1,
-    step_title: 'Generating Script',
-    sub_detail: 'Commando Makra advancing to Post #1...',
+    step_title: 'Step 1: Writing Story Script',
+    sub_detail: 'Creating original Hinglish dialogues & scene...',
     status: 'active',
     updated_at: 'Now',
     epoch: Date.now() / 1000
   }, [], '');
 
-  fnsShowToast('🪖 Mission started! Commando Makra advancing...');
+  fnsShowToast('🪖 Commando Makra advancing with AK-47...');
   try {
     const r = await fetch('/api/universe/trigger_pipeline', {
       method: 'POST',
@@ -3807,7 +4010,7 @@ async function fnsStartFullVideoGeneration(cnt=1) {
       body: JSON.stringify({ custom_idea: twist, count: cnt })
     });
     const d = await r.json();
-    if (d.ok) fnsShowToast('Pipeline running ✓');
+    if (d.ok) fnsShowToast('Generation started ✓');
     else fnsOpenModal('⚠️', 'Could Not Start', d.error || 'Failed', true);
   } catch (e) {
     fnsOpenModal('⚠️', 'Request Error', String(e), true);
