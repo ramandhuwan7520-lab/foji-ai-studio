@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794100548749",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "06:45 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794100548.749577
+  },
+  {
     "id": "notif_1794100526808",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "12:03 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794076418.5917363
-  },
-  {
-    "id": "notif_1794076359711",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "12:02 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794076359.7114432
   }
 ]
