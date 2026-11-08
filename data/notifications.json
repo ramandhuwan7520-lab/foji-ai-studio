@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794103608360",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "07:36 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794103608.3603384
+  },
+  {
     "id": "notif_1794103586124",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "02:32 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794085367.673584
-  },
-  {
-    "id": "notif_1794085256402",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 1: Gulab Jamun Ka Operation Stealth | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "02:30 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794085256.4025705
   }
 ]
