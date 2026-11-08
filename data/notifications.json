@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794101639508",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "07:03 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794101639.5083487
+  },
+  {
     "id": "notif_1794101470977",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "12:13 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794077006.3733425
-  },
-  {
-    "id": "notif_1794077004076",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop.",
-    "status": "error",
-    "time_str": "12:13 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794077004.0768626
   }
 ]
