@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Sanitizing Reel for IG",
-  "sub_detail": "Optimizing raw_video_1108_060049_p1.mp4 (720x1280 HD)...",
-  "status": "active",
-  "progress": 35,
-  "updated_at": "03:01:14 PM",
-  "epoch": 1794130274.1818523
+  "step_num": 0,
+  "step_title": "Gemini Cookie Expired",
+  "sub_detail": "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "03:01:26 PM",
+  "epoch": 1794130286.7036288
 }
