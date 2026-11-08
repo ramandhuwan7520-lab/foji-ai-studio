@@ -1,4 +1,10 @@
 import os
+import sys
+import shutil
+if os.path.dirname(os.path.abspath(__file__)) not in sys.path:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import os
 import time
 import schedule
 from brain import generate_video_package

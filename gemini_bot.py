@@ -1,4 +1,10 @@
-﻿_ACTIVE_COOKIE_ACCOUNT_SLOT = 1
+import os
+import sys
+import shutil
+if os.path.dirname(os.path.abspath(__file__)) not in sys.path:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+_ACTIVE_COOKIE_ACCOUNT_SLOT = 1
 # -*- coding: utf-8 -*-
 # pyright: reportOptionalMemberAccess=false, reportGeneralTypeIssues=false
 import os
