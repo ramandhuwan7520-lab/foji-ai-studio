@@ -264,7 +264,8 @@ def _load_saved_session_bundle():
 def launch_resilient_chrome_session(download_dir, start_blank=True):
     ensure_clean_matching_chromedriver_in_python()
     os.makedirs(download_dir, exist_ok=True)
-    profile_dir = os.path.abspath("chrome_gemini_pro_profile")
+    slot_num = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+    profile_dir = os.path.abspath(f"chrome_gemini_pro_profile_{slot_num}")
     os.makedirs(profile_dir, exist_ok=True)
 
     for lock_name in ["SingletonLock", "SingletonCookie", "SingletonSocket", "lockfile"]:
@@ -480,6 +481,9 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
                 "platform": "Win32",
                 "acceptLanguage": "en-US,en;q=0.9"
             })
+            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+                "source": "Object.defineProperty(navigator, 'platform', {get: () => 'Win32'}); Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+            })
         except Exception:
             pass
 
@@ -546,7 +550,7 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
             if os.name == "nt":
                 cnt = save_all_browser_cookies_via_cdp(driver)
                 if cnt:
-                    print(f"💾 Synced {cnt} live Google Pro cookies to {COOKIE_FILE}!")
+                    print(f"💾 Synced {cnt} live Google Pro cookies to active slot file!")
             return True
 
         try:
@@ -574,13 +578,18 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
                     continue
 
                 if state == "NEEDS_MANUAL_COOKIE_REFRESH":
+                    active_slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+                    if "_auto_handle_google_password_screen_if_shown" in globals():
+                        if _auto_handle_google_password_screen_if_shown(driver, active_slot):
+                            time.sleep(3.0)
+                            continue
                     if os.name == "nt":
                         if tick % 5 == 0:
-                            print("🔐 [No Time Limit] Chrome window mein 1 baar Sign-In pura kar de bhai, bot wait kar raha hai...")
+                            print(f"🔐 [Account #{active_slot}] Chrome window mein 1 baar Password daal kar Sign-In pura kar de bhai, bot khud cookies save kar lega...")
                         time.sleep(2.0)
                         continue
-                    elif tick >= 10:
-                        err = "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop."
+                    elif tick >= 12:
+                        err = f"Google Account #{active_slot} asked for password on Cloud. Refresh cookies or set GEMINI_ACC{active_slot}_PASSWORD."
                         report_step_problem_instantly(driver, "Gemini Cookie Expired", err)
                         raise RuntimeError(err)
 
