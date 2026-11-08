@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794146762183",
+    "type": "info",
+    "title": "🚀 Uploading Reel to Instagram...",
+    "message": "Sanitizing & publishing raw_video_1107_174735_p1.mp4 in background (Live tracking active)...",
+    "status": "info",
+    "time_str": "07:36 PM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794146762.1834495
+  },
+  {
     "id": "notif_1794141120731",
     "type": "error",
     "title": "Gemini Cookie Expired",
