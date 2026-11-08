@@ -1,5 +1,25 @@
 [
   {
+    "id": "notif_1794171787816",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Sarhad Ki Chitthi Aur Gaon Ka Intezaar is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "02:33 AM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794171787.8160353
+  },
+  {
+    "id": "notif_1794171686928",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ❤️ Foji Makra & Fojan Meera Love Story — Part 3: Sarhad Ki Chitthi Aur Gaon Ka Intezaar | Cast: Makra + Meera (Sunset Orange & Red Bridal-Style Heavy...)",
+    "status": "info",
+    "time_str": "02:31 AM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794171686.9285564
+  },
+  {
     "id": "notif_1794166846151",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
