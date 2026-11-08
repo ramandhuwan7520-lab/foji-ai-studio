@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794104311737",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "07:48 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794104311.7378561
+  },
+  {
     "id": "notif_1794104289693",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "06:01 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794097878.1839397
-  },
-  {
-    "id": "notif_1794097874379",
-    "type": "warning",
-    "title": "?? 1st Account Limit -> Using 2nd Account!",
-    "message": "Account #1 Limit/Issue (Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cooki). Switching to 2nd Account Cookies automatically!",
-    "status": "success",
-    "time_str": "06:01 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794097874.3796878
   }
 ]
