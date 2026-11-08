@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1794123586.634122
+  "step_num": 2,
+  "step_title": "Sanitizing Reel for IG",
+  "sub_detail": "Optimizing raw_video_1108_060049_p1.mp4 (720x1280 HD)...",
+  "status": "active",
+  "progress": 35,
+  "updated_at": "02:58:03 PM",
+  "epoch": 1794130083.8167322
 }
