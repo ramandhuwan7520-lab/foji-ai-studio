@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794097975448",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod (raw_video_1108_060049_p1.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:02 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794097975.448704
+  },
+  {
     "id": "notif_1794097959987",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
@@ -788,15 +798,5 @@
     "time_str": "11:54 PM",
     "date_str": "07 Nov 2026",
     "timestamp": 1794075842.2765357
-  },
-  {
-    "id": "notif_1794075776179",
-    "type": "error",
-    "title": "❌ Scheduled IG Post Failed",
-    "message": "name 'shutil' is not defined",
-    "status": "error",
-    "time_str": "11:52 PM",
-    "date_str": "07 Nov 2026",
-    "timestamp": 1794075776.179241
   }
 ]
