@@ -1,43 +1,43 @@
 [
   {
-    "id": "notif_1794172201780",
+    "id": "notif_1794172219692",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Sarhad Ki Chitthi Aur Gaon Ka Intezaar (raw_video_1109_023124_p3.mp4) is live on Telegram & Frontend Vault!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar (raw_video_1109_023108_p3.mp4) is live on Telegram & Frontend Vault!",
     "status": "success",
     "time_str": "02:40 AM",
     "date_str": "09 Nov 2026",
-    "timestamp": 1794172201.780156
+    "timestamp": 1794172219.6925936
   },
   {
-    "id": "notif_1794172005133",
+    "id": "notif_1794172025839",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1109_023124_p3.mp4 from Gemini...",
+    "message": "Downloading raw_video_1109_023108_p3.mp4 from Gemini...",
     "status": "info",
-    "time_str": "02:36 AM",
+    "time_str": "02:37 AM",
     "date_str": "09 Nov 2026",
-    "timestamp": 1794172005.1332166
+    "timestamp": 1794172025.8396878
   },
   {
-    "id": "notif_1794171787816",
+    "id": "notif_1794171770252",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Sarhad Ki Chitthi Aur Gaon Ka Intezaar is now rendering in Gemini!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar is now rendering in Gemini!",
     "status": "info",
-    "time_str": "02:33 AM",
+    "time_str": "02:32 AM",
     "date_str": "09 Nov 2026",
-    "timestamp": 1794171787.8160353
+    "timestamp": 1794171770.2523198
   },
   {
-    "id": "notif_1794171686928",
+    "id": "notif_1794171670577",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ❤️ Foji Makra & Fojan Meera Love Story — Part 3: Sarhad Ki Chitthi Aur Gaon Ka Intezaar | Cast: Makra + Meera (Sunset Orange & Red Bridal-Style Heavy...)",
+    "message": "Episode: ❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar | Cast: Makra + Meera (Sunset Orange & Red Bridal-Style Heavy...)",
     "status": "info",
     "time_str": "02:31 AM",
     "date_str": "09 Nov 2026",
-    "timestamp": 1794171686.9285564
+    "timestamp": 1794171670.5774746
   },
   {
     "id": "notif_1794166846151",
