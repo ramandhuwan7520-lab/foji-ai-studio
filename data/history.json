@@ -1,5 +1,5 @@
 {
-  "generated_count": 13,
+  "generated_count": 14,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -54,7 +54,8 @@
     "fauji_masti",
     "love_meera",
     "love_meera",
-    "love_meera"
+    "love_meera",
+    "training_ustad"
   ],
   "history": [
     {
@@ -347,6 +348,23 @@
       "caption": "🎖️ Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.\"\n\n🔥 Barf ki chaadar hai charo taraf aur thandi hawaon ka pehra hai,\nPar dil mein basi teri tasveer ka rang sabse gehra hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMakraMeera #IndianArmyLove #AgniveerLife #LongDistanceRelationship #FojanStatus #BorderLoveStory",
       "created_at": "08 Nov 2026, 08:25 PM IST",
       "completed_at": "08 Nov 2026, 08:31 PM IST"
+    },
+    {
+      "video_id": "1109_010404_p1",
+      "video_file": "raw_video_1109_010404_p1.mp4",
+      "track_id": "training_ustad",
+      "track_name": "⚔️ Agniveer Training Center & Drill",
+      "part_number": 1,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda",
+      "scene_summary": "A high-energy 3D Pixar-style 9:16 vertical shot inside a dimly lit Indian Army barrack at 04:00 AM. A strict, moustached Ustad in a crisp olive green instructor uniform stands at the entrance, blowing a shiny silver whistle with intense force. The camera quickly zooms in on Makra, who catapults out of his iron bunk bed in a blur of motion. He is wearing a white PT vest and khaki shorts, his hair messy but eyes wide with sudden adrenaline. In the background, other funny coursemates are seen tripping over their boots in the faint blue dawn light. The atmosphere is thick with discipline and the smell of floor wax, capturing the raw intensity of the first day at the Training Center.",
+      "dialogue_line_1_hinglish": "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!",
+      "shayari_hindi": "Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: ⚔️ Agniveer Training Center & Drill - Part 1: 4 AM Ki Whistle Aur Pehla Ragda. SCENE & ACTION: A high-energy 3D Pixar-style 9:16 vertical shot inside a dimly lit Indian Army barrack at 04:00 AM. A strict, moustached Ustad in a crisp olive green instructor uniform stands at the entrance, blowing a shiny silver whistle with intense force. The camera quickly zooms in on Makra, who catapults out of his iron bunk bed in a blur of motion. He is wearing a white PT vest and khaki shorts, his hair messy but eyes wide with sudden adrenaline. In the background, other funny coursemates are seen tripping over their boots in the faint blue dawn light. The atmosphere is thick with discipline and the smell of floor wax, capturing the raw intensity of the first day at the Training Center. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 1: 4 AM Ki Whistle Aur Pehla Ragda | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!\"\n\n🔥 Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#AgniveerLife #ArmyTraining #FojiMakra #IndianArmy #DesiHumor #JaiHind",
+      "created_at": "09 Nov 2026, 01:04 AM IST",
+      "completed_at": "09 Nov 2026, 01:10 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -401,7 +419,8 @@
     "Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!",
     "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
     "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
-    "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai."
+    "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.",
+    "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!"
   ],
   "deleted_ids": [],
   "track_parts": {
