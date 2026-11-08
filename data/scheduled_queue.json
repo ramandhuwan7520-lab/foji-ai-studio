@@ -35,7 +35,10 @@
       "caption": "🎖️ Part 1: Judai Ka Pehla Mod | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.\"\n\n🔥 Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMakra #MeeraKiPreet #IndianArmyLove #AgniveerLife #PixarStyleIndia #FojanStatus",
       "created_at": "08 Nov 2026, 06:02 AM IST",
       "status": "awaiting_approval"
-    },
+    }
+  ],
+  "scheduled_posts": [],
+  "published_posts": [
     {
       "id": "vid_raw_video_1107_174735_p1_ig_clean.mp4",
       "video_file": "raw_video_1107_174735_p1_ig_clean.mp4",
@@ -46,11 +49,10 @@
       "shayari": "",
       "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
       "created_at": "08 Nov 2026, 09:44 AM",
-      "status": "awaiting_approval"
-    }
-  ],
-  "scheduled_posts": [],
-  "published_posts": [
+      "status": "published",
+      "published_at": "08 Nov 2026, 09:46 AM IST",
+      "ig_media_pk": "True"
+    },
     {
       "id": "pub_1794111384985",
       "video_file": "raw_video_1107_174735_p1.mp4",
@@ -62,5 +64,5 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794111384.9853005
+  "updated_epoch": 1794111399.479456
 }
