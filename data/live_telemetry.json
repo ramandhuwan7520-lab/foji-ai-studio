@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
-  "sub_detail": "Saving raw_video_1108_202515_p2.mp4 & pushing to Telegram/Frontend...",
-  "status": "active",
-  "progress": 94,
-  "updated_at": "08:27:56 PM",
-  "epoch": 1794149876.0078142
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "raw_video_1108_202515_p2.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "08:31:10 PM",
+  "epoch": 1794150070.545565
 }
