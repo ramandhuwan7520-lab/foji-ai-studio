@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794101683452",
+    "type": "error",
+    "title": "❌ Scheduled IG Post Failed",
+    "message": "No module named 'insta_bot'",
+    "status": "error",
+    "time_str": "07:04 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794101683.4524415
+  },
+  {
     "id": "notif_1794101661080",
     "type": "error",
     "title": "❌ Scheduled IG Post Failed",
@@ -788,15 +798,5 @@
     "time_str": "12:14 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794077057.1394055
-  },
-  {
-    "id": "notif_1794077010021",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:13 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794077010.0216105
   }
 ]
