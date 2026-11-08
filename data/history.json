@@ -1,5 +1,5 @@
 {
-  "generated_count": 12,
+  "generated_count": 13,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -52,6 +52,7 @@
     "unit_ragda",
     "fauji_masti",
     "fauji_masti",
+    "love_meera",
     "love_meera",
     "love_meera"
   ],
@@ -329,6 +330,23 @@
       "caption": "🎖️ Part 1: Judai Ka Pehla Mod | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.\"\n\n🔥 Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMakra #MeeraKiPreet #IndianArmyLove #AgniveerLife #PixarStyleIndia #FojanStatus",
       "created_at": "08 Nov 2026, 06:00 AM IST",
       "completed_at": "08 Nov 2026, 06:02 AM IST"
+    },
+    {
+      "video_id": "1108_202515_p2",
+      "video_file": "raw_video_1108_202515_p2.mp4",
+      "track_id": "love_meera",
+      "track_name": "❤️ Foji Makra & Fojan Meera Love Story",
+      "part_number": 2,
+      "include_meera": true,
+      "meera_outfit": "Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and parandi",
+      "emotion_name": "❤️ Foji Makra & Fojan Meera Love Story — Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi",
+      "scene_summary": "A stunning 3D Pixar-style split-screen composition in 9:16 vertical format. On the left, Makra is at a snow-covered high-altitude border outpost in Ladakh, wearing heavy Indian Army olive green winter parkas and white snow boots, holding his phone high towards the blue sky to catch a signal. On the right, Meera stands in a vibrant yellow mustard field in a Haryanvi village, wearing her Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and a long decorative parandi. The camera zooms in on their faces as they connect via a glitchy video call; Makra has frost on his eyelashes while Meera has a warm, emotional smile with a single tear rolling down her cheek.",
+      "dialogue_line_1_hinglish": "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.",
+      "shayari_hindi": "Barf ki chaadar hai charo taraf aur thandi hawaon ka pehra hai,\nPar dil mein basi teri tasveer ka rang sabse gehra hai.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and parandi. EPISODE: ❤️ Foji Makra & Fojan Meera Love Story - Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi. SCENE & ACTION: A stunning 3D Pixar-style split-screen composition in 9:16 vertical format. On the left, Makra is at a snow-covered high-altitude border outpost in Ladakh, wearing heavy Indian Army olive green winter parkas and white snow boots, holding his phone high towards the blue sky to catch a signal. On the right, Meera stands in a vibrant yellow mustard field in a Haryanvi village, wearing her Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and a long decorative parandi. The camera zooms in on their faces as they connect via a glitchy video call; Makra has frost on his eyelashes while Meera has a warm, emotional smile with a single tear rolling down her cheek. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.\"\n\n🔥 Barf ki chaadar hai charo taraf aur thandi hawaon ka pehra hai,\nPar dil mein basi teri tasveer ka rang sabse gehra hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMakraMeera #IndianArmyLove #AgniveerLife #LongDistanceRelationship #FojanStatus #BorderLoveStory",
+      "created_at": "08 Nov 2026, 08:25 PM IST",
+      "completed_at": "08 Nov 2026, 08:31 PM IST"
     }
   ],
   "failed_dialogues": [
@@ -382,7 +400,8 @@
     "Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!",
     "Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!",
     "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
-    "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha."
+    "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
+    "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai."
   ],
   "deleted_ids": [],
   "track_parts": {
