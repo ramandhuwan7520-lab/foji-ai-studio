@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_raw_video_1108_060049_p1.mp4",
-      "video_file": "raw_video_1108_060049_p1.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
-      "shayari": "Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.",
-      "caption": "🎖️ Part 1: Judai Ka Pehla Mod | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.\"\n\n🔥 Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMakra #MeeraKiPreet #IndianArmyLove #AgniveerLife #PixarStyleIndia #FojanStatus",
-      "created_at": "08 Nov 2026, 06:02 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_1108_053928_p1.mp4",
       "video_file": "raw_video_1108_053928_p1.mp4",
       "title": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor",
@@ -55,6 +43,24 @@
       "scheduled_display": "09 Nov 2026 at 06:30 AM IST",
       "date_label": "09 Nov 2026",
       "time_label": "06:30 AM"
+    },
+    {
+      "id": "vid_raw_video_1108_060049_p1.mp4",
+      "video_file": "raw_video_1108_060049_p1.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
+      "shayari": "Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.",
+      "caption": "🎖️ Part 1: Judai Ka Pehla Mod | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.\"\n\n🔥 Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMakra #MeeraKiPreet #IndianArmyLove #AgniveerLife #PixarStyleIndia #FojanStatus",
+      "created_at": "08 Nov 2026, 06:02 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-09_12:30",
+      "scheduled_epoch": 1794207600.0,
+      "scheduled_display": "09 Nov 2026 at 12:30 PM IST",
+      "date_label": "09 Nov 2026",
+      "time_label": "12:30 PM"
     }
   ],
   "published_posts": [
@@ -93,7 +99,7 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794150189.9475954,
+  "updated_epoch": 1794150221.4306247,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
