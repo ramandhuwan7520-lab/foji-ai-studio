@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Starting IG Upload",
-  "sub_detail": "Preparing raw_video_1107_174735_p1.mp4 for Instagram HD...",
+  "step_num": 2,
+  "step_title": "Sanitizing Reel for IG",
+  "sub_detail": "Optimizing raw_video_1107_174735_p1.mp4 (720x1280 HD)...",
   "status": "active",
-  "progress": 15,
-  "updated_at": "07:35:59 PM",
-  "epoch": 1794146759.990289
+  "progress": 35,
+  "updated_at": "07:36:03 PM",
+  "epoch": 1794146763.6557004
 }
