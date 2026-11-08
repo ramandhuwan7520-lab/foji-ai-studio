@@ -35,21 +35,28 @@
       "caption": "🎖️ Part 2: Palti Ka Bhooth & Dhool Ka Swad | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye shareer toh mitti ka hai aur ek din mitti mein hi milna hai, toh kyun na aaj is maidan ki dhool ko hi apna asli liwas bana loon!\"\n\n🔥 रगड़े में जो पसीना बहाता है, वही सरहद पर तिरंगा फहराता है,\nये वर्दी नहीं फौलाद का ज़ेवर है, जो सिर्फ़ खुद्दारों को सुहाता है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#IndianArmy #FaujiLife #Agniveer #UstadKaRagda #MakraFoji #ArmyTraining",
       "created_at": "08 Nov 2026, 12:15 AM IST",
       "status": "awaiting_approval"
-    },
+    }
+  ],
+  "scheduled_posts": [
     {
       "id": "vid_raw_video_1108_202515_p2.mp4",
       "video_file": "raw_video_1108_202515_p2.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi",
+      "title": "Foji 3D Reel (raw_video_1108_202515_p2.mp4)",
       "track_id": "love_meera",
-      "part_number": 2,
-      "dialogue": "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.",
-      "shayari": "Barf ki chaadar hai charo taraf aur thandi hawaon ka pehra hai,\nPar dil mein basi teri tasveer ka rang sabse gehra hai.",
-      "caption": "🎖️ Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.\"\n\n🔥 Barf ki chaadar hai charo taraf aur thandi hawaon ka pehra hai,\nPar dil mein basi teri tasveer ka rang sabse gehra hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMakraMeera #IndianArmyLove #AgniveerLife #LongDistanceRelationship #FojanStatus #BorderLoveStory",
-      "created_at": "08 Nov 2026, 08:31 PM IST",
-      "status": "awaiting_approval"
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "08 Nov 2026, 08:31 PM",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-09_06:30",
+      "scheduled_epoch": 1794186000.0,
+      "scheduled_display": "09 Nov 2026 at 06:30 AM IST",
+      "date_label": "09 Nov 2026",
+      "time_label": "06:30 AM"
     }
   ],
-  "scheduled_posts": [],
   "published_posts": [
     {
       "id": "vid_raw_video_9.mp4",
@@ -86,7 +93,7 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794150069.4246035,
+  "updated_epoch": 1794150189.9475954,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
