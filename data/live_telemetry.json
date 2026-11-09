@@ -1,9 +1,9 @@
 {
-  "step_num": 4,
-  "step_title": "Stage 4: Uploading Characters",
-  "sub_detail": "Injecting BOTH Foji Makra & Fojan Meera into Gemini...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering raw_video_1109_055706_p4.mp4...",
   "status": "active",
-  "progress": 55,
-  "updated_at": "05:57:31 AM",
-  "epoch": 1794184051.1118312
+  "progress": 68,
+  "updated_at": "05:58:45 AM",
+  "epoch": 1794184125.47485
 }
