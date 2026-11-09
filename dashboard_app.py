@@ -4242,7 +4242,7 @@ function fnsHumanizeActivityItem(n) {
     .trim() || 'Studio Update';
   let msg = (n.message || '')
     .replace(/from Frontend/gi, '')
-    .replace(/via \.env API/gi, '')
+    .replace(/via \\.env API/gi, '')
     .replace(/GitHub Actions Chrome Worker/gi, '3D Studio')
     .replace(/raw_video_(\d+)\.mp4/gi, 'Reel #$1')
     .replace(/\s+/g, ' ')
