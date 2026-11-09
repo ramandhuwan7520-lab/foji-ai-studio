@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1794191906.9550784
+  "step_num": 2,
+  "step_title": "Step 2: Initializing 3D Studio",
+  "sub_detail": "Preparing 3D characters & scene...",
+  "status": "active",
+  "progress": 24,
+  "updated_at": "08:08:31 AM",
+  "epoch": 1794191911.5775661
 }
