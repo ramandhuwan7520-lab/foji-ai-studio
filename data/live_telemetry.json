@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "raw_video_1109_055706_p4.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "06:02:59 AM",
-  "epoch": 1794184379.6356409
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering raw_video_1109_060126_p2.mp4...",
+  "status": "active",
+  "progress": 68,
+  "updated_at": "06:03:12 AM",
+  "epoch": 1794184392.0133247
 }
