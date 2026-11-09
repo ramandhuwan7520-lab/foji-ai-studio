@@ -1,5 +1,35 @@
 [
   {
+    "id": "notif_1794258238618",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading raw_video_1110_023113_p2.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "02:33 AM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794258238.6183643
+  },
+  {
+    "id": "notif_1794258177173",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Roll-Call Ka Mittha Raaz is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "02:32 AM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794258177.1733062
+  },
+  {
+    "id": "notif_1794258076670",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 2: Roll-Call Ka Mittha Raaz | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "02:31 AM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794258076.6700597
+  },
+  {
     "id": "notif_1794243992343",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
