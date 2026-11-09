@@ -1,9 +1,8 @@
 {
-  "step_num": 8,
-  "step_title": "Reel LIVE on Instagram!",
-  "sub_detail": "\u2705 raw_video_1108_053928_p1.mp4 Published (ID: 4026610111789174309)!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "06:32:58 PM",
-  "epoch": 1794229378.8482554
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Ready",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1794243952.37035
 }
