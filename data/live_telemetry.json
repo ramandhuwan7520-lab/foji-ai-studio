@@ -1,9 +1,8 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "raw_video_1109_120057_p3.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "12:08:27 PM",
-  "epoch": 1794206307.3491325
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Ready",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1794206430.2227278
 }
