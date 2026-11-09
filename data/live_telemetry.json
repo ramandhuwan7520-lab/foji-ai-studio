@@ -1,9 +1,9 @@
 {
   "step_num": 1,
-  "step_title": "Stage 1: AI Script (1/1)",
-  "sub_detail": "Writing original story & dialogues...",
-  "status": "active",
-  "progress": 12,
-  "updated_at": "06:00:13 PM",
-  "epoch": 1794227413.433676
+  "step_title": "Pipeline Error",
+  "sub_detail": "'list' object has no attribute 'strip'",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "06:00:26 PM",
+  "epoch": 1794227426.1862006
 }
