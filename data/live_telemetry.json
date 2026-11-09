@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Pipeline Error",
-  "sub_detail": "'list' object has no attribute 'strip'",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "06:00:26 PM",
-  "epoch": 1794227426.1862006
+  "step_num": 3,
+  "step_title": "Preparing IG Reel",
+  "sub_detail": "Optimizing raw_video_1108_053928_p1.mp4 for Instagram...",
+  "status": "active",
+  "progress": 40,
+  "updated_at": "06:30:12 PM",
+  "epoch": 1794229212.9939916
 }
