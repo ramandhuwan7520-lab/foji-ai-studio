@@ -1,5 +1,65 @@
 [
   {
+    "id": "notif_1794206235401",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:07 PM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794206235.4019592
+  },
+  {
+    "id": "notif_1794206032826",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:03 PM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794206032.8267748
+  },
+  {
+    "id": "notif_1794206028883",
+    "type": "warning",
+    "title": "?? 1st Account Limit -> Using 2nd Account!",
+    "message": "Account #1 Limit/Issue (Gemini Screen Reply: I encountered an error doing what you asked. Could you try again?). Switching to 2nd Account Cookies automatically!",
+    "status": "success",
+    "time_str": "12:03 PM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794206028.8835852
+  },
+  {
+    "id": "notif_1794206026645",
+    "type": "error",
+    "title": "Gemini Screen Error (Video Nahi Bani)",
+    "message": "Screen par yeh aaya: I encountered an error doing what you asked. Could you try again?",
+    "status": "error",
+    "time_str": "12:03 PM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794206026.6451163
+  },
+  {
+    "id": "notif_1794205957341",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:02 PM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794205957.3416543
+  },
+  {
+    "id": "notif_1794205859227",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:00 PM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794205859.2271705
+  },
+  {
     "id": "notif_1794193366642",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
