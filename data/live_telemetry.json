@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Stage 1: AI Script (3/3)",
-  "sub_detail": "Writing original story & dialogues...",
+  "step_num": 6,
+  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
+  "sub_detail": "Rendering raw_video_1110_023138_p1.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
-  "progress": 12,
-  "updated_at": "02:30:53 AM",
-  "epoch": 1794258053.5718832
+  "progress": 75,
+  "updated_at": "02:33:48 AM",
+  "epoch": 1794258228.8941562
 }
