@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794192007662_919",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "08:10 AM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794192007.6627579
+  },
+  {
     "id": "notif_1794191957461",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -588,135 +598,5 @@
     "time_str": "10:39 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794114584.4455733
-  },
-  {
-    "id": "notif_1794114395162",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1108_102416_p1.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "10:36 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794114395.1629763
-  },
-  {
-    "id": "notif_1794114204905",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1108_102416_p1.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "10:33 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794114204.9056458
-  },
-  {
-    "id": "notif_1794114015621",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1108_102416_p1.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "10:30 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794114015.6211414
-  },
-  {
-    "id": "notif_1794113826322",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1108_102416_p1.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "10:27 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794113826.322576
-  },
-  {
-    "id": "notif_1794113772037",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 1: Ragda Shuru, Josh Full! is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "10:26 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794113772.0371082
-  },
-  {
-    "id": "notif_1794113658643",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 1: Ragda Shuru, Josh Full! | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "10:24 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794113658.6433961
-  },
-  {
-    "id": "notif_1794111526518",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor locked for 09 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "09:48 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794111526.518888
-  },
-  {
-    "id": "notif_1794111524305",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad locked for 08 Nov 2026 at 06:30 PM IST!",
-    "status": "success",
-    "time_str": "09:48 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794111524.305356
-  },
-  {
-    "id": "notif_1794111501149",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod locked for 08 Nov 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "09:48 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794111501.1491106
-  },
-  {
-    "id": "notif_1794111408490",
-    "type": "success",
-    "title": "📲 Reel Posted on Instagram!",
-    "message": "raw_video_1107_174735_p1_ig_clean.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "09:46 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794111408.490416
-  },
-  {
-    "id": "notif_1794111401982",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "raw_video_1107_174735_p1_ig_clean.mp4 is now LIVE on @ai_foji_lovelife (Zero Green-Line HD)!",
-    "status": "success",
-    "time_str": "09:46 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794111401.9823854
-  },
-  {
-    "id": "notif_1794111390075",
-    "type": "success",
-    "title": "📲 Scheduled Reel Posted to IG!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 1: 4 AM Ka Murga & Ustad ki Garaj published on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "09:46 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794111390.075297
-  },
-  {
-    "id": "notif_1794111382279",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "raw_video_1107_174735_p1.mp4 is now LIVE on @ai_foji_lovelife (Zero Green-Line HD)!",
-    "status": "success",
-    "time_str": "09:46 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794111382.279593
   }
 ]
