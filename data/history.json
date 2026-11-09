@@ -1,5 +1,5 @@
 {
-  "generated_count": 15,
+  "generated_count": 16,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -56,6 +56,7 @@
     "love_meera",
     "love_meera",
     "training_ustad",
+    "love_meera",
     "love_meera"
   ],
   "history": [
@@ -383,6 +384,23 @@
       "caption": "🎖️ Part 3: Chithhi Ka Intezaar Aur Pyaar | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.\"\n\n🔥 Kagaz pe utari hai maine apni poori dunya,\nTu sarhad pe sambhalna khud ko aur ye mera ishq.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #FojanMeera #IndianArmyLove #Agniveer #LongDistanceRelationship #DesiPixar",
       "created_at": "09 Nov 2026, 02:31 AM IST",
       "completed_at": "09 Nov 2026, 02:40 AM IST"
+    },
+    {
+      "video_id": "1109_055706_p4",
+      "video_file": "raw_video_1109_055706_p4.mp4",
+      "track_id": "love_meera",
+      "track_name": "❤️ Foji Makra & Fojan Meera Love Story",
+      "part_number": 4,
+      "include_meera": true,
+      "meera_outfit": "Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair",
+      "emotion_name": "❤️ Foji Makra & Fojan Meera Love Story — Part 4: Barish, Border aur Bandhani",
+      "scene_summary": "A breathtaking 3D Pixar-style 9:16 vertical split-screen. The top half shows Makra in a rain-soaked jungle patrol camp at night, wearing muddy olive-green tactical gear, leaning against a tree and holding a small photo of Meera with a tired but proud smile. The bottom half features Meera in her Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair, kneeling inside a glowing village temple. She is shielding a flickering diya from the wind with her hands, her eyes filled with prayerful devotion. Warm golden temple light contrasts with the cool blue rainy jungle atmosphere.",
+      "dialogue_line_1_hinglish": "Meera, yahan baarish ki har boond teri yaad dilati hai, par fikar mat kar, ye wardi aur tera vishwas mujhe har toofan se ladne ki himmat deta hai.",
+      "shayari_hindi": "Wardi ki shaan bhi hai, aur tere ishq ka imtihaan bhi,\nSarhad pe khada tera foji, tere har diye ki lau mein hai.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair. EPISODE: ❤️ Foji Makra & Fojan Meera Love Story - Part 4: Barish, Border aur Bandhani. SCENE & ACTION: A breathtaking 3D Pixar-style 9:16 vertical split-screen. The top half shows Makra in a rain-soaked jungle patrol camp at night, wearing muddy olive-green tactical gear, leaning against a tree and holding a small photo of Meera with a tired but proud smile. The bottom half features Meera in her Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair, kneeling inside a glowing village temple. She is shielding a flickering diya from the wind with her hands, her eyes filled with prayerful devotion. Warm golden temple light contrasts with the cool blue rainy jungle atmosphere. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Meera, yahan baarish ki har boond teri yaad dilati hai, par fikar mat kar, ye wardi aur tera vishwas mujhe har toofan se ladne ki himmat deta hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 4: Barish, Border aur Bandhani | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, yahan baarish ki har boond teri yaad dilati hai, par fikar mat kar, ye wardi aur tera vishwas mujhe har toofan se ladne ki himmat deta hai.\"\n\n🔥 Wardi ki shaan bhi hai, aur tere ishq ka imtihaan bhi,\nSarhad pe khada tera foji, tere har diye ki lau mein hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FojiMakra #FojanMeera #IndianArmyLove #AgniveerLife #LongDistanceLove #DesiPixar",
+      "created_at": "09 Nov 2026, 05:57 AM IST",
+      "completed_at": "09 Nov 2026, 06:02 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -439,7 +457,8 @@
     "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
     "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.",
     "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!",
-    "Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain."
+    "Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.",
+    "Meera, yahan baarish ki har boond teri yaad dilati hai, par fikar mat kar, ye wardi aur tera vishwas mujhe har toofan se ladne ki himmat deta hai."
   ],
   "deleted_ids": [],
   "track_parts": {
