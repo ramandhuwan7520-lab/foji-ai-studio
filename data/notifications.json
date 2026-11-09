@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794227427672",
+    "type": "error",
+    "title": "Pipeline Failed",
+    "message": "'list' object has no attribute 'strip'",
+    "status": "error",
+    "time_str": "06:00 PM",
+    "date_str": "09 Nov 2026",
+    "timestamp": 1794227427.6721294
+  },
+  {
     "id": "notif_1794208805887",
     "type": "success",
     "title": "📲 Scheduled Reel Posted to IG!",
