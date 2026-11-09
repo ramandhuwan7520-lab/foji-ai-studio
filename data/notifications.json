@@ -1,23 +1,13 @@
 [
   {
-    "id": "notif_1794229291450",
-    "type": "success",
-    "title": "📲 Scheduled Reel Posted to IG!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor published on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "06:31 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794229291.4508054
-  },
-  {
-    "id": "notif_1794229286503",
+    "id": "notif_1794229380267",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
     "message": "raw_video_1108_053928_p1.mp4 is now LIVE on @ai_foji_lovelife!",
     "status": "success",
-    "time_str": "06:31 PM",
+    "time_str": "06:33 PM",
     "date_str": "09 Nov 2026",
-    "timestamp": 1794229286.5032475
+    "timestamp": 1794229380.2673862
   },
   {
     "id": "notif_1794227427672",
