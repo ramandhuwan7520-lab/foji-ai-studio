@@ -1,43 +1,33 @@
 [
   {
-    "id": "notif_1794258438047",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Roll-Call Ka Mittha Raaz (raw_video_1110_023113_p2.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "02:37 AM",
-    "date_str": "10 Nov 2026",
-    "timestamp": 1794258438.0472617
-  },
-  {
-    "id": "notif_1794258238618",
+    "id": "notif_1794258474736",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1110_023113_p2.mp4 from Gemini...",
+    "message": "Downloading raw_video_1110_023138_p1.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "02:37 AM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794258474.7366204
+  },
+  {
+    "id": "notif_1794258214187",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Barfani Raat aur Yaadon ki Garmahat is now rendering in Gemini!",
     "status": "info",
     "time_str": "02:33 AM",
     "date_str": "10 Nov 2026",
-    "timestamp": 1794258238.6183643
+    "timestamp": 1794258214.1872056
   },
   {
-    "id": "notif_1794258177173",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Roll-Call Ka Mittha Raaz is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "02:32 AM",
-    "date_str": "10 Nov 2026",
-    "timestamp": 1794258177.1733062
-  },
-  {
-    "id": "notif_1794258076670",
+    "id": "notif_1794258101798",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 2: Roll-Call Ka Mittha Raaz | Cast: Makra Only (Solo Army Scene)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Barfani Raat aur Yaadon ki Garmahat | Cast: Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...)",
     "status": "info",
     "time_str": "02:31 AM",
     "date_str": "10 Nov 2026",
-    "timestamp": 1794258076.6700597
+    "timestamp": 1794258101.7984378
   },
   {
     "id": "notif_1794243992343",
