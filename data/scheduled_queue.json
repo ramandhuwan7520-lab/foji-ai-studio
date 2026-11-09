@@ -57,7 +57,7 @@
       "dialogue": "Fresh 3D Foji Episode Ready",
       "shayari": "",
       "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "created_at": "09 Nov 2026, 06:09 AM",
+      "created_at": "09 Nov 2026, 06:30 AM",
       "status": "awaiting_approval"
     }
   ],
@@ -137,14 +137,24 @@
   ],
   "published_posts": [
     {
-      "id": "pub_1794186096272",
+      "id": "vid_raw_video_1108_202515_p2.mp4",
       "video_file": "raw_video_1108_202515_p2.mp4",
       "title": "Foji 3D Reel (raw_video_1108_202515_p2.mp4)",
-      "dialogue": "Published to Instagram (@ai_foji_lovelife)",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
       "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "08 Nov 2026, 08:31 PM",
       "status": "published",
-      "published_at": "09 Nov 2026, 06:31 AM IST",
-      "ig_media_pk": "LIVE"
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-09_06:30",
+      "scheduled_epoch": 1794186000.0,
+      "scheduled_display": "09 Nov 2026 at 06:30 AM IST",
+      "date_label": "09 Nov 2026",
+      "time_label": "06:30 AM",
+      "published_at": "09 Nov 2026, 06:32 AM IST",
+      "ig_media_pk": "4026247719670682330"
     },
     {
       "id": "vid_raw_video_9.mp4",
@@ -181,7 +191,7 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794186096.2726462,
+  "updated_epoch": 1794186177.3186436,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
