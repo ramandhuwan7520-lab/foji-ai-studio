@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Stage 1: AI Script (1/1)",
-  "sub_detail": "Writing original story & dialogues...",
+  "step_num": 2,
+  "step_title": "Step 2: Initializing 3D Studio",
+  "sub_detail": "Preparing 3D characters & scene...",
   "status": "active",
-  "progress": 12,
-  "updated_at": "06:00:21 AM",
-  "epoch": 1794184221.2399695
+  "progress": 24,
+  "updated_at": "06:00:42 AM",
+  "epoch": 1794184242.1981616
 }
