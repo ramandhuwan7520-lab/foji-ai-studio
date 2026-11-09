@@ -1,93 +1,13 @@
 [
   {
-    "id": "notif_1794207701306",
-    "type": "success",
-    "title": "📲 Scheduled Reel Posted to IG!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod published on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "12:31 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794207701.3062882
-  },
-  {
-    "id": "notif_1794207697269",
+    "id": "notif_1794208800027",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
     "message": "raw_video_1108_060049_p1.mp4 is now LIVE on @ai_foji_lovelife!",
     "status": "success",
-    "time_str": "12:31 PM",
+    "time_str": "12:50 PM",
     "date_str": "09 Nov 2026",
-    "timestamp": 1794207697.2691038
-  },
-  {
-    "id": "notif_1794206308548",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti (raw_video_1109_120057_p3.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "12:08 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794206308.5489001
-  },
-  {
-    "id": "notif_1794206289771",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1109_120057_p3.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "12:08 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794206289.7718828
-  },
-  {
-    "id": "notif_1794206235401",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "12:07 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794206235.4019592
-  },
-  {
-    "id": "notif_1794206032826",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:03 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794206032.8267748
-  },
-  {
-    "id": "notif_1794206028883",
-    "type": "warning",
-    "title": "?? 1st Account Limit -> Using 2nd Account!",
-    "message": "Account #1 Limit/Issue (Gemini Screen Reply: I encountered an error doing what you asked. Could you try again?). Switching to 2nd Account Cookies automatically!",
-    "status": "success",
-    "time_str": "12:03 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794206028.8835852
-  },
-  {
-    "id": "notif_1794206026645",
-    "type": "error",
-    "title": "Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: I encountered an error doing what you asked. Could you try again?",
-    "status": "error",
-    "time_str": "12:03 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794206026.6451163
-  },
-  {
-    "id": "notif_1794205957341",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "12:02 PM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794205957.3416543
+    "timestamp": 1794208800.0278046
   },
   {
     "id": "notif_1794205859227",
