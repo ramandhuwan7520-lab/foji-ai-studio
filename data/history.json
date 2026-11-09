@@ -1,5 +1,5 @@
 {
-  "generated_count": 17,
+  "generated_count": 18,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -59,7 +59,8 @@
     "love_meera",
     "training_ustad",
     "unit_ragda",
-    "unit_ragda"
+    "unit_ragda",
+    "fauji_masti"
   ],
   "history": [
     {
@@ -420,6 +421,23 @@
       "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
       "created_at": "09 Nov 2026, 12:00 PM IST",
       "completed_at": "09 Nov 2026, 12:08 PM IST"
+    },
+    {
+      "video_id": "1110_023113_p2",
+      "video_file": "raw_video_1110_023113_p2.mp4",
+      "track_id": "fauji_masti",
+      "track_name": "😂 Barrack Masti, Mess & Brotherhood",
+      "part_number": 2,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Roll-Call Ka Mittha Raaz",
+      "scene_summary": "3D Pixar-style vertical 9:16 shot. Inside the dimly lit Indian Army barrack during night roll-call. Makra stands stiffly at attention next to his iron trunk, wearing his olive-green PT vest. His right cheek is comically bulging with a stolen gulab jamun. The strict Ustad, with a thick handlebar moustache, shines a bright LED torch directly into Makra's sweating face, squinting with deep suspicion. In the background, other soldiers are shaking with suppressed laughter while trying to maintain a straight face. The lighting creates dramatic shadows against the barrack walls, highlighting the texture of the olive uniforms.",
+      "dialogue_line_1_hinglish": "Ustad ji, ye daant mein dard nahi hai, wo toh bachpan se hi mera ek thobda thoda bhari hai... aap bas torch hata lo warna ye mithaas pighal kar bahar aa jayegi!",
+      "shayari_hindi": "Ustad ki chaukas nazar aur hamari ye chori, \nBarrack ki yaadon ki yahi toh hai sabse meethi dori.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 😂 Barrack Masti, Mess & Brotherhood - Part 2: Roll-Call Ka Mittha Raaz. SCENE & ACTION: 3D Pixar-style vertical 9:16 shot. Inside the dimly lit Indian Army barrack during night roll-call. Makra stands stiffly at attention next to his iron trunk, wearing his olive-green PT vest. His right cheek is comically bulging with a stolen gulab jamun. The strict Ustad, with a thick handlebar moustache, shines a bright LED torch directly into Makra's sweating face, squinting with deep suspicion. In the background, other soldiers are shaking with suppressed laughter while trying to maintain a straight face. The lighting creates dramatic shadows against the barrack walls, highlighting the texture of the olive uniforms. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, ye daant mein dard nahi hai, wo toh bachpan se hi mera ek thobda thoda bhari hai... aap bas torch hata lo warna ye mithaas pighal kar bahar aa jayegi!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 2: Roll-Call Ka Mittha Raaz | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, ye daant mein dard nahi hai, wo toh bachpan se hi mera ek thobda thoda bhari hai... aap bas torch hata lo warna ye mithaas pighal kar bahar aa jayegi!\"\n\n🔥 Ustad ki chaukas nazar aur hamari ye chori, \nBarrack ki yaadon ki yahi toh hai sabse meethi dori.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMasti #ArmyBarracks #MakraFoji #IndianArmyComedy #BadaKhana #DesiFauji",
+      "created_at": "10 Nov 2026, 02:31 AM IST",
+      "completed_at": "10 Nov 2026, 02:37 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -479,7 +497,8 @@
     "Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.",
     "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
     "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
-    "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!"
+    "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
+    "Ustad ji, ye daant mein dard nahi hai, wo toh bachpan se hi mera ek thobda thoda bhari hai... aap bas torch hata lo warna ye mithaas pighal kar bahar aa jayegi!"
   ],
   "deleted_ids": [],
   "track_parts": {
