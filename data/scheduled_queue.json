@@ -47,18 +47,6 @@
       "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
       "created_at": "09 Nov 2026, 06:00 AM",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_raw_video_1109_120057_p3.mp4",
-      "video_file": "raw_video_1109_120057_p3.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
-      "track_id": "unit_ragda",
-      "part_number": 3,
-      "dialogue": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
-      "shayari": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
-      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
-      "created_at": "09 Nov 2026, 12:08 PM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -137,14 +125,24 @@
   ],
   "published_posts": [
     {
-      "id": "pub_1794207699876",
+      "id": "vid_raw_video_1108_060049_p1.mp4",
       "video_file": "raw_video_1108_060049_p1.mp4",
-      "title": "Foji 3D Reel (raw_video_1108_060049_p1.mp4)",
-      "dialogue": "Published to Instagram (@ai_foji_lovelife)",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 1: Judai Ka Pehla Mod",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.",
+      "shayari": "Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.",
       "caption": "🎖️ Part 1: Judai Ka Pehla Mod | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye raste toh sarhad tak jaate hain par mera dil hamesha tere paas hi ruk jata hai, bus agle tyohar par ghar lautne ka pakka vada raha.\"\n\n🔥 Wardi ki shaan mein khud ko bhula baithe hain,\nTujhse milne ki umeed mein dil ko rula baithe hain.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMakra #MeeraKiPreet #IndianArmyLove #AgniveerLife #PixarStyleIndia #FojanStatus",
+      "created_at": "08 Nov 2026, 06:02 AM IST",
       "status": "published",
-      "published_at": "09 Nov 2026, 12:31 PM IST",
-      "ig_media_pk": "LIVE"
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-09_12:30",
+      "scheduled_epoch": 1794207600.0,
+      "scheduled_display": "09 Nov 2026 at 12:30 PM IST",
+      "date_label": "09 Nov 2026",
+      "time_label": "12:30 PM",
+      "published_at": "09 Nov 2026, 12:49 PM IST",
+      "ig_media_pk": "4026437457929046247"
     },
     {
       "id": "vid_raw_video_1108_202515_p2.mp4",
@@ -201,7 +199,7 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794207699.876999,
+  "updated_epoch": 1794208796.4412427,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
