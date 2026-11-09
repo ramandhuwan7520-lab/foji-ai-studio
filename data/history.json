@@ -1,5 +1,5 @@
 {
-  "generated_count": 16,
+  "generated_count": 17,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -57,7 +57,9 @@
     "love_meera",
     "training_ustad",
     "love_meera",
-    "training_ustad"
+    "training_ustad",
+    "unit_ragda",
+    "unit_ragda"
   ],
   "history": [
     {
@@ -401,6 +403,23 @@
       "caption": "🎖️ Part 2: Mud Crawl Aur Maidan-e-Jung | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!\"\n\n🔥 किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#AgniveerTraining #IndianArmy #FaujiLife #MakraFoji #ArmyDrill #HaryanviSoldier",
       "created_at": "09 Nov 2026, 06:01 AM IST",
       "completed_at": "09 Nov 2026, 06:07 AM IST"
+    },
+    {
+      "video_id": "1109_120057_p3",
+      "video_file": "raw_video_1109_120057_p3.mp4",
+      "track_id": "unit_ragda",
+      "track_name": "🔥 Ustad Ka Ragda & Punishment",
+      "part_number": 3,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
+      "scene_summary": "A cinematic 3D Pixar-style 9:16 vertical shot. Torrential monsoon rain lashes down on an Indian Army training ground at dusk. Makra, drenched and covered head-to-toe in thick brown mud, is executing a low-crawl through a slushy pit. His olive green dungaree is soaked, and his teeth are gritted in intense focus. Behind him, the moustached Ustad looms like a shadow in the rain, holding a stopwatch and blowing a silver whistle. The camera is at a low angle, capturing the splash of mud and the raw grit on Makra's face under the flickering orange floodlights.",
+      "dialogue_line_1_hinglish": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
+      "shayari_hindi": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 🔥 Ustad Ka Ragda & Punishment - Part 3: Baarish, Keechad aur Ustad ki Seeti. SCENE & ACTION: A cinematic 3D Pixar-style 9:16 vertical shot. Torrential monsoon rain lashes down on an Indian Army training ground at dusk. Makra, drenched and covered head-to-toe in thick brown mud, is executing a low-crawl through a slushy pit. His olive green dungaree is soaked, and his teeth are gritted in intense focus. Behind him, the moustached Ustad looms like a shadow in the rain, holding a stopwatch and blowing a silver whistle. The camera is at a low angle, capturing the splash of mud and the raw grit on Makra's face under the flickering orange floodlights. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
+      "created_at": "09 Nov 2026, 12:00 PM IST",
+      "completed_at": "09 Nov 2026, 12:08 PM IST"
     }
   ],
   "failed_dialogues": [
@@ -458,7 +477,9 @@
     "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.",
     "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!",
     "Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.",
-    "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!"
+    "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
+    "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
+    "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!"
   ],
   "deleted_ids": [],
   "track_parts": {
