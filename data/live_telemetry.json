@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Stage 1: AI Script (1/1)",
-  "sub_detail": "Writing original story & dialogues...",
+  "step_num": 4,
+  "step_title": "Stage 4: Uploading Characters",
+  "sub_detail": "Injecting ONLY Foji Makra (Solo Army Scene) into Gemini...",
   "status": "active",
-  "progress": 12,
-  "updated_at": "12:00:04 PM",
-  "epoch": 1794205804.481479
+  "progress": 55,
+  "updated_at": "12:07:07 PM",
+  "epoch": 1794206227.645109
 }
