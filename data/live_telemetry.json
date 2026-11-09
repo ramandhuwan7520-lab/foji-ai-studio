@@ -1,9 +1,9 @@
 {
-  "step_num": 4,
-  "step_title": "Stage 4: Uploading Characters",
-  "sub_detail": "Injecting ONLY Foji Makra (Solo Army Scene) into Gemini...",
-  "status": "active",
-  "progress": 55,
-  "updated_at": "06:01:56 AM",
-  "epoch": 1794184316.8505948
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "raw_video_1109_055706_p4.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "06:02:59 AM",
+  "epoch": 1794184379.6356409
 }
