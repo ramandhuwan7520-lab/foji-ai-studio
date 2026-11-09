@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1794189266.5239573
+  "step_num": 1,
+  "step_title": "Stage 1: AI Script (1/1)",
+  "sub_detail": "Writing original story & dialogues...",
+  "status": "active",
+  "progress": 12,
+  "updated_at": "08:08:12 AM",
+  "epoch": 1794191892.055765
 }
