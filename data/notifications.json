@@ -1,33 +1,43 @@
 [
   {
-    "id": "notif_1794258489331",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1110_023120_p1.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "02:38 AM",
+    "id": "notif_1794258671922",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Barfani Raat aur Yaadon ki Garmahat (raw_video_1110_023138_p1.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "02:41 AM",
     "date_str": "10 Nov 2026",
-    "timestamp": 1794258489.331982
+    "timestamp": 1794258671.9229522
   },
   {
-    "id": "notif_1794258183568",
+    "id": "notif_1794258474736",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading raw_video_1110_023138_p1.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "02:37 AM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794258474.7366204
+  },
+  {
+    "id": "notif_1794258214187",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Barfani LOC Ki Pehli Raat is now rendering in Gemini!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Barfani Raat aur Yaadon ki Garmahat is now rendering in Gemini!",
     "status": "info",
     "time_str": "02:33 AM",
     "date_str": "10 Nov 2026",
-    "timestamp": 1794258183.5688787
+    "timestamp": 1794258214.1872056
   },
   {
-    "id": "notif_1794258083456",
+    "id": "notif_1794258101798",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Barfani LOC Ki Pehli Raat | Cast: Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Barfani Raat aur Yaadon ki Garmahat | Cast: Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...)",
     "status": "info",
     "time_str": "02:31 AM",
     "date_str": "10 Nov 2026",
-    "timestamp": 1794258083.4567761
+    "timestamp": 1794258101.7984378
   },
   {
     "id": "notif_1794243992343",
