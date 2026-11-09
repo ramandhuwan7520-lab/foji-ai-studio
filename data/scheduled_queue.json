@@ -37,18 +37,6 @@
       "status": "awaiting_approval"
     },
     {
-      "id": "vid_raw_video_1109_023053_p1.mp4",
-      "video_file": "raw_video_1109_023053_p1.mp4",
-      "title": "Foji 3D Reel (raw_video_1109_023053_p1.mp4)",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "created_at": "09 Nov 2026, 06:00 AM",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_1109_120057_p3.mp4",
       "video_file": "raw_video_1109_120057_p3.mp4",
       "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
@@ -115,6 +103,24 @@
       "scheduled_display": "10 Nov 2026 at 06:30 PM IST",
       "date_label": "10 Nov 2026",
       "time_label": "06:30 PM"
+    },
+    {
+      "id": "vid_raw_video_1109_023053_p1.mp4",
+      "video_file": "raw_video_1109_023053_p1.mp4",
+      "title": "Foji 3D Reel (raw_video_1109_023053_p1.mp4)",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "09 Nov 2026, 06:00 AM",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-11_06:30",
+      "scheduled_epoch": 1794358800.0,
+      "scheduled_display": "11 Nov 2026 at 06:30 AM IST",
+      "date_label": "11 Nov 2026",
+      "time_label": "06:30 AM"
     }
   ],
   "published_posts": [
@@ -193,7 +199,7 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794229383.1540911,
+  "updated_epoch": 1794243988.512988,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
