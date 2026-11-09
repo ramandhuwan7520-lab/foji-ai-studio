@@ -47,27 +47,21 @@
       "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
       "created_at": "09 Nov 2026, 06:00 AM",
       "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_1109_120057_p3.mp4",
+      "video_file": "raw_video_1109_120057_p3.mp4",
+      "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
+      "track_id": "unit_ragda",
+      "part_number": 3,
+      "dialogue": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
+      "shayari": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
+      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
+      "created_at": "09 Nov 2026, 12:08 PM IST",
+      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
-    {
-      "id": "vid_raw_video_1108_053928_p1.mp4",
-      "video_file": "raw_video_1108_053928_p1.mp4",
-      "title": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor",
-      "track_id": "fauji_masti",
-      "part_number": 1,
-      "dialogue": "Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!",
-      "shayari": "Vardi ki shaan apni jagah, ye meetha ishq apni jagah,\nUstad ka ragda seh lenge, par ye swad nahi chodenge bhaiya!",
-      "caption": "🎖️ Part 1: Mess Ka Gulab Jamun Chor | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!\"\n\n🔥 Vardi ki shaan apni jagah, ye meetha ishq apni jagah,\nUstad ka ragda seh lenge, par ye swad nahi chodenge bhaiya!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMasti #ArmyMess #BadaKhana #IndianArmyComedy #AgniveerLife #FojiLife",
-      "created_at": "08 Nov 2026, 05:41 AM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-09_18:30",
-      "scheduled_epoch": 1794229200.0,
-      "scheduled_display": "09 Nov 2026 at 06:30 PM IST",
-      "date_label": "09 Nov 2026",
-      "time_label": "06:30 PM"
-    },
     {
       "id": "vid_raw_video_1108_001301_p2.mp4",
       "video_file": "raw_video_1108_001301_p2.mp4",
@@ -124,6 +118,26 @@
     }
   ],
   "published_posts": [
+    {
+      "id": "vid_raw_video_1108_053928_p1.mp4",
+      "video_file": "raw_video_1108_053928_p1.mp4",
+      "title": "😂 Barrack Masti, Mess & Brotherhood — Part 1: Mess Ka Gulab Jamun Chor",
+      "track_id": "fauji_masti",
+      "part_number": 1,
+      "dialogue": "Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!",
+      "shayari": "Vardi ki shaan apni jagah, ye meetha ishq apni jagah,\nUstad ka ragda seh lenge, par ye swad nahi chodenge bhaiya!",
+      "caption": "🎖️ Part 1: Mess Ka Gulab Jamun Chor | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Bhaiyo, Ustad ki nazar se bachna mushkil hai par is Gulab Jamun ki khushbu se bachna namumkin hai, aaj toh mess mein surgical strike pakki hai!\"\n\n🔥 Vardi ki shaan apni jagah, ye meetha ishq apni jagah,\nUstad ka ragda seh lenge, par ye swad nahi chodenge bhaiya!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiMasti #ArmyMess #BadaKhana #IndianArmyComedy #AgniveerLife #FojiLife",
+      "created_at": "08 Nov 2026, 05:41 AM IST",
+      "status": "published",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-09_18:30",
+      "scheduled_epoch": 1794229200.0,
+      "scheduled_display": "09 Nov 2026 at 06:30 PM IST",
+      "date_label": "09 Nov 2026",
+      "time_label": "06:30 PM",
+      "published_at": "09 Nov 2026, 06:31 PM IST",
+      "ig_media_pk": "4026609321120966853"
+    },
     {
       "id": "pub_1794208803658",
       "video_file": "raw_video_1108_060049_p1.mp4",
@@ -189,7 +203,7 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794208803.658785,
+  "updated_epoch": 1794229283.664865,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
