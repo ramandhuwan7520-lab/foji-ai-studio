@@ -1,23 +1,13 @@
 [
   {
-    "id": "notif_1794272492326",
-    "type": "success",
-    "title": "📲 Scheduled Reel Posted to IG!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad published on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "06:31 AM",
-    "date_str": "10 Nov 2026",
-    "timestamp": 1794272492.326599
-  },
-  {
-    "id": "notif_1794272487951",
+    "id": "notif_1794272584571",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
     "message": "raw_video_1108_001301_p2.mp4 is now LIVE on @ai_foji_lovelife!",
     "status": "success",
-    "time_str": "06:31 AM",
+    "time_str": "06:33 AM",
     "date_str": "10 Nov 2026",
-    "timestamp": 1794272487.9512239
+    "timestamp": 1794272584.5710704
   },
   {
     "id": "notif_1794270975189",
@@ -798,5 +788,15 @@
     "time_str": "10:46 AM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794114963.75463
+  },
+  {
+    "id": "notif_1794114773499",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading raw_video_1108_102416_p1.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "10:42 AM",
+    "date_str": "08 Nov 2026",
+    "timestamp": 1794114773.49965
   }
 ]
