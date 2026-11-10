@@ -1,9 +1,8 @@
 {
-  "step_num": 3,
-  "step_title": "Preparing IG Reel",
-  "sub_detail": "Optimizing raw_video_1109_023053_p1.mp4 for Instagram...",
-  "status": "active",
-  "progress": 40,
-  "updated_at": "12:36:21 PM",
-  "epoch": 1794294381.004151
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1794294470.3624105
 }
