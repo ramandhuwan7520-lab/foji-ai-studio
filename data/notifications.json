@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794292529019",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading raw_video_1110_120055_p2.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:05 PM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794292529.0195463
+  },
+  {
     "id": "notif_1794292473190",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "12:01 PM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794119496.052122
-  },
-  {
-    "id": "notif_1794119492135",
-    "type": "warning",
-    "title": "?? 1st Account Limit -> Using 2nd Account!",
-    "message": "Account #1 Limit/Issue (Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cooki). Switching to 2nd Account Cookies automatically!",
-    "status": "success",
-    "time_str": "12:01 PM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794119492.1351125
   }
 ]
