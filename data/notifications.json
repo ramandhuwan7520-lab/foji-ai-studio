@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794292473190",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:04 PM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794292473.1908922
+  },
+  {
     "id": "notif_1794292445296",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "12:01 PM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794119492.1351125
-  },
-  {
-    "id": "notif_1794119489771",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google cookies expired on Cloud (asking for login). Run `python gemini_bot.py --save-cookies` once on laptop.",
-    "status": "error",
-    "time_str": "12:01 PM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794119489.7717986
   }
 ]
