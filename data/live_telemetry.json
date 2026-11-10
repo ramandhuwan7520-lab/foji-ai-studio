@@ -1,9 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "Gemini Screen Error (Video Nahi Bani)",
-  "sub_detail": "Screen par yeh aaya: I seem to be encountering an error. Can I try something else for you?",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "12:03:55 PM",
-  "epoch": 1794292435.5726743
+  "step_num": 2,
+  "step_title": "?? Switching to Account #2 Cookies",
+  "sub_detail": "Account #1 Limit/Issue (Gemini Screen Reply: I seem to be encountering an error. Can I try something else for you?). Switching to 2nd Account Cookies automatically!",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "12:03:59 PM",
+  "epoch": 1794292439.3528361
 }
