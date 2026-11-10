@@ -1,5 +1,5 @@
 {
-  "generated_count": 18,
+  "generated_count": 19,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -60,7 +60,9 @@
     "training_ustad",
     "unit_ragda",
     "unit_ragda",
-    "border_duty"
+    "border_duty",
+    "love_meera",
+    "love_meera"
   ],
   "history": [
     {
@@ -438,6 +440,23 @@
       "caption": "🎖️ Part 1: Barfani LOC Ki Pehli Raat | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, bahar minus pachees degree ki barf gir rahi hai, par tere diye huye is naye suit ki photo dekh ke mere kaleje mein garmi aa gayi hai, foji ki asli taqat uski yaadon mein hoti hai.\"\n\n🔥 Barfili in raaho mein bhi mera jazba hamesha jawan rehta hai,\nSeene mein Meera ki yaad aur sar pe Tiranga mahan rehta hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiAIStudio #SiachenDiaries #IndianArmy #AgniveerLife #LOCBorderPatrol #PatrioticStories",
       "created_at": "10 Nov 2026, 02:31 AM IST",
       "completed_at": "10 Nov 2026, 02:41 AM IST"
+    },
+    {
+      "video_id": "1110_060115_p4",
+      "video_file": "raw_video_1110_060115_p4.mp4",
+      "track_id": "love_meera",
+      "track_name": "❤️ Foji Makra & Fojan Meera Love Story",
+      "part_number": 4,
+      "include_meera": true,
+      "meera_outfit": "Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas",
+      "emotion_name": "❤️ Foji Makra & Fojan Meera Love Story — Part 4: Digital Ishq Aur Border Ka Pehra",
+      "scene_summary": "A stunning 3D Pixar-style 9:16 vertical split-screen shot. On the upper half, Meera is looking radiant in her Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas, sitting on a swing in a dimly lit village courtyard under a starry sky, gazing at her phone screen. On the lower half, Makra is in his dark green Indian Army combat uniform and tactical gear, sitting against a cold stone bunker wall at the border. A single flickering lantern illuminates his face as he smiles at a frozen video call frame of Meera on his rugged phone. Their expressions show deep longing and a bittersweet smile, with Pixar-like exaggerated emotional eyes.",
+      "dialogue_line_1_hinglish": "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.",
+      "shayari_hindi": "Faasle tay honge ek din, par tera intezaar hi meri ibadat hai,\nIs vardee ki shaan aur tera ishq, bas yahi meri poori kainaat hai.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas. EPISODE: ❤️ Foji Makra & Fojan Meera Love Story - Part 4: Digital Ishq Aur Border Ka Pehra. SCENE & ACTION: A stunning 3D Pixar-style 9:16 vertical split-screen shot. On the upper half, Meera is looking radiant in her Lavender Purple Contemporary Kurti with white palazzo and silver jhumkas, sitting on a swing in a dimly lit village courtyard under a starry sky, gazing at her phone screen. On the lower half, Makra is in his dark green Indian Army combat uniform and tactical gear, sitting against a cold stone bunker wall at the border. A single flickering lantern illuminates his face as he smiles at a frozen video call frame of Meera on his rugged phone. Their expressions show deep longing and a bittersweet smile, with Pixar-like exaggerated emotional eyes. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 4: Digital Ishq Aur Border Ka Pehra | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.\"\n\n🔥 Faasle tay honge ek din, par tera intezaar hi meri ibadat hai,\nIs vardee ki shaan aur tera ishq, bas yahi meri poori kainaat hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FojiMakra #MeeraKiYaad #AgniveerLove #IndianArmyStatus #PixarStyleIndia #BorderIshq",
+      "created_at": "10 Nov 2026, 06:01 AM IST",
+      "completed_at": "10 Nov 2026, 06:06 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -498,7 +517,9 @@
     "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
     "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
     "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
-    "Meera, bahar minus pachees degree ki barf gir rahi hai, par tere diye huye is naye suit ki photo dekh ke mere kaleje mein garmi aa gayi hai, foji ki asli taqat uski yaadon mein hoti hai."
+    "Meera, bahar minus pachees degree ki barf gir rahi hai, par tere diye huye is naye suit ki photo dekh ke mere kaleje mein garmi aa gayi hai, foji ki asli taqat uski yaadon mein hoti hai.",
+    "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.",
+    "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai."
   ],
   "deleted_ids": [],
   "track_parts": {
