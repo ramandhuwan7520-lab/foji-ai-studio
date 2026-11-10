@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (0.7 min)",
-  "sub_detail": "Gemini Veo rendering raw_video_1110_083746_p4.mp4... (39s elapsed)",
+  "step_num": 7,
+  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
+  "sub_detail": "Saving raw_video_1110_083746_p4.mp4 & pushing to Telegram/Frontend...",
   "status": "active",
-  "progress": 76,
-  "updated_at": "08:40:22 AM",
-  "epoch": 1794280222.2291873
+  "progress": 94,
+  "updated_at": "08:40:31 AM",
+  "epoch": 1794280231.5317864
 }
