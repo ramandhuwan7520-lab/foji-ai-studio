@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794292440596",
+    "type": "warning",
+    "title": "?? 1st Account Limit -> Using 2nd Account!",
+    "message": "Account #1 Limit/Issue (Gemini Screen Reply: I seem to be encountering an error. Can I try something else for you?). Switching to 2nd Account Cookies automatically!",
+    "status": "success",
+    "time_str": "12:04 PM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794292440.596269
+  },
+  {
     "id": "notif_1794292438077",
     "type": "error",
     "title": "Gemini Screen Error (Video Nahi Bani)",
@@ -788,15 +798,5 @@
     "time_str": "12:01 PM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794119464.6643517
-  },
-  {
-    "id": "notif_1794116290829",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading raw_video_1108_102416_p1.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "11:08 AM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794116290.8293858
   }
 ]
