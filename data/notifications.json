@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794270956704",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading raw_video_1110_060115_p4.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "06:05 AM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794270956.7044673
+  },
+  {
     "id": "notif_1794270899904",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
