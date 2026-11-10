@@ -1,5 +1,5 @@
 {
-  "generated_count": 20,
+  "generated_count": 21,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -63,7 +63,9 @@
     "border_duty",
     "love_meera",
     "love_meera",
-    "unit_ragda"
+    "unit_ragda",
+    "fauji_masti",
+    "fauji_masti"
   ],
   "history": [
     {
@@ -475,6 +477,23 @@
       "caption": "🎖️ Part 4: Raat Ka Ragda & Haathi-Chaal | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!\"\n\n🔥 Sone ki umeed mein aankhen nahi, junoon bhara hai,\nFauji ka ragda hi toh uski kismat ka khara sona hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FaujiRagda #IndianArmy #Agniveer #MakraFoji #ArmyTraining #Josh",
       "created_at": "10 Nov 2026, 08:37 AM IST",
       "completed_at": "10 Nov 2026, 08:43 AM IST"
+    },
+    {
+      "video_id": "1110_120055_p2",
+      "video_file": "raw_video_1110_120055_p2.mp4",
+      "track_id": "fauji_masti",
+      "track_name": "😂 Barrack Masti, Mess & Brotherhood",
+      "part_number": 2,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand",
+      "scene_summary": "3D Pixar-style 9:16 vertical shot. Inside the brightly lit Indian Army barrack during a surprise morning inspection. Makra stands rigidly at 'Savdhan' position next to his open olive-green metal trunk (peti). Ustad, with a sharp curled moustache and a cane under his arm, leans suspiciously close to Makra’s face, sniffing the air. Makra is sweating profusely, eyes darting sideways, trying to hide a sticky syrup stain on his thumb behind his back. In the background, funny coursemates are suppressed in laughter as a small stainless steel tiffin is visible peeking out from under Makra's neatly folded uniform.",
+      "dialogue_line_1_hinglish": "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
+      "shayari_hindi": "Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 😂 Barrack Masti, Mess & Brotherhood - Part 2: Peti Inspection Ka Kaand. SCENE & ACTION: 3D Pixar-style 9:16 vertical shot. Inside the brightly lit Indian Army barrack during a surprise morning inspection. Makra stands rigidly at 'Savdhan' position next to his open olive-green metal trunk (peti). Ustad, with a sharp curled moustache and a cane under his arm, leans suspiciously close to Makra’s face, sniffing the air. Makra is sweating profusely, eyes darting sideways, trying to hide a sticky syrup stain on his thumb behind his back. In the background, funny coursemates are suppressed in laughter as a small stainless steel tiffin is visible peeking out from under Makra's neatly folded uniform. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 2: Peti Inspection Ka Kaand | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!\"\n\n🔥 Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMasti #ArmyLife #IndianArmy #BarrackComedy #MakraFoji #DesiHumor",
+      "created_at": "10 Nov 2026, 12:00 PM IST",
+      "completed_at": "10 Nov 2026, 12:05 PM IST"
     }
   ],
   "failed_dialogues": [
@@ -538,7 +557,9 @@
     "Meera, bahar minus pachees degree ki barf gir rahi hai, par tere diye huye is naye suit ki photo dekh ke mere kaleje mein garmi aa gayi hai, foji ki asli taqat uski yaadon mein hoti hai.",
     "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.",
     "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.",
-    "Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!"
+    "Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!",
+    "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
+    "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!"
   ],
   "deleted_ids": [],
   "track_parts": {
