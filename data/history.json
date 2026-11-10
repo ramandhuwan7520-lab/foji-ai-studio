@@ -1,5 +1,5 @@
 {
-  "generated_count": 19,
+  "generated_count": 20,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -62,7 +62,8 @@
     "unit_ragda",
     "border_duty",
     "love_meera",
-    "love_meera"
+    "love_meera",
+    "unit_ragda"
   ],
   "history": [
     {
@@ -457,6 +458,23 @@
       "caption": "🎖️ Part 4: Digital Ishq Aur Border Ka Pehra | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.\"\n\n🔥 Faasle tay honge ek din, par tera intezaar hi meri ibadat hai,\nIs vardee ki shaan aur tera ishq, bas yahi meri poori kainaat hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FojiMakra #MeeraKiYaad #AgniveerLove #IndianArmyStatus #PixarStyleIndia #BorderIshq",
       "created_at": "10 Nov 2026, 06:01 AM IST",
       "completed_at": "10 Nov 2026, 06:06 AM IST"
+    },
+    {
+      "video_id": "1110_083746_p4",
+      "video_file": "raw_video_1110_083746_p4.mp4",
+      "track_id": "unit_ragda",
+      "track_name": "🔥 Ustad Ka Ragda & Punishment",
+      "part_number": 4,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "🔥 Ustad Ka Ragda & Punishment — Part 4: Raat Ka Ragda & Haathi-Chaal",
+      "scene_summary": "A cinematic 3D Pixar-style 9:16 vertical shot. Night has fallen over the training academy, with only the harsh orange glow of floodlights cutting through the darkness. Makra and his coursemates are performing the grueling 'Haathi-Chaal' (elephant walk) across a rough, stone-filled track, holding their ankles and moving forward. Makra's muscles are trembling, sweat glistening on his face like diamonds under the light. His olive-green PT vest is soaked through, and his expression is a mix of intense pain and fierce grit. In the background, Ustad’s towering silhouette stands with hands on his waist, his shadow stretching across the entire squad as he monitors their every move with a stern gaze.",
+      "dialogue_line_1_hinglish": "Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!",
+      "shayari_hindi": "Sone ki umeed mein aankhen nahi, junoon bhara hai,\nFauji ka ragda hi toh uski kismat ka khara sona hai.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 🔥 Ustad Ka Ragda & Punishment - Part 4: Raat Ka Ragda & Haathi-Chaal. SCENE & ACTION: A cinematic 3D Pixar-style 9:16 vertical shot. Night has fallen over the training academy, with only the harsh orange glow of floodlights cutting through the darkness. Makra and his coursemates are performing the grueling 'Haathi-Chaal' (elephant walk) across a rough, stone-filled track, holding their ankles and moving forward. Makra's muscles are trembling, sweat glistening on his face like diamonds under the light. His olive-green PT vest is soaked through, and his expression is a mix of intense pain and fierce grit. In the background, Ustad’s towering silhouette stands with hands on his waist, his shadow stretching across the entire squad as he monitors their every move with a stern gaze. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 4: Raat Ka Ragda & Haathi-Chaal | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!\"\n\n🔥 Sone ki umeed mein aankhen nahi, junoon bhara hai,\nFauji ka ragda hi toh uski kismat ka khara sona hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FaujiRagda #IndianArmy #Agniveer #MakraFoji #ArmyTraining #Josh",
+      "created_at": "10 Nov 2026, 08:37 AM IST",
+      "completed_at": "10 Nov 2026, 08:43 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -519,7 +537,8 @@
     "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
     "Meera, bahar minus pachees degree ki barf gir rahi hai, par tere diye huye is naye suit ki photo dekh ke mere kaleje mein garmi aa gayi hai, foji ki asli taqat uski yaadon mein hoti hai.",
     "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.",
-    "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai."
+    "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.",
+    "Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!"
   ],
   "deleted_ids": [],
   "track_parts": {
