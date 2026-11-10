@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794292546895",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand (raw_video_1110_120055_p2.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "12:05 PM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794292546.895257
+  },
+  {
     "id": "notif_1794292529019",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
@@ -788,15 +798,5 @@
     "time_str": "12:03 PM",
     "date_str": "08 Nov 2026",
     "timestamp": 1794119594.1944149
-  },
-  {
-    "id": "notif_1794119496052",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Siachen Ki Thand Aur Meera Ki Yaad | Cast: Makra + Meera (Deep Royal Blue Silk Patiala Suit with...)",
-    "status": "info",
-    "time_str": "12:01 PM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794119496.052122
   }
 ]
