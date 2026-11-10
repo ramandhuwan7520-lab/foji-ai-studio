@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794294736893",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 1: Barfani LOC Ki Pehli Raat locked for 11 Nov 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "12:42 PM",
+    "date_str": "10 Nov 2026",
+    "timestamp": 1794294736.8935785
+  },
+  {
     "id": "notif_1794294707561",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
