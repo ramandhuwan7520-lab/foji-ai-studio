@@ -89,32 +89,42 @@ FOJI_UNIVERSE_TRACKS = {
 TRACK_ORDER = ["love_meera", "unit_ragda", "training_ustad", "fauji_masti", "border_duty"]
 
 
-def push_json_to_github_instantly(rel_path, commit_msg):
-    """Pushes JSON state files to GitHub main branch with automatic retry on SHA conflict."""
-    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
-    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-    rel_clean = rel_path.replace("\\", "/")
-    full_p = os.path.abspath(rel_path)
-    if not gh_pat or not os.path.exists(full_p):
+_GH_PUSH_LOCK = threading.Lock() if "threading" in globals() else __import__("threading").Lock()
+
+def push_json_to_github_instantly(rel_path, commit_msg, blocking=False):
+    """Non-blocking background GitHub state sync so UI actions respond in 0.005s and NEVER say Server Busy!"""
+    import threading as _th
+    def _bg_push():
+        gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+        repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+        rel_clean = rel_path.replace("\\", "/")
+        full_p = os.path.abspath(rel_path)
+        if not gh_pat or not os.path.exists(full_p):
+            return False
+        with _GH_PUSH_LOCK:
+            for _attempt in range(2):
+                try:
+                    with open(full_p, "rb") as f:
+                        b64_content = _b64.b64encode(f.read()).decode("utf-8")
+                    url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
+                    headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
+                    r = requests.get(f"{url}?ref=main&t={int(time.time()*1000)}", headers=headers, timeout=8)
+                    sha = r.json().get("sha") if r.status_code == 200 else None
+                    payload = {"message": commit_msg, "content": b64_content, "branch": "main"}
+                    if sha:
+                        payload["sha"] = sha
+                    put_r = requests.put(url, headers=headers, json=payload, timeout=12)
+                    if put_r.status_code in (200, 201):
+                        return True
+                    time.sleep(0.5)
+                except Exception:
+                    time.sleep(0.5)
         return False
-    for _attempt in range(3):
-        try:
-            with open(full_p, "rb") as f:
-                b64_content = _b64.b64encode(f.read()).decode("utf-8")
-            url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
-            headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
-            r = requests.get(f"{url}?ref=main&t={int(time.time()*1000)}", headers=headers, timeout=10)
-            sha = r.json().get("sha") if r.status_code == 200 else None
-            payload = {"message": commit_msg, "content": b64_content, "branch": "main"}
-            if sha:
-                payload["sha"] = sha
-            put_r = requests.put(url, headers=headers, json=payload, timeout=20)
-            if put_r.status_code in (200, 201):
-                return True
-            time.sleep(1.2)
-        except Exception:
-            time.sleep(1.0)
-    return False
+
+    if blocking:
+        return _bg_push()
+    _th.Thread(target=_bg_push, daemon=True).start()
+    return True
 
 
 def _fetch_github_json_zero_cache(rel_path):
@@ -820,6 +830,25 @@ def sync_raw_videos_into_unapproved_queue():
     return q
 
 
+
+def format_clean_video_label(fname, track_id="love_meera", part_num=1, idx_num=1):
+    """Converts ugly raw_video_1109_023053_p1.mp4 into clean 'Video_09_LoveMeera_Part_01'"""
+    s = str(fname or "").replace(".mp4", "")
+    if s.startswith("Video_"):
+        return s
+    slug_map = {
+        "love_meera": "LoveMeera",
+        "unit_ragda": "UstadRagda",
+        "training_ustad": "TrainingDrill",
+        "fauji_masti": "BarrackMasti",
+        "border_duty": "BorderDuty"
+    }
+    t_slug = slug_map.get(track_id, "FojiStory")
+    m_num = re.search(r"raw_video_(\d+)", s)
+    v_num = int(m_num.group(1)) if (m_num and len(m_num.group(1)) <= 3) else idx_num
+    return f"Video_{v_num:02d}_{t_slug}_Part_{int(part_num or 1):02d}"
+
+
 def build_master_all_reels_vault():
     q = sync_raw_videos_into_unapproved_queue()
     vault_map = {}
@@ -856,7 +885,38 @@ def build_master_all_reels_vault():
             return os.path.getmtime(fp)
         return float(obj.get("scheduled_epoch", 0))
 
-    return sorted(vault_map.values(), key=_sort_key, reverse=True)
+    sorted_list = sorted(vault_map.values(), key=_sort_key, reverse=True)
+    total_len = len(sorted_list)
+    for i, item in enumerate(sorted_list):
+        vf = item.get("video_file", "")
+        inf_tid, inf_pnum, inf_title = _infer_track_and_part_from_filename(vf, item)
+        item["track_id"] = inf_tid
+        item["part_number"] = inf_pnum
+        v_num = total_len - i
+        item["video_number"] = v_num
+        item["clean_video_code"] = format_clean_video_label(vf, inf_tid, inf_pnum, v_num)
+        # Clean any 'raw_video_...' from title
+        raw_t = str(item.get("title") or "")
+        if "raw_video" in raw_t.lower() or not raw_t.strip():
+            item["title"] = f"{inf_title}"
+        # Ensure scheduled items ALWAYS have full Date + Time
+        if item.get("vault_status") == "scheduled":
+            d_lbl = item.get("date_label") or ""
+            t_lbl = item.get("time_label") or ""
+            if not d_lbl and item.get("scheduled_epoch"):
+                try:
+                    dt_s = datetime.fromtimestamp(float(item["scheduled_epoch"]), IST)
+                    d_lbl = dt_s.strftime("%d %b %Y")
+                    t_lbl = dt_s.strftime("%I:%M %p")
+                    item["date_label"] = d_lbl
+                    item["time_label"] = t_lbl
+                except Exception:
+                    pass
+            if d_lbl and t_lbl:
+                item["scheduled_full_badge"] = f"{d_lbl} • {t_lbl} IST"
+            else:
+                item["scheduled_full_badge"] = item.get("scheduled_display") or "Scheduled"
+    return sorted_list
 
 
 def calculate_next_available_slot_ist():
@@ -980,17 +1040,19 @@ def approve_and_schedule_video_item(video_file=None, custom_caption="", source_l
 
     save_scheduled_queue(q, sync_cloud=True)
 
-    # Push live notification so Frontend immediately pops up a Center Modal even if scheduled from Telegram!
-    try:
-        import gemini_bot
-        gemini_bot.push_app_notification(
+    # Non-blocking notification
+    def _bg_sched_notif():
+        try:
+            import gemini_bot
+            gemini_bot.push_app_notification(
             "schedule",
             f"📅 Video Scheduled ({source_label})!",
             f"{target_item.get('title', target_item['video_file'])} locked for {slot_info['display_time']}!",
             "success"
         )
-    except Exception:
-        pass
+        except Exception:
+            pass
+    __import__("threading").Thread(target=_bg_sched_notif, daemon=True).start()
 
     return target_item
 
@@ -1292,7 +1354,7 @@ def auto_purge_posted_videos_older_than_1_hour():
     """
     Runs automatically in background:
     Any reel in `published_posts` that was posted more than 1 hour (3600s) ago:
-    1. On Laptop: Copies MP4 to `D:\foji_ai_automation/Posted_YouTube_Archive\`
+    1. On Laptop: Copies MP4 to `D:\foji_ai_automation/Posted_YouTube_Archive/`
     2. Deletes the heavy MP4 from `output/raw_videos/` on Render AND GitHub repo!
     3. Marks `cloud_purged = True` in `published_posts` so the Posted section still shows its title & Instagram link!
     """
