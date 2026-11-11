@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794359099873",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 2: Barfani Toofan Mein Yaadon Ka Pehra (raw_video_1111_062859_p2.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:34 AM",
+    "date_str": "11 Nov 2026",
+    "timestamp": 1794359099.8739684
+  },
+  {
     "id": "notif_1794358905544",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
