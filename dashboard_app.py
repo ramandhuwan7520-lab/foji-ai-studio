@@ -640,7 +640,7 @@ def _ensure_reel_thumbnail(video_file_path):
                         pass
 
     if best_img is not None:
-        best_img = best_img.resize((1080, 1920), Image.Resampling.LANCZOS)
+        best_img = best_img.resize((720, 1280), Image.Resampling.BILINEAR)
         best_img.save(thumb_p, "JPEG", quality=95)
         print(f"🖼️ [Smart Thumbnail] Selected best video frame at {best_ts} (Score: {best_score:.1f}) -> { os.path.basename(thumb_p) }")
         return thumb_p
@@ -1821,6 +1821,8 @@ def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", 
                             24
                         )
 
+                if not dispatched_cloud and (os.environ.get("RENDER") or os.name != "nt"):
+                    raise RuntimeError("Cloud 3D Worker trigger failed: Please verify GITHUB_PAT in Render Environment Variables!")
                 if not dispatched_cloud:
                     vid_path = gemini_bot.generate_video_in_gemini(pkg)
                     if vid_path and os.path.exists(vid_path):
@@ -1876,8 +1878,8 @@ def _sanitize_mp4_for_instagram_no_green_line(input_mp4_path):
             "-vf", "scale=720:1280:force_original_aspect_ratio=decrease:flags=lanczos,pad=720:1280:(ow-iw)/2:(oh-ih)/2:black,setsar=1:1,format=yuv420p",
             "-r", "30",
             "-c:v", "libx264",
-            "-preset", "veryfast",
-            "-threads", "2",
+            "-preset", "ultrafast",
+            "-threads", "1",
             "-profile:v", "main",
             "-level:v", "4.0",
             "-crf", "21",
@@ -1899,41 +1901,55 @@ def _sanitize_mp4_for_instagram_no_green_line(input_mp4_path):
 
 _GLOBAL_IG_UPLOAD_MUTEX = _threading.Lock()
 _RECENTLY_PUBLISHED_guard = {}
+_IN_FLIGHT_SCHEDULED_LOCK = set()
 
 def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=False):
     vname = os.path.basename(str(video_file))
     now_t = time.time()
 
-    # 🛡️ ANTI-DUPLICATE LOCK: Prevent 2 or 3 simultaneous/repeated uploads of the same reel!
+    # 🛡️ TRIPLE-LAYER ANTI-DUPLICATE LOCK (RAM + Local Queue + GitHub Cloud Queue)
     with _GLOBAL_IG_UPLOAD_MUTEX:
         last_pub_ts = _RECENTLY_PUBLISHED_guard.get(vname, 0)
-        if (now_t - last_pub_ts) < 600:
-            raise RuntimeError(f"Duplicate guard: {vname} is already uploading or was just posted!")
+        if (now_t - last_pub_ts) < 900:
+            raise RuntimeError(f"Duplicate Guard: {vname} is already uploading or was just posted!")
+
         if not allow_repost:
+            # Always pull latest cloud queue before checking so server restarts NEVER re-post an already published reel!
+            try:
+                rem_q = _fud._fetch_github_json_zero_cache("data/scheduled_queue.json")
+                if isinstance(rem_q, dict):
+                    rem_pub = (rem_q.get("published_posts") or []) + (rem_q.get("published_history") or [])
+                    if any(p.get("video_file") == vname for p in rem_pub):
+                        _fud.mark_video_as_published_in_vault(vname, custom_caption, media_pk="ALREADY_LIVE")
+                        raise RuntimeError(f"Duplicate Guard: {vname} is ALREADY published on Instagram (Verified from Cloud)!")
+            except RuntimeError:
+                raise
+            except Exception:
+                pass
+
             q_chk = _fud.get_scheduled_queue()
-            already_pub = [p for p in q_chk.get("published_history", []) if p.get("video_file") == vname]
-            if already_pub:
-                raise RuntimeError(f"Duplicate guard: {vname} is ALREADY published on Instagram!")
+            loc_pub = (q_chk.get("published_posts") or []) + (q_chk.get("published_history") or [])
+            if any(p.get("video_file") == vname for p in loc_pub):
+                raise RuntimeError(f"Duplicate Guard: {vname} is ALREADY published on Instagram!")
+
         _RECENTLY_PUBLISHED_guard[vname] = now_t
+
     vpath = os.path.abspath(os.path.join("output/raw_videos", vname))
-    if not os.path.exists(vpath):
-        try:
-            _fud.pull_latest_cloud_state_for_frontend()
-        except Exception:
-            pass
-    if not os.path.exists(vpath):
+    if not os.path.exists(vpath) or os.path.getsize(vpath) < 10000:
         try:
             import requests as _req
-            gh_raw_url = f"https://raw.githubusercontent.com/ramandhuwan7520-lab/foji-ai-studio/main/output/raw_videos/{vname}"
-            r = _req.get(gh_raw_url, timeout=20)
+            repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+            gh_raw_url = f"https://raw.githubusercontent.com/{repo}/main/output/raw_videos/{vname}"
+            r = _req.get(gh_raw_url, timeout=30)
             if r.status_code == 200 and len(r.content) > 10000:
                 os.makedirs(os.path.dirname(vpath), exist_ok=True)
                 with open(vpath, "wb") as vf:
                     vf.write(r.content)
         except Exception:
             pass
+
     if not os.path.exists(vpath):
-        raise FileNotFoundError(f"Video file {vname} not found in output/raw_videos!")
+        raise FileNotFoundError(f"Video file {vname} not found!")
 
     if not custom_caption:
         for it in _fud.build_master_all_reels_vault():
@@ -1958,7 +1974,6 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
     except Exception:
         pass
 
-    # DIRECT CALL to verified get_authenticated_ig_client() (User ID: 22494488394) — NO circular insta_bot loop!
     cl = get_authenticated_ig_client()
     try:
         media = cl.clip_upload(
@@ -1977,16 +1992,30 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
     media_pk = getattr(media, "pk", None) or getattr(media, "id", None)
     media_code = getattr(media, "code", "")
     if not media_pk:
-        raise RuntimeError("Instagram did not return a valid Media PK! Reel kept safely in Unposted Vault.")
+        raise RuntimeError("Instagram did not return a valid Media PK!")
 
+    # Immediately mark as published in BOTH local & GitHub Cloud BEFORE doing anything else!
     pub_item = _fud.mark_video_as_published_in_vault(vname, custom_caption, media_pk=str(media_pk))
     if isinstance(pub_item, dict) and media_code:
         pub_item["code"] = str(media_code)
         pub_item["permalink"] = f"https://www.instagram.com/reel/{media_code}/"
 
+    # Free RAM & temporary disk immediately on Render so 512MB limit is NEVER reached!
+    if ig_safe_vpath != vpath and os.path.exists(ig_safe_vpath):
+        try:
+            os.remove(ig_safe_vpath)
+        except Exception:
+            pass
+    if (os.environ.get("RENDER") or os.name != "nt") and os.path.exists(vpath):
+        try:
+            os.remove(vpath)
+        except Exception:
+            pass
+    trim_system_memory()
+
     try:
         import gemini_bot
-        gemini_bot.update_3d_telemetry(8, "Reel LIVE on Instagram!", f"✅ {vname} Published (ID: {media_pk})!", "completed", 100)
+        gemini_bot.update_3d_telemetry(8, "Reel LIVE on Instagram!", f"✅ {vname} Published!", "completed", 100)
         gemini_bot.push_app_notification("success", "📸 Reel Posted on Instagram!", f"{vname} is now LIVE on @ai_foji_lovelife!", "success")
         gemini_bot.send_alert(f"📸 Reel Published on Instagram! Video: {vname} | Permalink: https://www.instagram.com/reel/{media_code}/")
     except Exception:
@@ -1994,65 +2023,101 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
     return pub_item
 
 
-# Bridge any legacy Telegram Bot schedule function into our Unified Sequential Scheduler!
-for _legacy_sched_fn in ["schedule_video_for_next_slot", "add_to_schedule_queue", "schedule_reel", "queue_video_for_schedule"]:
-    if _legacy_sched_fn in globals():
-        def _unified_tg_schedule_bridge(video_path=None, caption="", *args, **kwargs):
-            vfile = os.path.basename(str(video_path)) if video_path else None
-            item = _fud.approve_and_schedule_video_item(video_file=vfile, custom_caption=caption, source_label="Telegram Bot")
-            return item["scheduled_display"]
-        globals()[_legacy_sched_fn] = _unified_tg_schedule_bridge
-
-_IN_FLIGHT_SCHEDULED_LOCK = set()
-
 def _background_master_scheduler_daemon():
+    # Wait 12 seconds after server boot & pull latest GitHub state first so restarts NEVER re-trigger old posts!
+    time.sleep(12)
+    try:
+        _fud.pull_latest_cloud_state_for_frontend()
+    except Exception:
+        pass
+
     while True:
         try:
-            # Only run auto-scheduler on the active server (skip if disabled)
             now_ist = datetime.now(_fud.IST)
             today_str = now_ist.strftime("%Y-%m-%d")
             curr_hm = now_ist.strftime("%H:%M")
 
+            # Sync remote queue before checking due posts
+            try:
+                rem_q = _fud._fetch_github_json_zero_cache("data/scheduled_queue.json")
+                if isinstance(rem_q, dict):
+                    loc_q = _fud.get_scheduled_queue()
+                    if float(rem_q.get("updated_epoch", 0)) > float(loc_q.get("updated_epoch", 0)):
+                        with open("data/scheduled_queue.json", "w", encoding="utf-8") as wf:
+                            json.dump(rem_q, wf, indent=2, ensure_ascii=False)
+            except Exception:
+                pass
+
             cfg = _fud.get_schedule_config()
             q = _fud.get_scheduled_queue()
-            unapproved_cnt = len(q.get("unapproved_videos", []))
 
-            # SMART RULE: Only auto-generate at night/T-30 if Pending Queue has 0 videos!
-            # Since you already have 10+ pending reels, it will NEVER randomly start the pipeline on its own!
-            if cfg.get("auto_pilot_enabled", True) and unapproved_cnt == 0:
+            if cfg.get("auto_pilot_enabled", True):
                 triggered = set(cfg.get("last_triggered_keys", []))
+
+                # 1. Night Batch at 02:30 AM IST
                 night_hm = cfg.get("night_batch_time", "02:30")
                 night_key = f"NIGHT_BATCH_{today_str}_{night_hm}"
                 if curr_hm == night_hm and night_key not in triggered:
                     triggered.add(night_key)
                     cfg["last_triggered_keys"] = list(triggered)[-60:]
                     _fud.save_schedule_config(cfg)
-                    _execute_single_or_batch_generation(count=1, reason_label="Auto Night Reel")
+                    batch_cnt = int(cfg.get("night_batch_count", 3))
+                    _execute_single_or_batch_generation(count=batch_cnt, reason_label=f"02:30 AM Night Batch ({batch_cnt} Reels)")
 
-            # Process due scheduled posts (Strictly 1 post per slot, with anti-duplicate lock)
-            sched_list = list(q.get("scheduled_posts", []))
-            for post in sched_list:
-                due_epoch = float(post.get("scheduled_epoch", 0))
-                vfile = post.get("video_file", "")
-                lock_key = f"{vfile}_{int(due_epoch)}"
-
-                if due_epoch > 0 and time.time() >= due_epoch and vfile and lock_key not in _IN_FLIGHT_SCHEDULED_LOCK:
-                    _IN_FLIGHT_SCHEDULED_LOCK.add(lock_key)
-                    # Remove from scheduled_posts immediately & sync to GitHub BEFORE uploading
-                    q["scheduled_posts"] = [p for p in q.get("scheduled_posts", []) if p.get("video_file") != vfile]
-                    _fud.save_scheduled_queue(q, sync_cloud=True)
-
-                    vpath = os.path.join("output/raw_videos", vfile)
+                # 2. T-30 Minute Pre-Slot Trigger
+                pre_mins = int(cfg.get("pre_slot_minutes", 30))
+                for slot_hm in cfg.get("daily_slots", ["06:30", "12:30", "19:30"]):
                     try:
-                        _publish_specific_video_to_ig(vpath, post.get("caption", ""), allow_repost=False)
-                    except Exception as pub_err:
-                        print(f"⚠️ Scheduled upload note for {vfile}: {pub_err}")
-                    break
+                        sh, sm = [int(x) for x in slot_hm.split(":")[:2]]
+                        slot_dt = now_ist.replace(hour=sh, minute=sm, second=0, microsecond=0)
+                        pre_dt = slot_dt - timedelta(minutes=pre_mins)
+                        pre_hm = pre_dt.strftime("%H:%M")
+                        pre_key = f"PRE30_{today_str}_{slot_hm}"
+                        if curr_hm == pre_hm and pre_key not in triggered:
+                            triggered.add(pre_key)
+                            cfg["last_triggered_keys"] = list(triggered)[-60:]
+                            _fud.save_schedule_config(cfg)
+                            _execute_single_or_batch_generation(count=1, reason_label=f"T-30 Min Pre-Schedule Trigger ({slot_hm})")
+                    except Exception:
+                        pass
+
+                # 3. Due Scheduled Posts (Strictly 1 post, with immediate Cloud Removal + Anti-Duplicate check!)
+                sched_list = list(q.get("scheduled_posts", []))
+                pub_files = {
+                    p.get("video_file")
+                    for p in (q.get("published_posts", []) + q.get("published_history", []))
+                    if p.get("video_file")
+                }
+
+                for post in sched_list:
+                    due_epoch = float(post.get("scheduled_epoch", 0))
+                    vfile = post.get("video_file", "")
+
+                    # If already in published_posts, silently clean it from scheduled_posts so it NEVER posts twice!
+                    if vfile in pub_files:
+                        q["scheduled_posts"] = [p for p in q.get("scheduled_posts", []) if p.get("video_file") != vfile]
+                        _fud.save_scheduled_queue(q, sync_cloud=True)
+                        continue
+
+                    if due_epoch > 0 and time.time() >= due_epoch and vfile and vfile not in _IN_FLIGHT_SCHEDULED_LOCK:
+                        _IN_FLIGHT_SCHEDULED_LOCK.add(vfile)
+                        # Remove from scheduled_posts & push to GitHub BEFORE starting upload!
+                        q["scheduled_posts"] = [p for p in q.get("scheduled_posts", []) if p.get("video_file") != vfile]
+                        _fud.save_scheduled_queue(q, sync_cloud=True)
+
+                        vpath = os.path.join("output/raw_videos", vfile)
+                        try:
+                            _publish_specific_video_to_ig(vpath, post.get("caption", ""), allow_repost=False)
+                        except Exception as pub_err:
+                            log_notification("error", "Scheduled Post Failed", f"{vfile}: {str(pub_err)[:140]}", "error")
+                        break
         except Exception:
             pass
+        trim_system_memory()
         time.sleep(30)
 
-if not globals().get("_FOJI_MASTER_SCHEDULER_STARTED") and (__name__ == "__main__" or "gunicorn" in sys.argv[0].lower() or os.environ.get("RENDER")):
+# Run scheduler ONLY on Render Cloud (or if explicitly enabled), NEVER on both Laptop & Cloud simultaneously!
+if not globals().get("_FOJI_MASTER_SCHEDULER_STARTED") and (os.environ.get("RENDER") or os.environ.get("ENABLE_LOCAL_SCHEDULER") == "1"):
     globals()["_FOJI_MASTER_SCHEDULER_STARTED"] = True
     _threading.Thread(target=_background_master_scheduler_daemon, daemon=True).start()
 
@@ -2455,6 +2520,8 @@ def api_universe_char_img(name):
 
 
 
+_THUMB_GEN_LOCK = _threading.Lock()
+
 @app.route("/api/universe/thumb_file/<filename>", methods=["GET"])
 def api_universe_thumb_file(filename):
     from flask import redirect
@@ -2466,23 +2533,28 @@ def api_universe_thumb_file(filename):
     mp4_p = os.path.join(raw_dir, safe_mp4)
     thumb_p = mp4_p + ".jpg"
 
+    # 1. If local thumbnail exists, serve immediately
     if os.path.exists(thumb_p) and os.path.getsize(thumb_p) > 2000:
         return _send_file(thumb_p, mimetype="image/jpeg", max_age=86400)
 
-    if os.path.exists(mp4_p) and os.path.getsize(mp4_p) > 10000:
-        try:
-            gen_p = _ensure_reel_thumbnail(mp4_p)
-            if gen_p and os.path.exists(gen_p):
-                return _send_file(gen_p, mimetype="image/jpeg", max_age=86400)
-        except Exception:
-            pass
+    # 2. On Render Cloud: Redirect directly to GitHub CDN .jpg (Uses 0 MB RAM and 0 CPU!)
+    if os.environ.get("RENDER") or os.name != "nt":
+        repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+        return redirect(f"https://raw.githubusercontent.com/{repo}/main/output/raw_videos/{safe_mp4}.jpg", code=302)
 
-    # Fallback to character image so video box is NEVER black!
-    for ext in ["jpg", "png"]:
-        fb = os.path.abspath(f"assets/characters/foji_character.{ext}")
-        if os.path.exists(fb):
-            return _send_file(fb, mimetype="image/jpeg", max_age=3600)
-    return redirect("/icon-512.png")
+    # 3. On Local Laptop: Generate max 1 thumbnail at a time (Mutex locked so RAM never spikes)
+    if os.path.exists(mp4_p) and os.path.getsize(mp4_p) > 10000:
+        if _THUMB_GEN_LOCK.acquire(blocking=False):
+            try:
+                gen_p = _ensure_reel_thumbnail(mp4_p)
+                if gen_p and os.path.exists(gen_p):
+                    return _send_file(gen_p, mimetype="image/jpeg", max_age=86400)
+            except Exception:
+                pass
+            finally:
+                _THUMB_GEN_LOCK.release()
+
+    return redirect("/emblem-logo.png")
 
 
 @app.route("/api/universe/video_file/<filename>", methods=["GET"])
@@ -3650,6 +3722,24 @@ let _fnsLastCompletedStep = 0;
 let _fnsSoundEnabled = true;
 let _fnsTheaterIdx = 0;
 
+let _fnsLastSeenNotifId = '';
+let _fnsLastErrorEpochShown = 0;
+
+function fnsSetBtnLoading(btnEl, loadingText) {
+  if (!btnEl) return () => {};
+  const origHtml = btnEl.innerHTML;
+  const origDisabled = btnEl.disabled;
+  btnEl.disabled = true;
+  btnEl.style.opacity = '0.75';
+  btnEl.innerHTML = `<span style="display:inline-block;animation:fnsSpinSlow 0.8s linear infinite;">⏳</span> ${loadingText}`;
+  return () => {
+    btnEl.disabled = origDisabled;
+    btnEl.style.opacity = '1';
+    btnEl.innerHTML = origHtml;
+  };
+}
+
+
 // 🎬 5.5-Second Cinematic Makra & Meera Walking Reunion Intro Timer
 function fnsHideSplashNow() {
   const sp = document.getElementById('fns-app-splash');
@@ -4029,6 +4119,10 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
   if (status === 'error') {
     errBox.style.display = 'block';
     errTxt.innerHTML = telemetry.sub_detail || 'Generation paused.';
+    if (epoch > _fnsLastErrorEpochShown && _fnsFirstLoadDone) {
+      _fnsLastErrorEpochShown = epoch;
+      fnsOpenModal('⚠️', telemetry.step_title || 'Pipeline Paused', telemetry.sub_detail || 'An error occurred during generation.', true);
+    }
   } else {
     errBox.style.display = 'none';
   }
@@ -4289,7 +4383,7 @@ async function fnsApproveAndScheduleLatest() {
 }
 
 async function fnsApproveAndScheduleSpecific(vfile) {
-  fnsShowToast('Scheduling reel...');
+  fnsOpenModal('⏳', 'Locking Schedule Slot...', 'Syncing your reel with Cloud Auto-Scheduler...', false, []);
   try {
     const r = await fetch('/api/universe/approve_and_schedule', {
       method: 'POST',
@@ -4311,13 +4405,15 @@ async function fnsApproveAndScheduleSpecific(vfile) {
 }
 
 async function fnsRemoveScheduled(id) {
+  fnsOpenModal('⏳', 'Removing from Schedule...', 'Moving reel back to Pending Approval...', false, []);
   await fetch('/api/universe/remove_scheduled', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ id: id })
   });
   _fnsLastVaultSignature = '';
-  fnsRefreshHub();
+  await fnsRefreshHub();
+  fnsOpenModal('✅', 'Removed from Schedule', 'Reel moved back to Pending Approval.');
 }
 
 async function fnsPublishLatestReel() {
@@ -4457,7 +4553,7 @@ async function fnsStartFullVideoGeneration(cnt=1) {
     epoch: Date.now() / 1000
   }, [], '');
 
-  fnsShowToast('🪖 Commando Makra advancing with AK-47...');
+  fnsOpenModal('🚀', 'Starting 3D Pipeline...', 'Initializing AI Scriptwriter & 3D Studio Engine...', false, []);
   try {
     const r = await fetch('/api/universe/trigger_pipeline', {
       method: 'POST',
@@ -4465,7 +4561,7 @@ async function fnsStartFullVideoGeneration(cnt=1) {
       body: JSON.stringify({ custom_idea: twist, count: cnt })
     });
     const d = await r.json();
-    if (d.ok) fnsShowToast('Generation started ✓');
+    if (d.ok) { fnsCloseModal(); fnsShowToast('🪖 Generation started — Watch live progress!'); }
     else fnsOpenModal('⚠️', 'Could Not Start', d.error || 'Failed', true);
   } catch (e) {
     fnsOpenModal('⚠️', 'Request Error', String(e), true);

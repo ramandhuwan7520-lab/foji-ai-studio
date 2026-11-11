@@ -660,11 +660,21 @@ def get_scheduled_queue():
                 data = json.load(f)
                 data.setdefault("unapproved_videos", [])
                 data.setdefault("scheduled_posts", [])
-                data.setdefault("published_posts", [])
+                pub = data.get("published_posts") or data.get("published_history") or []
+                # Deduplicate by video_file
+                seen_v = set()
+                clean_pub = []
+                for item in pub:
+                    vf = item.get("video_file")
+                    if vf and vf not in seen_v:
+                        seen_v.add(vf)
+                        clean_pub.append(item)
+                data["published_posts"] = clean_pub
+                data["published_history"] = clean_pub
                 return data
         except Exception:
             pass
-    return {"unapproved_videos": [], "scheduled_posts": [], "published_posts": [], "updated_epoch": 0}
+    return {"unapproved_videos": [], "scheduled_posts": [], "published_posts": [], "published_history": [], "updated_epoch": 0}
 
 
 def save_scheduled_queue(qdata, sync_cloud=True):
@@ -690,6 +700,12 @@ def sync_raw_videos_into_unapproved_queue():
     raw_dir = "output/raw_videos"
     os.makedirs(raw_dir, exist_ok=True)
     valid_disk_mp4s = {f for f in os.listdir(raw_dir) if f.endswith(".mp4") and os.path.getsize(os.path.join(raw_dir, f)) > 100 * 1024}
+    if os.path.exists("data/cloud_mp4_index.json"):
+        try:
+            with open("data/cloud_mp4_index.json", "r", encoding="utf-8") as cf:
+                valid_disk_mp4s.update(json.load(cf))
+        except Exception:
+            pass
     clean_unapproved = []
     seen_unapproved = set()
     changed = False
@@ -724,7 +740,7 @@ def sync_raw_videos_into_unapproved_queue():
     )
 
     # ONLY include real MP4 files (>100KB) that actually exist on disk (no failed/ghost entries!)
-    all_candidate_files = [f for f in mp4_files if os.path.getsize(os.path.join(raw_dir, f)) > 100 * 1024]
+    all_candidate_files = sorted(list(valid_disk_mp4s), reverse=True)
 
     for fname in all_candidate_files:
         if fname not in scheduled_files and fname not in published_files and fname not in seen_unapproved:
@@ -1032,7 +1048,8 @@ def pull_latest_cloud_state_for_frontend():
                 with open(QUEUE_FILE, "w", encoding="utf-8") as wf:
                     json.dump(remote_q, wf, indent=2, ensure_ascii=False)
 
-    # Download ALL MP4 files from GitHub output/raw_videos that are missing locally!
+    # ZERO-RAM CLOUD INDEX: On Render/Linux, DO NOT download 25+ MP4s into 512MB RAM!
+    # Only record their filenames in data/cloud_mp4_index.json so the Vault knows about every video with 0 MB RAM!
     repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
     gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
     api_headers = {"Accept": "application/vnd.github+json", "Cache-Control": "no-cache"}
@@ -1043,18 +1060,23 @@ def pull_latest_cloud_state_for_frontend():
         api_url = f"https://api.github.com/repos/{repo}/contents/output/raw_videos?ref=main&t={int(time.time())}"
         r_list = requests.get(api_url, headers=api_headers, timeout=8)
         if r_list.status_code == 200 and isinstance(r_list.json(), list):
+            cloud_mp4s = []
             for item in r_list.json():
                 fname = item.get("name", "")
-                if fname.endswith(".mp4"):
-                    local_vid = os.path.join("output/raw_videos", fname)
-                    if not os.path.exists(local_vid) or os.path.getsize(local_vid) < 100 * 1024:
-                        dl_url = item.get("download_url")
-                        if dl_url:
-                            vr = requests.get(dl_url, headers=api_headers, timeout=45)
-                            if vr.status_code == 200 and len(vr.content) > 100 * 1024:
-                                with open(local_vid, "wb") as vf:
-                                    vf.write(vr.content)
-                                print(f"📥 [Vault Sync] Pulled {fname} into local studio!")
+                if fname.endswith(".mp4") and int(item.get("size", 0)) > 100 * 1024:
+                    cloud_mp4s.append(fname)
+                    # Only download full MP4 on Windows Laptop (never on 512MB Render Cloud!)
+                    if os.name == "nt" and not os.environ.get("RENDER"):
+                        local_vid = os.path.join("output/raw_videos", fname)
+                        if not os.path.exists(local_vid) or os.path.getsize(local_vid) < 100 * 1024:
+                            dl_url = item.get("download_url")
+                            if dl_url:
+                                vr = requests.get(dl_url, headers=api_headers, timeout=45)
+                                if vr.status_code == 200 and len(vr.content) > 100 * 1024:
+                                    with open(local_vid, "wb") as vf:
+                                        vf.write(vr.content)
+            with open("data/cloud_mp4_index.json", "w", encoding="utf-8") as cf:
+                json.dump(cloud_mp4s, cf)
     except Exception:
         pass
 

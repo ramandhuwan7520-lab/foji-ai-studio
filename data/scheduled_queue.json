@@ -180,16 +180,10 @@
       "shayari": "Barfili in raaho mein bhi mera jazba hamesha jawan rehta hai,\nSeene mein Meera ki yaad aur sar pe Tiranga mahan rehta hai.",
       "caption": "🎖️ Part 1: Barfani LOC Ki Pehli Raat | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, bahar minus pachees degree ki barf gir rahi hai, par tere diye huye is naye suit ki photo dekh ke mere kaleje mein garmi aa gayi hai, foji ki asli taqat uski yaadon mein hoti hai.\"\n\n🔥 Barfili in raaho mein bhi mera jazba hamesha jawan rehta hai,\nSeene mein Meera ki yaad aur sar pe Tiranga mahan rehta hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#FojiAIStudio #SiachenDiaries #IndianArmy #AgniveerLife #LOCBorderPatrol #PatrioticStories",
       "created_at": "10 Nov 2026, 02:41 AM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-11_06:30",
-      "scheduled_epoch": 1794358800.0,
-      "scheduled_display": "11 Nov 2026 at 06:30 AM IST",
-      "date_label": "11 Nov 2026",
-      "time_label": "06:30 AM"
-    }
-  ],
-  "published_posts": [
+      "status": "published",
+      "published_at": "11 Nov 2026, 02:26 PM IST",
+      "ig_media_pk": "4027935554484105544"
+    },
     {
       "id": "pub_1794272587203",
       "video_file": "raw_video_1108_001301_p2.mp4",
@@ -275,7 +269,7 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794380968.6249094,
+  "updated_epoch": 1794403535.7103279,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -334,5 +328,7 @@
       "time_label": "06:30 AM",
       "retry_count": 0
     }
-  ]
+  ],
+  "published_posts": [],
+  "published_history": []
 }
