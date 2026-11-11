@@ -167,6 +167,18 @@
       "caption": "🎖️ Part 5: Sarhad Ki Diwali Aur Tera Intezaar | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai.\"\n\n🔥 Watan ki mitti ki kasam, meri har dhadkan mein tera hi naam hai,\nYe doori sirf raste ki hai, meri har subah aur teri har shaam hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiMakra #FojanMeera #AgniveerLove #IndianArmy #EmotionalStory #DesiPixar",
       "created_at": "11 Nov 2026, 12:39 PM IST",
       "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_1109_010404_p1.mp4",
+      "video_file": "raw_video_1109_010404_p1.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda",
+      "track_id": "training_ustad",
+      "part_number": 1,
+      "dialogue": "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!",
+      "shayari": "Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.",
+      "caption": "🎖️ Part 1: 4 AM Ki Whistle Aur Pehla Ragda | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!\"\n\n🔥 Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#AgniveerLife #ArmyTraining #FojiMakra #IndianArmy #DesiHumor #JaiHind",
+      "created_at": "09 Nov 2026, 01:10 AM IST",
+      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -215,26 +227,6 @@
       "ig_media_pk": "LIVE"
     },
     {
-      "id": "vid_raw_video_1108_202515_p2.mp4",
-      "video_file": "raw_video_1108_202515_p2.mp4",
-      "title": "Foji 3D Reel (raw_video_1108_202515_p2.mp4)",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "created_at": "08 Nov 2026, 08:31 PM",
-      "status": "published",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-09_06:30",
-      "scheduled_epoch": 1794186000.0,
-      "scheduled_display": "09 Nov 2026 at 06:30 AM IST",
-      "date_label": "09 Nov 2026",
-      "time_label": "06:30 AM",
-      "published_at": "09 Nov 2026, 06:32 AM IST",
-      "ig_media_pk": "4026247719670682330"
-    },
-    {
       "id": "vid_raw_video_9.mp4",
       "video_file": "raw_video_9.mp4",
       "title": "Tiranga Shaan & Duty • Part 2",
@@ -269,7 +261,7 @@
       "ig_media_pk": "LIVE"
     }
   ],
-  "updated_epoch": 1794403535.7103279,
+  "updated_epoch": 1794404213.327571,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
