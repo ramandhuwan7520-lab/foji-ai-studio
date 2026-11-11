@@ -183,7 +183,7 @@
       "time_label": "12:30 PM"
     }
   ],
-  "updated_epoch": 1794407222.779312,
+  "updated_epoch": 1794411072.8409805,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -257,7 +257,8 @@
       "status": "published",
       "published_at": "11 Nov 2026, 07:54 PM IST",
       "published_epoch": 1794407087.945116,
-      "ig_media_pk": "MANUAL_MARKED_POSTED"
+      "ig_media_pk": "MANUAL_MARKED_POSTED",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1108_202515_p2.mp4",
@@ -272,7 +273,8 @@
       "status": "published",
       "published_at": "11 Nov 2026, 07:54 PM IST",
       "published_epoch": 1794407068.5538645,
-      "ig_media_pk": "MANUAL_MARKED_POSTED"
+      "ig_media_pk": "MANUAL_MARKED_POSTED",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1109_010404_p1.mp4",
@@ -287,7 +289,8 @@
       "status": "published",
       "published_at": "11 Nov 2026, 07:54 PM IST",
       "published_epoch": 1794407055.5437448,
-      "ig_media_pk": "MANUAL_MARKED_POSTED"
+      "ig_media_pk": "MANUAL_MARKED_POSTED",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1110_023120_p1.mp4",
@@ -396,7 +399,8 @@
       "status": "published",
       "published_at": "11 Nov 2026, 07:54 PM IST",
       "published_epoch": 1794407087.945116,
-      "ig_media_pk": "MANUAL_MARKED_POSTED"
+      "ig_media_pk": "MANUAL_MARKED_POSTED",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1108_202515_p2.mp4",
@@ -411,7 +415,8 @@
       "status": "published",
       "published_at": "11 Nov 2026, 07:54 PM IST",
       "published_epoch": 1794407068.5538645,
-      "ig_media_pk": "MANUAL_MARKED_POSTED"
+      "ig_media_pk": "MANUAL_MARKED_POSTED",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1109_010404_p1.mp4",
@@ -426,7 +431,8 @@
       "status": "published",
       "published_at": "11 Nov 2026, 07:54 PM IST",
       "published_epoch": 1794407055.5437448,
-      "ig_media_pk": "MANUAL_MARKED_POSTED"
+      "ig_media_pk": "MANUAL_MARKED_POSTED",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1110_023120_p1.mp4",
