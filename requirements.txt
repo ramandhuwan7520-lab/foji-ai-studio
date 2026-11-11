@@ -6,3 +6,4 @@ imageio-ffmpeg
 instagrapi
 yt-dlp
 Pillow
+gunicorn
