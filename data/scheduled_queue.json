@@ -263,10 +263,22 @@
       "caption": "❤️ LOC Vigil & Braveheart • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
       "created_at": "01 Nov 2026, 10:33 AM",
       "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_1108_202515_p2.mp4",
+      "video_file": "raw_video_1108_202515_p2.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi",
+      "track_id": "love_meera",
+      "part_number": 2,
+      "dialogue": "Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.",
+      "shayari": "Barf ki chaadar hai charo taraf aur thandi hawaon ka pehra hai,\nPar dil mein basi teri tasveer ka rang sabse gehra hai.",
+      "caption": "🎖️ Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, yahan network toh bahut kamzor hai par teri yaadon ka signal hamesha full aata hai, bas thodi der aur ruk ja, ye chehra dekh kar hi toh saari thand gayab ho jati hai.\"\n\n🔥 Barf ki chaadar hai charo taraf aur thandi hawaon ka pehra hai,\nPar dil mein basi teri tasveer ka rang sabse gehra hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMakraMeera #IndianArmyLove #AgniveerLife #LongDistanceRelationship #FojanStatus #BorderLoveStory",
+      "created_at": "08 Nov 2026, 08:31 PM IST",
+      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [],
-  "updated_epoch": 1794405011.029382,
+  "updated_epoch": 1794405205.2046921,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -340,7 +352,8 @@
       "status": "published",
       "published_at": "11 Nov 2026, 02:26 PM IST",
       "ig_media_pk": "4027935554484105544",
-      "published_epoch": 1794397811.0293376
+      "published_epoch": 1794397811.0293376,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794272587203",
@@ -351,7 +364,8 @@
       "status": "published",
       "published_at": "10 Nov 2026, 06:33 AM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293453
+      "published_epoch": 1794397811.0293453,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794229383154",
@@ -362,7 +376,8 @@
       "status": "published",
       "published_at": "09 Nov 2026, 06:33 PM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293486
+      "published_epoch": 1794397811.0293486,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794208803658",
@@ -373,7 +388,8 @@
       "status": "published",
       "published_at": "09 Nov 2026, 12:50 PM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293505
+      "published_epoch": 1794397811.0293505,
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_9.mp4",
@@ -388,7 +404,8 @@
       "status": "published",
       "published_at": "08 Nov 2026, 08:01 PM IST",
       "ig_media_pk": "4025929349658162124",
-      "published_epoch": 1794397811.0293522
+      "published_epoch": 1794397811.0293522,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794111406132",
@@ -399,7 +416,8 @@
       "status": "published",
       "published_at": "08 Nov 2026, 09:46 AM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293536
+      "published_epoch": 1794397811.0293536,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794111384985",
@@ -410,7 +428,8 @@
       "status": "published",
       "published_at": "08 Nov 2026, 09:46 AM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293555
+      "published_epoch": 1794397811.0293555,
+      "cloud_purged": true
     }
   ],
   "published_history": [
@@ -427,7 +446,8 @@
       "status": "published",
       "published_at": "11 Nov 2026, 02:26 PM IST",
       "ig_media_pk": "4027935554484105544",
-      "published_epoch": 1794397811.0293376
+      "published_epoch": 1794397811.0293376,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794272587203",
@@ -438,7 +458,8 @@
       "status": "published",
       "published_at": "10 Nov 2026, 06:33 AM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293453
+      "published_epoch": 1794397811.0293453,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794229383154",
@@ -449,7 +470,8 @@
       "status": "published",
       "published_at": "09 Nov 2026, 06:33 PM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293486
+      "published_epoch": 1794397811.0293486,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794208803658",
@@ -460,7 +482,8 @@
       "status": "published",
       "published_at": "09 Nov 2026, 12:50 PM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293505
+      "published_epoch": 1794397811.0293505,
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_9.mp4",
@@ -475,7 +498,8 @@
       "status": "published",
       "published_at": "08 Nov 2026, 08:01 PM IST",
       "ig_media_pk": "4025929349658162124",
-      "published_epoch": 1794397811.0293522
+      "published_epoch": 1794397811.0293522,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794111406132",
@@ -486,7 +510,8 @@
       "status": "published",
       "published_at": "08 Nov 2026, 09:46 AM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293536
+      "published_epoch": 1794397811.0293536,
+      "cloud_purged": true
     },
     {
       "id": "pub_1794111384985",
@@ -497,7 +522,8 @@
       "status": "published",
       "published_at": "08 Nov 2026, 09:46 AM IST",
       "ig_media_pk": "LIVE",
-      "published_epoch": 1794397811.0293555
+      "published_epoch": 1794397811.0293555,
+      "cloud_purged": true
     }
   ]
 }
