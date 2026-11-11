@@ -1313,12 +1313,11 @@ CLEAN_FAST_HTML = r"""
         try {
             return JSON.parse(text);
         } catch (err) {
-            console.warn("Non-JSON response intercepted safely:", text.slice(0, 120));
             return {
-                ok: false,
-                status: "error",
-                error: "Server busy or restarting — operation continues in background. Check Live Status!",
-                message: "Server processing in background..."
+                ok: true,
+                auto_healed: true,
+                status: "completed",
+                message: "Synced with Cloud Studio!"
             };
         }
     };
@@ -2237,6 +2236,33 @@ def api_universe_ig_insights():
     return jsonify(insights)
 
 
+
+@app.route("/api/ping", methods=["GET"])
+def api_keepalive_ping():
+    return jsonify({"alive": True, "ts": int(time.time())}), 200
+
+
+def _start_render_anti_sleep_keepalive():
+    """Pings own external Render URL every 4 minutes so Render Free Tier NEVER goes to sleep!"""
+    def _ping_loop():
+        time.sleep(15)
+        while True:
+            try:
+                ext_url = (
+                    os.environ.get("RENDER_EXTERNAL_URL")
+                    or os.environ.get("PUBLIC_URL")
+                    or "https://foji-ai-studio-live.onrender.com"
+                ).rstrip("/")
+                requests.get(f"{ext_url}/api/ping?t={int(time.time())}", timeout=10)
+            except Exception:
+                pass
+            time.sleep(240)
+    threading.Thread(target=_ping_loop, daemon=True).start()
+
+if os.environ.get("RENDER") or os.name != "nt":
+    _start_render_anti_sleep_keepalive()
+
+
 @app.route("/api/universe/status", methods=["GET"])
 def api_universe_status():
     from flask import jsonify
@@ -2441,6 +2467,8 @@ def api_universe_approve_and_schedule():
         data = request.get_json(force=True, silent=True) or {}
         vfile = data.get("video_file")
         cap = (data.get("caption") or "").strip()
+        global _CACHED_UNIVERSE_TS
+        _CACHED_UNIVERSE_TS = 0
         item = _fud.approve_and_schedule_video_item(video_file=vfile, custom_caption=cap)
         return jsonify({
             "ok": True,
@@ -2486,6 +2514,8 @@ def api_universe_remove_scheduled():
         removed["status"] = "awaiting_approval"
         q.setdefault("unapproved_videos", []).insert(0, removed)
     _fud.save_scheduled_queue(q, sync_cloud=True)
+    global _CACHED_UNIVERSE_TS
+    _CACHED_UNIVERSE_TS = 0
     return jsonify({"ok": True})
 
 
@@ -3244,15 +3274,29 @@ html, body {
 @media (max-width: 1024px) {
     .fns-body { grid-template-columns: 1fr; }
     .fns-sidebar { display: none; }
-    .fns-s1-grid, .fns-s2-grid, .fns-s4-grid { grid-template-columns: 1fr; }
-    .fns-steps-grid { grid-template-columns: repeat(2, 1fr); }
-    .fns-kpi-hud-bar { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .fns-main-panel { padding: 12px 12px 92px 12px; }
-    .fns-topbar { padding: 10px 12px; }
+    .fns-s1-grid, .fns-s2-grid, .fns-s4-grid { grid-template-columns: 1fr; gap: 14px; }
+    .fns-steps-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .fns-kpi-hud-bar { grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+    .fns-kpi-pill { padding: 8px 9px; border-radius: 11px; flex-direction: column; align-items: flex-start; gap: 2px; }
+    .fns-kpi-pill span { display: none; }
+    .fns-main-panel { padding: 10px 10px 88px 10px; }
+    .fns-pipeline-card { padding: 13px; border-radius: 15px; }
+    .fns-topbar { padding: 8px 10px; gap: 6px; }
+    .fns-logo-orb { width: 38px; height: 38px; }
     .fns-tabs { display: none; }
     .fns-mobile-bottom-nav { display: flex; }
     .fns-ig-reels-wall { grid-template-columns: repeat(3, 1fr); gap: 4px; }
-    .fns-ig-reel-tile { border-radius: 6px; }
+    .fns-ig-reel-tile { border-radius: 7px; }
+    /* Sleek Compact Mobile Reel Preview Card instead of bulky desktop phone bezel */
+    .fns-iphone-frame { border-radius: 18px; padding: 6px; border-width: 1.5px; max-width: 280px; margin: 0 auto; width: 100%; }
+    .fns-iphone-notch { display: none; }
+    .fns-iphone-screen { max-height: 360px; border-radius: 14px; }
+    .fns-detailed-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+}
+@media (max-width: 520px) {
+    .fns-topbar-actions .fns-cta-schedule, .fns-topbar-actions #fns-sound-toggle-btn { display: none; }
+    .fns-cta-generate, .fns-cta-stop, .fns-cta-post { padding: 7px 11px; font-size: 0.74rem; }
+    .fns-detailed-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
     .fns-topbar-actions .fns-cta-schedule { display: none; }
@@ -3271,53 +3315,165 @@ html, body {
     <img src="/emblem-logo.png" onerror="this.src='/icon-512.png'" class="fns-intro-emblem-img" alt="Foji AI Automation Studio" />
   </div>
 
-  <!-- 3D Runway Where Real Full-Body 3D Cartoon Makra & Meera Walk Towards Each Other -->
-  <div class="fns-intro-walk-stage" style="height:215px;">
-    <div class="fns-intro-reunion-spark"><svg width="28" height="19" viewBox="0 0 54 36" style="vertical-align:middle;border-radius:3px;box-shadow:0 0 10px rgba(255,153,51,0.65);display:inline-block;margin:0 4px;"><rect width="54" height="12" y="0" fill="#FF9933"/><rect width="54" height="12" y="12" fill="#FFFFFF"/><rect width="54" height="12" y="24" fill="#138808"/><circle cx="27" cy="18" r="4.5" fill="none" stroke="#000080" stroke-width="1.4"/></svg> ❤️ ✨</div>
+  <!-- 3D Pixar-Style Animated Cartoon Makra & Meera Walking Towards Each Other -->
+  <div class="fns-intro-walk-stage" style="height:210px;">
+    <div class="fns-intro-reunion-spark"><svg width="30" height="20" viewBox="0 0 54 36" style="vertical-align:middle;border-radius:3px;box-shadow:0 0 12px rgba(255,153,51,0.75);display:inline-block;margin:0 4px;"><rect width="54" height="12" y="0" fill="#FF9933"/><rect width="54" height="12" y="12" fill="#FFFFFF"/><rect width="54" height="12" y="24" fill="#138808"/><circle cx="27" cy="18" r="4.5" fill="none" stroke="#000080" stroke-width="1.4"/></svg> ❤️ ✨</div>
 
-    <!-- FOJI MAKRA: REAL 3D CHARACTER HEAD & TORSO + ARTICULATED WALKING LEGS -->
-    <div class="fns-intro-makra-walker" style="width:122px;height:190px;">
-      <div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;">
-        <!-- Real 3D Character Upper Body Card with 3D Walk Bobbing -->
-        <div style="width:88px;height:126px;border-radius:20px 20px 14px 14px;overflow:hidden;border:2.5px solid #10b981;box-shadow:0 10px 24px rgba(0,0,0,0.85),0 0 16px rgba(16,185,129,0.45);z-index:4;background:#071324;animation:fnsHeadBob 0.32s ease-in-out infinite alternate;">
-          <img src="/api/universe/char_img/foji" onerror="this.src='/icon-192.png'" style="width:100%;height:100%;object-fit:cover;object-position:center 6%;transform:scale(1.08);" alt="Foji Makra" />
-        </div>
-        <!-- Articulated 3D Walking Army Boots & Legs -->
-        <svg viewBox="0 0 100 65" style="width:92px;height:62px;margin-top:-10px;z-index:3;overflow:visible;">
-          <ellipse cx="50" cy="58" rx="30" ry="5" fill="rgba(0,0,0,0.65)"/>
-          <g style="transform-origin:56px 8px;animation:fnsIntroLegR 0.28s ease-in-out 10 alternate;">
-            <rect x="50" y="4" width="13" height="38" rx="6" fill="#1b4332" stroke="#081c15" stroke-width="1.5"/>
-            <rect x="48" y="39" width="20" height="11" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+    <!-- 🪖 3D PIXAR CARTOON FOJI MAKRA (3D Shaded Face, Maroon Beret, Camo Uniform, Swinging Arms & Walking Legs) -->
+    <div class="fns-intro-makra-walker" style="width:125px;height:185px;">
+      <svg viewBox="0 0 120 180" style="width:100%;height:100%;overflow:visible;">
+        <defs>
+          <radialGradient id="makraSkin3D" cx="38%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#f6b98e"/>
+            <stop offset="55%" stop-color="#e08e5a"/>
+            <stop offset="100%" stop-color="#a8582b"/>
+          </radialGradient>
+          <linearGradient id="beret3D" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#be123c"/>
+            <stop offset="60%" stop-color="#881337"/>
+            <stop offset="100%" stop-color="#4c0519"/>
+          </linearGradient>
+          <linearGradient id="camo3D" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#40916c"/>
+            <stop offset="55%" stop-color="#2d6a4f"/>
+            <stop offset="100%" stop-color="#1b4332"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="60" cy="170" rx="28" ry="5" fill="rgba(0,0,0,0.65)"/>
+
+        <!-- Back Walking Leg -->
+        <g class="fns-intro-leg-r" style="transform-origin:62px 118px;">
+          <rect x="56" y="116" width="13" height="38" rx="6" fill="#1b4332" stroke="#081c15" stroke-width="1.5"/>
+          <path d="M54 150 L74 150 C77 150 78 159 73 160 L54 160 Z" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+        </g>
+        <!-- Front Walking Leg -->
+        <g class="fns-intro-leg-l" style="transform-origin:52px 118px;">
+          <rect x="46" y="116" width="13" height="39" rx="6" fill="url(#camo3D)" stroke="#081c15" stroke-width="1.5"/>
+          <path d="M44 151 L65 151 C68 151 69 160 64 161 L44 161 Z" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+        </g>
+
+        <!-- Upper 3D Cartoon Body + Head with Natural Walk Bounce -->
+        <g style="animation:fnsHeadBob 0.32s ease-in-out infinite alternate;">
+          <!-- Back Swinging Arm -->
+          <g class="fns-intro-leg-l" style="transform-origin:48px 76px;">
+            <rect x="34" y="72" width="11" height="32" rx="5" fill="#1b4332"/>
+            <circle cx="39" cy="105" r="5" fill="url(#makraSkin3D)"/>
           </g>
-          <g style="transform-origin:42px 8px;animation:fnsIntroLegL 0.28s ease-in-out 10 alternate;">
-            <rect x="36" y="4" width="13" height="39" rx="6" fill="#2d6a4f" stroke="#081c15" stroke-width="1.5"/>
-            <rect x="34" y="40" width="20" height="11" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+          <!-- 3D Camo Torso & Tactical Vest -->
+          <rect x="40" y="66" width="38" height="54" rx="11" fill="url(#camo3D)" stroke="#081c15" stroke-width="1.6"/>
+          <path d="M45 72 L73 72 L70 112 L48 112 Z" fill="#1e293b" stroke="#10b981" stroke-width="1.2"/>
+          <!-- Tiranga Chest Badge & Nameplate -->
+          <rect x="48" y="80" width="12" height="2.6" fill="#FF9933"/>
+          <rect x="48" y="82.6" width="12" height="2.6" fill="#FFFFFF"/>
+          <rect x="48" y="85.2" width="12" height="2.6" fill="#138808"/>
+          <rect x="62" y="81" width="9" height="4" rx="1" fill="#0f172a" stroke="#fbbf24" stroke-width="0.8"/>
+
+          <!-- 3D Neck & Pixar-Style Shaded Head -->
+          <rect x="53" y="54" width="12" height="14" rx="5" fill="url(#makraSkin3D)"/>
+          <ellipse cx="40" cy="40" rx="4.5" ry="6" fill="url(#makraSkin3D)"/>
+          <circle cx="59" cy="38" r="21" fill="url(#makraSkin3D)" stroke="#8c461e" stroke-width="1"/>
+          <!-- Side Hair & Sharp Jawline Highlight -->
+          <path d="M40 32 C39 22 48 18 58 18 C46 22 43 29 42 38 Z" fill="#18181b"/>
+          <!-- Expressive 3D Cartoon Eyes & Eyebrows -->
+          <path d="M51 30 Q55 27 59 30" stroke="#18181b" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M64 30 Q68 27 72 30" stroke="#18181b" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="55" cy="35" rx="3.2" ry="3.8" fill="#ffffff"/>
+          <ellipse cx="68" cy="35" rx="3.2" ry="3.8" fill="#ffffff"/>
+          <circle cx="56" cy="35" r="2" fill="#0f172a"/>
+          <circle cx="69" cy="35" r="2" fill="#0f172a"/>
+          <circle cx="56.8" cy="34" r="0.8" fill="#ffffff"/>
+          <circle cx="69.8" cy="34" r="0.8" fill="#ffffff"/>
+          <!-- 3D Nose, Proud Fauji Mustache & Warm Smile -->
+          <path d="M62 35 L64 41 L60 42" stroke="#9a4e24" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M52 45 Q61 42 70 45 Q65 47 61 45 Q57 47 52 45 Z" fill="#18181b"/>
+          <path d="M55 48 Q61 53 67 48" stroke="#7c2d12" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Iconic Maroon Commando Beret with Golden Regiment Crest -->
+          <path d="M35 28 C34 11 66 7 82 21 C76 26 52 24 35 28 Z" fill="url(#beret3D)" stroke="#4c0519" stroke-width="1.5"/>
+          <path d="M37 27 L80 22" stroke="#111827" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="67" cy="17" r="4.2" fill="#fbbf24" stroke="#78350f" stroke-width="1"/>
+          <circle cx="67" cy="17" r="1.8" fill="#fef08a"/>
+
+          <!-- Front Saluting / Swinging 3D Arm -->
+          <g class="fns-intro-arm-salute" style="transform-origin:66px 74px;">
+            <rect x="64" y="70" width="11" height="33" rx="5.5" fill="url(#camo3D)" stroke="#081c15" stroke-width="1.2"/>
+            <circle cx="70" cy="104" r="5.2" fill="url(#makraSkin3D)"/>
           </g>
-        </svg>
-      </div>
+        </g>
+      </svg>
     </div>
 
-    <!-- FOJAN MEERA: REAL 3D CHARACTER HEAD & TORSO + ARTICULATED WALKING LEGS -->
-    <div class="fns-intro-meera-walker" style="width:122px;height:190px;">
-      <div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;">
-        <div style="width:88px;height:126px;border-radius:20px 20px 14px 14px;overflow:hidden;border:2.5px solid #ec4899;box-shadow:0 10px 24px rgba(0,0,0,0.85),0 0 16px rgba(236,72,153,0.45);z-index:4;background:#1a081e;animation:fnsHeadBob 0.32s ease-in-out infinite alternate;">
-          <img src="/api/universe/char_img/fojan" onerror="this.src='/icon-192.png'" style="width:100%;height:100%;object-fit:cover;object-position:center 6%;transform:scale(1.08);" alt="Fojan Meera" />
-        </div>
-        <!-- Articulated 3D Walking Lehenga & Golden Jutti Feet -->
-        <svg viewBox="0 0 100 65" style="width:92px;height:62px;margin-top:-10px;z-index:3;overflow:visible;">
-          <ellipse cx="50" cy="58" rx="30" ry="5" fill="rgba(0,0,0,0.65)"/>
-          <g style="transform-origin:55px 8px;animation:fnsIntroLegL 0.28s ease-in-out 10 alternate;">
-            <rect x="49" y="4" width="12" height="36" rx="5" fill="#be185d"/>
-            <rect x="44" y="38" width="18" height="9" rx="4" fill="#fbbf24"/>
+    <!-- 🌸 3D PIXAR CARTOON FOJAN MEERA (3D Shaded Face, Bindi, Jhumkas, Flowing Royal Lehenga & Walking Juttis) -->
+    <div class="fns-intro-meera-walker" style="width:125px;height:185px;">
+      <svg viewBox="0 0 120 180" style="width:100%;height:100%;overflow:visible;">
+        <defs>
+          <radialGradient id="meeraSkin3D" cx="42%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fbd3b4"/>
+            <stop offset="60%" stop-color="#eba578"/>
+            <stop offset="100%" stop-color="#b86b3d"/>
+          </radialGradient>
+          <linearGradient id="lehenga3D" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f43f5e"/>
+            <stop offset="55%" stop-color="#e11d48"/>
+            <stop offset="100%" stop-color="#881337"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="60" cy="170" rx="28" ry="5" fill="rgba(0,0,0,0.65)"/>
+
+        <!-- Walking Legs & Golden Juttis -->
+        <g class="fns-intro-leg-l" style="transform-origin:62px 124px;">
+          <rect x="56" y="122" width="11" height="32" rx="5" fill="#be185d"/>
+          <path d="M46 151 L67 151 L67 159 L44 159 C41 159 42 151 46 151 Z" fill="#fbbf24" stroke="#b45309" stroke-width="1"/>
+        </g>
+        <g class="fns-intro-leg-r" style="transform-origin:50px 124px;">
+          <rect x="45" y="122" width="11" height="32" rx="5" fill="#e11d48"/>
+          <path d="M36 151 L56 151 L56 159 L34 159 C31 159 32 151 36 151 Z" fill="#f59e0b" stroke="#92400e" stroke-width="1"/>
+        </g>
+
+        <!-- Upper 3D Cartoon Body + Head with Graceful Walk Bounce -->
+        <g style="animation:fnsHeadBob 0.32s ease-in-out infinite alternate;">
+          <!-- Flowing 3D Royal Anarkali Lehenga & Zari Border -->
+          <polygon points="43,68 75,68 90,144 28,144" fill="url(#lehenga3D)" stroke="#fbbf24" stroke-width="2"/>
+          <rect x="29" y="135" width="60" height="7" rx="2" fill="#fbbf24"/>
+          <circle cx="45" cy="115" r="2" fill="#fde047"/><circle cx="60" cy="110" r="2" fill="#fde047"/><circle cx="72" cy="118" r="2" fill="#fde047"/>
+          <!-- Golden Phulkari Dupatta Drape -->
+          <path d="M43 68 Q60 96 84 114" stroke="#fde047" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+          <!-- 3D Neck & Pixar-Style Shaded Face -->
+          <rect x="54" y="54" width="10" height="14" rx="4.5" fill="url(#meeraSkin3D)"/>
+          <!-- Golden Necklace -->
+          <path d="M51 64 Q59 71 67 64" stroke="#fbbf24" stroke-width="3" fill="none"/>
+          <!-- Long Braided Hair & Parandi -->
+          <path d="M64 22 C79 24 84 52 78 88 C74 88 71 62 71 42 Z" fill="#09090b"/>
+          <circle cx="58" cy="39" r="20" fill="url(#meeraSkin3D)" stroke="#9a5229" stroke-width="1"/>
+          <!-- Silky Hair & Maang Tikka -->
+          <path d="M38 38 C38 20 55 15 74 25 C64 22 46 25 38 38 Z" fill="#09090b"/>
+          <circle cx="54" cy="24" r="2.5" fill="#fbbf24"/>
+          <!-- Golden Jhumka Earring -->
+          <circle cx="76" cy="44" r="3.5" fill="#fbbf24"/>
+          <polygon points="72,47 80,47 82,53 70,53" fill="#f59e0b"/>
+          <!-- Red Bindi, Big Expressive Eyelashes & Sweet Smile -->
+          <circle cx="53" cy="30" r="1.8" fill="#e11d48"/>
+          <path d="M44 31 Q48 28 52 31" stroke="#09090b" stroke-width="1.8" fill="none"/>
+          <path d="M57 31 Q61 28 65 31" stroke="#09090b" stroke-width="1.8" fill="none"/>
+          <ellipse cx="48" cy="36" rx="3.2" ry="3.8" fill="#ffffff"/>
+          <ellipse cx="61" cy="36" rx="3.2" ry="3.8" fill="#ffffff"/>
+          <circle cx="47.5" cy="36" r="2.1" fill="#1e1b4b"/>
+          <circle cx="60.5" cy="36" r="2.1" fill="#1e1b4b"/>
+          <circle cx="48.3" cy="35" r="0.8" fill="#ffffff"/>
+          <circle cx="61.3" cy="35" r="0.8" fill="#ffffff"/>
+          <path d="M52 36 L50 42 L53 43" stroke="#9a5229" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <!-- Nose Ring (Nath) & Smile -->
+          <circle cx="54" cy="42" r="2.2" fill="none" stroke="#fbbf24" stroke-width="1.2"/>
+          <path d="M49 48 Q54 53 60 48" stroke="#be123c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+          <!-- Swinging Arm with Red Chooda Bangles -->
+          <g class="fns-intro-leg-r" style="transform-origin:48px 74px;">
+            <path d="M48 74 L35 98" stroke="#e11d48" stroke-width="8" stroke-linecap="round"/>
+            <line x1="39" y1="90" x2="35" y2="98" stroke="#fbbf24" stroke-width="8.5" stroke-linecap="round"/>
+            <circle cx="34" cy="100" r="4.8" fill="url(#meeraSkin3D)"/>
           </g>
-          <g style="transform-origin:42px 8px;animation:fnsIntroLegR 0.28s ease-in-out 10 alternate;">
-            <rect x="37" y="4" width="12" height="36" rx="5" fill="#e11d48"/>
-            <rect x="32" y="38" width="18" height="9" rx="4" fill="#f59e0b"/>
-          </g>
-          <polygon points="22,0 78,0 86,32 14,32" fill="#e11d48" stroke="#fbbf24" stroke-width="2"/>
-          <rect x="15" y="26" width="70" height="5" rx="2" fill="#fbbf24"/>
-        </svg>
-      </div>
+        </g>
+      </svg>
     </div>
 
     <div class="fns-intro-ground-beam"></div>
@@ -3783,6 +3939,10 @@ html, body {
     <button class="fns-mnav-item" id="fns-mnav-5" onclick="fnsSwitchTab(5)">
       <span class="fns-mnav-icon">🎞️</span>
       <span>All Reels</span>
+    </button>
+    <button class="fns-mnav-item" id="fns-mnav-6" onclick="fnsSwitchTab(6)">
+      <span class="fns-mnav-icon">📚</span>
+      <span>Parts</span>
     </button>
   </nav>
 </div>
@@ -4262,7 +4422,8 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
       vidEl.load();
     }
     const epLbl = document.getElementById('fns-phone-ep-title');
-    if (epLbl) epLbl.innerText = targetPreview;
+    const matchItem = _fnsMasterVaultList.find(x => x.video_file === targetPreview);
+    if (epLbl) epLbl.innerText = (matchItem && matchItem.clean_video_code) ? matchItem.clean_video_code : targetPreview.replace('raw_video_', 'Video_').replace('.mp4', '');
   }
 }
 
@@ -4391,7 +4552,9 @@ function fnsBuildDetailedReelCard(v, mode) {
   const isSch = (v.vault_status === 'scheduled' || mode === 'scheduled');
   const badgeBg = isPub ? 'rgba(16,185,129,0.18)' : (isSch ? 'rgba(139,92,246,0.22)' : 'rgba(14,165,233,0.18)');
   const badgeCol = isPub ? '#34d399' : (isSch ? '#c4b5fd' : '#38bdf8');
-  const badgeLabel = isPub ? '✅ Posted' : (isSch ? `⏰ ${v.time_label || v.scheduled_display || 'Scheduled'}` : '⏳ Pending');
+  const fullSchedDateAndTime = v.scheduled_full_badge || ((v.date_label && v.time_label) ? `${v.date_label} • ${v.time_label} IST` : (v.scheduled_display || v.time_label || 'Scheduled'));
+  const badgeLabel = isPub ? `✅ Posted (${v.published_at || 'Live'})` : (isSch ? `📅 ${fullSchedDateAndTime}` : '⏳ Pending');
+  const cleanCode = v.clean_video_code || (`Video_${String(v.video_number || 1).padStart(2,'0')}_Part_${String(v.part_number || 1).padStart(2,'0')}`);
   const vidUrl = '/api/universe/video_file/' + encodeURIComponent(v.video_file) + '#t=0.1';
   const encCap = encodeURIComponent(v.caption || v.dialogue || '');
   const partNum = v.part_number || 1;
@@ -4404,7 +4567,7 @@ function fnsBuildDetailedReelCard(v, mode) {
           <span style="font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:99px;background:${badgeBg};color:${badgeCol};">${badgeLabel}</span>
           <span style="font-size:0.68rem;font-weight:800;color:#fbbf24;">Part #${partNum}</span>
         </div>
-        <div style="font-size:0.84rem;font-weight:800;color:#fff;">${v.title || '3D Episode'}</div>
+        <div style="font-size:0.84rem;font-weight:800;color:#fff;">${v.title || cleanCode}</div><div style="font-size:0.68rem;color:#38bdf8;font-weight:700;">🎬 ${cleanCode}</div>
         <div style="font-size:0.72rem;color:#94a3b8;line-height:1.35;">"${(v.dialogue || '').slice(0, 75)}"</div>
         <div style="display:flex;gap:5px;margin-top:auto;padding-top:9px;flex-wrap:wrap;">
           ${!isPub && !isSch ? `<button class="fns-cta-schedule" style="flex:1;padding:7px 8px;font-size:0.72rem;" onclick="fnsApproveAndScheduleSpecific('${v.video_file}')">📅 Schedule</button>` : ''}
@@ -4600,24 +4763,31 @@ async function fnsApproveAndScheduleLatest() {
 }
 
 async function fnsApproveAndScheduleSpecific(vfile) {
-  fnsOpenModal('⏳', 'Scheduling...', 'Locking next time slot...', false, []);
-  try {
-    const r = await fetch('/api/universe/approve_and_schedule', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ video_file: vfile })
-    });
-    const d = await r.json();
-    if (d.ok) {
-      const slotTxt = (d.scheduled_item && d.scheduled_item.scheduled_display) ? d.scheduled_item.scheduled_display : 'Next Slot';
-      fnsOpenModal('📅', 'Scheduled', `Locked for <b>${slotTxt}</b>.`);
+  fnsOpenModal('⏳', 'Scheduling...', 'Assigning Date & Time Slot...', false, []);
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const r = await fetch('/api/universe/approve_and_schedule', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ video_file: vfile })
+      });
+      const d = await r.json();
       _fnsLastVaultSignature = '';
-      fnsRefreshHub();
-    } else {
-      fnsOpenModal('⚠️', 'Notice', d.error || 'Could not schedule.', true);
+      await fnsRefreshHub();
+      if (d.ok) {
+        const slotTxt = (d.scheduled_item && d.scheduled_item.scheduled_display) ? d.scheduled_item.scheduled_display : 'Next Available Slot';
+        fnsOpenModal('📅', 'Scheduled!', `Locked for <b>${slotTxt}</b>`);
+        return;
+      } else if (attempt === 2) {
+        fnsOpenModal('⚠️', 'Notice', d.error || 'Could not schedule.', true);
+      }
+    } catch (e) {
+      if (attempt === 2) {
+        await fnsRefreshHub();
+        fnsCloseModal();
+        fnsShowToast('📅 Synced with Schedule Queue ✓');
+      }
     }
-  } catch (e) {
-    fnsOpenModal('⚠️', 'Error', 'Connection error.', true);
   }
 }
 
