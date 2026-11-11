@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794411919164",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "Foji 3D Reel (raw_video_1110_023113_p2.mp4) locked for 15 Nov 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "09:15 PM",
+    "date_str": "11 Nov 2026",
+    "timestamp": 1794411919.164191
+  },
+  {
     "id": "notif_1794411892692",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "01:04 AM",
     "date_str": "09 Nov 2026",
     "timestamp": 1794166446.939502
-  },
-  {
-    "id": "notif_1794150249294",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 2: Palti Ka Bhooth & Dhool Ka Swad locked for 10 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "08:34 PM",
-    "date_str": "08 Nov 2026",
-    "timestamp": 1794150249.2944403
   }
 ]
