@@ -1,5 +1,5 @@
 {
-  "generated_count": 23,
+  "generated_count": 24,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -67,7 +67,8 @@
     "fauji_masti",
     "fauji_masti",
     "border_duty",
-    "love_meera"
+    "love_meera",
+    "unit_ragda"
   ],
   "history": [
     {
@@ -530,6 +531,23 @@
       "caption": "🎖️ Part 5: Sarhad Ki Diwali Aur Tera Intezaar | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai.\"\n\n🔥 Watan ki mitti ki kasam, meri har dhadkan mein tera hi naam hai,\nYe doori sirf raste ki hai, meri har subah aur teri har shaam hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiMakra #FojanMeera #AgniveerLove #IndianArmy #EmotionalStory #DesiPixar",
       "created_at": "11 Nov 2026, 12:33 PM IST",
       "completed_at": "11 Nov 2026, 12:39 PM IST"
+    },
+    {
+      "video_id": "Video_050_UnitRagda_Part_05_1111_192711",
+      "video_file": "Video_050_UnitRagda_Part_05_1111_192711.mp4",
+      "track_id": "unit_ragda",
+      "track_name": "🔥 Ustad Ka Ragda & Punishment",
+      "part_number": 5,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "🔥 Ustad Ka Ragda & Punishment — Part 5: Ret Ka Ragda & Palti ka Toofan",
+      "scene_summary": "A high-octane 3D Pixar-style 9:16 vertical shot. The morning sun blazes over a deep, golden sand-pit at the obstacle course. Makra, drenched in sweat and covered head-to-toe in fine dust, is performing high-speed 'Front Rolls' (Palti) while holding his heavy INSAS rifle high above his head to protect it from the sand. His face shows a mix of Haryanvi grit and exhaustion, teeth clenched in determination. In the background, Ustad stands tall on the edge of the pit, his shadow looming large, tapping a bamboo stick against his combat boots. The air is thick with kicked-up dust and the golden glow of the rising sun, highlighting the intense textures of the camouflage uniforms and the grainy sand.",
+      "dialogue_line_1_hinglish": "Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!",
+      "shayari_hindi": "सीना फौलाद का और बाज़ुओं में अंगारे रखते हैं, \nहम फौजी हैं जनाब, हार को भी अपने जूतों के नीचे दबाए रखते हैं।",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 🔥 Ustad Ka Ragda & Punishment - Part 5: Ret Ka Ragda & Palti ka Toofan. SCENE & ACTION: A high-octane 3D Pixar-style 9:16 vertical shot. The morning sun blazes over a deep, golden sand-pit at the obstacle course. Makra, drenched in sweat and covered head-to-toe in fine dust, is performing high-speed 'Front Rolls' (Palti) while holding his heavy INSAS rifle high above his head to protect it from the sand. His face shows a mix of Haryanvi grit and exhaustion, teeth clenched in determination. In the background, Ustad stands tall on the edge of the pit, his shadow looming large, tapping a bamboo stick against his combat boots. The air is thick with kicked-up dust and the golden glow of the rising sun, highlighting the intense textures of the camouflage uniforms and the grainy sand. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 5: Ret Ka Ragda & Palti ka Toofan | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!\"\n\n🔥 सीना फौलाद का और बाज़ुओं में अंगारे रखते हैं, \nहम फौजी हैं जनाब, हार को भी अपने जूतों के नीचे दबाए रखते हैं।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FaujiRagda #IndianArmy #Agniveer #ArmyLife #MakraFoji #UstadKaRagda",
+      "created_at": "11 Nov 2026, 07:27 PM IST",
+      "completed_at": "11 Nov 2026, 07:33 PM IST"
     }
   ],
   "failed_dialogues": [
@@ -597,7 +615,8 @@
     "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
     "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
     "Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.",
-    "Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai."
+    "Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai.",
+    "Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!"
   ],
   "deleted_ids": [],
   "track_parts": {
