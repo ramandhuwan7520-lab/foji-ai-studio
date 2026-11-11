@@ -73,18 +73,6 @@
       "status": "awaiting_approval"
     },
     {
-      "id": "vid_raw_video_1109_120057_p3.mp4",
-      "video_file": "raw_video_1109_120057_p3.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
-      "track_id": "unit_ragda",
-      "part_number": 3,
-      "dialogue": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
-      "shayari": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
-      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
-      "created_at": "09 Nov 2026, 12:08 PM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_1110_060115_p4.mp4",
       "video_file": "raw_video_1110_060115_p4.mp4",
       "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 4: Digital Ishq Aur Border Ka Pehra",
@@ -169,8 +157,27 @@
       "status": "awaiting_approval"
     }
   ],
-  "scheduled_posts": [],
-  "updated_epoch": 1794407087.9451194,
+  "scheduled_posts": [
+    {
+      "id": "vid_raw_video_1109_120057_p3.mp4",
+      "video_file": "raw_video_1109_120057_p3.mp4",
+      "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
+      "track_id": "unit_ragda",
+      "part_number": 3,
+      "dialogue": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
+      "shayari": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
+      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
+      "created_at": "09 Nov 2026, 12:08 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-12_06:30",
+      "scheduled_epoch": 1794445200.0,
+      "scheduled_display": "12 Nov 2026 at 06:30 AM IST",
+      "date_label": "12 Nov 2026",
+      "time_label": "06:30 AM"
+    }
+  ],
+  "updated_epoch": 1794407194.1044445,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -370,6 +377,21 @@
     }
   ],
   "published_history": [
+    {
+      "id": "vid_raw_video_1111_123320_p5.mp4",
+      "video_file": "raw_video_1111_123320_p5.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 5: Sarhad Ki Diwali Aur Tera Intezaar",
+      "track_id": "love_meera",
+      "part_number": 5,
+      "dialogue": "Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai.",
+      "shayari": "Watan ki mitti ki kasam, meri har dhadkan mein tera hi naam hai,\nYe doori sirf raste ki hai, meri har subah aur teri har shaam hai.",
+      "caption": "🎖️ Part 5: Sarhad Ki Diwali Aur Tera Intezaar | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai.\"\n\n🔥 Watan ki mitti ki kasam, meri har dhadkan mein tera hi naam hai,\nYe doori sirf raste ki hai, meri har subah aur teri har shaam hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiMakra #FojanMeera #AgniveerLove #IndianArmy #EmotionalStory #DesiPixar",
+      "created_at": "11 Nov 2026, 12:39 PM IST",
+      "status": "published",
+      "published_at": "11 Nov 2026, 07:54 PM IST",
+      "published_epoch": 1794407087.945116,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
     {
       "id": "vid_raw_video_1108_202515_p2.mp4",
       "video_file": "raw_video_1108_202515_p2.mp4",
