@@ -1,5 +1,5 @@
 {
-  "generated_count": 21,
+  "generated_count": 22,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -65,7 +65,8 @@
     "love_meera",
     "unit_ragda",
     "fauji_masti",
-    "fauji_masti"
+    "fauji_masti",
+    "border_duty"
   ],
   "history": [
     {
@@ -494,6 +495,23 @@
       "caption": "🎖️ Part 2: Peti Inspection Ka Kaand | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!\"\n\n🔥 Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMasti #ArmyLife #IndianArmy #BarrackComedy #MakraFoji #DesiHumor",
       "created_at": "10 Nov 2026, 12:00 PM IST",
       "completed_at": "10 Nov 2026, 12:05 PM IST"
+    },
+    {
+      "video_id": "1111_062859_p2",
+      "video_file": "raw_video_1111_062859_p2.mp4",
+      "track_id": "border_duty",
+      "track_name": "🏔️ LOC Border Patrol & Maa KaPyar",
+      "part_number": 2,
+      "include_meera": true,
+      "meera_outfit": "Emerald Green Velvet Haryanvi Daman-Kurti with silver oxidized jewelry and sheer chunni",
+      "emotion_name": "🏔️ LOC Border Patrol & Maa KaPyar — Part 2: Barfani Toofan Mein Yaadon Ka Pehra",
+      "scene_summary": "A 3D Pixar-style 9:16 vertical shot at the freezing LOC during a heavy blizzard. Makra is waist-deep in snow, wearing a white heavy-duty winter camouflage parka and tactical gear, his eyelashes frosted with ice as he clutches his rifle. In a cinematic 'split-screen' glow effect, Meera appears as a warm memory, wearing her Emerald Green Velvet Haryanvi Daman-Kurti with silver oxidized jewelry and a sheer chunni. The contrast between the cold blue night of the border and the warm golden glow of the village memory is striking. Makra’s expression is one of fierce determination and deep longing as the Indian Tricolor flutters in the background storm.",
+      "dialogue_line_1_hinglish": "Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.",
+      "shayari_hindi": "सरहद की ये बर्फ भी अब हमें मोम जैसी पिघलती लगती है,\nजब घर से दुआएं और सीने में तिरंगे की आग जलती है।",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Emerald Green Velvet Haryanvi Daman-Kurti with silver oxidized jewelry and sheer chunni. EPISODE: 🏔️ LOC Border Patrol & Maa KaPyar - Part 2: Barfani Toofan Mein Yaadon Ka Pehra. SCENE & ACTION: A 3D Pixar-style 9:16 vertical shot at the freezing LOC during a heavy blizzard. Makra is waist-deep in snow, wearing a white heavy-duty winter camouflage parka and tactical gear, his eyelashes frosted with ice as he clutches his rifle. In a cinematic 'split-screen' glow effect, Meera appears as a warm memory, wearing her Emerald Green Velvet Haryanvi Daman-Kurti with silver oxidized jewelry and a sheer chunni. The contrast between the cold blue night of the border and the warm golden glow of the village memory is striking. Makra’s expression is one of fierce determination and deep longing as the Indian Tricolor flutters in the background storm. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 2: Barfani Toofan Mein Yaadon Ka Pehra | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.\"\n\n🔥 सरहद की ये बर्फ भी अब हमें मोम जैसी पिघलती लगती है,\nजब घर से दुआएं और सीने में तिरंगे की आग जलती है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiAIStudio #IndianArmy #SiachenDiaries #HaryanviFoji #PatrioticVibes #MakraMeera",
+      "created_at": "11 Nov 2026, 06:28 AM IST",
+      "completed_at": "11 Nov 2026, 06:34 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -559,7 +577,8 @@
     "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.",
     "Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!",
     "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
-    "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!"
+    "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
+    "Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai."
   ],
   "deleted_ids": [],
   "track_parts": {
