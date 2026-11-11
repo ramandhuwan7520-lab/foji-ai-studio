@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794380603021",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ❤️ Foji Makra & Fojan Meera Love Story — Part 5: Sarhad Ki Diwali Aur Tera Intezaar | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
+    "status": "info",
+    "time_str": "12:33 PM",
+    "date_str": "11 Nov 2026",
+    "timestamp": 1794380603.0211868
+  },
+  {
     "id": "notif_1794359099873",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
