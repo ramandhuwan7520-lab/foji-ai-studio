@@ -1,5 +1,5 @@
 {
-  "generated_count": 22,
+  "generated_count": 23,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -66,7 +66,8 @@
     "unit_ragda",
     "fauji_masti",
     "fauji_masti",
-    "border_duty"
+    "border_duty",
+    "love_meera"
   ],
   "history": [
     {
@@ -512,6 +513,23 @@
       "caption": "🎖️ Part 2: Barfani Toofan Mein Yaadon Ka Pehra | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.\"\n\n🔥 सरहद की ये बर्फ भी अब हमें मोम जैसी पिघलती लगती है,\nजब घर से दुआएं और सीने में तिरंगे की आग जलती है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiAIStudio #IndianArmy #SiachenDiaries #HaryanviFoji #PatrioticVibes #MakraMeera",
       "created_at": "11 Nov 2026, 06:28 AM IST",
       "completed_at": "11 Nov 2026, 06:34 AM IST"
+    },
+    {
+      "video_id": "1111_123320_p5",
+      "video_file": "raw_video_1111_123320_p5.mp4",
+      "track_id": "love_meera",
+      "track_name": "❤️ Foji Makra & Fojan Meera Love Story",
+      "part_number": 5,
+      "include_meera": true,
+      "meera_outfit": "Maroon & Teal Embroidered Festive Lehenga Choli with traditional matha-patti",
+      "emotion_name": "❤️ Foji Makra & Fojan Meera Love Story — Part 5: Sarhad Ki Diwali Aur Tera Intezaar",
+      "scene_summary": "A breathtaking 3D Pixar-style 9:16 vertical split-screen. Upper half: Meera, wearing a stunning Maroon & Teal Embroidered Festive Lehenga Choli with a shimmering matha-patti, lights a brass diya in a marigold-decorated Haryanvi courtyard, her face glowing with soft candlelight. Lower half: Makra, in rugged Indian Army combat fatigues and a tactical vest, sits inside a cold, dark Himalayan bunker. He tenderly touches a small, framed photo of Meera while a single string of fairy lights twinkles behind him. His expression is a mix of stoic duty and deep longing as snow falls outside the bunker slit.",
+      "dialogue_line_1_hinglish": "Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai.",
+      "shayari_hindi": "Watan ki mitti ki kasam, meri har dhadkan mein tera hi naam hai,\nYe doori sirf raste ki hai, meri har subah aur teri har shaam hai.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Maroon & Teal Embroidered Festive Lehenga Choli with traditional matha-patti. EPISODE: ❤️ Foji Makra & Fojan Meera Love Story - Part 5: Sarhad Ki Diwali Aur Tera Intezaar. SCENE & ACTION: A breathtaking 3D Pixar-style 9:16 vertical split-screen. Upper half: Meera, wearing a stunning Maroon & Teal Embroidered Festive Lehenga Choli with a shimmering matha-patti, lights a brass diya in a marigold-decorated Haryanvi courtyard, her face glowing with soft candlelight. Lower half: Makra, in rugged Indian Army combat fatigues and a tactical vest, sits inside a cold, dark Himalayan bunker. He tenderly touches a small, framed photo of Meera while a single string of fairy lights twinkles behind him. His expression is a mix of stoic duty and deep longing as snow falls outside the bunker slit. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 5: Sarhad Ki Diwali Aur Tera Intezaar | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai.\"\n\n🔥 Watan ki mitti ki kasam, meri har dhadkan mein tera hi naam hai,\nYe doori sirf raste ki hai, meri har subah aur teri har shaam hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiMakra #FojanMeera #AgniveerLove #IndianArmy #EmotionalStory #DesiPixar",
+      "created_at": "11 Nov 2026, 12:33 PM IST",
+      "completed_at": "11 Nov 2026, 12:39 PM IST"
     }
   ],
   "failed_dialogues": [
@@ -578,7 +596,8 @@
     "Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!",
     "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
     "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
-    "Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai."
+    "Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.",
+    "Meera, tu wahan mitti ke diye jalana aur main yahan barood ki garmi mein teri yaad ki lau jalaunga, ye tyohar bas teri muskurahat ke naam hai."
   ],
   "deleted_ids": [],
   "track_parts": {
