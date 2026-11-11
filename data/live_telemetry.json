@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Stage 1: AI Episodic Script",
-  "sub_detail": "Generating fresh connected script & wardrobe...",
+  "step_num": 2,
+  "step_title": "Stage 2: Cookie Sign-In (Account #1)",
+  "sub_detail": "Logging into Gemini & preparing Makra + Meera (Emerald Green Velvet Haryanvi Daman-Ku...)...",
   "status": "active",
-  "progress": 12,
-  "updated_at": "06:28:59 AM",
-  "epoch": 1794358739.8616936
+  "progress": 25,
+  "updated_at": "06:29:01 AM",
+  "epoch": 1794358741.0281239
 }
