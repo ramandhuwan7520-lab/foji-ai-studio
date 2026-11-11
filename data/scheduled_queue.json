@@ -79,18 +79,6 @@
       "status": "awaiting_approval"
     },
     {
-      "id": "vid_raw_video_1110_083746_p4.mp4",
-      "video_file": "raw_video_1110_083746_p4.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 4: Raat Ka Ragda & Haathi-Chaal",
-      "track_id": "unit_ragda",
-      "part_number": 4,
-      "dialogue": "Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!",
-      "shayari": "Sone ki umeed mein aankhen nahi, junoon bhara hai,\nFauji ka ragda hi toh uski kismat ka khara sona hai.",
-      "caption": "🎖️ Part 4: Raat Ka Ragda & Haathi-Chaal | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!\"\n\n🔥 Sone ki umeed mein aankhen nahi, junoon bhara hai,\nFauji ka ragda hi toh uski kismat ka khara sona hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FaujiRagda #IndianArmy #Agniveer #MakraFoji #ArmyTraining #Josh",
-      "created_at": "10 Nov 2026, 08:43 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_Video_050_UnitRagda_Part_05_1111_192711.mp4",
       "video_file": "Video_050_UnitRagda_Part_05_1111_192711.mp4",
       "title": "🔥 Ustad Ka Ragda & Punishment — Part 5: Ret Ka Ragda & Palti ka Toofan",
@@ -193,9 +181,27 @@
       "scheduled_display": "13 Nov 2026 at 12:30 PM IST",
       "date_label": "13 Nov 2026",
       "time_label": "12:30 PM"
+    },
+    {
+      "id": "vid_raw_video_1110_083746_p4.mp4",
+      "video_file": "raw_video_1110_083746_p4.mp4",
+      "title": "🔥 Ustad Ka Ragda & Punishment — Part 4: Raat Ka Ragda & Haathi-Chaal",
+      "track_id": "unit_ragda",
+      "part_number": 4,
+      "dialogue": "Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!",
+      "shayari": "Sone ki umeed mein aankhen nahi, junoon bhara hai,\nFauji ka ragda hi toh uski kismat ka khara sona hai.",
+      "caption": "🎖️ Part 4: Raat Ka Ragda & Haathi-Chaal | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, suraj dhal gaya toh kya hua, hamare iradon ki garmi toh abhi poori academy ko pighla degi, ye patthar bhi ab naram lagne lage hain!\"\n\n🔥 Sone ki umeed mein aankhen nahi, junoon bhara hai,\nFauji ka ragda hi toh uski kismat ka khara sona hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FaujiRagda #IndianArmy #Agniveer #MakraFoji #ArmyTraining #Josh",
+      "created_at": "10 Nov 2026, 08:43 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-13_18:30",
+      "scheduled_epoch": 1794574800.0,
+      "scheduled_display": "13 Nov 2026 at 06:30 PM IST",
+      "date_label": "13 Nov 2026",
+      "time_label": "06:30 PM"
     }
   ],
-  "updated_epoch": 1794411572.1704502,
+  "updated_epoch": 1794411615.302682,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
