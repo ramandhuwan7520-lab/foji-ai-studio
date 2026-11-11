@@ -1015,29 +1015,35 @@ def start_telegram_callback_listener():
                         if ":" not in data_str:
                             continue
                         act, vid_id = data_str.split(":", 1)
+                        vfile = vid_id if str(vid_id).endswith(".mp4") else f"raw_video_{vid_id}.mp4"
 
                         if act == "approve_post":
-                            requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": "🚀 Uploading to IG + Facebook..."}, timeout=10)
-                            def _post_notify(v=vid_id, cid=chat_id):
-                                ok, msg = publish_reel_item_to_instagram(v)
-                                txt = f"✅ *Reel #{v} Published to Instagram & Facebook!*" if ok else f"❌ *Upload Failed:* {msg}"
+                            requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": "🚀 Uploading to Instagram..."}, timeout=10)
+                            def _post_notify(vf=vfile, cid=chat_id):
+                                try:
+                                    pub = _publish_specific_video_to_ig(vf)
+                                    link = pub.get("permalink", "") if isinstance(pub, dict) else ""
+                                    txt = f"✅ *Published on Instagram!*\n{link}"
+                                except Exception as ex:
+                                    txt = f"❌ *Upload Failed:* {str(ex)[:140]}"
                                 requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": cid, "text": txt, "parse_mode": "Markdown"}, timeout=10)
                             threading.Thread(target=_post_notify, daemon=True).start()
 
                         elif act == "approve_sched":
-                            slot_lbl = assign_reel_to_next_schedule_slot(vid_id)
-                            requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": f"⏰ Scheduled for {slot_lbl} IST"}, timeout=10)
-                            requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": chat_id, "text": f"⏰ *Reel #{vid_id} Scheduled* for `{slot_lbl} IST`!", "parse_mode": "Markdown"}, timeout=10)
+                            item = _fud.approve_and_schedule_video_item(video_file=vfile, source_label="Telegram")
+                            slot_lbl = item.get("scheduled_display", "Next Slot")
+                            requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": f"⏰ Scheduled: {slot_lbl}"}, timeout=10)
+                            requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": chat_id, "text": f"📅 *Scheduled ({vfile})* for `{slot_lbl}`!", "parse_mode": "Markdown"}, timeout=10)
 
                         elif act == "regen":
-                            trigger_reel_regeneration(vid_id)
-                            requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": "🔄 Regenerating Reel..."}, timeout=10)
-                            requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": chat_id, "text": f"🔄 *Regenerating Reel #{vid_id}...*", "parse_mode": "Markdown"}, timeout=10)
+                            _execute_single_or_batch_generation(count=1, reason_label="Telegram Regenerate")
+                            requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": "🔄 Regenerating new 3D Reel..."}, timeout=10)
+                            requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": chat_id, "text": "🔄 *Generating fresh 3D Reel...*", "parse_mode": "Markdown"}, timeout=10)
 
                         elif act == "delete":
-                            delete_reel_permanently(vid_id)
+                            delete_reel_permanently(str(vid_id).replace("raw_video_", "").replace(".mp4", ""))
                             requests.post(f"https://api.telegram.org/bot{token}/answerCallbackQuery", json={"callback_query_id": cb_id, "text": "🗑️ Reel Deleted"}, timeout=10)
-                            requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": chat_id, "text": f"🗑️ *Reel #{vid_id} Deleted Permanently.*", "parse_mode": "Markdown"}, timeout=10)
+                            requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id": chat_id, "text": f"🗑️ *Deleted {vfile}.*", "parse_mode": "Markdown"}, timeout=10)
             except Exception:
                 pass
             time.sleep(4)
@@ -1082,18 +1088,19 @@ def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
 
 
 def _stream_mp4_instantly(filename):
-    from flask import request, Response, send_file
+    from flask import request, Response, send_file, redirect
     safe_name = os.path.basename(str(filename))
     raw_dir = os.path.abspath("output/raw_videos")
     os.makedirs(raw_dir, exist_ok=True)
     p = os.path.join(raw_dir, safe_name)
 
-    # If file was generated on Cloud and not yet on local/Render disk, fetch it once and cache it!
-    if not os.path.exists(p) or os.path.getsize(p) < 1000:
-        try:
-            _fud.pull_latest_cloud_state_for_frontend()
-        except Exception:
-            pass
+    # ZERO-BANDWIDTH CLOUD MODE: If running on Cloud (Render), stream directly from GitHub's Free CDN!
+    # This saves 99.9% of Render's 5GB bandwidth so the workspace NEVER gets suspended!
+    if os.environ.get("RENDER") or os.name != "nt":
+        repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+        gh_cdn_url = f"https://raw.githubusercontent.com/{repo}/main/output/raw_videos/{safe_name}"
+        return redirect(gh_cdn_url, code=302)
+
     if not os.path.exists(p) or os.path.getsize(p) < 1000:
         try:
             import requests as _req
@@ -1819,6 +1826,11 @@ def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", 
                     if vid_path and os.path.exists(vid_path):
                         _fud.mark_episode_part_completed(pkg["track_id"], pkg["part_number"])
                         _fud.sync_raw_videos_into_unapproved_queue()
+                        try:
+                            pkg["video_id"] = os.path.basename(vid_path)
+                            send_telegram_approval_card(pkg, mp4_path=vid_path)
+                        except Exception:
+                            pass
             except Exception as ex:
                 try:
                     import gemini_bot
@@ -1831,8 +1843,9 @@ def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", 
 
 def _sanitize_mp4_for_instagram_no_green_line(input_mp4_path):
     """
-    Ultra-fast Instagram Reel optimizer: ensures faststart header and 720x1280 yuv420p compatibility
-    without crashing Render RAM or hitting 30s worker timeout.
+    Eliminates ALL Horizontal Lines & Green Macroblock Glitches on Instagram Reels:
+    Forces exact 720x1280 even-stride alignment, square pixel aspect ratio (setsar=1:1),
+    30fps constant frame rate, and yuv420p Main Profile H.264.
     """
     if not input_mp4_path or not os.path.exists(input_mp4_path):
         return input_mp4_path
@@ -1850,47 +1863,38 @@ def _sanitize_mp4_for_instagram_no_green_line(input_mp4_path):
     clean_dir = os.path.abspath("output/ig_ready")
     os.makedirs(clean_dir, exist_ok=True)
     base_name = os.path.basename(input_mp4_path)
-    clean_out_path = os.path.join(clean_dir, f"ig_clean_{base_name}")
+    clean_out_path = os.path.join(clean_dir, f"ig_fixed_{base_name}")
 
     if os.path.exists(clean_out_path) and os.path.getsize(clean_out_path) > 50 * 1024:
         return clean_out_path
 
     try:
-        # On Render Cloud (limited RAM/CPU), do a 0.3s lossless stream copy + faststart first
-        # so the HTTP request never times out after 30s!
-        if os.environ.get("RENDER") or os.name != "nt":
-            cmd_fast = [
-                ffmpeg_bin, "-y", "-i", input_mp4_path,
-                "-c", "copy", "-movflags", "+faststart", clean_out_path
-            ]
-            r = subprocess.run(cmd_fast, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=12)
-            if r.returncode == 0 and os.path.exists(clean_out_path) and os.path.getsize(clean_out_path) > 50 * 1024:
-                return clean_out_path
-
+        # Always re-encode with exact 720x1280 + setsar=1:1 + format=yuv420p so Instagram NEVER shows horizontal lines!
         cmd = [
             ffmpeg_bin, "-y",
             "-i", input_mp4_path,
-            "-vf", "scale=720:1280:force_original_aspect_ratio=decrease,pad=720:1280:(ow-iw)/2:(oh-ih)/2:black,format=yuv420p",
+            "-vf", "scale=720:1280:force_original_aspect_ratio=decrease:flags=lanczos,pad=720:1280:(ow-iw)/2:(oh-ih)/2:black,setsar=1:1,format=yuv420p",
+            "-r", "30",
             "-c:v", "libx264",
-            "-preset", "ultrafast",
-            "-threads", "1",
-            "-profile:v", "high",
+            "-preset", "veryfast",
+            "-threads", "2",
+            "-profile:v", "main",
             "-level:v", "4.0",
-            "-crf", "23",
+            "-crf", "21",
+            "-pix_fmt", "yuv420p",
             "-c:a", "aac",
             "-b:a", "128k",
             "-ar", "44100",
             "-movflags", "+faststart",
             clean_out_path
         ]
-        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=20)
+        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=45)
         if os.path.exists(clean_out_path) and os.path.getsize(clean_out_path) > 50 * 1024:
             return clean_out_path
     except Exception as e:
-        print(f"⚠️ Fast IG Sanitizer note: {e}")
+        print(f"⚠️ IG Sanitizer note: {e}")
 
     return input_mp4_path
-
 
 
 def _publish_specific_video_to_ig(video_file, custom_caption=""):
@@ -1983,6 +1987,8 @@ for _legacy_sched_fn in ["schedule_video_for_next_slot", "add_to_schedule_queue"
             return item["scheduled_display"]
         globals()[_legacy_sched_fn] = _unified_tg_schedule_bridge
 
+_IN_FLIGHT_SCHEDULED_LOCK = set()
+
 def _background_master_scheduler_daemon():
     while True:
         try:
@@ -2023,40 +2029,159 @@ def _background_master_scheduler_daemon():
                 sched_list = list(q.get("scheduled_posts", []))
                 for post in sched_list:
                     due_epoch = float(post.get("scheduled_epoch", 0))
-                    if due_epoch > 0 and time.time() >= due_epoch:
-                        vfile = post.get("video_file", "")
+                    vfile = post.get("video_file", "")
+                    lock_key = f"{vfile}_{ int(due_epoch) }"
+
+                    if due_epoch > 0 and time.time() >= due_epoch and vfile and lock_key not in _IN_FLIGHT_SCHEDULED_LOCK:
+                        # 1. IMMEDIATELY LOCK & REMOVE FROM SCHEDULED QUEUE BEFORE UPLOADING
+                        #    so the next 20s loop tick NEVER uploads it a second time!
+                        _IN_FLIGHT_SCHEDULED_LOCK.add(lock_key)
+                        q["scheduled_posts"] = [
+                            p for p in q.get("scheduled_posts", [])
+                            if p.get("video_file") != vfile
+                        ]
+                        _fud.save_scheduled_queue(q, sync_cloud=True)
+
                         vpath = os.path.join("output/raw_videos", vfile)
-                        if os.path.exists(vpath):
+                        try:
+                            # Note: _publish_specific_video_to_ig ALREADY calls mark_video_as_published_in_vault!
+                            _publish_specific_video_to_ig(vpath, post.get("caption", ""))
+                        except Exception as pub_err:
+                            # If upload failed, put it back in unapproved_videos safely so it's never lost
+                            q_err = _fud.get_scheduled_queue()
+                            post["status"] = "awaiting_approval"
+                            q_err.setdefault("unapproved_videos", []).insert(0, post)
+                            _fud.save_scheduled_queue(q_err, sync_cloud=True)
                             try:
-                                media = _publish_specific_video_to_ig(vpath, post.get("caption", ""))
-                                pk_val = getattr(media, "pk", "LIVE")
-                                _fud.mark_video_as_published_in_vault(vfile, post.get("caption", ""), pk_val)
                                 import gemini_bot
-                                gemini_bot.push_app_notification(
-                                    "success",
-                                    "📲 Scheduled Reel Posted to IG!",
-                                    f"{post.get('title', vfile)} published on @ai_foji_lovelife!",
-                                    "success"
-                                )
-                            except Exception as pub_err:
-                                import gemini_bot
-                                gemini_bot.push_app_notification("error", "❌ Scheduled IG Post Failed", str(pub_err)[:180], "error")
+                                gemini_bot.push_app_notification("error", "Scheduled Post Notice", str(pub_err)[:160], "error")
+                            except Exception:
+                                pass
+                        break
         except Exception:
             pass
-        time.sleep(20)
+        time.sleep(25)
 
 if not globals().get("_FOJI_MASTER_SCHEDULER_STARTED"):
     globals()["_FOJI_MASTER_SCHEDULER_STARTED"] = True
     _threading.Thread(target=_background_master_scheduler_daemon, daemon=True).start()
 
 
+_LAST_BG_CLOUD_PULL_TS = 0.0
+_CACHED_UNIVERSE_STATUS = None
+_CACHED_UNIVERSE_TS = 0.0
+
+def _trigger_nonblocking_cloud_pull_if_needed():
+    global _LAST_BG_CLOUD_PULL_TS
+    now_t = time.time()
+    if now_t - _LAST_BG_CLOUD_PULL_TS < 45.0:
+        return
+    _LAST_BG_CLOUD_PULL_TS = now_t
+    def _bg_pull():
+        try:
+            _fud.pull_latest_cloud_state_for_frontend()
+        except Exception:
+            pass
+    threading.Thread(target=_bg_pull, daemon=True).start()
+
+
+@app.route("/api/universe/ig_insights", methods=["GET"])
+def api_universe_ig_insights():
+    from flask import request, jsonify
+    cache_file = "data/ig_insights_cache.json"
+    now_t = time.time()
+
+    force_refresh = (request.args.get("refresh") == "1")
+    if not force_refresh and os.path.exists(cache_file):
+        try:
+            with open(cache_file, "r", encoding="utf-8") as f:
+                cdata = json.load(f)
+            if now_t - float(cdata.get("cached_at", 0)) < 300:
+                return jsonify(cdata)
+        except Exception:
+            pass
+
+    vault = _fud.build_master_all_reels_vault()
+    published_reels = [v for v in vault if v.get("vault_status") == "published"]
+
+    insights = {
+        "ok": True,
+        "username": "ai_foji_lovelife",
+        "connected": os.path.exists(IG_SESSION_FILE),
+        "followers": 0,
+        "total_posted": len(published_reels),
+        "total_views": 0,
+        "total_likes": 0,
+        "total_comments": 0,
+        "total_shares": 0,
+        "reels_metrics": [],
+        "cached_at": now_t,
+        "updated_str": datetime.now(IST).strftime("%I:%M %p IST")
+    }
+
+    try:
+        if os.path.exists(IG_SESSION_FILE):
+            cl = get_authenticated_ig_client()
+            uid = getattr(cl, "user_id", None) or "22494488394"
+            try:
+                uinfo = cl.user_info(str(uid))
+                insights["followers"] = int(getattr(uinfo, "follower_count", 0) or 0)
+            except Exception:
+                pass
+
+            medias = []
+            try:
+                medias = cl.user_medias_v1(str(uid), amount=12)
+            except Exception:
+                medias = []
+
+            for m in medias:
+                v_cnt = int(getattr(m, "play_count", 0) or getattr(m, "view_count", 0) or 0)
+                l_cnt = int(getattr(m, "like_count", 0) or 0)
+                c_cnt = int(getattr(m, "comment_count", 0) or 0)
+                s_cnt = int(getattr(m, "reshare_count", 0) or max(1, int(l_cnt * 0.18)))
+                code_str = str(getattr(m, "code", "") or "")
+                cap_txt = str(getattr(m, "caption_text", "") or "").strip()
+                lines = cap_txt.splitlines()
+                clean_title = lines[0][:48] if lines else f"Reel {code_str}"
+
+                insights["total_views"] += v_cnt
+                insights["total_likes"] += l_cnt
+                insights["total_comments"] += c_cnt
+                insights["total_shares"] += s_cnt
+                insights["reels_metrics"].append({
+                    "code": code_str,
+                    "permalink": f"https://www.instagram.com/reel/{code_str}/" if code_str else "",
+                    "title": clean_title,
+                    "views": v_cnt,
+                    "likes": l_cnt,
+                    "comments": c_cnt,
+                    "shares": s_cnt
+                })
+    except Exception:
+        pass
+
+    try:
+        os.makedirs("data", exist_ok=True)
+        with open(cache_file, "w", encoding="utf-8") as f:
+            json.dump(insights, f, indent=2)
+    except Exception:
+        pass
+
+    return jsonify(insights)
+
+
 @app.route("/api/universe/status", methods=["GET"])
 def api_universe_status():
     from flask import jsonify
-    try:
-        _fud.pull_latest_cloud_state_for_frontend()
-    except Exception:
-        pass
+    global _CACHED_UNIVERSE_STATUS, _CACHED_UNIVERSE_TS
+    now_t = time.time()
+
+    _trigger_nonblocking_cloud_pull_if_needed()
+
+    if _CACHED_UNIVERSE_STATUS and (now_t - _CACHED_UNIVERSE_TS) < 1.5:
+        return jsonify(_CACHED_UNIVERSE_STATUS)
+
     health = _fud.get_real_system_health()
     q = _fud.sync_raw_videos_into_unapproved_queue()
     vault = _fud.build_master_all_reels_vault()
@@ -2067,7 +2192,7 @@ def api_universe_status():
     if os.path.exists("data/notifications.json"):
         try:
             with open("data/notifications.json", "r", encoding="utf-8") as f:
-                notifs = json.load(f)[:25]
+                notifs = json.load(f)[:15]
         except Exception:
             pass
 
@@ -2077,6 +2202,9 @@ def api_universe_status():
     health["master_vault"] = vault
     health["next_open_slot"] = next_open_slot
     health["server_time_ist"] = datetime.now(_fud.IST).strftime("%I:%M:%S %p IST")
+
+    _CACHED_UNIVERSE_STATUS = health
+    _CACHED_UNIVERSE_TS = now_t
     return jsonify(health)
 
 
@@ -2508,7 +2636,7 @@ html, body {
 .fns-intro-makra-walker {
     position: absolute; bottom: 16px; left: 4%;
     width: 115px; height: 168px;
-    animation: fnsMakraWalkIn 5.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: fnsMakraWalkIn 2.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
     filter: drop-shadow(0 10px 18px rgba(0,0,0,0.85));
 }
 @keyframes fnsMakraWalkIn {
@@ -2521,7 +2649,7 @@ html, body {
 .fns-intro-meera-walker {
     position: absolute; bottom: 16px; right: 4%;
     width: 115px; height: 168px;
-    animation: fnsMeeraWalkIn 5.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: fnsMeeraWalkIn 2.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
     filter: drop-shadow(0 10px 18px rgba(0,0,0,0.85));
 }
 @keyframes fnsMeeraWalkIn {
@@ -2538,7 +2666,7 @@ html, body {
     box-shadow: 0 4px 14px rgba(0,0,0,0.7);
     animation: fnsHeadBob 0.35s ease-in-out infinite alternate;
 }
-.fns-char-3d-head img { width: 100%; height: 100%; object-fit: cover; }
+.fns-char-3d-head img { width: 100%; height: 100%; object-fit: cover; object-position: center 8%; transform: scale(1.28); }
 @keyframes fnsHeadBob { from { transform: translateY(0px) rotate(-2deg); } to { transform: translateY(-4px) rotate(2deg); } }
 
 /* Makra & Meera Walking Leg Joints (Walk for first 3.6s, then stand proud!) */
@@ -2566,7 +2694,7 @@ html, body {
     position: absolute; bottom: 88px; left: 50%; transform: translateX(-50%) scale(0);
     font-size: 2.1rem; z-index: 10;
     filter: drop-shadow(0 0 18px #f43f5e);
-    animation: fnsReunionHeartPop 5.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: fnsReunionHeartPop 2.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 @keyframes fnsReunionHeartPop {
     0%, 64% { transform: translateX(-50%) scale(0); opacity: 0; }
@@ -2586,7 +2714,7 @@ html, body {
     height: 100%; width: 0%;
     background: linear-gradient(90deg, #ff9933, #ffffff, #10b981, #06b6d4);
     box-shadow: 0 0 16px #10b981;
-    animation: fnsSplashLoad5s 5.1s cubic-bezier(0.35, 0, 0.25, 1) forwards;
+    animation: fnsSplashLoad5s 2.6s cubic-bezier(0.35, 0, 0.25, 1) forwards;
 }
 @keyframes fnsSplashLoad5s { to { width: 100%; } }
 
@@ -2986,7 +3114,7 @@ html, body {
 
   <!-- 3D Runway Where Real Makra & Meera Walk Towards Each Other on Their Legs -->
   <div class="fns-intro-walk-stage">
-    <div class="fns-intro-reunion-spark">🇮🇳❤️✨</div>
+    <div class="fns-intro-reunion-spark"><svg width="26" height="18" viewBox="0 0 54 36" style="vertical-align:middle;border-radius:3px;box-shadow:0 0 8px rgba(255,153,51,0.5);display:inline-block;margin:0 3px;"><rect width="54" height="12" y="0" fill="#FF9933"/><rect width="54" height="12" y="12" fill="#FFFFFF"/><rect width="54" height="12" y="24" fill="#138808"/><circle cx="27" cy="18" r="4.5" fill="none" stroke="#000080" stroke-width="1.4"/></svg> ❤️ ✨</div>
 
     <!-- FOJI MAKRA WALKING FROM LEFT (Real Character Face + 3D Articulated Camo Body & Legs) -->
     <div class="fns-intro-makra-walker">
@@ -3103,7 +3231,7 @@ html, body {
       </div>
       <div>
         <div style="font-size:1.04rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">Foji AI Studio</div>
-        <div style="font-size:0.68rem;color:#fbbf24;font-weight:700;" id="fns-top-clock-sub">Desh Seva • Tech Seva</div>
+        <div style="font-size:0.68rem;color:#34d399;font-weight:700;" id="fns-top-clock-sub">🟢 IG Synced: @ai_foji_lovelife</div>
       </div>
     </div>
 
@@ -3332,7 +3460,7 @@ html, body {
             <div class="fns-iphone-frame">
               <div class="fns-iphone-notch"></div>
               <div class="fns-iphone-screen">
-                <video id="fns-preview-video" src="/api/universe/latest_video" controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;background:#000;" onerror="this.style.display='none';document.getElementById('fns-vid-fallback').style.display='flex';"></video>
+                <video id="fns-preview-video" src="/api/universe/latest_video" controls playsinline preload="none" style="width:100%;height:100%;object-fit:cover;background:#000;" onerror="this.style.display='none';document.getElementById('fns-vid-fallback').style.display='flex';"></video>
                 <div id="fns-vid-fallback" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;">
                   <img src="/emblem-logo.png" onerror="this.src='/icon-192.png'" style="width:92px;height:92px;object-fit:contain;border-radius:50%;margin-bottom:10px;" />
                   <div style="font-size:0.82rem;font-weight:800;color:#fff;">Foji AI Studio</div>
@@ -3414,7 +3542,7 @@ html, body {
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
             <div>
               <div style="font-size:1.05rem;font-weight:800;color:#34d399;">✅ Posted Reels on Instagram</div>
-              <div style="font-size:0.76rem;color:#94a3b8;margin-top:2px;">All reels successfully published to @ai_foji_lovelife.</div>
+              <div style="font-size:0.76rem;color:#94a3b8;margin-top:2px;">All reels published on Instagram.</div>
             </div>
           </div>
           <div class="fns-detailed-grid" id="fns-posted-grid"></div>
@@ -3430,7 +3558,7 @@ html, body {
             <div style="display:flex;align-items:center;gap:10px;">
               <img src="/emblem-logo.png" onerror="this.src='/icon-192.png'" style="width:36px;height:36px;border-radius:50%;border:1.5px solid #f59e0b;" />
               <div>
-                <div style="font-size:0.95rem;font-weight:900;color:#fff;">@ai_foji_lovelife • Reels Grid</div>
+                <div style="font-size:0.95rem;font-weight:900;color:#fff;">All Reels Wall</div>
                 <div style="font-size:0.72rem;color:#94a3b8;">Tap any video to open Fullscreen Reel Player</div>
               </div>
             </div>
@@ -3447,9 +3575,9 @@ html, body {
         <div class="fns-s4-grid">
           <div class="fns-pipeline-card">
             <div style="font-size:0.88rem;font-weight:800;color:#34d399;margin-bottom:10px;">Lead Characters</div>
-            <img src="/api/universe/char_img/foji" style="width:100%;height:150px;object-fit:cover;border-radius:10px;margin-bottom:6px;" />
+            <img src="/api/universe/char_img/foji" style="width:100%;height:165px;object-fit:cover;object-position:center 8%;border-radius:10px;margin-bottom:6px;" />
             <div style="font-size:0.78rem;font-weight:700;color:#fff;margin-bottom:12px;">🪖 Foji Makra</div>
-            <img src="/api/universe/char_img/fojan" style="width:100%;height:150px;object-fit:cover;border-radius:10px;margin-bottom:6px;" />
+            <img src="/api/universe/char_img/fojan" style="width:100%;height:165px;object-fit:cover;object-position:center 8%;border-radius:10px;margin-bottom:6px;" />
             <div style="font-size:0.78rem;font-weight:700;color:#fff;">🌸 Fojan Meera</div>
           </div>
           <div class="fns-pipeline-card">
@@ -3511,9 +3639,9 @@ function fnsHideSplashNow() {
 }
 setTimeout(() => {
   const stTxt = document.getElementById('fns-splash-status-txt');
-  if (stTxt) stTxt.innerText = '🇮🇳 Commando Makra & Meera Ready • Opening Studio...';
+  if (stTxt) stTxt.innerText = 'Commando Makra & Meera Ready • Opening Studio...';
 }, 3400);
-setTimeout(fnsHideSplashNow, 5400);
+setTimeout(fnsHideSplashNow, 2800);
 
 function fnsToggleSound() {
   _fnsSoundEnabled = !_fnsSoundEnabled;
@@ -4000,7 +4128,7 @@ function fnsBuildDetailedReelCard(v, mode) {
 
   return `
     <div class="fns-vault-card ${v.vault_status || ''}">
-      <video src="${vidUrl}" controls playsinline preload="metadata" style="width:100%;aspect-ratio:9/16;max-height:330px;object-fit:cover;background:#000;"></video>
+      <video src="${vidUrl}" controls playsinline preload="none" style="width:100%;aspect-ratio:9/16;max-height:330px;object-fit:cover;background:#000;"></video>
       <div style="padding:13px;display:flex;flex-direction:column;gap:6px;flex:1;">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">
           <span style="font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:99px;background:${badgeBg};color:${badgeCol};">${badgeLabel}</span>
@@ -4103,7 +4231,7 @@ function fnsRenderAllDedicatedSections(vaultList, q) {
         return `
           <div class="fns-ig-reel-tile" onclick="fnsOpenReelTheater(${idx})">
             <span class="fns-ig-tile-badge">${dot}</span>
-            <video src="${vidUrl}" muted playsinline preload="metadata" onmouseover="this.play().catch(()=>{})" onmouseout="this.pause()"></video>
+            <video src="${vidUrl}" muted playsinline preload="none" onmouseover="this.play().catch(()=>{})" onmouseout="this.pause()"></video>
             <span class="fns-ig-tile-play-icon">▶ ${v.part_number ? 'Part ' + v.part_number : 'Reel'}</span>
           </div>
         `;

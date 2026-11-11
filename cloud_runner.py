@@ -21,4 +21,11 @@ if __name__ == "__main__":
             custom_idea=(idea if i == 0 else ""),
             is_preview=False
         )
-        gemini_bot.generate_video_in_gemini(pending_pkg=pkg)
+        out_vid = gemini_bot.generate_video_in_gemini(pending_pkg=pkg)
+        if out_vid and os.path.exists(out_vid):
+            try:
+                import dashboard_app as da
+                pkg["video_id"] = os.path.basename(out_vid)
+                da.send_telegram_approval_card(pkg, mp4_path=out_vid)
+            except Exception as e:
+                print("Telegram card note:", e)
