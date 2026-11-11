@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794411972377",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 4: Digital Ishq Aur Border Ka Pehra locked for 15 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "09:16 PM",
+    "date_str": "11 Nov 2026",
+    "timestamp": 1794411972.3770435
+  },
+  {
     "id": "notif_1794411949062",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "01:06 AM",
     "date_str": "09 Nov 2026",
     "timestamp": 1794166609.2013514
-  },
-  {
-    "id": "notif_1794166550284",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "01:05 AM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794166550.2846546
   }
 ]
