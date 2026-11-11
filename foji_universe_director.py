@@ -692,6 +692,34 @@ def save_scheduled_queue(qdata, sync_cloud=True):
         push_json_to_github_instantly(QUEUE_FILE, "Update scheduled & published queue state")
 
 
+
+def _infer_track_and_part_from_filename(fname, meta=None):
+    meta = meta or {}
+    tid = meta.get("track_id") or ""
+    pnum = meta.get("part_number") or 0
+    low = str(fname).lower()
+    if not tid:
+        if "ragda" in low:
+            tid = "unit_ragda"
+        elif "train" in low or "ustad" in low:
+            tid = "training_ustad"
+        elif "masti" in low or "comedy" in low:
+            tid = "fauji_masti"
+        elif "border" in low or "loc" in low:
+            tid = "border_duty"
+        else:
+            tid = "love_meera"
+    if not pnum:
+        m_p = re.search(r"(?:_p|part_)(\d+)", low)
+        if m_p:
+            pnum = int(m_p.group(1))
+        else:
+            pnum = 1
+    t_obj = FOJI_UNIVERSE_TRACKS.get(tid, FOJI_UNIVERSE_TRACKS["love_meera"])
+    title = meta.get("emotion_name") or f"{t_obj['name']} • Part {pnum}"
+    return tid, int(pnum), title
+
+
 def sync_raw_videos_into_unapproved_queue():
     """
     Scans BOTH `output/raw_videos/*.mp4` AND `data/history.json` so EVERY video ever generated
@@ -771,12 +799,13 @@ def sync_raw_videos_into_unapproved_queue():
                 if os.path.exists(full_p)
                 else (meta.get("created_at") or "Today")
             )
+            inf_tid, inf_pnum, inf_title = _infer_track_and_part_from_filename(fname, meta)
             q["unapproved_videos"].append({
                 "id": f"vid_{fname}",
                 "video_file": fname,
-                "title": meta.get("emotion_name", f"Foji 3D Reel ({fname})"),
-                "track_id": meta.get("track_id", "love_meera"),
-                "part_number": meta.get("part_number", 1),
+                "title": inf_title,
+                "track_id": inf_tid,
+                "part_number": inf_pnum,
                 "dialogue": meta.get("dialogue_line_1_hinglish", "Fresh 3D Foji Episode Ready"),
                 "shayari": meta.get("shayari_hindi", ""),
                 "caption": meta.get("caption", "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife"),
@@ -1037,7 +1066,14 @@ def pull_latest_cloud_state_for_frontend():
                 try:
                     with open(local_p, "r", encoding="utf-8") as lf:
                         loc_t = json.load(lf)
-                    if float(remote_data.get("epoch", 0)) < float(loc_t.get("epoch", 0)):
+                    loc_ep = float(loc_t.get("epoch", 0))
+                    rem_ep = float(remote_data.get("epoch", 0))
+                    # Never let stale remote 'idle' overwrite an active local pipeline!
+                    if rem_ep < loc_ep:
+                        should_write = False
+                    elif loc_t.get("status") == "active" and remote_data.get("status") == "idle" and (time.time() - loc_ep) < 120:
+                        should_write = False
+                    elif loc_t.get("status") == "active" and remote_data.get("status") == "active" and int(remote_data.get("step_num", 0)) < int(loc_t.get("step_num", 0)) and (time.time() - loc_ep) < 90:
                         should_write = False
                 except Exception:
                     pass
@@ -1139,6 +1175,10 @@ def get_real_system_health():
             "next_part": t_prog.get("next_part", 1),
             "theme_brief": t_info["theme_brief"]
         })
+
+    vault_items = build_master_all_reels_vault()
+    if not raw_videos and vault_items:
+        raw_videos = [v.get("video_file") for v in vault_items if v.get("video_file")]
 
     return {
         "director_state": state,

@@ -2386,6 +2386,8 @@ def api_universe_trigger_pipeline():
             st["custom_idea"] = twist
             _fud.save_director_state(st)
 
+        global _CACHED_UNIVERSE_TS
+        _CACHED_UNIVERSE_TS = 0
         _execute_single_or_batch_generation(
             count=batch_count,
             reason_label=f"Dashboard Manual Trigger ({batch_count} Video{'s' if batch_count > 1 else ''})",
@@ -2397,6 +2399,39 @@ def api_universe_trigger_pipeline():
         })
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
+
+
+
+@app.route("/api/universe/mark_already_posted", methods=["POST"])
+def api_universe_mark_already_posted():
+    from flask import request, jsonify
+    try:
+        data = request.get_json(force=True, silent=True) or {}
+        vfile = os.path.basename((data.get("video_file") or "").strip())
+        if not vfile:
+            return jsonify({"ok": False, "error": "Missing video_file"}), 200
+
+        caption = (data.get("caption") or "").strip()
+        pub_item = _fud.mark_video_as_published_in_vault(vfile, caption=caption, media_pk="MANUAL_MARKED_POSTED")
+        global _CACHED_UNIVERSE_TS
+        _CACHED_UNIVERSE_TS = 0
+        return jsonify({
+            "ok": True,
+            "video_file": vfile,
+            "published_item": pub_item,
+            "message": f"Moved {vfile} to Posted Reels!"
+        })
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 200
+
+
+@app.route("/api/universe/latest_thumb", methods=["GET"])
+def api_universe_latest_thumb():
+    from flask import redirect
+    vault = _fud.build_master_all_reels_vault()
+    if vault and vault[0].get("video_file"):
+        return api_universe_thumb_file(vault[0]["video_file"])
+    return redirect("/emblem-logo.png")
 
 
 @app.route("/api/universe/approve_and_schedule", methods=["POST"])
@@ -2593,6 +2628,9 @@ def api_universe_video_file(filename):
 
 @app.route("/api/universe/latest_video", methods=["GET"])
 def api_universe_latest_video():
+    vault = _fud.build_master_all_reels_vault()
+    if vault and vault[0].get("video_file"):
+        return _stream_mp4_instantly(vault[0]["video_file"])
     raw_dir = "output/raw_videos"
     if os.path.exists(raw_dir):
         mp4s = [os.path.join(raw_dir, f) for f in os.listdir(raw_dir) if f.endswith(".mp4")]
@@ -3233,68 +3271,53 @@ html, body {
     <img src="/emblem-logo.png" onerror="this.src='/icon-512.png'" class="fns-intro-emblem-img" alt="Foji AI Automation Studio" />
   </div>
 
-  <!-- 3D Runway Where Real Makra & Meera Walk Towards Each Other on Their Legs -->
-  <div class="fns-intro-walk-stage">
-    <div class="fns-intro-reunion-spark"><svg width="26" height="18" viewBox="0 0 54 36" style="vertical-align:middle;border-radius:3px;box-shadow:0 0 8px rgba(255,153,51,0.5);display:inline-block;margin:0 3px;"><rect width="54" height="12" y="0" fill="#FF9933"/><rect width="54" height="12" y="12" fill="#FFFFFF"/><rect width="54" height="12" y="24" fill="#138808"/><circle cx="27" cy="18" r="4.5" fill="none" stroke="#000080" stroke-width="1.4"/></svg> ❤️ ✨</div>
+  <!-- 3D Runway Where Real Full-Body 3D Cartoon Makra & Meera Walk Towards Each Other -->
+  <div class="fns-intro-walk-stage" style="height:215px;">
+    <div class="fns-intro-reunion-spark"><svg width="28" height="19" viewBox="0 0 54 36" style="vertical-align:middle;border-radius:3px;box-shadow:0 0 10px rgba(255,153,51,0.65);display:inline-block;margin:0 4px;"><rect width="54" height="12" y="0" fill="#FF9933"/><rect width="54" height="12" y="12" fill="#FFFFFF"/><rect width="54" height="12" y="24" fill="#138808"/><circle cx="27" cy="18" r="4.5" fill="none" stroke="#000080" stroke-width="1.4"/></svg> ❤️ ✨</div>
 
-    <!-- FOJI MAKRA WALKING FROM LEFT (Real Character Face + 3D Articulated Camo Body & Legs) -->
-    <div class="fns-intro-makra-walker">
-      <div class="fns-char-3d-head">
-        <img src="/api/universe/char_img/foji" onerror="this.src='/icon-192.png'" alt="Foji Makra" />
+    <!-- FOJI MAKRA: REAL 3D CHARACTER HEAD & TORSO + ARTICULATED WALKING LEGS -->
+    <div class="fns-intro-makra-walker" style="width:122px;height:190px;">
+      <div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;">
+        <!-- Real 3D Character Upper Body Card with 3D Walk Bobbing -->
+        <div style="width:88px;height:126px;border-radius:20px 20px 14px 14px;overflow:hidden;border:2.5px solid #10b981;box-shadow:0 10px 24px rgba(0,0,0,0.85),0 0 16px rgba(16,185,129,0.45);z-index:4;background:#071324;animation:fnsHeadBob 0.32s ease-in-out infinite alternate;">
+          <img src="/api/universe/char_img/foji" onerror="this.src='/icon-192.png'" style="width:100%;height:100%;object-fit:cover;object-position:center 6%;transform:scale(1.08);" alt="Foji Makra" />
+        </div>
+        <!-- Articulated 3D Walking Army Boots & Legs -->
+        <svg viewBox="0 0 100 65" style="width:92px;height:62px;margin-top:-10px;z-index:3;overflow:visible;">
+          <ellipse cx="50" cy="58" rx="30" ry="5" fill="rgba(0,0,0,0.65)"/>
+          <g style="transform-origin:56px 8px;animation:fnsIntroLegR 0.28s ease-in-out 10 alternate;">
+            <rect x="50" y="4" width="13" height="38" rx="6" fill="#1b4332" stroke="#081c15" stroke-width="1.5"/>
+            <rect x="48" y="39" width="20" height="11" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+          </g>
+          <g style="transform-origin:42px 8px;animation:fnsIntroLegL 0.28s ease-in-out 10 alternate;">
+            <rect x="36" y="4" width="13" height="39" rx="6" fill="#2d6a4f" stroke="#081c15" stroke-width="1.5"/>
+            <rect x="34" y="40" width="20" height="11" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+          </g>
+        </svg>
       </div>
-      <svg viewBox="0 0 115 168" style="width:100%;height:100%;overflow:visible;">
-        <ellipse cx="56" cy="158" rx="26" ry="5" fill="rgba(0,0,0,0.6)"/>
-        <!-- Back Leg -->
-        <g class="fns-intro-leg-r">
-          <rect x="52" y="114" width="12" height="34" rx="5" fill="#1b4332" stroke="#081c15" stroke-width="1.5"/>
-          <rect x="50" y="145" width="18" height="9" rx="4" fill="#111827"/>
-        </g>
-        <!-- Front Leg -->
-        <g class="fns-intro-leg-l">
-          <rect x="44" y="114" width="12" height="35" rx="5" fill="#2d6a4f" stroke="#081c15" stroke-width="1.5"/>
-          <rect x="42" y="146" width="18" height="9" rx="4" fill="#1f2937"/>
-        </g>
-        <!-- Camo Torso & Chest Vest -->
-        <rect x="38" y="66" width="36" height="52" rx="9" fill="#2d6a4f" stroke="#081c15" stroke-width="1.8"/>
-        <rect x="42" y="72" width="28" height="36" rx="5" fill="#1e293b" stroke="#10b981" stroke-width="1.2"/>
-        <!-- Tiranga Chest Patch -->
-        <rect x="49" y="80" width="14" height="3" fill="#ff9933"/>
-        <rect x="49" y="83" width="14" height="3" fill="#ffffff"/>
-        <rect x="49" y="86" width="14" height="3" fill="#138808"/>
-        <!-- Saluting Right Arm -->
-        <g class="fns-intro-arm-salute">
-          <rect x="64" y="70" width="11" height="32" rx="5" fill="#40916c" stroke="#081c15" stroke-width="1.4"/>
-          <circle cx="70" cy="104" r="5" fill="#e08b56"/>
-        </g>
-      </svg>
     </div>
 
-    <!-- FOJAN MEERA WALKING FROM RIGHT (Real Character Face + 3D Articulated Royal Attire & Legs) -->
-    <div class="fns-intro-meera-walker">
-      <div class="fns-char-3d-head" style="border-color:#ec4899;">
-        <img src="/api/universe/char_img/fojan" onerror="this.src='/icon-192.png'" alt="Fojan Meera" />
+    <!-- FOJAN MEERA: REAL 3D CHARACTER HEAD & TORSO + ARTICULATED WALKING LEGS -->
+    <div class="fns-intro-meera-walker" style="width:122px;height:190px;">
+      <div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;">
+        <div style="width:88px;height:126px;border-radius:20px 20px 14px 14px;overflow:hidden;border:2.5px solid #ec4899;box-shadow:0 10px 24px rgba(0,0,0,0.85),0 0 16px rgba(236,72,153,0.45);z-index:4;background:#1a081e;animation:fnsHeadBob 0.32s ease-in-out infinite alternate;">
+          <img src="/api/universe/char_img/fojan" onerror="this.src='/icon-192.png'" style="width:100%;height:100%;object-fit:cover;object-position:center 6%;transform:scale(1.08);" alt="Fojan Meera" />
+        </div>
+        <!-- Articulated 3D Walking Lehenga & Golden Jutti Feet -->
+        <svg viewBox="0 0 100 65" style="width:92px;height:62px;margin-top:-10px;z-index:3;overflow:visible;">
+          <ellipse cx="50" cy="58" rx="30" ry="5" fill="rgba(0,0,0,0.65)"/>
+          <g style="transform-origin:55px 8px;animation:fnsIntroLegL 0.28s ease-in-out 10 alternate;">
+            <rect x="49" y="4" width="12" height="36" rx="5" fill="#be185d"/>
+            <rect x="44" y="38" width="18" height="9" rx="4" fill="#fbbf24"/>
+          </g>
+          <g style="transform-origin:42px 8px;animation:fnsIntroLegR 0.28s ease-in-out 10 alternate;">
+            <rect x="37" y="4" width="12" height="36" rx="5" fill="#e11d48"/>
+            <rect x="32" y="38" width="18" height="9" rx="4" fill="#f59e0b"/>
+          </g>
+          <polygon points="22,0 78,0 86,32 14,32" fill="#e11d48" stroke="#fbbf24" stroke-width="2"/>
+          <rect x="15" y="26" width="70" height="5" rx="2" fill="#fbbf24"/>
+        </svg>
       </div>
-      <svg viewBox="0 0 115 168" style="width:100%;height:100%;overflow:visible;">
-        <ellipse cx="56" cy="158" rx="26" ry="5" fill="rgba(0,0,0,0.6)"/>
-        <!-- Walking Legs / Payal Feet -->
-        <g class="fns-intro-leg-l">
-          <rect x="52" y="116" width="11" height="33" rx="5" fill="#be185d"/>
-          <rect x="48" y="146" width="16" height="8" rx="4" fill="#fbbf24"/>
-        </g>
-        <g class="fns-intro-leg-r">
-          <rect x="44" y="116" width="11" height="33" rx="5" fill="#db2777"/>
-          <rect x="40" y="146" width="16" height="8" rx="4" fill="#f59e0b"/>
-        </g>
-        <!-- Flowing 3D Traditional Anarkali / Lehenga Skirt -->
-        <polygon points="40,68 74,68 86,136 28,136" fill="#e11d48" stroke="#fbbf24" stroke-width="2"/>
-        <!-- Golden Zari Border -->
-        <rect x="29" y="128" width="56" height="7" rx="2" fill="#fbbf24"/>
-        <!-- Dupatta Drape -->
-        <path d="M42 70 Q58 95 78 112" stroke="#fde047" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <!-- Graceful Arm -->
-        <path d="M44 76 L32 100" stroke="#f43f5e" stroke-width="8" stroke-linecap="round"/>
-        <circle cx="31" cy="102" r="4.5" fill="#e08b56"/>
-      </svg>
     </div>
 
     <div class="fns-intro-ground-beam"></div>
@@ -3363,7 +3386,7 @@ html, body {
       <button class="fns-tab-btn" id="fns-btn-tab3" onclick="fnsSwitchTab(3)">📅 Scheduled (<span id="fns-q-badge">0</span>)</button>
       <button class="fns-tab-btn" id="fns-btn-tab4" onclick="fnsSwitchTab(4)">✅ Posted (<span id="fns-posted-badge">0</span>)</button>
       <button class="fns-tab-btn" id="fns-btn-tab5" onclick="fnsSwitchTab(5)">🎞️ All Reels (<span id="fns-vault-badge">0</span>)</button>
-      <button class="fns-tab-btn" id="fns-btn-tab6" onclick="fnsSwitchTab(6)">📚 Tracks</button>
+      <button class="fns-tab-btn" id="fns-btn-tab6" onclick="fnsSwitchTab(6)">📚 Series Parts</button>
     </div>
 
     <div class="fns-topbar-actions" style="display:flex;gap:8px;align-items:center;">
@@ -3581,7 +3604,7 @@ html, body {
             <div class="fns-iphone-frame">
               <div class="fns-iphone-notch"></div>
               <div class="fns-iphone-screen">
-                <video id="fns-preview-video" src="/api/universe/latest_video" controls playsinline preload="none" style="width:100%;height:100%;object-fit:cover;background:#000;" onerror="this.style.display='none';document.getElementById('fns-vid-fallback').style.display='flex';"></video>
+                <video id="fns-preview-video" src="/api/universe/latest_video" poster="/api/universe/latest_thumb" controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;background:#000;" onerror="this.style.display='none';document.getElementById('fns-vid-fallback').style.display='flex';"></video>
                 <div id="fns-vid-fallback" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;">
                   <img src="/emblem-logo.png" onerror="this.src='/icon-192.png'" style="width:92px;height:92px;object-fit:contain;border-radius:50%;margin-bottom:10px;" />
                   <div style="font-size:0.82rem;font-weight:800;color:#fff;">Foji AI Studio</div>
@@ -3671,17 +3694,26 @@ html, body {
       </div>
 
       <!-- ================================================================= -->
-      <!-- SECTION 5: ALL REELS (PURE INSTAGRAM REELS GRID — VIDEOS ONLY!)   -->
+      <!-- SECTION 5: ALL REELS (PURE INSTAGRAM REELS GRID + MODE FILTERS)   -->
       <!-- ================================================================= -->
       <div class="fns-screen" id="fns-screen-5">
         <div class="fns-pipeline-card" style="padding:14px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <img src="/emblem-logo.png" onerror="this.src='/icon-192.png'" style="width:36px;height:36px;border-radius:50%;border:1.5px solid #f59e0b;" />
               <div>
                 <div style="font-size:0.95rem;font-weight:900;color:#fff;">All Reels Wall</div>
-                <div style="font-size:0.72rem;color:#94a3b8;">Tap any video to open Fullscreen Reel Player</div>
+                <div style="font-size:0.72rem;color:#94a3b8;">Filter by Series Mode or tap any video for Fullscreen Player</div>
               </div>
+            </div>
+            <!-- SERIES MODE FILTER PILLS -->
+            <div id="fns-wall-filter-pills" style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="fns-tab-btn active" onclick="fnsFilterAllReelsWall('all', this)">🎞️ All Modes</button>
+              <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('love_meera', this)">❤️ Love Story</button>
+              <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('unit_ragda', this)">🔥 Ragda</button>
+              <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('training_ustad', this)">⚔️ Training</button>
+              <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('fauji_masti', this)">😂 Masti</button>
+              <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('border_duty', this)">🏔️ Border</button>
             </div>
           </div>
           <!-- PURE INSTAGRAM 9:16 VIDEO WALL (NO CAPTIONS OR HASHTAGS) -->
@@ -3690,19 +3722,38 @@ html, body {
       </div>
 
       <!-- ================================================================= -->
-      <!-- SECTION 6: STORY TRACKS & LEAD CHARACTERS                         -->
+      <!-- SECTION 6: SERIES MODES & PART-BY-PART ORGANIZER                  -->
       <!-- ================================================================= -->
       <div class="fns-screen" id="fns-screen-6">
+        <div class="fns-pipeline-card" style="margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+            <div>
+              <div style="font-size:1.05rem;font-weight:900;color:#fff;">📚 Series Mode Part-Wise Tracker</div>
+              <div style="font-size:0.75rem;color:#94a3b8;">Select any Series Mode below to see which Parts are Posted, Scheduled, or Pending next in line!</div>
+            </div>
+            <div id="fns-series-mode-tabs" style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="fns-tab-btn active" onclick="fnsSelectSeriesModeView('love_meera', this)">❤️ Pyar / Love Story</button>
+              <button class="fns-tab-btn" onclick="fnsSelectSeriesModeView('unit_ragda', this)">🔥 Ustad Ragda</button>
+              <button class="fns-tab-btn" onclick="fnsSelectSeriesModeView('training_ustad', this)">⚔️ Training Drill</button>
+              <button class="fns-tab-btn" onclick="fnsSelectSeriesModeView('fauji_masti', this)">😂 Barrack Masti</button>
+              <button class="fns-tab-btn" onclick="fnsSelectSeriesModeView('border_duty', this)">🏔️ Border Duty</button>
+            </div>
+          </div>
+
+          <div id="fns-series-summary-banner" style="padding:11px 14px;border-radius:12px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"></div>
+          <div class="fns-detailed-grid" id="fns-series-parts-grid"></div>
+        </div>
+
         <div class="fns-s4-grid">
           <div class="fns-pipeline-card">
-            <div style="font-size:0.88rem;font-weight:800;color:#34d399;margin-bottom:10px;">Lead Characters</div>
+            <div style="font-size:0.88rem;font-weight:800;color:#34d399;margin-bottom:10px;">Lead 3D Characters</div>
             <img src="/api/universe/char_img/foji" style="width:100%;height:165px;object-fit:cover;object-position:center 8%;border-radius:10px;margin-bottom:6px;" />
             <div style="font-size:0.78rem;font-weight:700;color:#fff;margin-bottom:12px;">🪖 Foji Makra</div>
             <img src="/api/universe/char_img/fojan" style="width:100%;height:165px;object-fit:cover;object-position:center 8%;border-radius:10px;margin-bottom:6px;" />
             <div style="font-size:0.78rem;font-weight:700;color:#fff;">🌸 Fojan Meera</div>
           </div>
           <div class="fns-pipeline-card">
-            <div style="font-size:0.88rem;font-weight:800;color:#38bdf8;margin-bottom:10px;">Series Story Tracks</div>
+            <div style="font-size:0.88rem;font-weight:800;color:#38bdf8;margin-bottom:10px;">Active Generation Track</div>
             <div id="fns-s2-tracks-list"></div>
           </div>
         </div>
@@ -3711,7 +3762,7 @@ html, body {
     </div>
   </div>
 
-  <!-- MOBILE STICKY BOTTOM BAR (5 PRIMARY SECTIONS) -->
+    <!-- MOBILE STICKY BOTTOM BAR (5 PRIMARY SECTIONS) -->
   <nav class="fns-mobile-bottom-nav">
     <button class="fns-mnav-item active" id="fns-mnav-1" onclick="fnsSwitchTab(1)">
       <span class="fns-mnav-icon">🎬</span>
@@ -4003,7 +4054,7 @@ function fnsHandlePrimaryGenOrStopClick() {
           onClick: async () => {
             fnsCloseModal();
             fnsShowToast('Stopping generation...');
-            await fetch('/api/universe/stop_pipeline', { method: 'POST' });
+            _fnsPipelineLockUntil = 0; _fnsLockedStepNum = 0; await fetch('/api/universe/stop_pipeline', { method: 'POST' });
             fnsSyncGenerateStopButtons(false);
             fnsRefreshHub();
           }
@@ -4020,17 +4071,58 @@ function fnsHandlePrimaryGenOrStopClick() {
   }
 }
 
+let _fnsPipelineLockUntil = 0;
+let _fnsLockedStepNum = 0;
+let _fnsPipelineStartEpoch = 0;
+let _fnsActiveWallFilter = 'all';
+let _fnsActiveSeriesMode = 'love_meera';
+
+// Live 1-second ticker so Commando Makra looks 100% alive every single second during generation!
+setInterval(() => {
+  if (!_fnsPipelineIsRunning) return;
+  const subTitle = document.getElementById('fns-radar-subtitle');
+  const pctBadge = document.getElementById('fns-mission-pct-badge');
+  const elapsed = Math.max(1, Math.floor((Date.now() / 1000) - (_fnsPipelineStartEpoch || (Date.now() / 1000))));
+  const stepNum = Math.max(1, _fnsLockedStepNum || 1);
+  const cleanInfo = CLEAN_STAGE_NAMES[stepNum] || { title: `Step ${stepNum}`, sub: 'Processing...' };
+  const basePct = Math.min(96, Math.round((stepNum - 1) * 12.5 + Math.min(11, elapsed * 0.35)));
+  if (subTitle) subTitle.innerText = `${cleanInfo.sub} (${elapsed}s live)`;
+  if (pctBadge) pctBadge.innerText = `🔥 STEP ${stepNum}/8 • ${basePct}%`;
+}, 1000);
+
 function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFile) {
-  const stepNum = Math.min(8, Math.max(0, parseInt(telemetry.step_num || 0, 10)));
-  const rawStatus = (telemetry.status || 'idle').toLowerCase();
+  let stepNum = Math.min(8, Math.max(0, parseInt(telemetry.step_num || 0, 10)));
+  let rawStatus = (telemetry.status || 'idle').toLowerCase();
   const epoch = parseFloat(telemetry.epoch || 0);
-  const ageSeconds = epoch > 0 ? ((Date.now() / 1000) - epoch) : 999999;
+  const nowSec = Date.now() / 1000;
+  const ageSeconds = epoch > 0 ? (nowSec - epoch) : 999999;
+
+  // 🛡️ MONOTONIC FORWARD LOCK: Never allow stale cloud 'idle' or lower step to pull Foji backward while running!
+  if (nowSec < _fnsPipelineLockUntil && rawStatus !== 'error' && rawStatus !== 'completed') {
+    rawStatus = 'active';
+    if (stepNum < _fnsLockedStepNum) {
+      stepNum = _fnsLockedStepNum;
+    } else if (stepNum > _fnsLockedStepNum) {
+      _fnsLockedStepNum = stepNum;
+    }
+  } else if (rawStatus === 'active' && stepNum >= 1) {
+    if (stepNum >= _fnsLockedStepNum) {
+      _fnsLockedStepNum = stepNum;
+    } else if (ageSeconds < 90) {
+      stepNum = _fnsLockedStepNum;
+    }
+  }
 
   let status = rawStatus;
-  if (status === 'active' && ageSeconds > 300) status = 'idle';
-  if (stepNum === 0 && status !== 'error') status = 'idle';
+  if (status === 'active' && ageSeconds > 360 && nowSec >= _fnsPipelineLockUntil) status = 'idle';
+  if (stepNum === 0 && status !== 'error' && nowSec >= _fnsPipelineLockUntil) status = 'idle';
 
   const isRunning = (status === 'active' && stepNum >= 1);
+  if (isRunning && !_fnsPipelineStartEpoch) _fnsPipelineStartEpoch = epoch > 0 ? epoch : nowSec;
+  if (!isRunning) {
+    _fnsPipelineStartEpoch = 0;
+    _fnsLockedStepNum = 0;
+  }
   fnsSyncGenerateStopButtons(isRunning);
 
   const arena = document.getElementById('fns-battle-arena');
@@ -4046,19 +4138,18 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     _fnsLastCompletedStep = 0;
     if (walker) walker.style.left = '3%';
     if (groundFill) groundFill.style.width = '6%';
-    if (soldierTitle) soldierTitle.innerText = '🪖 Commando Makra • On Guard Duty';
-    if (subTitle) subTitle.innerText = 'Standing guard at Step 1 — Tap "Generate Reel" to start';
-    if (pctBadge) pctBadge.innerText = '🛡️ ON DUTY • STEP 1';
+    if (soldierTitle) soldierTitle.innerText = '🪖 Commando Makra • Ready';
+    if (subTitle) subTitle.innerText = 'Tap "Generate Reel" to launch 3D studio';
+    if (pctBadge) pctBadge.innerText = '🛡️ READY • STEP 1';
   } else if (status === 'active') {
     const walkPct = 3 + ((stepNum - 1) * 11.5);
-    const barPct = Math.min(100, Math.max(12, stepNum * 12.5));
+    const barPct = Math.min(98, Math.max(12, stepNum * 12.5));
     if (walker) walker.style.left = walkPct + '%';
     if (groundFill) groundFill.style.width = barPct + '%';
 
     const cleanInfo = CLEAN_STAGE_NAMES[stepNum] || { title: `Step ${stepNum}`, sub: 'Advancing...' };
     if (soldierTitle) soldierTitle.innerText = `🔫 ${cleanInfo.title}`;
     if (subTitle) subTitle.innerText = cleanInfo.sub;
-    if (pctBadge) pctBadge.innerText = `🔥 STEP ${stepNum}/8 • ${Math.round(barPct)}%`;
 
     if (stepNum > _fnsLastCompletedStep && _fnsLastCompletedStep > 0) {
       fnsPlaySoundFX('step_up');
@@ -4071,17 +4162,19 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     }
     _fnsLastCompletedStep = stepNum;
   } else if (status === 'completed') {
+    _fnsPipelineLockUntil = 0;
     if (walker) walker.style.left = '84%';
     if (groundFill) groundFill.style.width = '100%';
     if (_fnsLastCompletedStep > 0 && _fnsLastCompletedStep < 8) {
       _fnsLastCompletedStep = 8;
       fnsTriggerGrandBombBlastCelebration(latestVideoFile);
     }
-    if (soldierTitle) soldierTitle.innerText = '🏆 Mission Complete — Reel Ready!';
-    if (subTitle) subTitle.innerText = 'Saved in All Reels Library';
-    if (pctBadge) pctBadge.innerText = '💥 100% COMPLETE';
+    if (soldierTitle) soldierTitle.innerText = '🏆 Reel Ready!';
+    if (subTitle) subTitle.innerText = 'Added to Pending & All Reels';
+    if (pctBadge) pctBadge.innerText = '💥 100% DONE';
   } else if (status === 'error') {
-    if (soldierTitle) soldierTitle.innerText = '⚠️ Generation Paused';
+    _fnsPipelineLockUntil = 0;
+    if (soldierTitle) soldierTitle.innerText = '⚠️ Paused';
     if (subTitle) subTitle.innerText = 'Tap Generate Reel to retry';
     if (pctBadge) pctBadge.innerText = '⚠️ PAUSED';
   }
@@ -4102,7 +4195,7 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     if (status === 'idle') {
       if (i === 1) {
         nd.classList.add('duty-guard');
-        badgeEl.innerText = '🪖 Guarding';
+        badgeEl.innerText = '🪖 Ready';
         badgeEl.style.color = '#34d399';
       } else {
         badgeEl.innerText = 'Standby';
@@ -4111,25 +4204,25 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     } else if (status === 'active') {
       if (i < stepNum) {
         nd.classList.add('done');
-        badgeEl.innerText = '✓ Cleared';
+        badgeEl.innerText = '✓ Done';
         badgeEl.style.color = '#34d399';
       } else if (i === stepNum) {
         nd.classList.add('active');
-        badgeEl.innerText = '🔫 Firing...';
+        badgeEl.innerText = '🔫 Live...';
         badgeEl.style.color = '#fbbf24';
       } else {
-        badgeEl.innerText = 'Locked';
+        badgeEl.innerText = 'Next';
         badgeEl.style.color = '#64748b';
       }
     } else if (status === 'completed') {
       nd.classList.add('done');
-      badgeEl.innerText = '💥 Cleared';
+      badgeEl.innerText = '💥 Done';
       badgeEl.style.color = '#34d399';
     } else if (status === 'error') {
       const errStage = stepNum > 0 ? stepNum : 2;
       if (i < errStage) {
         nd.classList.add('done');
-        badgeEl.innerText = '✓ Cleared';
+        badgeEl.innerText = '✓ Done';
         badgeEl.style.color = '#34d399';
       } else if (i === errStage) {
         nd.classList.add('error');
@@ -4149,48 +4242,58 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     errTxt.innerHTML = telemetry.sub_detail || 'Generation paused.';
     if (epoch > _fnsLastErrorEpochShown && _fnsFirstLoadDone) {
       _fnsLastErrorEpochShown = epoch;
-      fnsOpenModal('⚠️', telemetry.step_title || 'Pipeline Paused', telemetry.sub_detail || 'An error occurred during generation.', true);
+      fnsOpenModal('⚠️', 'Generation Paused', (telemetry.sub_detail || 'Please retry.').slice(0, 120), true);
     }
   } else {
     errBox.style.display = 'none';
   }
 
+  // 📱 ALWAYS KEEP RIGHT-SIDE PHONE PREVIEW SYNCED WITH LATEST REEL!
+  const targetPreview = latestVideoFile || (_fnsMasterVaultList[0] && _fnsMasterVaultList[0].video_file) || '';
   const vidEl = document.getElementById('fns-preview-video');
   const fbEl = document.getElementById('fns-vid-fallback');
-  if (latestVideoFile && _fnsActivePreviewFile !== latestVideoFile) {
-    _fnsActivePreviewFile = latestVideoFile;
+  if (targetPreview && _fnsActivePreviewFile !== targetPreview) {
+    _fnsActivePreviewFile = targetPreview;
     if (fbEl) fbEl.style.display = 'none';
     if (vidEl) {
       vidEl.style.display = 'block';
-      vidEl.src = '/api/universe/video_file/' + encodeURIComponent(latestVideoFile);
+      vidEl.poster = '/api/universe/thumb_file/' + encodeURIComponent(targetPreview);
+      vidEl.src = '/api/universe/video_file/' + encodeURIComponent(targetPreview) + '#t=0.1';
+      vidEl.load();
     }
-    document.getElementById('fns-phone-ep-title').innerText = latestVideoFile;
+    const epLbl = document.getElementById('fns-phone-ep-title');
+    if (epLbl) epLbl.innerText = targetPreview;
   }
 }
 
-function fnsCopyCaptionText(encText) {
-  try {
-    const txt = decodeURIComponent(encText);
-    navigator.clipboard.writeText(txt);
-    fnsShowToast('📋 Caption copied!');
-  } catch (e) {}
+function fnsPreviewSpecificOnSidePhone(vfile) {
+  if (!vfile) return;
+  _fnsActivePreviewFile = vfile;
+  const vidEl = document.getElementById('fns-preview-video');
+  const fbEl = document.getElementById('fns-vid-fallback');
+  if (fbEl) fbEl.style.display = 'none';
+  if (vidEl) {
+    vidEl.style.display = 'block';
+    vidEl.poster = '/api/universe/thumb_file/' + encodeURIComponent(vfile);
+    vidEl.src = '/api/universe/video_file/' + encodeURIComponent(vfile);
+    vidEl.play().catch(() => {});
+  }
+  const epLbl = document.getElementById('fns-phone-ep-title');
+  if (epLbl) epLbl.innerText = vfile;
+  fnsSwitchTab(1);
 }
 
-// ✏️ LIVE CAPTION & HASHTAG STUDIO EDITOR MODAL
+// ✏️ LIVE CAPTION EDITOR
 function fnsOpenCaptionEditor(vfile, encCaption) {
   const currCap = decodeURIComponent(encCaption || '');
   const html = `
     <div style="text-align:left;">
-      <div style="font-size:0.75rem;color:#94a3b8;margin-bottom:6px;">Reel: <b style="color:#fff;">${vfile}</b></div>
       <textarea id="fns-edit-cap-box" rows="5" style="width:100%;box-sizing:border-box;background:#060c18;border:1px solid rgba(16,185,129,0.45);border-radius:10px;padding:10px;color:#fff;font-size:0.82rem;line-height:1.45;font-family:inherit;">${currCap}</textarea>
-      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
-        <button class="fns-tab-btn" style="font-size:0.7rem;padding:4px 9px;border-color:rgba(255,255,255,0.14);" onclick="document.getElementById('fns-edit-cap-box').value += '\\n#IndianArmy #FojiLoveStory #FojiFojan #3DAnimation #ReelsIndia #Agniveer'">+ 🔥 Viral Army Tags</button>
-      </div>
     </div>
   `;
-  fnsOpenModal('✏️', 'Edit Reel Caption & Hashtags', html, false, [
+  fnsOpenModal('✏️', 'Edit Caption', html, false, [
     {
-      label: '💾 Save Caption',
+      label: '💾 Save',
       cls: 'fns-cta-generate',
       onClick: async () => {
         const newCap = document.getElementById('fns-edit-cap-box').value;
@@ -4209,7 +4312,7 @@ function fnsOpenCaptionEditor(vfile, encCaption) {
   ]);
 }
 
-// 📱 FULLSCREEN VERTICAL REEL THEATER FUNCTIONS
+// 📱 FULLSCREEN REEL THEATER
 function fnsOpenReelTheater(idx) {
   if (!_fnsMasterVaultList.length) return;
   _fnsTheaterIdx = Math.max(0, Math.min(_fnsMasterVaultList.length - 1, idx));
@@ -4220,13 +4323,14 @@ function fnsOpenReelTheater(idx) {
   const schedBtn = document.getElementById('fns-theater-sched-btn');
 
   if (vid && item) {
+    vid.poster = '/api/universe/thumb_file/' + encodeURIComponent(item.video_file);
     vid.src = '/api/universe/video_file/' + encodeURIComponent(item.video_file);
     vid.play().catch(() => {});
   }
   if (badge && item) {
     const isPub = (item.vault_status === 'published');
     const isSch = (item.vault_status === 'scheduled');
-    badge.innerText = isPub ? '✓ Published on IG' : (isSch ? '⏰ Scheduled' : '⏳ Pending Approval');
+    badge.innerText = `${item.title || 'Part ' + (item.part_number || 1)} • ${isPub ? '✅ Posted' : (isSch ? '⏰ Scheduled' : '⏳ Pending')}`;
   }
   if (schedBtn && item) {
     schedBtn.style.display = (item.vault_status === 'published') ? 'none' : 'inline-flex';
@@ -4259,38 +4363,113 @@ function fnsPostFromTheater() {
   if (item) fnsPublishSpecificNow(item.video_file);
 }
 
-// Helper to build detailed card for Pending / Scheduled / Posted tabs
+// ☑️ 1-CLICK MARK AS "ALREADY POSTED" (MOVES PENDING REEL TO POSTED WITHOUT RE-UPLOADING!)
+async function fnsMarkAlreadyPosted(vfile) {
+  fnsOpenModal('⏳', 'Moving to Posted...', 'Updating reel status...', false, []);
+  try {
+    const r = await fetch('/api/universe/mark_already_posted', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ video_file: vfile })
+    });
+    const d = await r.json();
+    _fnsLastVaultSignature = '';
+    await fnsRefreshHub();
+    if (d.ok) {
+      fnsOpenModal('✅', 'Moved to Posted', 'Reel marked as Posted.');
+    } else {
+      fnsOpenModal('⚠️', 'Notice', d.error || 'Failed', true);
+    }
+  } catch (e) {
+    fnsOpenModal('⚠️', 'Error', 'Connection failed.', true);
+  }
+}
+
+// 🃏 DETAILED REEL CARD BUILDER (Pending / Scheduled / Posted / Series Parts)
 function fnsBuildDetailedReelCard(v, mode) {
   const isPub = (v.vault_status === 'published' || mode === 'posted');
   const isSch = (v.vault_status === 'scheduled' || mode === 'scheduled');
   const badgeBg = isPub ? 'rgba(16,185,129,0.18)' : (isSch ? 'rgba(139,92,246,0.22)' : 'rgba(14,165,233,0.18)');
   const badgeCol = isPub ? '#34d399' : (isSch ? '#c4b5fd' : '#38bdf8');
-  const badgeLabel = isPub ? '✓ Published on IG' : (isSch ? `⏰ ${v.scheduled_display || 'Scheduled'}` : '⏳ Pending Approval');
+  const badgeLabel = isPub ? '✅ Posted' : (isSch ? `⏰ ${v.time_label || v.scheduled_display || 'Scheduled'}` : '⏳ Pending');
   const vidUrl = '/api/universe/video_file/' + encodeURIComponent(v.video_file) + '#t=0.1';
   const encCap = encodeURIComponent(v.caption || v.dialogue || '');
+  const partNum = v.part_number || 1;
 
   return `
     <div class="fns-vault-card ${v.vault_status || ''}">
-      <video src="${vidUrl}" poster="/api/universe/thumb_file/${encodeURIComponent(v.video_file)}" controls playsinline preload="metadata" style="width:100%;aspect-ratio:9/16;max-height:330px;object-fit:cover;background:#000;"></video>
-      <div style="padding:13px;display:flex;flex-direction:column;gap:6px;flex:1;">
+      <video src="${vidUrl}" poster="/api/universe/thumb_file/${encodeURIComponent(v.video_file)}" controls playsinline preload="metadata" style="width:100%;aspect-ratio:9/16;max-height:320px;object-fit:cover;background:#000;"></video>
+      <div style="padding:12px;display:flex;flex-direction:column;gap:5px;flex:1;">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">
           <span style="font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:99px;background:${badgeBg};color:${badgeCol};">${badgeLabel}</span>
-          <span style="font-size:0.68rem;color:#64748b;">${v.published_at || v.created_at || ''}</span>
+          <span style="font-size:0.68rem;font-weight:800;color:#fbbf24;">Part #${partNum}</span>
         </div>
-        <div style="font-size:0.85rem;font-weight:800;color:#fff;">${v.title || v.video_file}</div><div style="font-size:0.68rem;color:#38bdf8;font-weight:700;">🎬 File: ${v.video_file} • Part #${v.part_number || 1}</div>
-        <div style="font-size:0.74rem;color:#94a3b8;line-height:1.4;">"${(v.dialogue || '').slice(0, 85)}"</div>
-        <div style="display:flex;gap:6px;margin-top:auto;padding-top:10px;flex-wrap:wrap;">
-          ${!isPub && !isSch ? `<button class="fns-cta-schedule" style="flex:1;padding:8px;font-size:0.73rem;" onclick="fnsApproveAndScheduleSpecific('${v.video_file}')">📅 Schedule</button>` : ''}
-          ${isSch ? `<button class="fns-tab-btn" style="padding:8px;font-size:0.73rem;color:#f87171;border-color:rgba(248,113,113,0.3);" onclick="fnsRemoveScheduled('${v.id || v.video_file}')">Remove</button>` : ''}
-          <button class="fns-cta-post" style="flex:1;padding:8px;font-size:0.73rem;" onclick="fnsPublishSpecificNow('${v.video_file}')">${isPub ? '📲 Repost' : '📲 Post IG'}</button>
-          ${isPub && v.permalink ? `<a href="${v.permalink}" target="_blank" class="fns-tab-btn" style="padding:8px 10px;font-size:0.73rem;text-decoration:none;color:#34d399;border-color:rgba(16,185,129,0.35);">IG ↗</a>` : ''}
-          <button class="fns-tab-btn" style="padding:8px 9px;font-size:0.73rem;border-color:rgba(255,255,255,0.1);" onclick="fnsOpenCaptionEditor('${v.video_file}', '${encCap}')" title="Edit Caption">✏️</button>
-          <a href="/api/universe/video_file/${encodeURIComponent(v.video_file)}" download="${v.video_file}" class="fns-tab-btn" style="padding:8px 9px;font-size:0.73rem;text-decoration:none;color:#34d399;border-color:rgba(255,255,255,0.1);" title="Download MP4">📥</a>
-          <button class="fns-tab-btn" style="padding:8px 9px;font-size:0.73rem;color:#f87171;border-color:rgba(239,68,68,0.35);" onclick="fnsDeleteVideoManual('${v.video_file}')" title="Delete Reel">🗑️</button>
+        <div style="font-size:0.84rem;font-weight:800;color:#fff;">${v.title || '3D Episode'}</div>
+        <div style="font-size:0.72rem;color:#94a3b8;line-height:1.35;">"${(v.dialogue || '').slice(0, 75)}"</div>
+        <div style="display:flex;gap:5px;margin-top:auto;padding-top:9px;flex-wrap:wrap;">
+          ${!isPub && !isSch ? `<button class="fns-cta-schedule" style="flex:1;padding:7px 8px;font-size:0.72rem;" onclick="fnsApproveAndScheduleSpecific('${v.video_file}')">📅 Schedule</button>` : ''}
+          ${!isPub ? `<button class="fns-tab-btn" style="padding:7px 8px;font-size:0.71rem;color:#34d399;border-color:rgba(16,185,129,0.4);" onclick="fnsMarkAlreadyPosted('${v.video_file}')" title="Mark as Already Posted">☑️ Posted</button>` : ''}
+          ${isSch ? `<button class="fns-tab-btn" style="padding:7px 8px;font-size:0.72rem;color:#f87171;border-color:rgba(248,113,113,0.3);" onclick="fnsRemoveScheduled('${v.id || v.video_file}')">Unschedule</button>` : ''}
+          <button class="fns-cta-post" style="flex:1;padding:7px 8px;font-size:0.72rem;" onclick="fnsPublishSpecificNow('${v.video_file}')">${isPub ? '📲 Repost' : '📲 Post'}</button>
+          <button class="fns-tab-btn" style="padding:7px 8px;font-size:0.72rem;border-color:rgba(255,255,255,0.1);" onclick="fnsOpenCaptionEditor('${v.video_file}', '${encCap}')" title="Edit Caption">✏️</button>
+          <button class="fns-tab-btn" style="padding:7px 8px;font-size:0.72rem;color:#f87171;border-color:rgba(239,68,68,0.35);" onclick="fnsDeleteVideoManual('${v.video_file}')" title="Delete">🗑️</button>
         </div>
       </div>
     </div>
   `;
+}
+
+function fnsFilterAllReelsWall(modeId, btnEl) {
+  _fnsActiveWallFilter = modeId || 'all';
+  if (btnEl) {
+    document.querySelectorAll('#fns-wall-filter-pills .fns-tab-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
+  _fnsLastVaultSignature = '';
+  fnsRenderAllDedicatedSections(_fnsMasterVaultList, {});
+}
+
+function fnsSelectSeriesModeView(modeId, btnEl) {
+  _fnsActiveSeriesMode = modeId || 'love_meera';
+  if (btnEl) {
+    document.querySelectorAll('#fns-series-mode-tabs .fns-tab-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
+  fnsRenderSeriesPartsTracker();
+}
+
+function fnsRenderSeriesPartsTracker() {
+  const grid = document.getElementById('fns-series-parts-grid');
+  const banner = document.getElementById('fns-series-summary-banner');
+  if (!grid) return;
+
+  const modeVideos = _fnsMasterVaultList
+    .filter(v => (v.track_id || 'love_meera') === _fnsActiveSeriesMode)
+    .sort((a, b) => (parseInt(a.part_number || 1, 10) - parseInt(b.part_number || 1, 10)));
+
+  const postedCnt = modeVideos.filter(v => v.vault_status === 'published').length;
+  const schedCnt = modeVideos.filter(v => v.vault_status === 'scheduled').length;
+  const pendList = modeVideos.filter(v => v.vault_status !== 'published' && v.vault_status !== 'scheduled');
+  const nextToSched = pendList.length ? pendList[0] : null;
+
+  if (banner) {
+    banner.innerHTML = `
+      <div style="font-size:0.8rem;color:#e2e8f0;font-weight:700;">
+        Total Parts: <b style="color:#fbbf24;">${modeVideos.length}</b> &nbsp;|&nbsp;
+        ✅ Uploaded: <b style="color:#34d399;">${postedCnt}</b> &nbsp;|&nbsp;
+        📅 Scheduled: <b style="color:#c4b5fd;">${schedCnt}</b> &nbsp;|&nbsp;
+        ⏳ Pending: <b style="color:#38bdf8;">${pendList.length}</b>
+      </div>
+      ${nextToSched ? `<button class="fns-cta-schedule" style="padding:6px 12px;font-size:0.74rem;" onclick="fnsApproveAndScheduleSpecific('${nextToSched.video_file}')">📅 Schedule Next (Part #${nextToSched.part_number || 1})</button>` : '<span style="font-size:0.74rem;color:#34d399;font-weight:800;">✓ All Parts Scheduled/Posted!</span>'}
+    `;
+  }
+
+  if (!modeVideos.length) {
+    grid.innerHTML = `<div style="padding:18px;color:#64748b;">No videos generated in this series mode yet. Select this track in Studio and tap Generate Reel!</div>`;
+    return;
+  }
+
+  grid.innerHTML = modeVideos.map(v => fnsBuildDetailedReelCard(v, v.vault_status)).join('');
 }
 
 function fnsRenderAllDedicatedSections(vaultList, q) {
@@ -4301,7 +4480,6 @@ function fnsRenderAllDedicatedSections(vaultList, q) {
     : vaultList.filter(v => v.vault_status === 'scheduled');
   const postedList = vaultList.filter(v => v.vault_status === 'published');
 
-  // Update Badges & Top KPI HUD
   document.getElementById('fns-pending-badge').innerText = pendingList.length;
   document.getElementById('fns-q-badge').innerText = scheduledList.length;
   document.getElementById('fns-posted-badge').innerText = postedList.length;
@@ -4324,36 +4502,38 @@ function fnsRenderAllDedicatedSections(vaultList, q) {
     if (vf && !_fnsKnownVaultFiles.has(vf)) {
       _fnsKnownVaultFiles.add(vf);
       if (_fnsFirstLoadDone) {
+        _fnsActivePreviewFile = '';
         fnsTriggerGrandBombBlastCelebration(item.title || vf);
       }
     }
   }
 
-  // Smart Signature Diffing so <video> tags NEVER flicker or reload while playing!
   const sig = JSON.stringify({
-    v: vaultList.map(v => `${v.video_file}_${v.vault_status}_${v.caption}`),
+    f: _fnsActiveWallFilter,
+    m: _fnsActiveSeriesMode,
+    v: vaultList.map(v => `${v.video_file}_${v.vault_status}_${v.part_number}_${v.caption}`),
     s: scheduledList.map(s => `${s.video_file}_${s.scheduled_display}`)
   });
   if (sig === _fnsLastVaultSignature) return;
   _fnsLastVaultSignature = sig;
 
-  // 1. Render Pending Approval Grid (Tab 2)
+  // 1. Pending Approval Grid (Sorted Part-wise)
   const pGrid = document.getElementById('fns-pending-grid');
   if (pGrid) {
     pGrid.innerHTML = pendingList.length
       ? pendingList.map(v => fnsBuildDetailedReelCard(v, 'pending')).join('')
-      : '<div style="padding:18px;color:#64748b;">No reels waiting for approval. Tap "Generate Reel" to create one!</div>';
+      : '<div style="padding:18px;color:#64748b;">No pending reels.</div>';
   }
 
-  // 2. Render Scheduled Grid (Tab 3)
+  // 2. Scheduled Grid
   const sGrid = document.getElementById('fns-scheduled-grid');
   if (sGrid) {
     sGrid.innerHTML = scheduledList.length
       ? scheduledList.map(v => fnsBuildDetailedReelCard(v, 'scheduled')).join('')
-      : '<div style="padding:18px;color:#64748b;">No reels currently in the schedule queue.</div>';
+      : '<div style="padding:18px;color:#64748b;">No scheduled reels.</div>';
   }
 
-  // 3. Render Posted Reels Grid (Tab 4)
+  // 3. Posted Grid
   const pubGrid = document.getElementById('fns-posted-grid');
   if (pubGrid) {
     pubGrid.innerHTML = postedList.length
@@ -4361,27 +4541,35 @@ function fnsRenderAllDedicatedSections(vaultList, q) {
       : '<div style="padding:18px;color:#64748b;">No posted reels yet.</div>';
   }
 
-  // 4. Render ALL REELS — PURE INSTAGRAM REELS VIDEO WALL (NO CAPTION / NO HASHTAGS!) (Tab 5)
+  // 4. All Reels Wall (Filtered by Mode if selected, Pure Video Tiles!)
   const igWall = document.getElementById('fns-master-vault-grid');
   if (igWall) {
-    if (!vaultList.length) {
-      igWall.innerHTML = '<div style="padding:18px;color:#64748b;">No reels yet.</div>';
+    const filteredWall = _fnsActiveWallFilter === 'all'
+      ? vaultList
+      : vaultList.filter(v => (v.track_id || 'love_meera') === _fnsActiveWallFilter);
+
+    if (!filteredWall.length) {
+      igWall.innerHTML = '<div style="padding:18px;color:#64748b;">No reels in this mode yet.</div>';
     } else {
-      igWall.innerHTML = vaultList.map((v, idx) => {
+      igWall.innerHTML = filteredWall.map((v) => {
+        const masterIdx = vaultList.indexOf(v);
         const isPub = (v.vault_status === 'published');
         const isSch = (v.vault_status === 'scheduled');
         const dot = isPub ? '✅' : (isSch ? '⏰' : '🎬');
         const vidUrl = '/api/universe/video_file/' + encodeURIComponent(v.video_file) + '#t=0.1';
         return `
-          <div class="fns-ig-reel-tile" onclick="fnsOpenReelTheater(${idx})">
+          <div class="fns-ig-reel-tile" onclick="fnsOpenReelTheater(${masterIdx})">
             <span class="fns-ig-tile-badge">${dot}</span>
             <video src="${vidUrl}" poster="/api/universe/thumb_file/${encodeURIComponent(v.video_file)}" muted playsinline preload="metadata" onmouseover="this.play().catch(()=>{})" onmouseout="this.pause()"></video>
-            <span class="fns-ig-tile-play-icon">▶ ${v.part_number ? 'Part ' + v.part_number : 'Reel'}</span>
+            <span class="fns-ig-tile-play-icon">▶ Part ${v.part_number || 1}</span>
           </div>
         `;
       }).join('');
     }
   }
+
+  // 5. Render Series Mode Part-by-Part Tracker (Tab 6)
+  fnsRenderSeriesPartsTracker();
 }
 
 async function fnsRefreshHub() {
@@ -4399,8 +4587,8 @@ async function fnsRefreshHub() {
       if (nslot) nslot.innerText = d.next_open_slot.display_time;
     }
 
-    fnsUpdateConnectedPipelineRoad(d.telemetry || {}, d.notifications || [], d.latest_video_file || '');
     fnsRenderAllDedicatedSections(d.master_vault || [], d.queue || {});
+    fnsUpdateConnectedPipelineRoad(d.telemetry || {}, d.notifications || [], d.latest_video_file || '');
     fnsRenderTrackSelectors();
     fnsRenderNotifications(d.notifications || []);
     _fnsFirstLoadDone = true;
@@ -4412,7 +4600,7 @@ async function fnsApproveAndScheduleLatest() {
 }
 
 async function fnsApproveAndScheduleSpecific(vfile) {
-  fnsOpenModal('⏳', 'Locking Schedule Slot...', 'Syncing your reel with Cloud Auto-Scheduler...', false, []);
+  fnsOpenModal('⏳', 'Scheduling...', 'Locking next time slot...', false, []);
   try {
     const r = await fetch('/api/universe/approve_and_schedule', {
       method: 'POST',
@@ -4422,30 +4610,29 @@ async function fnsApproveAndScheduleSpecific(vfile) {
     const d = await r.json();
     if (d.ok) {
       const slotTxt = (d.scheduled_item && d.scheduled_item.scheduled_display) ? d.scheduled_item.scheduled_display : 'Next Slot';
-      fnsOpenModal('📅', 'Scheduled', `Reel locked for <b>${slotTxt}</b>.`);
+      fnsOpenModal('📅', 'Scheduled', `Locked for <b>${slotTxt}</b>.`);
       _fnsLastVaultSignature = '';
       fnsRefreshHub();
     } else {
-      fnsOpenModal('⚠️', 'Schedule Notice', d.error || 'Could not schedule reel.', true);
+      fnsOpenModal('⚠️', 'Notice', d.error || 'Could not schedule.', true);
     }
   } catch (e) {
-    fnsOpenModal('⚠️', 'Connection Error', String(e), true);
+    fnsOpenModal('⚠️', 'Error', 'Connection error.', true);
   }
 }
-
 
 function fnsDeleteVideoManual(vfile) {
   fnsOpenModal(
     '🗑️',
-    'Delete Reel Permanently?',
-    `Are you sure you want to delete <b>${vfile}</b> from Studio & Cloud?<br><span style="font-size:0.75rem;color:#94a3b8;">(Local archive copy in Posted_YouTube_Archive stays safe on your laptop)</span>`,
+    'Delete Reel?',
+    'Remove this reel from Studio & Cloud?',
     true,
     [
       {
-        label: '🗑️ Yes, Delete',
+        label: '🗑️ Delete',
         cls: 'fns-cta-stop',
         onClick: async () => {
-          fnsOpenModal('⏳', 'Deleting Reel...', `Removing <b>${vfile}</b> from Studio & GitHub Cloud...`, false, []);
+          fnsOpenModal('⏳', 'Deleting...', 'Removing reel...', false, []);
           try {
             const r = await fetch('/api/universe/delete_video', {
               method: 'POST',
@@ -4455,13 +4642,10 @@ function fnsDeleteVideoManual(vfile) {
             const d = await r.json();
             _fnsLastVaultSignature = '';
             await fnsRefreshHub();
-            if (d.ok) {
-              fnsOpenModal('✅', 'Reel Deleted', `<b>${vfile}</b> has been removed from Studio & Cloud.`);
-            } else {
-              fnsOpenModal('⚠️', 'Delete Error', d.error || 'Could not delete reel.', true);
-            }
+            if (d.ok) fnsOpenModal('✅', 'Deleted', 'Reel removed.');
+            else fnsOpenModal('⚠️', 'Error', d.error || 'Failed', true);
           } catch (e) {
-            fnsOpenModal('⚠️', 'Connection Error', String(e), true);
+            fnsOpenModal('⚠️', 'Error', 'Connection error.', true);
           }
         }
       },
@@ -4471,7 +4655,7 @@ function fnsDeleteVideoManual(vfile) {
 }
 
 async function fnsRemoveScheduled(id) {
-  fnsOpenModal('⏳', 'Removing from Schedule...', 'Moving reel back to Pending Approval...', false, []);
+  fnsOpenModal('⏳', 'Unscheduling...', 'Moving back to Pending...', false, []);
   await fetch('/api/universe/remove_scheduled', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -4479,7 +4663,7 @@ async function fnsRemoveScheduled(id) {
   });
   _fnsLastVaultSignature = '';
   await fnsRefreshHub();
-  fnsOpenModal('✅', 'Removed from Schedule', 'Reel moved back to Pending Approval.');
+  fnsOpenModal('✅', 'Unscheduled', 'Moved to Pending Approval.');
 }
 
 async function fnsPublishLatestReel() {
@@ -4487,7 +4671,7 @@ async function fnsPublishLatestReel() {
 }
 
 async function fnsPublishSpecificNow(vfile) {
-  fnsOpenModal('🚀', 'Publishing to Instagram...', 'Selecting best video frame and uploading to <b>@ai_foji_lovelife</b>...');
+  fnsOpenModal('🚀', 'Uploading to IG...', 'Publishing HD Reel...', false, []);
   try {
     const r = await fetch('/api/universe/publish_latest_reel', {
       method: 'POST',
@@ -4496,15 +4680,15 @@ async function fnsPublishSpecificNow(vfile) {
     });
     const d = await r.json();
     if (d.ok) {
-      const linkHtml = d.permalink ? `<div style="margin-top:10px;"><a href="${d.permalink}" target="_blank" style="color:#34d399;font-weight:800;">View on Instagram ↗</a></div>` : '';
-      fnsOpenModal('✅', 'Published on Instagram', `Reel is now live on <b>@ai_foji_lovelife</b>.${linkHtml}`);
+      const linkHtml = d.permalink ? `<div style="margin-top:8px;"><a href="${d.permalink}" target="_blank" style="color:#34d399;font-weight:800;">Open on Instagram ↗</a></div>` : '';
+      fnsOpenModal('✅', 'Posted Live!', `Reel is now live on Instagram.${linkHtml}`);
       _fnsLastVaultSignature = '';
       fnsRefreshHub();
     } else {
-      fnsOpenModal('❌', 'Upload Failed', d.error || 'Could not upload reel.', true);
+      fnsOpenModal('❌', 'Upload Failed', (d.error || 'Failed').slice(0, 120), true);
     }
   } catch (e) {
-    fnsOpenModal('❌', 'Upload Error', String(e), true);
+    fnsOpenModal('❌', 'Error', 'Connection failed.', true);
   }
 }
 
@@ -4518,7 +4702,7 @@ function fnsRenderTrackSelectors() {
       autoBtn.innerText = '🔄 Auto-Rotate: ON';
       autoBtn.classList.add('active');
     } else {
-      autoBtn.innerText = '📌 Single Track Mode';
+      autoBtn.innerText = '📌 Locked Mode';
       autoBtn.classList.remove('active');
     }
   }
@@ -4528,7 +4712,7 @@ function fnsRenderTrackSelectors() {
       const isSel = (_fnsState.active_mode === 'locked_track' && _fnsState.selected_track_id === t.id);
       return `<div class="fns-track-item ${isSel ? 'active' : ''}" onclick="fnsSelectTrack('${t.id}')">
         <div style="font-size:0.8rem;font-weight:800;color:#fff;">${t.name}</div>
-        <div style="font-size:0.68rem;color:#34d399;margin-top:3px;">Part ${t.next_part} ${isSel ? '• Active' : ''}</div>
+        <div style="font-size:0.68rem;color:#34d399;margin-top:3px;">Next: Part ${t.next_part}</div>
       </div>`;
     }).join('');
   }
@@ -4539,18 +4723,17 @@ function fnsRenderTrackSelectors() {
       return `<div class="fns-track-item ${isSel ? 'active' : ''}" style="margin-bottom:8px;" onclick="fnsSelectTrack('${t.id}')">
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <span style="font-size:0.82rem;font-weight:800;color:#fff;">${t.name}</span>
-          <span class="fns-badge-live">Part ${t.next_part}</span>
+          <span class="fns-badge-live">Next: Part ${t.next_part}</span>
         </div>
       </div>`;
     }).join('');
   }
 }
 
-// 🧹 100% CLEAN HUMANIZED RECENT ACTIVITY (STRIPS ALL DEV/FRONTEND/FILENAME JARGON)
 function fnsHumanizeActivityItem(n) {
-  let title = (n.title || 'Studio Update')
+  let title = (n.title || 'Update')
     .replace(/Frontend|Backend|GitHub|Telemetry|Pipeline|Flow/gi, '')
-    .trim() || 'Studio Update';
+    .trim() || 'Update';
   let msg = (n.message || '')
     .replace(/from Frontend/gi, '')
     .replace(/via \\.env API/gi, '')
@@ -4604,12 +4787,17 @@ async function fnsLockTwist() {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ custom_idea: val })
   });
-  fnsShowToast('Story idea saved ✓');
+  fnsShowToast('Idea saved ✓');
 }
 
 async function fnsStartFullVideoGeneration(cnt=1) {
   const twist = document.getElementById('fns-custom-twist').value;
+  // Lock Foji Commando in forward-only active mode for 75s so Cloud boot delay never resets him to Step 1!
+  _fnsPipelineLockUntil = (Date.now() / 1000) + 75;
+  _fnsLockedStepNum = 1;
+  _fnsPipelineStartEpoch = Date.now() / 1000;
   _fnsLastCompletedStep = 1;
+
   fnsUpdateConnectedPipelineRoad({
     step_num: 1,
     step_title: 'Step 1: Writing Story Script',
@@ -4619,7 +4807,7 @@ async function fnsStartFullVideoGeneration(cnt=1) {
     epoch: Date.now() / 1000
   }, [], '');
 
-  fnsOpenModal('🚀', 'Starting 3D Pipeline...', 'Initializing AI Scriptwriter & 3D Studio Engine...', false, []);
+  fnsOpenModal('🚀', 'Starting 3D Studio...', 'Launching Commando Makra...', false, []);
   try {
     const r = await fetch('/api/universe/trigger_pipeline', {
       method: 'POST',
@@ -4627,10 +4815,16 @@ async function fnsStartFullVideoGeneration(cnt=1) {
       body: JSON.stringify({ custom_idea: twist, count: cnt })
     });
     const d = await r.json();
-    if (d.ok) { fnsCloseModal(); fnsShowToast('🪖 Generation started — Watch live progress!'); }
-    else fnsOpenModal('⚠️', 'Could Not Start', d.error || 'Failed', true);
+    if (d.ok) {
+      fnsCloseModal();
+      fnsShowToast('🪖 Generation Live — Watch Step 1 to 8!');
+    } else {
+      _fnsPipelineLockUntil = 0;
+      fnsOpenModal('⚠️', 'Could Not Start', d.error || 'Failed', true);
+    }
   } catch (e) {
-    fnsOpenModal('⚠️', 'Request Error', String(e), true);
+    _fnsPipelineLockUntil = 0;
+    fnsOpenModal('⚠️', 'Error', 'Connection failed.', true);
   }
 }
 
@@ -4649,7 +4843,7 @@ async function fnsSaveScheduleSlots() {
       daily_slots: [s1, s2, s3]
     })
   });
-  fnsOpenModal('✅', 'Schedule Saved', `Daily slots locked at <b>${s1}, ${s2}, ${s3} IST</b>.`);
+  fnsOpenModal('✅', 'Schedule Saved', `Slots: <b>${s1} • ${s2} • ${s3} IST</b>`);
   fnsRefreshHub();
 }
 
