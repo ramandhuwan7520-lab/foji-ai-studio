@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794405610867",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_050_UnitRagda_Part_05_1111_192711.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "07:30 PM",
+    "date_str": "11 Nov 2026",
+    "timestamp": 1794405610.867568
+  },
+  {
     "id": "notif_1794405539634",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
