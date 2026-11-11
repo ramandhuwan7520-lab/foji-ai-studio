@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794411949062",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "Foji 3D Reel (raw_video_1109_023124_p3.mp4) locked for 15 Nov 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "09:15 PM",
+    "date_str": "11 Nov 2026",
+    "timestamp": 1794411949.062765
+  },
+  {
     "id": "notif_1794411919164",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "01:05 AM",
     "date_str": "09 Nov 2026",
     "timestamp": 1794166550.2846546
-  },
-  {
-    "id": "notif_1794166446939",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "01:04 AM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794166446.939502
   }
 ]
