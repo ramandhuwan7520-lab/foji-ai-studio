@@ -31,18 +31,6 @@
       "status": "awaiting_approval"
     },
     {
-      "id": "vid_raw_video_1109_060126_p2.mp4",
-      "video_file": "raw_video_1109_060126_p2.mp4",
-      "title": "⚔️ Agniveer Training Center & Drill — Part 2: Mud Crawl Aur Maidan-e-Jung",
-      "track_id": "training_ustad",
-      "part_number": 2,
-      "dialogue": "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
-      "shayari": "किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।",
-      "caption": "🎖️ Part 2: Mud Crawl Aur Maidan-e-Jung | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!\"\n\n🔥 किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#AgniveerTraining #IndianArmy #FaujiLife #MakraFoji #ArmyDrill #HaryanviSoldier",
-      "created_at": "09 Nov 2026, 06:07 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_1109_023124_p3.mp4",
       "video_file": "raw_video_1109_023124_p3.mp4",
       "title": "Foji 3D Reel (raw_video_1109_023124_p3.mp4)",
@@ -181,9 +169,27 @@
       "scheduled_display": "12 Nov 2026 at 06:30 PM IST",
       "date_label": "12 Nov 2026",
       "time_label": "06:30 PM"
+    },
+    {
+      "id": "vid_raw_video_1109_060126_p2.mp4",
+      "video_file": "raw_video_1109_060126_p2.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 2: Mud Crawl Aur Maidan-e-Jung",
+      "track_id": "training_ustad",
+      "part_number": 2,
+      "dialogue": "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
+      "shayari": "किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।",
+      "caption": "🎖️ Part 2: Mud Crawl Aur Maidan-e-Jung | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!\"\n\n🔥 किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#AgniveerTraining #IndianArmy #FaujiLife #MakraFoji #ArmyDrill #HaryanviSoldier",
+      "created_at": "09 Nov 2026, 06:07 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-13_06:30",
+      "scheduled_epoch": 1794531600.0,
+      "scheduled_display": "13 Nov 2026 at 06:30 AM IST",
+      "date_label": "13 Nov 2026",
+      "time_label": "06:30 AM"
     }
   ],
-  "updated_epoch": 1794411269.7679756,
+  "updated_epoch": 1794411496.5477226,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
