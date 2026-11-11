@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "raw_video_1111_123320_p5.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "12:39:25 PM",
-  "epoch": 1794380965.542252
+  "step_num": 3,
+  "step_title": "Preparing IG Reel",
+  "sub_detail": "Optimizing raw_video_1109_010404_p1.mp4 for Instagram...",
+  "status": "active",
+  "progress": 40,
+  "updated_at": "12:39:30 PM",
+  "epoch": 1794380970.004478
 }
