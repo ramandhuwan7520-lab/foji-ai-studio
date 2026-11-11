@@ -573,8 +573,12 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     dress_idx = (ep_num + len(used_dialogues)) % len(MEERA_WARDROBE_CATALOG)
     meera_outfit = ai_story.get("meera_outfit") or MEERA_WARDROBE_CATALOG[dress_idx]
 
-    unique_vid_id = f"{datetime.now(IST).strftime('%m%d_%H%M%S')}_p{ep_num}"
-    unique_mp4_name = f"raw_video_{unique_vid_id}.mp4"
+    # SMART YOUTUBE-READY NAMING: Video_023_LoveMeera_Part_06_1111_1930.mp4
+    existing_cnt = len(get_scheduled_queue().get("published_posts", [])) + len(get_scheduled_queue().get("unapproved_videos", [])) + 1
+    clean_track_slug = "".join(w.capitalize() for w in chosen_key.split("_"))
+    ts_slug = datetime.now(IST).strftime("%m%d_%H%M%S")
+    unique_vid_id = f"Video_{existing_cnt + 20:03d}_{clean_track_slug}_Part_{ep_num:02d}_{ts_slug}"
+    unique_mp4_name = f"{unique_vid_id}.mp4"
 
     if include_meera:
         char_instruction = (
@@ -990,6 +994,7 @@ def mark_video_as_published_in_vault(video_file, caption="", media_pk=""):
         found_item["caption"] = caption
     found_item["status"] = "published"
     found_item["published_at"] = now_str
+    found_item["published_epoch"] = time.time()
     found_item["ig_media_pk"] = str(media_pk or "LIVE")
 
     q["published_posts"] = [
@@ -1146,3 +1151,146 @@ def get_real_system_health():
         "gemini_cookie_ready": os.path.exists("gemini_cookies_secret.txt") or bool(os.getenv("GEMINI_COOKIES_JSON")),
         "ig_session_ready": os.path.exists("data/ig_session.json") or bool(os.getenv("IG_SESSION_JSON"))
     }
+
+def delete_file_from_github_repo(rel_path, commit_msg="Clean up video from cloud storage"):
+    """Deletes a file (.mp4 or .jpg) from GitHub repository via REST API so repo & Render never bloat."""
+    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+    rel_clean = rel_path.replace("\\", "/")
+    if not gh_pat:
+        return False
+    try:
+        url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
+        headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
+        r = requests.get(f"{url}?ref=main&t={int(time.time()*1000)}", headers=headers, timeout=10)
+        if r.status_code == 200:
+            sha = r.json().get("sha")
+            if sha:
+                del_r = requests.delete(url, headers=headers, json={"message": commit_msg, "sha": sha, "branch": "main"}, timeout=15)
+                return del_r.status_code in (200, 204)
+    except Exception:
+        pass
+    return False
+
+
+def archive_video_to_laptop_folder(vname, meta=None):
+    """Saves a permanent copy of the video & metadata into D:\foji_ai_automation/Posted_YouTube_Archive on Laptop."""
+    if os.environ.get("RENDER") or os.name != "nt":
+        return
+    try:
+        archive_dir = os.path.abspath("Posted_YouTube_Archive")
+        os.makedirs(archive_dir, exist_ok=True)
+        src_mp4 = os.path.abspath(os.path.join("output/raw_videos", vname))
+        if os.path.exists(src_mp4) and os.path.getsize(src_mp4) > 50 * 1024:
+            dst_mp4 = os.path.join(archive_dir, vname)
+            if not os.path.exists(dst_mp4):
+                shutil.copy2(src_mp4, dst_mp4)
+            if isinstance(meta, dict):
+                with open(dst_mp4 + ".json", "w", encoding="utf-8") as mf:
+                    json.dump(meta, mf, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+
+
+def delete_video_everywhere_manual(video_file_or_id):
+    """
+    Manual Delete from Web UI or Telegram:
+    1. Archives a safe backup in Posted_YouTube_Archive on Laptop (just in case)
+    2. Removes from unapproved_videos, scheduled_posts, and published_posts
+    3. Deletes from output/raw_videos (Render/Local) AND deletes from GitHub Repo!
+    """
+    raw_str = os.path.basename(str(video_file_or_id).strip())
+    vname = raw_str if raw_str.endswith(".mp4") else f"raw_video_{raw_str}.mp4"
+    if not os.path.exists(os.path.join("output/raw_videos", vname)) and os.path.exists(os.path.join("output/raw_videos", raw_str)):
+        vname = raw_str
+
+    q = get_scheduled_queue()
+    for k in ["unapproved_videos", "scheduled_posts", "published_posts", "published_history"]:
+        q[k] = [x for x in q.get(k, []) if x.get("video_file") != vname and str(x.get("id")) != raw_str]
+
+    # Record in deleted_ids.json so sync never resurrects it
+    del_file = "data/deleted_ids.json"
+    del_set = set()
+    if os.path.exists(del_file):
+        try:
+            with open(del_file, "r", encoding="utf-8") as df:
+                del_set.update(str(x) for x in json.load(df))
+        except Exception:
+            pass
+    del_set.add(vname)
+    del_set.add(vname.replace("raw_video_", "").replace(".mp4", ""))
+    with open(del_file, "w", encoding="utf-8") as df:
+        json.dump(list(del_set), df)
+
+    if os.path.exists("data/cloud_mp4_index.json"):
+        try:
+            with open("data/cloud_mp4_index.json", "r", encoding="utf-8") as cf:
+                c_list = [x for x in json.load(cf) if x != vname]
+            with open("data/cloud_mp4_index.json", "w", encoding="utf-8") as cf:
+                json.dump(c_list, cf)
+        except Exception:
+            pass
+
+    save_scheduled_queue(q, sync_cloud=True)
+    push_json_to_github_instantly(del_file, f"Record deleted reel {vname}")
+
+    # Delete local output/raw_videos file & thumbnail
+    for p in [os.path.join("output/raw_videos", vname), os.path.join("output/raw_videos", vname + ".jpg")]:
+        if os.path.exists(p):
+            try:
+                os.remove(p)
+            except Exception:
+                pass
+
+    # Delete from GitHub Repository asynchronously
+    delete_file_from_github_repo(f"output/raw_videos/{vname}", f"Delete {vname}")
+    delete_file_from_github_repo(f"output/raw_videos/{vname}.jpg", f"Delete {vname}.jpg")
+    return vname
+
+
+def auto_purge_posted_videos_older_than_1_hour():
+    """
+    Runs automatically in background:
+    Any reel in `published_posts` that was posted more than 1 hour (3600s) ago:
+    1. On Laptop: Copies MP4 to `D:\foji_ai_automation/Posted_YouTube_Archive\`
+    2. Deletes the heavy MP4 from `output/raw_videos/` on Render AND GitHub repo!
+    3. Marks `cloud_purged = True` in `published_posts` so the Posted section still shows its title & Instagram link!
+    """
+    q = get_scheduled_queue()
+    now_t = time.time()
+    changed = False
+
+    for item in q.get("published_posts", []):
+        vname = item.get("video_file", "")
+        if not vname or item.get("cloud_purged"):
+            continue
+        pub_ep = float(item.get("published_epoch", 0))
+        if pub_ep <= 0:
+            # If old item had no epoch, set it to now so it gets 1 hour before purge
+            item["published_epoch"] = now_t
+            changed = True
+            continue
+
+        if (now_t - pub_ep) >= 3600:
+            # 1. Save to Laptop Archive if running on Windows
+            archive_video_to_laptop_folder(vname, item)
+
+            # 2. Delete heavy MP4 from GitHub Repo so GitHub/Render never run out of memory/storage
+            delete_file_from_github_repo(f"output/raw_videos/{vname}", f"Auto-purge {vname} 1hr after IG post")
+
+            # 3. Delete from output/raw_videos/ (it remains safely in Posted_YouTube_Archive on Laptop!)
+            raw_p = os.path.join("output/raw_videos", vname)
+            if os.path.exists(raw_p):
+                archive_video_to_laptop_folder(vname, item)
+                try:
+                    os.remove(raw_p)
+                except Exception:
+                    pass
+
+            item["cloud_purged"] = True
+            changed = True
+            print(f"🧹 [1-Hour Auto-Purge] {vname} archived to Laptop & deleted from GitHub/Render Cloud!")
+
+    if changed:
+        q["published_history"] = q.get("published_posts", [])
+        save_scheduled_queue(q, sync_cloud=True)

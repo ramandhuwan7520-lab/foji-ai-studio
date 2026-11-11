@@ -945,6 +945,10 @@ def assign_reel_to_next_schedule_slot(vid_id):
 
 
 def delete_reel_permanently(vid_id):
+    try:
+        _fud.delete_video_everywhere_manual(vid_id)
+    except Exception:
+        pass
     global GLOBAL_DELETED_IDS
     vid_str = str(vid_id)
     hist = load_history()
@@ -1093,6 +1097,9 @@ def _stream_mp4_instantly(filename):
     raw_dir = os.path.abspath("output/raw_videos")
     os.makedirs(raw_dir, exist_ok=True)
     p = os.path.join(raw_dir, safe_name)
+    arch_p = os.path.abspath(os.path.join("Posted_YouTube_Archive", safe_name))
+    if not os.path.exists(p) and os.path.exists(arch_p):
+        p = arch_p
 
     # ZERO-BANDWIDTH CLOUD MODE: If running on Cloud (Render), stream directly from GitHub's Free CDN!
     # This saves 99.9% of Render's 5GB bandwidth so the workspace NEVER gets suspended!
@@ -2113,6 +2120,10 @@ def _background_master_scheduler_daemon():
                         break
         except Exception:
             pass
+        try:
+            _fud.auto_purge_posted_videos_older_than_1_hour()
+        except Exception:
+            pass
         trim_system_memory()
         time.sleep(30)
 
@@ -2403,6 +2414,23 @@ def api_universe_approve_and_schedule():
         })
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
+
+
+
+@app.route("/api/universe/delete_video", methods=["POST"])
+def api_universe_delete_video():
+    from flask import request, jsonify
+    try:
+        data = request.get_json(force=True, silent=True) or {}
+        vfile = (data.get("video_file") or data.get("id") or "").strip()
+        if not vfile:
+            return jsonify({"ok": False, "error": "Missing video_file"}), 200
+        deleted_name = _fud.delete_video_everywhere_manual(vfile)
+        global _CACHED_UNIVERSE_TS
+        _CACHED_UNIVERSE_TS = 0
+        return jsonify({"ok": True, "deleted": deleted_name, "message": f"Deleted {deleted_name} from Studio & Cloud."})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 200
 
 
 @app.route("/api/universe/remove_scheduled", methods=["POST"])
@@ -4249,7 +4277,7 @@ function fnsBuildDetailedReelCard(v, mode) {
           <span style="font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:99px;background:${badgeBg};color:${badgeCol};">${badgeLabel}</span>
           <span style="font-size:0.68rem;color:#64748b;">${v.published_at || v.created_at || ''}</span>
         </div>
-        <div style="font-size:0.85rem;font-weight:800;color:#fff;">${v.title || '3D Episode'}</div>
+        <div style="font-size:0.85rem;font-weight:800;color:#fff;">${v.title || v.video_file}</div><div style="font-size:0.68rem;color:#38bdf8;font-weight:700;">🎬 File: ${v.video_file} • Part #${v.part_number || 1}</div>
         <div style="font-size:0.74rem;color:#94a3b8;line-height:1.4;">"${(v.dialogue || '').slice(0, 85)}"</div>
         <div style="display:flex;gap:6px;margin-top:auto;padding-top:10px;flex-wrap:wrap;">
           ${!isPub && !isSch ? `<button class="fns-cta-schedule" style="flex:1;padding:8px;font-size:0.73rem;" onclick="fnsApproveAndScheduleSpecific('${v.video_file}')">📅 Schedule</button>` : ''}
@@ -4257,7 +4285,8 @@ function fnsBuildDetailedReelCard(v, mode) {
           <button class="fns-cta-post" style="flex:1;padding:8px;font-size:0.73rem;" onclick="fnsPublishSpecificNow('${v.video_file}')">${isPub ? '📲 Repost' : '📲 Post IG'}</button>
           ${isPub && v.permalink ? `<a href="${v.permalink}" target="_blank" class="fns-tab-btn" style="padding:8px 10px;font-size:0.73rem;text-decoration:none;color:#34d399;border-color:rgba(16,185,129,0.35);">IG ↗</a>` : ''}
           <button class="fns-tab-btn" style="padding:8px 9px;font-size:0.73rem;border-color:rgba(255,255,255,0.1);" onclick="fnsOpenCaptionEditor('${v.video_file}', '${encCap}')" title="Edit Caption">✏️</button>
-          <a href="/api/universe/video_file/${encodeURIComponent(v.video_file)}" download="${v.video_file}" class="fns-tab-btn" style="padding:8px 9px;font-size:0.73rem;text-decoration:none;color:#34d399;border-color:rgba(255,255,255,0.1);">📥</a>
+          <a href="/api/universe/video_file/${encodeURIComponent(v.video_file)}" download="${v.video_file}" class="fns-tab-btn" style="padding:8px 9px;font-size:0.73rem;text-decoration:none;color:#34d399;border-color:rgba(255,255,255,0.1);" title="Download MP4">📥</a>
+          <button class="fns-tab-btn" style="padding:8px 9px;font-size:0.73rem;color:#f87171;border-color:rgba(239,68,68,0.35);" onclick="fnsDeleteVideoManual('${v.video_file}')" title="Delete Reel">🗑️</button>
         </div>
       </div>
     </div>
@@ -4404,6 +4433,43 @@ async function fnsApproveAndScheduleSpecific(vfile) {
   }
 }
 
+
+function fnsDeleteVideoManual(vfile) {
+  fnsOpenModal(
+    '🗑️',
+    'Delete Reel Permanently?',
+    `Are you sure you want to delete <b>${vfile}</b> from Studio & Cloud?<br><span style="font-size:0.75rem;color:#94a3b8;">(Local archive copy in Posted_YouTube_Archive stays safe on your laptop)</span>`,
+    true,
+    [
+      {
+        label: '🗑️ Yes, Delete',
+        cls: 'fns-cta-stop',
+        onClick: async () => {
+          fnsOpenModal('⏳', 'Deleting Reel...', `Removing <b>${vfile}</b> from Studio & GitHub Cloud...`, false, []);
+          try {
+            const r = await fetch('/api/universe/delete_video', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ video_file: vfile })
+            });
+            const d = await r.json();
+            _fnsLastVaultSignature = '';
+            await fnsRefreshHub();
+            if (d.ok) {
+              fnsOpenModal('✅', 'Reel Deleted', `<b>${vfile}</b> has been removed from Studio & Cloud.`);
+            } else {
+              fnsOpenModal('⚠️', 'Delete Error', d.error || 'Could not delete reel.', true);
+            }
+          } catch (e) {
+            fnsOpenModal('⚠️', 'Connection Error', String(e), true);
+          }
+        }
+      },
+      { label: 'Cancel', cls: 'fns-tab-btn', onClick: fnsCloseModal }
+    ]
+  );
+}
+
 async function fnsRemoveScheduled(id) {
   fnsOpenModal('⏳', 'Removing from Schedule...', 'Moving reel back to Pending Approval...', false, []);
   await fetch('/api/universe/remove_scheduled', {
@@ -4489,8 +4555,8 @@ function fnsHumanizeActivityItem(n) {
     .replace(/from Frontend/gi, '')
     .replace(/via \\.env API/gi, '')
     .replace(/GitHub Actions Chrome Worker/gi, '3D Studio')
-    .replace(/raw_video_(\\d+)\.mp4/gi, 'Reel #$1')
-    .replace(/\s+/g, ' ')
+    .replace(/raw_video_(\\d+)\\.mp4/gi, 'Reel #$1')
+    .replace(/\\s+/g, ' ')
     .trim();
   return { title, msg };
 }
