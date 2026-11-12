@@ -1,5 +1,5 @@
 {
-  "generated_count": 26,
+  "generated_count": 27,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -72,7 +72,8 @@
     "love_meera",
     "love_meera",
     "training_ustad",
-    "training_ustad"
+    "training_ustad",
+    "fauji_masti"
   ],
   "history": [
     {
@@ -586,6 +587,23 @@
       "caption": "🎖️ Part 3: Target Pe Nazar Aur Dil Mein Jigar | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!\"\n\n🔥 नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #AgniveerTraining #IndianArmy #FiringRange #DeshBhakti #ArmyLife",
       "created_at": "12 Nov 2026, 06:00 PM IST",
       "completed_at": "12 Nov 2026, 06:03 PM IST"
+    },
+    {
+      "video_id": "Video_031_FaujiMasti_Part_03_1113_015153",
+      "video_file": "Video_031_FaujiMasti_Part_03_1113_015153.mp4",
+      "track_id": "fauji_masti",
+      "track_name": "😂 Barrack Masti, Mess & Brotherhood",
+      "part_number": 3,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar",
+      "scene_summary": "3D Pixar-style 9:16 vertical shot. Outside the training barracks under a large banyan tree during 'Barber Day'. Makra is sitting on a low wooden stool, a white cloth draped over his olive-green PT vest, looking into a small cracked mirror with a face full of pure horror. Ustad, with his thick signature moustache, stands behind him holding manual metal hair clippers, ready to give the 'zero cut'. In the background, two unit brothers are clutching their stomachs and laughing hysterically. The lighting is bright morning sun, highlighting the dust in the air and the comical, wide-eyed expression on Makra's face as his Haryanvi hairstyle disappears.",
+      "dialogue_line_1_hinglish": "Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!",
+      "shayari_hindi": "Zulfein gayi toh kya hua, ruraab wahi naya hai,\nFauji ki asli shaan uski vardi, na ki uska saya hai.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 😂 Barrack Masti, Mess & Brotherhood - Part 3: Fauji Haircut Ka Tyohaar. SCENE & ACTION: 3D Pixar-style 9:16 vertical shot. Outside the training barracks under a large banyan tree during 'Barber Day'. Makra is sitting on a low wooden stool, a white cloth draped over his olive-green PT vest, looking into a small cracked mirror with a face full of pure horror. Ustad, with his thick signature moustache, stands behind him holding manual metal hair clippers, ready to give the 'zero cut'. In the background, two unit brothers are clutching their stomachs and laughing hysterically. The lighting is bright morning sun, highlighting the dust in the air and the comical, wide-eyed expression on Makra's face as his Haryanvi hairstyle disappears. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 3: Fauji Haircut Ka Tyohaar | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!\"\n\n🔥 Zulfein gayi toh kya hua, ruraab wahi naya hai,\nFauji ki asli shaan uski vardi, na ki uska saya hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiMasti #ArmyLife #HaircutDay #IndianArmy #HaryanviComedy #Agniveer",
+      "created_at": "13 Nov 2026, 01:51 AM IST",
+      "completed_at": "13 Nov 2026, 01:57 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -658,7 +676,8 @@
     "Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.",
     "Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.",
     "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!",
-    "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!"
+    "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!",
+    "Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!"
   ],
   "deleted_ids": [],
   "track_parts": {
