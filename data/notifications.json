@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794467542788",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_029_TrainingUstad_Part_03_1112_120057.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:42 PM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794467542.788257
+  },
+  {
     "id": "notif_1794467353625",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
@@ -788,15 +798,5 @@
     "time_str": "08:39 AM",
     "date_str": "10 Nov 2026",
     "timestamp": 1794280172.038288
-  },
-  {
-    "id": "notif_1794280068862",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 4: Raat Ka Ragda & Haathi-Chaal | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "08:37 AM",
-    "date_str": "10 Nov 2026",
-    "timestamp": 1794280068.8620715
   }
 ]
