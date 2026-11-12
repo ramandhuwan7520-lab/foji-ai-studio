@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794486792876",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_030_TrainingUstad_Part_03_1112_180056.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "06:03 PM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794486792.8761125
+  },
+  {
     "id": "notif_1794486720772",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "12:04 PM",
     "date_str": "10 Nov 2026",
     "timestamp": 1794292440.596269
-  },
-  {
-    "id": "notif_1794292438077",
-    "type": "error",
-    "title": "Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: I seem to be encountering an error. Can I try something else for you?",
-    "status": "error",
-    "time_str": "12:03 PM",
-    "date_str": "10 Nov 2026",
-    "timestamp": 1794292438.0776944
   }
 ]
