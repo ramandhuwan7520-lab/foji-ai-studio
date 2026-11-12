@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794465456503",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_029_TrainingUstad_Part_03_1112_120057.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:07 PM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794465456.5031288
+  },
+  {
     "id": "notif_1794465265995",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
