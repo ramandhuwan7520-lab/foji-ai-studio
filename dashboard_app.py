@@ -1,3 +1,10 @@
+# 🛡️ IPV4 SSL HANDSHAKE FIX FOR PYTHON 3.14
+try:
+    import socket as _sock
+    import urllib3.util.connection as _ucn
+    _ucn.allowed_gai_family = lambda: _sock.AF_INET
+except Exception:
+    pass
 import re
 import os
 import sys
@@ -1839,64 +1846,63 @@ def build_fresh_prompt_package(track=None, next_part=1, new_id=1, used_lines=Non
 
 def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", custom_idea=""):
     def _worker():
-        for i in range(1, int(count) + 1):
+        import gemini_bot
+        gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+        repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+
+        # ⚡ INSTANT 0.5s CLOUD WORKFLOW DISPATCH ON RENDER (Zero delay on Step 1!)
+        if (os.environ.get("RENDER") or os.name != "nt") and gh_pat:
             try:
-                import gemini_bot
                 gemini_bot.update_3d_telemetry(
                     1,
-                    f"Stage 1: AI Script ({i}/{count})",
-                    "Writing original story & dialogues...",
+                    "Step 1: Launching Cloud 3D Studio",
+                    "Triggering GitHub Actions 3D Worker...",
                     "active",
-                    12
+                    18
                 )
+                headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
+                wf_url = f"https://api.github.com/repos/{repo}/actions/workflows/cloud_video_engine.yml/dispatches"
+                r = requests.post(
+                    wf_url,
+                    headers=headers,
+                    json={"ref": "main", "inputs": {"action_type": "generate_only", "custom_topic": custom_idea or ""}},
+                    timeout=10
+                )
+                if r.status_code not in (200, 201, 204):
+                    r = requests.post(wf_url, headers=headers, json={"ref": "main"}, timeout=10)
+
+                if r.status_code in (200, 201, 204):
+                    gemini_bot.update_3d_telemetry(
+                        2,
+                        "Step 2: 3D Studio Connected!",
+                        "GitHub Actions 3D Worker started!",
+                        "active",
+                        30
+                    )
+                    return
+                else:
+                    raise RuntimeError(f"GitHub Workflow HTTP {r.status_code}: {r.text[:120]}")
+            except Exception as ex:
+                gemini_bot.update_3d_telemetry(1, "Cloud Trigger Error", str(ex)[:180], "error", 0)
+                gemini_bot.push_app_notification("error", "Cloud Trigger Error", str(ex)[:180], "error")
+                return
+
+        # 💻 LOCAL LAPTOP EXECUTION
+        for i in range(1, int(count) + 1):
+            try:
+                gemini_bot.update_3d_telemetry(1, f"Step 1: Writing Story Script ({i}/{count})", "Creating original Hinglish script...", "active", 15)
                 pkg = _fud.build_real_foji_universe_package(
                     video_id=int(time.time()) % 100000,
                     custom_idea=custom_idea if i == 1 else "",
                     is_preview=False
                 )
-                gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
-                repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-                dispatched_cloud = False
-                if os.name != "nt" and gh_pat:
-                    headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
-                    wf_url = f"https://api.github.com/repos/{repo}/actions/workflows/cloud_video_engine.yml/dispatches"
-                    r = requests.post(wf_url, headers=headers, json={"ref": "main"}, timeout=15)
-                    if r.status_code in (200, 201, 204):
-                        dispatched_cloud = True
-                        gemini_bot.update_3d_telemetry(2, f"Step 2: 3D Studio ({i}/{count})", "Cloud 3D Worker building reel...", "active", 25)
-                        # If running a multi-reel batch (e.g. 3 reels at 02:30 AM), wait for this workflow run to finish before triggering the next!
-                        if int(count) > 1 and i < int(count):
-                            for _wait_tick in range(45):
-                                time.sleep(10)
-                                try:
-                                    r_runs = requests.get(f"https://api.github.com/repos/{repo}/actions/runs?status=in_progress", headers=headers, timeout=10)
-                                    if r_runs.status_code == 200 and len(r_runs.json().get("workflow_runs", [])) == 0:
-                                        break
-                                except Exception:
-                                    pass
-                        gemini_bot.update_3d_telemetry(
-                            2,
-                            "Step 2: Initializing 3D Studio",
-                            "Preparing 3D characters & scene...",
-                            "active",
-                            24
-                        )
-
-                if not dispatched_cloud and (os.environ.get("RENDER") or os.name != "nt"):
-                    raise RuntimeError("Cloud 3D Worker trigger failed: Please verify GITHUB_PAT in Render Environment Variables!")
-                if not dispatched_cloud:
-                    vid_path = gemini_bot.generate_video_in_gemini(pkg)
-                    if vid_path and os.path.exists(vid_path):
-                        _fud.mark_episode_part_completed(pkg["track_id"], pkg["part_number"])
-                        _fud.sync_raw_videos_into_unapproved_queue()
-                        try:
-                            pkg["video_id"] = os.path.basename(vid_path)
-                            send_telegram_approval_card(pkg, mp4_path=vid_path)
-                        except Exception:
-                            pass
+                gemini_bot.update_3d_telemetry(2, f"Step 2: Connecting 3D Studio ({i}/{count})", "Opening Chrome & Gemini...", "active", 28)
+                vid_path = gemini_bot.generate_video_in_gemini(pkg)
+                if vid_path and os.path.exists(vid_path):
+                    _fud.mark_episode_part_completed(pkg["track_id"], pkg["part_number"])
+                    _fud.sync_raw_videos_into_unapproved_queue()
             except Exception as ex:
                 try:
-                    import gemini_bot
                     gemini_bot.update_3d_telemetry(1, "Pipeline Error", str(ex)[:200], "error", 0)
                     gemini_bot.push_app_notification("error", "Pipeline Failed", str(ex)[:200], "error")
                 except Exception:
