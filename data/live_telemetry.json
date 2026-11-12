@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
-  "sub_detail": "Saving Video_029_TrainingUstad_Part_03_1112_120057.mp4 & pushing to Telegram/Frontend...",
+  "step_num": 1,
+  "step_title": "Stage 1: AI Script (1/1)",
+  "sub_detail": "Writing original story & dialogues...",
   "status": "active",
-  "progress": 94,
-  "updated_at": "12:45:32 PM",
-  "epoch": 1794467732.4108114
+  "progress": 12,
+  "updated_at": "06:00:11 PM",
+  "epoch": 1794486611.6711776
 }
