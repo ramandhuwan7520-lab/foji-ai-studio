@@ -1,3 +1,10 @@
+# 🛡️ IPV4 SSL HANDSHAKE FIX FOR PYTHON 3.14
+try:
+    import socket as _sock
+    import urllib3.util.connection as _ucn
+    _ucn.allowed_gai_family = lambda: _sock.AF_INET
+except Exception:
+    pass
 import os
 import sys
 import shutil
