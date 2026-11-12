@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794515171718",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Din Aur Bada Khana | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "01:56 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794515171.719016
+  },
+  {
     "id": "notif_1794515121113",
     "type": "error",
     "title": "Video Limit Reached",
