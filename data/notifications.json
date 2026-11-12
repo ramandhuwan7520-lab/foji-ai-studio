@@ -1,33 +1,33 @@
 [
   {
-    "id": "notif_1794515081469",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading Video_031_FaujiMasti_Part_03_1113_015153.mp4 from Gemini...",
-    "status": "info",
+    "id": "notif_1794515089912",
+    "type": "error",
+    "title": "Gemini Screen Error (Video Nahi Bani)",
+    "message": "Screen par yeh aaya: I'm having a hard time fulfilling your request. Can I help you with something else instead?",
+    "status": "error",
     "time_str": "01:54 AM",
     "date_str": "13 Nov 2026",
-    "timestamp": 1794515081.4690368
+    "timestamp": 1794515089.9124982
   },
   {
-    "id": "notif_1794515022386",
+    "id": "notif_1794515018481",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar is now rendering in Gemini!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Cut Ka Kaand is now rendering in Gemini!",
     "status": "info",
     "time_str": "01:53 AM",
     "date_str": "13 Nov 2026",
-    "timestamp": 1794515022.3865316
+    "timestamp": 1794515018.4816427
   },
   {
-    "id": "notif_1794514915997",
+    "id": "notif_1794514904044",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar | Cast: Makra Only (Solo Army Scene)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Cut Ka Kaand | Cast: Makra Only (Solo Army Scene)",
     "status": "info",
     "time_str": "01:51 AM",
     "date_str": "13 Nov 2026",
-    "timestamp": 1794514915.997452
+    "timestamp": 1794514904.044741
   },
   {
     "id": "notif_1794512387234",
