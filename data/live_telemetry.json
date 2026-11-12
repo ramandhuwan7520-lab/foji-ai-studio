@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Step 1: Launching Cloud 3D Studio",
-  "sub_detail": "Triggering GitHub Actions 3D Worker...",
+  "step_num": 6,
+  "step_title": "Stage 6: Rendering 3D Video (0.2 min)",
+  "sub_detail": "Gemini Veo rendering Video_031_FaujiMasti_Part_03_1113_015153.mp4... (12s elapsed)",
   "status": "active",
-  "progress": 18,
-  "updated_at": "01:51:04 AM",
-  "epoch": 1794514864.8080184
+  "progress": 74,
+  "updated_at": "01:54:13 AM",
+  "epoch": 1794515053.5674982
 }
