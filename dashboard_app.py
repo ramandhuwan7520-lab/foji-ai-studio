@@ -787,7 +787,27 @@ def get_authenticated_ig_client():
                 pass
         raise RuntimeError("Could not capture Instagram sessionid from Chrome within 4 minutes.")
 
-    # 1. Use saved `data/ig_session.json` (Works on both Laptop & Render/GitHub Cloud!)
+    # 0. If data/ig_session.json is missing on Cloud, restore it from IG_SESSION_JSON env or GitHub!
+    if not os.path.exists(IG_SESSION_FILE):
+        env_sess_json = os.getenv("IG_SESSION_JSON", "").strip()
+        if env_sess_json.startswith("{"):
+            try:
+                os.makedirs("data", exist_ok=True)
+                with open(IG_SESSION_FILE, "w", encoding="utf-8") as sf:
+                    sf.write(env_sess_json)
+            except Exception:
+                pass
+        else:
+            try:
+                rem_sess = _fud._fetch_github_json_zero_cache(IG_SESSION_FILE)
+                if isinstance(rem_sess, dict) and rem_sess:
+                    os.makedirs("data", exist_ok=True)
+                    with open(IG_SESSION_FILE, "w", encoding="utf-8") as sf:
+                        json.dump(rem_sess, sf, indent=2)
+            except Exception:
+                pass
+
+    # 1. Use saved `data/ig_session.json` + Auto-Heal if sessionid rotated!
     if os.path.exists(IG_SESSION_FILE):
         try:
             with open(IG_SESSION_FILE, "r", encoding="utf-8") as f:
@@ -798,21 +818,33 @@ def get_authenticated_ig_client():
                 or ig_sess_id
             )
             saved_cookies = sess_data.get("cookies", {})
+            cl = _create_client()
+            cl.load_settings(IG_SESSION_FILE)
+            cl.usdid_registered = True
+            cl.bloks_versioning_id = MODERN_BLOKS
+            for k, v in saved_cookies.items():
+                cl.private.cookies.set(k, v, domain=".instagram.com")
+            if saved_cookies.get("csrftoken"):
+                cl.private.headers.update({"X-CSRFToken": saved_cookies["csrftoken"]})
+
             if saved_sid and len(saved_sid) > 10:
-                cl = _create_client()
-                cl.load_settings(IG_SESSION_FILE, override_app_version=True)
-                cl.usdid_registered = True
-                cl.bloks_versioning_id = MODERN_BLOKS
-                for k, v in saved_cookies.items():
-                    cl.private.cookies.set(k, v, domain=".instagram.com")
-                if saved_cookies.get("csrftoken"):
-                    cl.private.headers.update({"X-CSRFToken": saved_cookies["csrftoken"]})
-                cl.login_by_sessionid(urllib.parse.unquote(saved_sid))
+                try:
+                    cl.login_by_sessionid(urllib.parse.unquote(saved_sid))
+                    cl.dump_settings(IG_SESSION_FILE)
+                    return cl
+                except Exception as sid_err:
+                    print(f"⚠️ SessionID check note ({sid_err}), attempting auto-heal login...")
+
+            # Auto-Heal: Re-login using same device UUIDs + username/password if session expired!
+            if ig_user and ig_pass:
+                cl.login(ig_user, ig_pass)
+                cl.dump_settings(IG_SESSION_FILE)
+                push_file_to_github_api(IG_SESSION_FILE, "Auto-healed IG session")
                 return cl
         except Exception as e:
-            print(f"⚠️ Saved IG session note ({e}), refreshing...")
+            print(f"⚠️ Saved IG session note ({e}), trying fallback auth...")
 
-    # 2. Try INSTAGRAM_SESSIONID from .env / Environment
+    # 2. Try INSTAGRAM_SESSIONID from .env / Render Environment
     if ig_sess_id and len(ig_sess_id) > 10:
         try:
             cl = _authenticate_with_sessionid_and_save(ig_sess_id)
@@ -821,17 +853,29 @@ def get_authenticated_ig_client():
         except Exception as e:
             print(f"⚠️ .env INSTAGRAM_SESSIONID note: {e}")
 
-    # 3. On Windows Laptop: Open Real Chrome once and capture live `sessionid` + `csrftoken`!
-    if os.name == "nt":
+    # 3. Direct Username + Password Login (Works on both Cloud & Laptop!)
+    if ig_user and ig_pass:
+        try:
+            cl = _create_client()
+            cl.login(ig_user, ig_pass)
+            os.makedirs("data", exist_ok=True)
+            cl.dump_settings(IG_SESSION_FILE)
+            push_file_to_github_api(IG_SESSION_FILE, "Save fresh IG login session")
+            return cl
+        except Exception as e:
+            print(f"⚠️ Direct IG username/password login note: {e}")
+
+    # 4. On Windows Laptop: Open Real Chrome once and capture live `sessionid` + `csrftoken`!
+    if os.name == "nt" and not os.environ.get("RENDER"):
         live_sid, all_ig_cookies = _capture_full_ig_cookies_via_real_chrome()
         cl = _authenticate_with_sessionid_and_save(live_sid, all_ig_cookies)
-        push_file_to_github_api(IG_SESSION_FILE, "Save verified IG session from Chrome")
+        push_file_to_github_api(IG_SESSION_FILE, "Save verified IG session from Chrome", blocking=True)
         return cl
 
     raise RuntimeError(
-        "Instagram session (`data/ig_session.json`) is missing or expired on Cloud! "
-        "Run the Instagram login command once on your laptop and push `data/ig_session.json`."
+        "Instagram session expired on Cloud! Run `python refresh_all_sessions.py` once on your laptop to sync fresh IG & Gemini cookies to Cloud."
     )
+
 
 def publish_reel_item_to_instagram(video_id):
     """
@@ -1819,6 +1863,17 @@ def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", 
                     r = requests.post(wf_url, headers=headers, json={"ref": "main"}, timeout=15)
                     if r.status_code in (200, 201, 204):
                         dispatched_cloud = True
+                        gemini_bot.update_3d_telemetry(2, f"Step 2: 3D Studio ({i}/{count})", "Cloud 3D Worker building reel...", "active", 25)
+                        # If running a multi-reel batch (e.g. 3 reels at 02:30 AM), wait for this workflow run to finish before triggering the next!
+                        if int(count) > 1 and i < int(count):
+                            for _wait_tick in range(45):
+                                time.sleep(10)
+                                try:
+                                    r_runs = requests.get(f"https://api.github.com/repos/{repo}/actions/runs?status=in_progress", headers=headers, timeout=10)
+                                    if r_runs.status_code == 200 and len(r_runs.json().get("workflow_runs", [])) == 0:
+                                        break
+                                except Exception:
+                                    pass
                         gemini_bot.update_3d_telemetry(
                             2,
                             "Step 2: Initializing 3D Studio",
@@ -1967,7 +2022,7 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
 
     try:
         import gemini_bot
-        gemini_bot.update_3d_telemetry(3, "Preparing IG Reel", f"Optimizing {vname} for Instagram...", "active", 40)
+        pass  # Do not trigger video generation pipeline telemetry during IG post!
     except Exception:
         pass
 
@@ -1976,7 +2031,7 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
 
     try:
         import gemini_bot
-        gemini_bot.update_3d_telemetry(6, "Uploading to Instagram", f"Publishing {vname} to @ai_foji_lovelife...", "active", 75)
+        pass  # Do not trigger video generation pipeline telemetry during IG post!
     except Exception:
         pass
 
@@ -2021,7 +2076,7 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
 
     try:
         import gemini_bot
-        gemini_bot.update_3d_telemetry(8, "Reel LIVE on Instagram!", f"✅ {vname} Published!", "completed", 100)
+        pass
         gemini_bot.push_app_notification("success", "📸 Reel Posted on Instagram!", f"{vname} is now LIVE on @ai_foji_lovelife!", "success")
         gemini_bot.send_alert(f"📸 Reel Published on Instagram! Video: {vname} | Permalink: https://www.instagram.com/reel/{media_code}/")
     except Exception:
@@ -2115,7 +2170,14 @@ def _background_master_scheduler_daemon():
                         try:
                             _publish_specific_video_to_ig(vpath, post.get("caption", ""), allow_repost=False)
                         except Exception as pub_err:
-                            log_notification("error", "Scheduled Post Failed", f"{vfile}: {str(pub_err)[:140]}", "error")
+                            # Put the reel back into unapproved_videos so a failed scheduled post is NEVER lost!
+                            _IN_FLIGHT_SCHEDULED_LOCK.discard(vfile)
+                            q_restore = _fud.get_scheduled_queue()
+                            post["status"] = "awaiting_approval"
+                            if not any(x.get("video_file") == vfile for x in q_restore.get("unapproved_videos", [])):
+                                q_restore.setdefault("unapproved_videos", []).insert(0, post)
+                            _fud.save_scheduled_queue(q_restore, sync_cloud=True)
+                            log_notification("error", "Scheduled Post Paused", f"{vfile} kept safe in Pending: {str(pub_err)[:120]}", "error")
                         break
         except Exception:
             pass
@@ -2562,7 +2624,7 @@ def api_universe_publish_latest_reel():
     except Exception as e:
         try:
             import gemini_bot
-            gemini_bot.update_3d_telemetry(0, "IG Upload Error", str(e)[:180], "error", 0)
+            pass
         except Exception:
             pass
         return jsonify({
