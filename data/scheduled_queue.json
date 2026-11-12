@@ -2,24 +2,6 @@
   "unapproved_videos": [],
   "scheduled_posts": [
     {
-      "id": "vid_raw_video_1109_120057_p3.mp4",
-      "video_file": "raw_video_1109_120057_p3.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
-      "track_id": "unit_ragda",
-      "part_number": 3,
-      "dialogue": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
-      "shayari": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
-      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
-      "created_at": "09 Nov 2026, 12:08 PM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-12_06:30",
-      "scheduled_epoch": 1794445200.0,
-      "scheduled_display": "12 Nov 2026 at 06:30 AM IST",
-      "date_label": "12 Nov 2026",
-      "time_label": "06:30 AM"
-    },
-    {
       "id": "vid_raw_video_1110_120055_p2.mp4",
       "video_file": "raw_video_1110_120055_p2.mp4",
       "title": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand",
@@ -236,7 +218,7 @@
       "time_label": "06:30 AM"
     }
   ],
-  "updated_epoch": 1794412000.8887522,
+  "updated_epoch": 1794445213.5929437,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
