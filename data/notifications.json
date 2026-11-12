@@ -1,93 +1,43 @@
 [
   {
-    "id": "notif_1794515196500",
+    "id": "notif_1794515282128",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar (Video_031_FaujiMasti_Part_03_1113_015153.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "01:58 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794515282.1289296
+  },
+  {
+    "id": "notif_1794515081469",
     "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Din Aur Bada Khana | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "01:56 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515196.500279
-  },
-  {
-    "id": "notif_1794515192177",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "01:56 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515192.1773722
-  },
-  {
-    "id": "notif_1794515171718",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Din Aur Bada Khana | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "01:56 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515171.719016
-  },
-  {
-    "id": "notif_1794515121113",
-    "type": "error",
-    "title": "Video Limit Reached",
-    "message": "⚠️ Gemini Video Limit Reached: Limit reached. Resets 2:42 PM",
-    "status": "error",
-    "time_str": "01:55 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515121.113824
-  },
-  {
-    "id": "notif_1794515097625",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Cut Ka Kaand | Cast: Makra Only (Solo Army Scene)",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_031_FaujiMasti_Part_03_1113_015153.mp4 from Gemini...",
     "status": "info",
     "time_str": "01:54 AM",
     "date_str": "13 Nov 2026",
-    "timestamp": 1794515097.6259058
+    "timestamp": 1794515081.4690368
   },
   {
-    "id": "notif_1794515094023",
-    "type": "info",
-    "title": "🔄 Switched to Account #2",
-    "message": "Account #1 Limit/Issue -> Switching to Account #2 automatically!",
-    "status": "info",
-    "time_str": "01:54 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515094.0234814
-  },
-  {
-    "id": "notif_1794515089912",
-    "type": "error",
-    "title": "Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: I'm having a hard time fulfilling your request. Can I help you with something else instead?",
-    "status": "error",
-    "time_str": "01:54 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515089.9124982
-  },
-  {
-    "id": "notif_1794515018481",
+    "id": "notif_1794515022386",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Cut Ka Kaand is now rendering in Gemini!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar is now rendering in Gemini!",
     "status": "info",
     "time_str": "01:53 AM",
     "date_str": "13 Nov 2026",
-    "timestamp": 1794515018.4816427
+    "timestamp": 1794515022.3865316
   },
   {
-    "id": "notif_1794514904044",
+    "id": "notif_1794514915997",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Cut Ka Kaand | Cast: Makra Only (Solo Army Scene)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar | Cast: Makra Only (Solo Army Scene)",
     "status": "info",
     "time_str": "01:51 AM",
     "date_str": "13 Nov 2026",
-    "timestamp": 1794514904.044741
+    "timestamp": 1794514915.997452
   },
   {
     "id": "notif_1794512387234",
