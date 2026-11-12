@@ -170,7 +170,7 @@
     }
   ],
   "scheduled_posts": [],
-  "updated_epoch": 1794452030.3892148,
+  "updated_epoch": 1794455643.9000878,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -244,7 +244,8 @@
       "status": "published",
       "published_at": "12 Nov 2026, 08:23 AM IST",
       "published_epoch": 1794452030.3892086,
-      "ig_media_pk": "4028477852775200929"
+      "ig_media_pk": "4028477852775200929",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1110_023120_p1.mp4",
@@ -340,6 +341,22 @@
     }
   ],
   "published_history": [
+    {
+      "id": "vid_raw_video_1109_060126_p2.mp4",
+      "video_file": "raw_video_1109_060126_p2.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 2: Mud Crawl Aur Maidan-e-Jung",
+      "track_id": "training_ustad",
+      "part_number": 2,
+      "dialogue": "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
+      "shayari": "किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।",
+      "caption": "🎖️ Part 2: Mud Crawl Aur Maidan-e-Jung | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!\"\n\n🔥 किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#AgniveerTraining #IndianArmy #FaujiLife #MakraFoji #ArmyDrill #HaryanviSoldier",
+      "created_at": "09 Nov 2026, 06:07 AM IST",
+      "status": "published",
+      "published_at": "12 Nov 2026, 08:23 AM IST",
+      "published_epoch": 1794452030.3892086,
+      "ig_media_pk": "4028477852775200929",
+      "cloud_purged": true
+    },
     {
       "id": "vid_raw_video_1110_023120_p1.mp4",
       "video_file": "raw_video_1110_023120_p1.mp4",
