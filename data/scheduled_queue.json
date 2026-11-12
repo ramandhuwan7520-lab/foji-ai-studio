@@ -1,18 +1,5 @@
 {
-  "unapproved_videos": [
-    {
-      "id": "vid_Video_030_TrainingUstad_Part_03_1112_180056.mp4",
-      "video_file": "Video_030_TrainingUstad_Part_03_1112_180056.mp4",
-      "title": "⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Dil Mein Jigar",
-      "track_id": "training_ustad",
-      "part_number": 3,
-      "dialogue": "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!",
-      "shayari": "नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।",
-      "caption": "🎖️ Part 3: Target Pe Nazar Aur Dil Mein Jigar | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!\"\n\n🔥 नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #AgniveerTraining #IndianArmy #FiringRange #DeshBhakti #ArmyLife",
-      "created_at": "12 Nov 2026, 06:03 PM IST",
-      "status": "awaiting_approval"
-    }
-  ],
+  "unapproved_videos": [],
   "scheduled_posts": [
     {
       "id": "vid_raw_video_1109_120057_p3.mp4",
@@ -211,9 +198,27 @@
       "scheduled_display": "16 Nov 2026 at 12:30 PM IST",
       "date_label": "16 Nov 2026",
       "time_label": "12:30 PM"
+    },
+    {
+      "id": "vid_Video_030_TrainingUstad_Part_03_1112_180056.mp4",
+      "video_file": "Video_030_TrainingUstad_Part_03_1112_180056.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Dil Mein Jigar",
+      "track_id": "training_ustad",
+      "part_number": 3,
+      "dialogue": "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!",
+      "shayari": "नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।",
+      "caption": "🎖️ Part 3: Target Pe Nazar Aur Dil Mein Jigar | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!\"\n\n🔥 नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #AgniveerTraining #IndianArmy #FiringRange #DeshBhakti #ArmyLife",
+      "created_at": "12 Nov 2026, 06:03 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-16_18:30",
+      "scheduled_epoch": 1794834000.0,
+      "scheduled_display": "16 Nov 2026 at 06:30 PM IST",
+      "date_label": "16 Nov 2026",
+      "time_label": "06:30 PM"
     }
   ],
-  "updated_epoch": 1794492094.7149897,
+  "updated_epoch": 1794508186.7482767,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
