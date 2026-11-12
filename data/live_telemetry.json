@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_031_LoveMeera_Part_06_1112_073634.mp4 in Gemini (Zero Timeout)...",
+  "step_title": "Stage 6: Rendering 3D Video (0.2 min)",
+  "sub_detail": "Gemini Veo rendering Video_031_LoveMeera_Part_06_1112_073634.mp4... (12s elapsed)",
   "status": "active",
-  "progress": 75,
-  "updated_at": "07:37:57 AM",
-  "epoch": 1794449277.1224053
+  "progress": 74,
+  "updated_at": "07:38:10 AM",
+  "epoch": 1794449290.326299
 }
