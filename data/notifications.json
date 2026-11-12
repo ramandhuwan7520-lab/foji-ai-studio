@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794443475017",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Choti Pe Tiranga | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
+    "status": "info",
+    "time_str": "06:01 AM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794443475.0170872
+  },
+  {
     "id": "notif_1794412002634",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "01:10 AM",
     "date_str": "09 Nov 2026",
     "timestamp": 1794166846.1513503
-  },
-  {
-    "id": "notif_1794166806355",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda (raw_video_1109_010404_p1.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "01:10 AM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794166806.3551214
   }
 ]
