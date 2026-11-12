@@ -529,10 +529,17 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     elif state.get("active_mode") == "locked_track" and state.get("selected_track_id") in FOJI_UNIVERSE_TRACKS:
         chosen_key = state["selected_track_id"]
     else:
-        next_idx = (int(state.get("last_rotated_index", -1)) + 1) % len(TRACK_ORDER)
-        chosen_key = TRACK_ORDER[next_idx]
+        # ⚖️ SMART EQUAL-PART BALANCER:
+        # Always inspect all tracks and pick the track with the LOWEST completed_part!
+        # If any track failed earlier or is behind (e.g. Part 2 while another is Part 6),
+        # it strictly builds the lagging tracks first until ALL tracks have equal parts!
+        min_completed = min(int(tracker.get(t_key, {}).get("completed_part", 0)) for t_key in TRACK_ORDER)
+        lagging_tracks = [
+            t_key for t_key in TRACK_ORDER
+            if int(tracker.get(t_key, {}).get("completed_part", 0)) == min_completed
+        ]
+        chosen_key = lagging_tracks[0]
         if not is_preview:
-            state["last_rotated_index"] = next_idx
             state["selected_track_id"] = chosen_key
             save_director_state(state)
 
