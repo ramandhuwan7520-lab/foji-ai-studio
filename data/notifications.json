@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794467164292",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_029_TrainingUstad_Part_03_1112_120057.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:36 PM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794467164.2924857
+  },
+  {
     "id": "notif_1794466973593",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
@@ -788,15 +798,5 @@
     "time_str": "06:33 AM",
     "date_str": "10 Nov 2026",
     "timestamp": 1794272588.9800148
-  },
-  {
-    "id": "notif_1794272584571",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "raw_video_1108_001301_p2.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "06:33 AM",
-    "date_str": "10 Nov 2026",
-    "timestamp": 1794272584.5710704
   }
 ]
