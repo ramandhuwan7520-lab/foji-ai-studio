@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794457318683",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "Foji 3D Reel (raw_video_1110_023138_p1.mp4) locked for 15 Nov 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "09:51 AM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794457318.6839757
+  },
+  {
     "id": "notif_1794457222771",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
