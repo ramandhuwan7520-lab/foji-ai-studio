@@ -15,24 +15,6 @@
   ],
   "scheduled_posts": [
     {
-      "id": "vid_raw_video_1110_120055_p2.mp4",
-      "video_file": "raw_video_1110_120055_p2.mp4",
-      "title": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand",
-      "track_id": "fauji_masti",
-      "part_number": 2,
-      "dialogue": "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
-      "shayari": "Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!",
-      "caption": "🎖️ Part 2: Peti Inspection Ka Kaand | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!\"\n\n🔥 Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMasti #ArmyLife #IndianArmy #BarrackComedy #MakraFoji #DesiHumor",
-      "created_at": "10 Nov 2026, 12:05 PM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-12_18:30",
-      "scheduled_epoch": 1794488400.0,
-      "scheduled_display": "12 Nov 2026 at 06:30 PM IST",
-      "date_label": "12 Nov 2026",
-      "time_label": "06:30 PM"
-    },
-    {
       "id": "vid_raw_video_1109_120057_p3.mp4",
       "video_file": "raw_video_1109_120057_p3.mp4",
       "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
@@ -231,7 +213,7 @@
       "time_label": "12:30 PM"
     }
   ],
-  "updated_epoch": 1794486807.9254315,
+  "updated_epoch": 1794488401.840033,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
