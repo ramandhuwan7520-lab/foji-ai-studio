@@ -1,3 +1,10 @@
+# 🛡️ IPV4 SSL HANDSHAKE FIX FOR PYTHON 3.14
+try:
+    import socket as _sock
+    import urllib3.util.connection as _ucn
+    _ucn.allowed_gai_family = lambda: _sock.AF_INET
+except Exception:
+    pass
 import os
 import sys
 import shutil
@@ -1071,33 +1078,39 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     s9_x, s9_y = load_recorded_step_coords(9, 45.2, 46.0)
     s12_x, s12_y = load_recorded_step_coords(12, 82.3, 79.4)
 
-    print("⚡ [Step #1 & #2] Selecting '4 Hydrogen (Everyday help)' mode...")
-    already_hydrogen = driver.execute_script(
+    print("⚡ [Step #1 & #2] Checking Gemini Mode Picker (4 Hydrogen -> 3.5 Flash Lite -> 3.1 Pro -> Flash)...")
+    already_good_mode = driver.execute_script(
         """
         const allTxt = Array.from(document.querySelectorAll('[aria-label*="mode" i], [data-test-id*="mode" i], mat-select, button')).map(el => (el.innerText || el.getAttribute('aria-label') || '').toLowerCase()).join(' ');
-        return allTxt.includes('4 hydrogen') || allTxt.includes('hydrogen');
+        return allTxt.includes('4 hydrogen') || allTxt.includes('hydrogen') || allTxt.includes('3.5 flash');
         """
     )
-    if not already_hydrogen:
+    if not already_good_mode:
         opened_picker = wait_and_single_click_step(
             driver,
             "Step #1: Open Mode Picker",
             aria_list=["open mode picker", "mode picker", "model"],
-            txt_list=["4 hydrogen", "hydrogen", "3.5 flash lite", "flash lite", "3.1 pro", "4 argon", "everyday help", "everday help", "quick answers", "pro", "flash"],
+            txt_list=["4 hydrogen", "hydrogen", "3.5 flash lite", "flash lite", "3.1 pro", "4 argon", "everyday help", "everday help", "quick answers", "pro", "flash", "2.5", "3.8"],
             icon_list=["keyboard_arrow_down", "arrow_drop_down"],
             near_xpct=s1_x,
             near_ypct=s1_y,
-            verify_next_txt=["4 hydrogen", "hydrogen", "everyday help", "everday help", "3.5 flash lite"],
+            verify_next_txt=["4 hydrogen", "hydrogen", "everyday help", "everday help", "3.5 flash lite", "quick answers", "3.1 pro", "flash"],
             wait_timeout=5.0,
             verify_timeout=3.0,
             max_attempts=1,
             optional=True
         )
         if opened_picker:
+            # Try 4 Hydrogen first; if not found, automatically fall back to 3.5 Flash Lite, 3.1 Pro, or Flash!
             wait_and_single_click_step(
                 driver,
-                "Step #2: Select 4 Hydrogen (Everyday help)",
-                txt_list=["everyday help 4 hydrogen", "everday help 4 hydrogen", "4 hydrogen", "hydrogen", "everyday help", "everday help"],
+                "Step #2: Select Best Video Model (4 Hydrogen / 3.5 Flash Lite / Pro)",
+                txt_list=[
+                    "everyday help 4 hydrogen", "everday help 4 hydrogen", "4 hydrogen", "hydrogen", "everyday help", "everday help",
+                    "quick answers 3.5 flash lite", "3.5 flash lite", "flash lite", "quick answers",
+                    "detailed research 3.1 pro", "3.1 pro", "code & analysis 4 argon", "4 argon",
+                    "3.8 flash", "2.5 flash", "flash"
+                ],
                 near_xpct=s2_x,
                 near_ypct=s2_y,
                 wait_timeout=4.0,
@@ -1105,7 +1118,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
                 max_attempts=1,
                 optional=True
             )
-            time.sleep(1.0)
+            time.sleep(0.8)
 
     print("🎬 [Step #3 & #4] Opening 'Upload & tools' (+) -> Strictly Clicking 'Create video' (NEVER Music!)...")
     video_mode_active = False
