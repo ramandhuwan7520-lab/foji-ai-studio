@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794515094023",
+    "type": "info",
+    "title": "🔄 Switched to Account #2",
+    "message": "Account #1 Limit/Issue -> Switching to Account #2 automatically!",
+    "status": "info",
+    "time_str": "01:54 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794515094.0234814
+  },
+  {
     "id": "notif_1794515089912",
     "type": "error",
     "title": "Gemini Screen Error (Video Nahi Bani)",
