@@ -1,9 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "Gemini Screen Error (Video Nahi Bani)",
-  "sub_detail": "Screen par yeh aaya: Sorry, something went wrong. Please try your request again.",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "06:03:00 AM",
-  "epoch": 1794443580.2968292
+  "step_num": 6,
+  "step_title": "Uploading to Instagram",
+  "sub_detail": "Publishing raw_video_1109_120057_p3.mp4 to @ai_foji_lovelife...",
+  "status": "active",
+  "progress": 75,
+  "updated_at": "06:31:05 AM",
+  "epoch": 1794445265.279983
 }
