@@ -70,7 +70,7 @@ jobs:
           IG_USERNAME: ${{ secrets.IG_USERNAME }}
           IG_PASSWORD: ${{ secrets.IG_PASSWORD }}
           IG_SESSION_JSON: ${{ secrets.IG_SESSION_JSON }}
-          BATCH_COUNT: ${{ github.event.inputs.batch_count || '1' }}
+          BATCH_COUNT: ${{ github.event_name == 'schedule' && '3' || github.event.inputs.batch_count || '1' }}
           FORCE_TRACK_ID: ${{ github.event.inputs.track_id || '' }}
           CUSTOM_IDEA: ${{ github.event.inputs.custom_idea || '' }}
         run: |
