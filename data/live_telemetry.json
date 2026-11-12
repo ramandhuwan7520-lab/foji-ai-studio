@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
-  "sub_detail": "Saving Video_031_LoveMeera_Part_06_1112_073634.mp4 & pushing to Telegram/Frontend...",
+  "step_num": 3,
+  "step_title": "Preparing IG Reel",
+  "sub_detail": "Optimizing raw_video_1110_120055_p2.mp4 for Instagram...",
   "status": "active",
-  "progress": 94,
-  "updated_at": "07:38:59 AM",
-  "epoch": 1794449339.3976629
+  "progress": 40,
+  "updated_at": "07:54:28 AM",
+  "epoch": 1794450268.3340101
 }
