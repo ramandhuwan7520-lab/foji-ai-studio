@@ -469,11 +469,7 @@ def save_all_browser_cookies_via_cdp(driver):
             with open(target_cookie_file, "w", encoding="utf-8") as f:
                 f.write(json.dumps(bundle, indent=2))
             sync_file_to_github(target_cookie_file, f"Auto-renew Google Gemini cookies for Account #{slot}")
-            # If slot 2 is missing, also seed slot 2 as a backup copy so failover always has a valid bundle!
-            if slot == 1 and not os.path.exists("gemini_cookies_secret_2.txt"):
-                with open("gemini_cookies_secret_2.txt", "w", encoding="utf-8") as f2:
-                    f2.write(json.dumps(bundle, indent=2))
-                sync_file_to_github("gemini_cookies_secret_2.txt", "Seed backup Account #2 cookies")
+
             return len(essential)
     except Exception as e:
         print(f"⚠️ Cookie save note: {e}")
@@ -568,7 +564,7 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
 
     print("🌐 Opening Google Gemini (`https://gemini.google.com/app`)...")
     driver.get(GEMINI_URL)
-    time.sleep(3.5)
+    time.sleep(1.8)
 
     # Restore localStorage keys if available
     if saved_ls and not skip_cookie_inject:
@@ -1092,9 +1088,9 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
             near_xpct=s1_x,
             near_ypct=s1_y,
             verify_next_txt=["4 hydrogen", "hydrogen", "everyday help", "everday help", "3.5 flash lite"],
-            wait_timeout=10.0,
-            verify_timeout=5.0,
-            max_attempts=2,
+            wait_timeout=5.0,
+            verify_timeout=3.0,
+            max_attempts=1,
             optional=True
         )
         if opened_picker:
@@ -1104,9 +1100,9 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
                 txt_list=["everyday help 4 hydrogen", "everday help 4 hydrogen", "4 hydrogen", "hydrogen", "everyday help", "everday help"],
                 near_xpct=s2_x,
                 near_ypct=s2_y,
-                wait_timeout=8.0,
-                verify_timeout=4.0,
-                max_attempts=2,
+                wait_timeout=4.0,
+                verify_timeout=2.5,
+                max_attempts=1,
                 optional=True
             )
             time.sleep(1.0)
@@ -1520,16 +1516,18 @@ def rotate_track_and_script_in_history(pending_pkg):
 
 
 def export_fresh_gemini_cookies_from_local():
+    slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+    target_f = "gemini_cookies_secret_2.txt" if slot == 2 else COOKIE_FILE
     print("\n" + "=" * 75)
-    print("🔐 PURE COOKIE + FINGERPRINT SAVER (NO TIME LIMIT!)")
-    print("👉 Chrome khul raha hai. Agar sign-in maange toh aaram se Sign-In kar lo.")
-    print("👉 Jaise hi Gemini ka prompt box dikhega, Bot cookies + User-Agent + LocalStorage lock kar lega!")
+    print(f"🔐 SAVING GOOGLE GEMINI COOKIES FOR ACCOUNT #{slot} -> '{target_f}'")
+    print(f"👉 Chrome khul raha hai (Profile #{slot}). Apne Google Account #{slot} se Sign-In kar lo!")
+    print("👉 Jaise hi Gemini ka prompt box dikhega, Bot khud cookies save karke GitHub Cloud par push kar dega!")
     print("=" * 75 + "\n")
     driver, proc = launch_resilient_chrome_session(os.path.abspath("output/raw_videos"), start_blank=True)
     try:
         if inject_cookies_and_open_gemini(driver, skip_cookie_inject=True):
             count = save_all_browser_cookies_via_cdp(driver)
-            print(f"\n🎉 SUCCESS! Exported {count} Pure Cookies + Windows Fingerprint to {COOKIE_FILE}!")
+            print(f"\n🎉 SUCCESS! Exported {count} Pure Cookies for Account #{slot} -> {target_f} & Synced to Cloud!")
     finally:
         try:
             driver.quit()
@@ -1541,21 +1539,83 @@ def export_fresh_gemini_cookies_from_local():
             pass
 
 
+def _are_slot1_and_slot2_identical():
+    """Checks if gemini_cookies_secret.txt and gemini_cookies_secret_2.txt belong to the exact same Google account."""
+    try:
+        if not os.path.exists("gemini_cookies_secret.txt") or not os.path.exists("gemini_cookies_secret_2.txt"):
+            return False
+        b1 = json.load(open("gemini_cookies_secret.txt", "r", encoding="utf-8"))
+        b2 = json.load(open("gemini_cookies_secret_2.txt", "r", encoding="utf-8"))
+        c1 = {c["name"]: c["value"] for c in (b1.get("cookies", []) if isinstance(b1, dict) else b1)}
+        c2 = {c["name"]: c["value"] for c in (b2.get("cookies", []) if isinstance(b2, dict) else b2)}
+        if c1.get("SID") and c1.get("SID") == c2.get("SID"):
+            return True
+        if c1.get("__Secure-1PSID") and c1.get("__Secure-1PSID") == c2.get("__Secure-1PSID"):
+            return True
+    except Exception:
+        pass
+    return False
+
+
+def _get_preferred_starting_slot():
+    """If Account #1 already reached its daily video limit today, start directly with Account #2 (Zero wasted time!)."""
+    limit_state_file = "data/account_limit_state.json"
+    today_ist = datetime.now(IST).strftime("%Y-%m-%d")
+    if os.path.exists(limit_state_file):
+        try:
+            st = json.load(open(limit_state_file, "r", encoding="utf-8"))
+            if st.get("acc1_limit_date") == today_ist and os.path.exists("gemini_cookies_secret_2.txt") and not _are_slot1_and_slot2_identical():
+                print("⚡ [Smart Account Router] Account #1 already hit daily limit today -> Starting directly with Account #2!")
+                return 2
+        except Exception:
+            pass
+    return 1
+
+
+def _mark_account1_limit_for_today():
+    limit_state_file = "data/account_limit_state.json"
+    today_ist = datetime.now(IST).strftime("%Y-%m-%d")
+    try:
+        os.makedirs("data", exist_ok=True)
+        with open(limit_state_file, "w", encoding="utf-8") as f:
+            json.dump({"acc1_limit_date": today_ist, "updated_epoch": time.time()}, f)
+        sync_file_to_github(limit_state_file, "Mark Account #1 daily limit for today")
+    except Exception:
+        pass
+
+
 def generate_video_in_gemini(pending_pkg=None):
-    global _ACTIVE_COOKIE_ACCOUNT_SLOT
-    _ACTIVE_COOKIE_ACCOUNT_SLOT = 1
+    global _ACTIVE_COOKIE_ACCOUNT_SLOT, _SUPPRESS_FAILOVER_NOTIF
+    has_second_acc = (
+        (os.path.exists("gemini_cookies_secret_2.txt") or bool(os.getenv("GEMINI_COOKIES_JSON_2", "").strip()))
+        and not _are_slot1_and_slot2_identical()
+    )
+    start_slot = _get_preferred_starting_slot() if has_second_acc else 1
+    _ACTIVE_COOKIE_ACCOUNT_SLOT = start_slot
+
+    # Suppress intermediate Telegram error screenshots on Slot #1 if Slot #2 is ready as backup!
+    _SUPPRESS_FAILOVER_NOTIF = (start_slot == 1 and has_second_acc)
     try:
         return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
     except Exception as first_err:
-        has_second_acc = os.path.exists("gemini_cookies_secret_2.txt") or bool(os.getenv("GEMINI_COOKIES_JSON_2", "").strip())
-        if has_second_acc:
-            msg = f"Account #1 Limit/Issue ({str(first_err)[:90]}). Switching to 2nd Account Cookies automatically!"
-            print(f"?? [AUTO-FAILOVER] {msg}")
-            update_3d_telemetry(2, "?? Switching to Account #2 Cookies", msg, "active", 20)
-            push_app_notification("warning", "?? 1st Account Limit -> Using 2nd Account!", msg, "success")
-            send_alert(f"?? *Account #1 Limit Reached!*\nAb *2nd Account Cookies* ka use karke video banayi ja rahi hai!")
+        _SUPPRESS_FAILOVER_NOTIF = False
+        if start_slot == 1 and has_second_acc:
+            _mark_account1_limit_for_today()
+            msg = f"Account #1 Limit/Issue -> Switching to Account #2 automatically!"
+            print(f"🔄 [AUTO-FAILOVER] {msg}")
+            update_3d_telemetry(2, "🔄 Switching to Account #2", msg, "active", 22)
+            push_app_notification("info", "🔄 Switched to Account #2", msg, "info")
             _ACTIVE_COOKIE_ACCOUNT_SLOT = 2
             return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
+        elif start_slot == 2:
+            # If started on Account #2 and it had an issue, try Account #1 once
+            print("🔄 [AUTO-FAILOVER] Trying Account #1...")
+            _ACTIVE_COOKIE_ACCOUNT_SLOT = 1
+            return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
+        # If Slot 2 was identical or not set up yet, tell user clearly
+        if _are_slot1_and_slot2_identical():
+            print("⚠️ Account #2 had a duplicate copy of Account #1 cookies! Run: python gemini_bot.py --save-cookies-2")
+        report_step_problem_instantly(None, "Video Generation Paused", str(first_err)[:180])
         raise first_err
 
 
