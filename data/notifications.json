@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794517292168",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Sarhad Pe Ishq Ka Pehra | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "02:31 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794517292.1680665
+  },
+  {
     "id": "notif_1794517287396",
     "type": "error",
     "title": "Gemini Cookie Expired",
