@@ -2,24 +2,6 @@
   "unapproved_videos": [],
   "scheduled_posts": [
     {
-      "id": "vid_raw_video_1111_062859_p2.mp4",
-      "video_file": "raw_video_1111_062859_p2.mp4",
-      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 2: Barfani Toofan Mein Yaadon Ka Pehra",
-      "track_id": "border_duty",
-      "part_number": 2,
-      "dialogue": "Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.",
-      "shayari": "सरहद की ये बर्फ भी अब हमें मोम जैसी पिघलती लगती है,\nजब घर से दुआएं और सीने में तिरंगे की आग जलती है।",
-      "caption": "🎖️ Part 2: Barfani Toofan Mein Yaadon Ka Pehra | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.\"\n\n🔥 सरहद की ये बर्फ भी अब हमें मोम जैसी पिघलती लगती है,\nजब घर से दुआएं और सीने में तिरंगे की आग जलती है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiAIStudio #IndianArmy #SiachenDiaries #HaryanviFoji #PatrioticVibes #MakraMeera",
-      "created_at": "11 Nov 2026, 06:34 AM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-12_12:30",
-      "scheduled_epoch": 1794466800.0,
-      "scheduled_display": "12 Nov 2026 at 12:30 PM IST",
-      "date_label": "12 Nov 2026",
-      "time_label": "12:30 PM"
-    },
-    {
       "id": "vid_raw_video_1110_120055_p2.mp4",
       "video_file": "raw_video_1110_120055_p2.mp4",
       "title": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand",
@@ -236,7 +218,7 @@
       "time_label": "12:30 PM"
     }
   ],
-  "updated_epoch": 1794457483.901572,
+  "updated_epoch": 1794466812.9433293,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
