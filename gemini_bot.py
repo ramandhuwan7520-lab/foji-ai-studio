@@ -156,6 +156,12 @@ def update_3d_telemetry(step_num, step_title, sub_detail="", status="active", pr
 
 
 def report_step_problem_instantly(driver, step_name, problem_detail):
+    # If Account #1 is active and Account #2 is available for failover, do NOT alarm user yet — let Account #2 take over!
+    slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+    has_acc2 = os.path.exists("gemini_cookies_secret_2.txt") or bool(os.getenv("GEMINI_COOKIES_JSON_2", "").strip())
+    if slot == 1 and has_acc2 and not globals().get("_SUPPRESS_FAILOVER_NOTIF"):
+        print(f"🔄 [Account #1 Notice: {step_name}] {problem_detail} -> Will auto-switch to Account #2!")
+        return
     os.makedirs("data", exist_ok=True)
     snap_path = "data/gemini_step_problem.png"
     full_msg = f"❌ [{step_name}] {problem_detail}"
@@ -235,6 +241,16 @@ def _load_saved_session_bundle():
     target_env = "GEMINI_COOKIES_JSON_2" if slot == 2 else "GEMINI_COOKIES_JSON"
 
     print(f"🔐 [Cookie Loader] Active Account Slot #{slot} -> Reading from '{target_file}'...")
+    # Always try pulling latest auto-renewed cookie file from GitHub if on Cloud
+    if os.name != "nt":
+        try:
+            import foji_universe_director as _fud
+            rem_c = _fud._fetch_github_json_zero_cache(target_file)
+            if rem_c:
+                with open(target_file, "w", encoding="utf-8") as wf:
+                    json.dump(rem_c, wf, indent=2)
+        except Exception:
+            pass
     raw = ""
     if os.path.exists(target_file):
         try:
@@ -441,17 +457,23 @@ def save_all_browser_cookies_via_cdp(driver):
             pass
 
         names = {x["name"] for x in essential}
-        if ("SID" in names and "__Secure-1PSID" in names) and len(essential) >= 10:
+        if ("SID" in names or "__Secure-1PSID" in names) and len(essential) >= 8:
+            slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+            target_cookie_file = "gemini_cookies_secret_2.txt" if slot == 2 else COOKIE_FILE
             bundle = {
                 "user_agent": ua,
                 "cookies": essential,
                 "local_storage": local_store,
                 "saved_at": time.time()
             }
-            # Save as pure JSON list for backward compatibility, or dict bundle
-            with open(COOKIE_FILE, "w", encoding="utf-8") as f:
+            with open(target_cookie_file, "w", encoding="utf-8") as f:
                 f.write(json.dumps(bundle, indent=2))
-            sync_file_to_github(COOKIE_FILE, "Update pure Google Gemini Pro cookies + fingerprint bundle")
+            sync_file_to_github(target_cookie_file, f"Auto-renew Google Gemini cookies for Account #{slot}")
+            # If slot 2 is missing, also seed slot 2 as a backup copy so failover always has a valid bundle!
+            if slot == 1 and not os.path.exists("gemini_cookies_secret_2.txt"):
+                with open("gemini_cookies_secret_2.txt", "w", encoding="utf-8") as f2:
+                    f2.write(json.dumps(bundle, indent=2))
+                sync_file_to_github("gemini_cookies_secret_2.txt", "Seed backup Account #2 cookies")
             return len(essential)
     except Exception as e:
         print(f"⚠️ Cookie save note: {e}")
@@ -566,10 +588,10 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
         if is_gemini_truly_signed_in(driver):
             print("✅ Google Gemini Signed-In Workspace is 100% Open & Verified via Cookies!")
             time.sleep(1.5)
-            if os.name == "nt":
-                cnt = save_all_browser_cookies_via_cdp(driver)
-                if cnt:
-                    print(f"💾 Synced {cnt} live Google Pro cookies to active slot file!")
+            # IMMORTAL COOKIE RENEWAL: Save rotated Google cookies on BOTH Laptop & Cloud so they NEVER expire!
+            cnt = save_all_browser_cookies_via_cdp(driver)
+            if cnt:
+                print(f"💾 [Auto-Renewed] Synced {cnt} fresh Google cookies to GitHub so session NEVER expires!")
             return True
 
         try:
@@ -1703,10 +1725,22 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
                     tg_tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
                     tg_cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
                     if tg_tok and tg_cid:
+                        kb_markup = json.dumps({
+                            "inline_keyboard": [
+                                [
+                                    {"text": "✅ Approve & Post (IG+FB)", "callback_data": f"approve_post:{bname}"},
+                                    {"text": "⏰ Approve & Schedule", "callback_data": f"approve_sched:{bname}"}
+                                ],
+                                [
+                                    {"text": "🔄 Regenerate", "callback_data": f"regen:{bname}"},
+                                    {"text": "🗑️ Delete", "callback_data": f"delete:{bname}"}
+                                ]
+                            ]
+                        })
                         with open(output_video_path, "rb") as vf_tg:
                             requests.post(
                                 f"https://api.telegram.org/bot{tg_tok}/sendVideo",
-                                data={"chat_id": tg_cid, "caption": tg_caption, "parse_mode": "Markdown"},
+                                data={"chat_id": tg_cid, "caption": tg_caption[:980], "parse_mode": "Markdown", "reply_markup": kb_markup},
                                 files={"video": (bname, vf_tg, "video/mp4")},
                                 timeout=90
                             )
@@ -1717,6 +1751,22 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             # 2. Upload the unique MP4 file to GitHub so Render/Local Frontend can stream it immediately!
             print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Vault...")
             sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {bname} for Frontend")
+            # Also generate & sync HD Poster Thumbnail (.mp4.jpg) so Cloud UI never shows a black video box!
+            try:
+                import shutil as _sh
+                ff_bin = _sh.which("ffmpeg")
+                thumb_out = output_video_path + ".jpg"
+                if ff_bin:
+                    subprocess.run([ff_bin, "-y", "-ss", "00:00:02.50", "-i", output_video_path, "-frames:v", "1", "-q:v", "2", thumb_out], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15)
+                if os.path.exists(thumb_out) and os.path.getsize(thumb_out) > 2000:
+                    sync_file_to_github(f"{rel_vid_path}.jpg", f"Sync HD thumbnail for {bname}")
+            except Exception:
+                pass
+            # Also save refreshed cookies at end of successful video generation!
+            try:
+                save_all_browser_cookies_via_cdp(driver)
+            except Exception:
+                pass
 
             # 3. Record completed video & advance Part Number in history.json, episode_tracker.json & scheduled_queue.json!
             try:
@@ -1756,7 +1806,11 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
 
 
 if __name__ == "__main__":
-    if "--save-cookies" in sys.argv:
+    if "--save-cookies-2" in sys.argv:
+        _ACTIVE_COOKIE_ACCOUNT_SLOT = 2
+        export_fresh_gemini_cookies_from_local()
+    elif "--save-cookies" in sys.argv:
+        _ACTIVE_COOKIE_ACCOUNT_SLOT = 1
         export_fresh_gemini_cookies_from_local()
     else:
         generate_video_in_gemini()
