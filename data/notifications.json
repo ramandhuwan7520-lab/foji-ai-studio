@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794512360232",
+    "type": "warning",
+    "title": "?? 1st Account Limit -> Using 2nd Account!",
+    "message": "Account #1 Limit/Issue (Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD). Switching to 2nd Account Cookies automatically!",
+    "status": "success",
+    "time_str": "01:09 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794512360.2320435
+  },
+  {
     "id": "notif_1794512339742",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
