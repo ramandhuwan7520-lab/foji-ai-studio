@@ -19,18 +19,6 @@
       "time_label": "06:30 PM"
     },
     {
-      "id": "vid_raw_video_1109_023108_p3.mp4",
-      "video_file": "raw_video_1109_023108_p3.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar",
-      "track_id": "love_meera",
-      "part_number": 3,
-      "dialogue": "Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.",
-      "shayari": "Kagaz pe utari hai maine apni poori dunya,\nTu sarhad pe sambhalna khud ko aur ye mera ishq.",
-      "caption": "🎖️ Part 3: Chithhi Ka Intezaar Aur Pyaar | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.\"\n\n🔥 Kagaz pe utari hai maine apni poori dunya,\nTu sarhad pe sambhalna khud ko aur ye mera ishq.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #FojanMeera #IndianArmyLove #Agniveer #LongDistanceRelationship #DesiPixar",
-      "created_at": "09 Nov 2026, 02:40 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_1110_083746_p4.mp4",
       "video_file": "raw_video_1110_083746_p4.mp4",
       "title": "🔥 Ustad Ka Ragda & Punishment — Part 4: Raat Ka Ragda & Haathi-Chaal",
@@ -217,9 +205,27 @@
       "scheduled_display": "15 Nov 2026 at 06:30 AM IST",
       "date_label": "15 Nov 2026",
       "time_label": "06:30 AM"
+    },
+    {
+      "id": "vid_raw_video_1109_023108_p3.mp4",
+      "video_file": "raw_video_1109_023108_p3.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar",
+      "track_id": "love_meera",
+      "part_number": 3,
+      "dialogue": "Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.",
+      "shayari": "Kagaz pe utari hai maine apni poori dunya,\nTu sarhad pe sambhalna khud ko aur ye mera ishq.",
+      "caption": "🎖️ Part 3: Chithhi Ka Intezaar Aur Pyaar | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.\"\n\n🔥 Kagaz pe utari hai maine apni poori dunya,\nTu sarhad pe sambhalna khud ko aur ye mera ishq.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #FojanMeera #IndianArmyLove #Agniveer #LongDistanceRelationship #DesiPixar",
+      "created_at": "09 Nov 2026, 02:40 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-15_12:30",
+      "scheduled_epoch": 1794726000.0,
+      "scheduled_display": "15 Nov 2026 at 12:30 PM IST",
+      "date_label": "15 Nov 2026",
+      "time_label": "12:30 PM"
     }
   ],
-  "updated_epoch": 1794457318.6822374,
+  "updated_epoch": 1794457338.1068523,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
