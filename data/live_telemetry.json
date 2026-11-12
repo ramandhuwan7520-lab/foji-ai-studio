@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (0.8 min)",
-  "sub_detail": "Gemini Veo rendering Video_031_LoveMeera_Part_06_1112_073634.mp4... (51s elapsed)",
+  "step_num": 7,
+  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
+  "sub_detail": "Saving Video_031_LoveMeera_Part_06_1112_073634.mp4 & pushing to Telegram/Frontend...",
   "status": "active",
-  "progress": 77,
-  "updated_at": "07:38:50 AM",
-  "epoch": 1794449330.1403809
+  "progress": 94,
+  "updated_at": "07:38:59 AM",
+  "epoch": 1794449339.3976629
 }
