@@ -1,5 +1,45 @@
 [
   {
+    "id": "notif_1794449240727",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: ❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
+    "status": "info",
+    "time_str": "07:37 AM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794449240.7273295
+  },
+  {
+    "id": "notif_1794449229293",
+    "type": "warning",
+    "title": "?? 1st Account Limit -> Using 2nd Account!",
+    "message": "Account #1 Limit/Issue (Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD). Switching to 2nd Account Cookies automatically!",
+    "status": "success",
+    "time_str": "07:37 AM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794449229.2939477
+  },
+  {
+    "id": "notif_1794449227189",
+    "type": "error",
+    "title": "Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "07:37 AM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794449227.189596
+  },
+  {
+    "id": "notif_1794449204015",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
+    "status": "info",
+    "time_str": "07:36 AM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794449204.0159369
+  },
+  {
     "id": "notif_1794445273410_970",
     "type": "error",
     "title": "Scheduled Post Failed",
