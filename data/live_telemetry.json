@@ -1,9 +1,9 @@
 {
   "step_num": 2,
-  "step_title": "Step 2: 3D Studio (1/1)",
-  "sub_detail": "Cloud 3D Worker building reel...",
+  "step_title": "Step 2: Initializing 3D Studio",
+  "sub_detail": "Preparing 3D characters & scene...",
   "status": "active",
-  "progress": 25,
-  "updated_at": "01:05:57 AM",
-  "epoch": 1794512157.2750998
+  "progress": 24,
+  "updated_at": "01:05:59 AM",
+  "epoch": 1794512159.1878057
 }
