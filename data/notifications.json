@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794465060306",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Ungli Trigger Pe | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:01 PM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794465060.3061924
+  },
+  {
     "id": "notif_1794457423371",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
