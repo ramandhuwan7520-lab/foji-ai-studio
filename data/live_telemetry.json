@@ -1,9 +1,9 @@
 {
-  "step_num": 4,
-  "step_title": "Stage 4: Uploading Characters",
-  "sub_detail": "Injecting ONLY Foji Makra (Solo Army Scene) into Gemini...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering Video_030_TrainingUstad_Part_03_1112_180056.mp4...",
   "status": "active",
-  "progress": 55,
-  "updated_at": "06:01:51 PM",
-  "epoch": 1794486711.3473175
+  "progress": 68,
+  "updated_at": "06:01:59 PM",
+  "epoch": 1794486719.5668693
 }
