@@ -1,9 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "IG Upload Error",
-  "sub_detail": "Instagram session (`data/ig_session.json`) is missing or expired on Cloud! Run the Instagram login command once on your laptop and push `data/ig_session.json`.",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "07:31:26 AM",
-  "epoch": 1794448886.0257628
+  "step_num": 3,
+  "step_title": "Preparing IG Reel",
+  "sub_detail": "Optimizing raw_video_1110_120055_p2.mp4 for Instagram...",
+  "status": "active",
+  "progress": 40,
+  "updated_at": "07:32:11 AM",
+  "epoch": 1794448931.228399
 }
