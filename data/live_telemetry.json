@@ -1,9 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "Gemini Screen Error (Video Nahi Bani)",
-  "sub_detail": "Screen par yeh aaya: I'm having a hard time fulfilling your request. Can I help you with something else instead?",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "01:54:48 AM",
-  "epoch": 1794515088.592723
+  "step_num": 2,
+  "step_title": "\ud83d\udd04 Switching to Account #2",
+  "sub_detail": "Account #1 Limit/Issue -> Switching to Account #2 automatically!",
+  "status": "active",
+  "progress": 22,
+  "updated_at": "01:54:52 AM",
+  "epoch": 1794515092.7292068
 }
