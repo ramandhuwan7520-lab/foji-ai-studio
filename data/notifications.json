@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794508187108",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Dil Mein Jigar locked for 16 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "11:59 PM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794508187.1085174
+  },
+  {
     "id": "notif_1794488483107",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
@@ -788,15 +798,5 @@
     "time_str": "12:05 PM",
     "date_str": "10 Nov 2026",
     "timestamp": 1794292529.0195463
-  },
-  {
-    "id": "notif_1794292473190",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "12:04 PM",
-    "date_str": "10 Nov 2026",
-    "timestamp": 1794292473.1908922
   }
 ]
