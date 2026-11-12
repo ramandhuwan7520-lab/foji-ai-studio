@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794443513081",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Choti Pe Tiranga | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
+    "status": "info",
+    "time_str": "06:01 AM",
+    "date_str": "12 Nov 2026",
+    "timestamp": 1794443513.0812588
+  },
+  {
     "id": "notif_1794443507989",
     "type": "warning",
     "title": "?? 1st Account Limit -> Using 2nd Account!",
@@ -788,15 +798,5 @@
     "time_str": "02:37 AM",
     "date_str": "09 Nov 2026",
     "timestamp": 1794172025.8396878
-  },
-  {
-    "id": "notif_1794171770252",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "02:32 AM",
-    "date_str": "09 Nov 2026",
-    "timestamp": 1794171770.2523198
   }
 ]
