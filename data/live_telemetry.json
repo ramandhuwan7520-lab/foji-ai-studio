@@ -1,9 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "IG Upload Error",
-  "sub_detail": "Instagram session (`data/ig_session.json`) is missing or expired on Cloud! Run the Instagram login command once on your laptop and push `data/ig_session.json`.",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "07:33:10 AM",
-  "epoch": 1794448990.756727
+  "step_num": 2,
+  "step_title": "Stage 2: Cookie Sign-In (Account #2)",
+  "sub_detail": "Logging into Gemini & preparing Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)...",
+  "status": "active",
+  "progress": 25,
+  "updated_at": "07:37:19 AM",
+  "epoch": 1794449239.5652308
 }
