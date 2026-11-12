@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
-  "sub_detail": "Saving Video_031_FaujiMasti_Part_03_1113_015153.mp4 & pushing to Telegram/Frontend...",
-  "status": "active",
-  "progress": 94,
-  "updated_at": "01:54:40 AM",
-  "epoch": 1794515080.2878885
+  "step_num": 0,
+  "step_title": "Gemini Screen Error (Video Nahi Bani)",
+  "sub_detail": "Screen par yeh aaya: I'm having a hard time fulfilling your request. Can I help you with something else instead?",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "01:54:48 AM",
+  "epoch": 1794515088.592723
 }
