@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (0.2 min)",
-  "sub_detail": "Gemini Veo rendering Video_031_BorderDuty_Part_03_1112_060112.mp4... (12s elapsed)",
-  "status": "active",
-  "progress": 74,
-  "updated_at": "06:02:44 AM",
-  "epoch": 1794443564.9995825
+  "step_num": 0,
+  "step_title": "Gemini Screen Error (Video Nahi Bani)",
+  "sub_detail": "Screen par yeh aaya: Sorry, something went wrong. Please try your request again.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "06:03:00 AM",
+  "epoch": 1794443580.2968292
 }
