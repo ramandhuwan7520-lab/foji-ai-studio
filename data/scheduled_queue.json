@@ -65,18 +65,6 @@
       "caption": "🎖️ Part 5: Ret Ka Ragda & Palti ka Toofan | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!\"\n\n🔥 सीना फौलाद का और बाज़ुओं में अंगारे रखते हैं, \nहम फौजी हैं जनाब, हार को भी अपने जूतों के नीचे दबाए रखते हैं।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FaujiRagda #IndianArmy #Agniveer #ArmyLife #MakraFoji #UstadKaRagda",
       "created_at": "11 Nov 2026, 07:33 PM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_031_LoveMeera_Part_06_1112_073634.mp4",
-      "video_file": "Video_031_LoveMeera_Part_06_1112_073634.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein",
-      "track_id": "love_meera",
-      "part_number": 6,
-      "dialogue": "Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.",
-      "shayari": "Sarhad ki raahon mein bhatakti hain ye yaadein teri,\nVardi ki shaan mein chhipi hai har fariyad meri.",
-      "caption": "🎖️ Part 6: Railway Station Ki Yaadein | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.\"\n\n🔥 Sarhad ki raahon mein bhatakti hain ye yaadein teri,\nVardi ki shaan mein chhipi hai har fariyad meri.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#FojiLove #Agniveer #MeeraMakra #IndianArmy #LongDistanceLove #DesiRomance",
-      "created_at": "12 Nov 2026, 07:39 AM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -205,9 +193,27 @@
       "scheduled_display": "14 Nov 2026 at 12:30 PM IST",
       "date_label": "14 Nov 2026",
       "time_label": "12:30 PM"
+    },
+    {
+      "id": "vid_Video_031_LoveMeera_Part_06_1112_073634.mp4",
+      "video_file": "Video_031_LoveMeera_Part_06_1112_073634.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein",
+      "track_id": "love_meera",
+      "part_number": 6,
+      "dialogue": "Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.",
+      "shayari": "Sarhad ki raahon mein bhatakti hain ye yaadein teri,\nVardi ki shaan mein chhipi hai har fariyad meri.",
+      "caption": "🎖️ Part 6: Railway Station Ki Yaadein | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.\"\n\n🔥 Sarhad ki raahon mein bhatakti hain ye yaadein teri,\nVardi ki shaan mein chhipi hai har fariyad meri.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#FojiLove #Agniveer #MeeraMakra #IndianArmy #LongDistanceLove #DesiRomance",
+      "created_at": "12 Nov 2026, 07:39 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-14_18:30",
+      "scheduled_epoch": 1794661200.0,
+      "scheduled_display": "14 Nov 2026 at 06:30 PM IST",
+      "date_label": "14 Nov 2026",
+      "time_label": "06:30 PM"
     }
   ],
-  "updated_epoch": 1794457270.3174405,
+  "updated_epoch": 1794457280.4336255,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
