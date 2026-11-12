@@ -17,18 +17,6 @@
       "scheduled_display": "10 Nov 2026 at 06:30 PM IST",
       "date_label": "10 Nov 2026",
       "time_label": "06:30 PM"
-    },
-    {
-      "id": "vid_Video_050_UnitRagda_Part_05_1111_192711.mp4",
-      "video_file": "Video_050_UnitRagda_Part_05_1111_192711.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 5: Ret Ka Ragda & Palti ka Toofan",
-      "track_id": "unit_ragda",
-      "part_number": 5,
-      "dialogue": "Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!",
-      "shayari": "सीना फौलाद का और बाज़ुओं में अंगारे रखते हैं, \nहम फौजी हैं जनाब, हार को भी अपने जूतों के नीचे दबाए रखते हैं।",
-      "caption": "🎖️ Part 5: Ret Ka Ragda & Palti ka Toofan | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!\"\n\n🔥 सीना फौलाद का और बाज़ुओं में अंगारे रखते हैं, \nहम फौजी हैं जनाब, हार को भी अपने जूतों के नीचे दबाए रखते हैं।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FaujiRagda #IndianArmy #Agniveer #ArmyLife #MakraFoji #UstadKaRagda",
-      "created_at": "11 Nov 2026, 07:33 PM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -229,9 +217,27 @@
       "scheduled_display": "15 Nov 2026 at 06:30 PM IST",
       "date_label": "15 Nov 2026",
       "time_label": "06:30 PM"
+    },
+    {
+      "id": "vid_Video_050_UnitRagda_Part_05_1111_192711.mp4",
+      "video_file": "Video_050_UnitRagda_Part_05_1111_192711.mp4",
+      "title": "🔥 Ustad Ka Ragda & Punishment — Part 5: Ret Ka Ragda & Palti ka Toofan",
+      "track_id": "unit_ragda",
+      "part_number": 5,
+      "dialogue": "Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!",
+      "shayari": "सीना फौलाद का और बाज़ुओं में अंगारे रखते हैं, \nहम फौजी हैं जनाब, हार को भी अपने जूतों के नीचे दबाए रखते हैं।",
+      "caption": "🎖️ Part 5: Ret Ka Ragda & Palti ka Toofan | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye ret hamare liye naram bistar hai aur ye dhoop hamara nasha, jab tak rassi chadhne ka junoon sar pe rahega, ye sharir thakega nahi aur na rukega!\"\n\n🔥 सीना फौलाद का और बाज़ुओं में अंगारे रखते हैं, \nहम फौजी हैं जनाब, हार को भी अपने जूतों के नीचे दबाए रखते हैं।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FaujiRagda #IndianArmy #Agniveer #ArmyLife #MakraFoji #UstadKaRagda",
+      "created_at": "11 Nov 2026, 07:33 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-16_06:30",
+      "scheduled_epoch": 1794790800.0,
+      "scheduled_display": "16 Nov 2026 at 06:30 AM IST",
+      "date_label": "16 Nov 2026",
+      "time_label": "06:30 AM"
     }
   ],
-  "updated_epoch": 1794457396.393382,
+  "updated_epoch": 1794457423.3666315,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
