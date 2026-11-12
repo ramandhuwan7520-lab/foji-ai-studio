@@ -218,7 +218,7 @@
       "time_label": "12:30 PM"
     }
   ],
-  "updated_epoch": 1794467184.169176,
+  "updated_epoch": 1794470802.6237457,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -292,7 +292,8 @@
       "status": "published",
       "published_at": "12 Nov 2026, 12:36 PM IST",
       "published_epoch": 1794467184.1691687,
-      "ig_media_pk": "MANUAL_MARKED_POSTED"
+      "ig_media_pk": "MANUAL_MARKED_POSTED",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1109_060126_p2.mp4",
@@ -404,6 +405,22 @@
     }
   ],
   "published_history": [
+    {
+      "id": "vid_raw_video_1111_062859_p2.mp4",
+      "video_file": "raw_video_1111_062859_p2.mp4",
+      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 2: Barfani Toofan Mein Yaadon Ka Pehra",
+      "track_id": "border_duty",
+      "part_number": 2,
+      "dialogue": "Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.",
+      "shayari": "सरहद की ये बर्फ भी अब हमें मोम जैसी पिघलती लगती है,\nजब घर से दुआएं और सीने में तिरंगे की आग जलती है।",
+      "caption": "🎖️ Part 2: Barfani Toofan Mein Yaadon Ka Pehra | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Ustad kehte hain thand haddiyan tod deti hai, par Meera, tere hathon ke mithi choorma ki yaad mere jamte huye khoon mein bhi foji junoon bhar deti hai.\"\n\n🔥 सरहद की ये बर्फ भी अब हमें मोम जैसी पिघलती लगती है,\nजब घर से दुआएं और सीने में तिरंगे की आग जलती है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiAIStudio #IndianArmy #SiachenDiaries #HaryanviFoji #PatrioticVibes #MakraMeera",
+      "created_at": "11 Nov 2026, 06:34 AM IST",
+      "status": "published",
+      "published_at": "12 Nov 2026, 12:36 PM IST",
+      "published_epoch": 1794467184.1691687,
+      "ig_media_pk": "MANUAL_MARKED_POSTED",
+      "cloud_purged": true
+    },
     {
       "id": "vid_raw_video_1109_060126_p2.mp4",
       "video_file": "raw_video_1109_060126_p2.mp4",
