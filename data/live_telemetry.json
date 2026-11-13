@@ -1,9 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "Gemini Cookie Expired",
-  "sub_detail": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "12:16:08 PM",
-  "epoch": 1794552368.1586163
+  "step_num": 2,
+  "step_title": "\ud83d\udd04 Switching to Account #1",
+  "sub_detail": "Account #2 issue (Google Account #2 asked for password on Cloud. Refresh cookies or set ) -> Switching to Account #1!",
+  "status": "active",
+  "progress": 22,
+  "updated_at": "12:16:10 PM",
+  "epoch": 1794552370.4265776
 }
