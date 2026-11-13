@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794547310745",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan (Video_042_BorderDuty_Part_03_1113_104845.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "10:51 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794547310.7455552
+  },
+  {
     "id": "notif_1794547291502",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
