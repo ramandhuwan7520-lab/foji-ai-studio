@@ -1,9 +1,8 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (7.5 min)",
-  "sub_detail": "Gemini Veo rendering Video_042_BorderDuty_Part_03_1113_103902.mp4... (449s elapsed)",
-  "status": "active",
-  "progress": 92,
-  "updated_at": "10:47:23 AM",
-  "epoch": 1794547043.9599657
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1794547050.957285
 }
