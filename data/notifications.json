@@ -1,5 +1,35 @@
 [
   {
+    "id": "notif_1794573134162",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Aur Junoon Ka Safar | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:02 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794573134.1621208
+  },
+  {
+    "id": "notif_1794573113293",
+    "type": "error",
+    "title": "Warning: Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "06:01 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794573113.2931762
+  },
+  {
+    "id": "notif_1794573081165",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rope Climb Aur Lohe Ke Haath | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:01 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794573081.1656706
+  },
+  {
     "id": "notif_1794563799525",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
