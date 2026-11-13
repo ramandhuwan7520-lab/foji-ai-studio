@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538493633",
+    "type": "error",
+    "title": "Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "08:24 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538493.6340172
+  },
+  {
     "id": "notif_1794538474771",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:52 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794457338.110283
-  },
-  {
-    "id": "notif_1794457318683",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "Foji 3D Reel (raw_video_1110_023138_p1.mp4) locked for 15 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "09:51 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794457318.6839757
   }
 ]
