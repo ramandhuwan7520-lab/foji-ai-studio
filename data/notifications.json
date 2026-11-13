@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538498899",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Sannate Mein Tirange Ka Pehra | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
+    "status": "info",
+    "time_str": "08:24 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538498.8998113
+  },
+  {
     "id": "notif_1794538495666",
     "type": "info",
     "title": "🔄 Switched to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "09:53 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794457423.3711615
-  },
-  {
-    "id": "notif_1794457396484",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 4: Raat Ka Ragda & Haathi-Chaal locked for 15 Nov 2026 at 06:30 PM IST!",
-    "status": "success",
-    "time_str": "09:53 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794457396.4847422
   }
 ]
