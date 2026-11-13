@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_Video_042_BorderDuty_Part_03_1113_104845.mp4",
-      "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
-      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
-      "track_id": "border_duty",
-      "part_number": 3,
-      "dialogue": "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
-      "shayari": "वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।",
-      "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
-      "created_at": "13 Nov 2026, 10:51 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_Video_031_FaujiMasti_Part_03_1113_015153.mp4",
       "video_file": "Video_031_FaujiMasti_Part_03_1113_015153.mp4",
       "title": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar",
@@ -221,9 +209,27 @@
       "scheduled_display": "16 Nov 2026 at 06:30 PM IST",
       "date_label": "16 Nov 2026",
       "time_label": "06:30 PM"
+    },
+    {
+      "id": "vid_Video_042_BorderDuty_Part_03_1113_104845.mp4",
+      "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
+      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
+      "track_id": "border_duty",
+      "part_number": 3,
+      "dialogue": "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
+      "shayari": "वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।",
+      "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
+      "created_at": "13 Nov 2026, 10:51 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-17_06:30",
+      "scheduled_epoch": 1794877200.0,
+      "scheduled_display": "17 Nov 2026 at 06:30 AM IST",
+      "date_label": "17 Nov 2026",
+      "time_label": "06:30 AM"
     }
   ],
-  "updated_epoch": 1794557770.2477698,
+  "updated_epoch": 1794557776.4150932,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
