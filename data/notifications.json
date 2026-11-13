@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794552062767",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Deewar Ke Paar Aur Fauji Raftaar | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:11 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794552062.767085
+  },
+  {
     "id": "notif_1794552006562_963",
     "type": "stopped",
     "title": "Generation Stopped",
