@@ -1,6 +1,6 @@
 {
   "active_mode": "auto_rotate",
-  "selected_track_id": "unit_ragda",
+  "selected_track_id": "training_ustad",
   "last_rotated_index": 1,
   "custom_idea": "",
   "bgm_volume": 20,
@@ -13,5 +13,5 @@
   ],
   "night_batch_time": "02:30",
   "night_batch_count": 3,
-  "updated_epoch": 1794537656.4813442
+  "updated_epoch": 1794599819.5389159
 }
