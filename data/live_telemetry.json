@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Step 1: Launching Cloud 3D Studio",
-  "sub_detail": "Triggering GitHub Actions 3D Worker...",
+  "step_num": 2,
+  "step_title": "Step 2: 3D Studio Connected!",
+  "sub_detail": "GitHub Actions 3D Worker started!",
   "status": "active",
-  "progress": 18,
-  "updated_at": "08:22:36 AM",
-  "epoch": 1794538356.9995754
+  "progress": 30,
+  "updated_at": "08:22:41 AM",
+  "epoch": 1794538361.176314
 }
