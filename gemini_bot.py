@@ -576,65 +576,18 @@ def dismiss_any_agree_or_consent_popup(driver):
     return False
 
 
-def is_gemini_truly_signed_in(driver):
-    """
-    100% STRICT REAL SIGN-IN VERIFIER:
-    Rejects Gemini's logged-out Guest Mode!
-    Returns True ONLY when:
-    1) URL is on `gemini.google.com` (not `accounts.google.com`)
-    2) Browser has live `SID`, `__Secure-1PSID`, AND `__Secure-1PSIDTS` cookies right now
-    3) There is NO visible 'Sign in' button in the top bar
-    4) The Google Account profile avatar (`Google Account:` / `@gmail.com`) OR signed-in `+` tools button is visible!
-    """
-    try:
-        curr_url = (driver.current_url or "").lower()
-        if "gemini.google.com" not in curr_url or "accounts.google.com" in curr_url:
-            return False
-
-        # Check live browser cookies via CDP first!
-        driver.execute_cdp_cmd("Network.enable", {})
-        all_c = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
-        c_names = {c.get("name") for c in all_c if "google" in c.get("domain", "") and c.get("value")}
-        # A truly logged-in Google session MUST have SID and __Secure-1PSID in the live browser!
-        if "SID" not in c_names or "__Secure-1PSID" not in c_names:
-            return False
-
-        js_strict_ui_check = """
-        // 1. If a visible 'Sign in' link/button exists on screen, user is 100% LOGGED OUT!
-        const allBtns = document.querySelectorAll('a, button, [role="button"]');
-        for (const el of allBtns) {
-            if (el.offsetParent === null) continue;
-            const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
-            const aria = (el.getAttribute('aria-label') || '').trim().toLowerCase();
-            const href = (el.getAttribute('href') || '').toLowerCase();
-            if (txt === 'sign in' || txt === 'साइन इन करें' || aria === 'sign in' || href.includes('servicelogin')) {
-                return false;
-            }
-        }
-        // 2. Check for Google Account Avatar in top right OR active prompt editor without sign-in button
-        const avatar = document.querySelector(
-            'a[aria-label*="Google Account"], button[aria-label*="Google Account"], [aria-label*="@gmail.com"], img.gb_P, img.gbii, .gb_d[aria-label*="Google"]'
-        );
-        const editor = document.querySelector('div[contenteditable="true"], rich-textarea, textarea');
-        return Boolean(editor && (avatar || document.querySelectorAll('button, [role="button"]').length > 5));
-        """
-        return bool(driver.execute_script(js_strict_ui_check))
-    except Exception:
-        return False
-
-
 def save_all_browser_cookies_via_cdp(driver, force_save=False):
     """
-    Saves ONLY genuine, live signed-in cookies from the current browser (never merges old dead cookies!).
+    Saves ALL Google cookies + Laptop User-Agent + LocalStorage into `gemini_cookies_secret.txt`.
+    STRICT PROTECTION: Never overwrites cookies when running headless on Cloud Linux!
+    Only saves when `force_save=True` (during `--save-cookies` on your Laptop).
     """
+    if os.name != "nt" or not force_save:
+        return 0
     try:
-        if not is_gemini_truly_signed_in(driver):
-            return 0
-
         driver.execute_cdp_cmd("Network.enable", {})
         res = driver.execute_cdp_cmd("Network.getAllCookies", {})
         all_cookies = res.get("cookies", [])
-
         essential = []
         for c in all_cookies:
             dom = c.get("domain", "")
@@ -650,6 +603,7 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                 }
                 if c.get("sameSite") in ("Strict", "Lax", "None"):
                     clean_c["sameSite"] = c["sameSite"]
+                # Extend cookie expiration by 180 days so it never expires prematurely
                 clean_c["expires"] = float(int(time.time()) + 86400 * 180)
                 if c.get("priority") in ("Low", "Medium", "High"):
                     clean_c["priority"] = c["priority"]
@@ -657,26 +611,18 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                     clean_c["sameParty"] = bool(c["sameParty"])
                 essential.append(clean_c)
 
-        names = {x["name"] for x in essential}
-        if "SID" in names and "__Secure-1PSID" in names and len(essential) >= 12:
-            ua = DEFAULT_WIN_UA
-            local_store = {}
-            if os.name == "nt":
-                try:
-                    ua = driver.execute_script("return navigator.userAgent;") or DEFAULT_WIN_UA
-                    local_store = driver.execute_script(
-                        "let o={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); o[k]=localStorage.getItem(k);} return o;"
-                    ) or {}
-                except Exception:
-                    pass
-            elif os.path.exists(COOKIE_FILE):
-                try:
-                    old_b = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
-                    ua = old_b.get("user_agent") or DEFAULT_WIN_UA
-                    local_store = old_b.get("local_storage") or {}
-                except Exception:
-                    pass
+        ua = DEFAULT_WIN_UA
+        local_store = {}
+        try:
+            ua = driver.execute_script("return navigator.userAgent;") or DEFAULT_WIN_UA
+            local_store = driver.execute_script(
+                "let o={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); o[k]=localStorage.getItem(k);} return o;"
+            ) or {}
+        except Exception:
+            pass
 
+        names = {x["name"] for x in essential}
+        if ("SID" in names or "__Secure-1PSID" in names) and len(essential) >= 8:
             bundle = {
                 "user_agent": ua,
                 "cookies": essential,
@@ -684,21 +630,35 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                 "saved_at": time.time()
             }
             with open(COOKIE_FILE, "w", encoding="utf-8") as f:
-                json.dump(bundle, f, indent=2)
-
-            slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-            if "_RUNTIME_FRESH_COOKIES_MEM" in globals():
-                _RUNTIME_FRESH_COOKIES_MEM[slot_k] = essential
-
-            if os.name != "nt":
-                sync_file_to_github(COOKIE_FILE, "Auto-refresh verified rotating __Secure-1PSIDTS cookie token")
-                print(f"🔄 [Rolling Token Guard] Synced {len(essential)} REAL signed-in cookies to GitHub!")
-            else:
-                print(f"💾 Locked {len(essential)} REAL Signed-In Cookies into {COOKIE_FILE}!")
+                f.write(json.dumps(bundle, indent=2))
+            print(f"💾 Locked {len(essential)} Pure Laptop Cookies into {COOKIE_FILE} (Read-Only on Cloud)!")
             return len(essential)
     except Exception as e:
         print(f"⚠️ Cookie save note: {e}")
     return 0
+
+
+def is_gemini_truly_signed_in(driver):
+    js_check = """
+    const url = location.href.toLowerCase();
+    if (!url.includes('gemini.google.com') || url.includes('accounts.google.com')) return false;
+
+    const signInBtns = Array.from(document.querySelectorAll('a, button, [role="button"]')).filter(el => {
+        if (el.offsetParent === null) return false;
+        const t = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
+        return t === 'sign in' || t === 'sign in to gemini';
+    });
+    if (signInBtns.length > 0) return false;
+
+    const hasPrompt = Boolean(
+        document.querySelector('[aria-label*="Enter a prompt" i], [aria-label*="Ask Gemini" i], rich-textarea, div[contenteditable="true"], textarea')
+    );
+    return hasPrompt;
+    """
+    try:
+        return bool(driver.execute_script(js_check))
+    except Exception:
+        return False
 
 
 def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
@@ -787,7 +747,6 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
 
         if is_gemini_truly_signed_in(driver):
             print("✅ Google Gemini Signed-In Workspace is 100% Open & Verified via Cookies!")
-            save_all_browser_cookies_via_cdp(driver)
             try:
                 slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
                 _RUNTIME_FRESH_COOKIES_MEM[slot_k] = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
@@ -1170,25 +1129,25 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     s9_x, s9_y = load_recorded_step_coords(9, 45.2, 46.0)
     s12_x, s12_y = load_recorded_step_coords(12, 82.3, 79.4)
 
-    print("[Step #1 & #2] Selecting '4 Hydrogen (Everyday help)' Mode...")
+    print("⚡ [Step #1 & #2] Selecting '4 Hydrogen (Everyday help)' Mode...")
     opened_picker = wait_and_single_click_step(
         driver,
         "Step #1: Open Mode Picker",
         aria_list=["open mode picker", "mode picker", "model"],
-        txt_list=["4 hydrogen", "hydrogen", "4 argon", "argon", "3.5 flash lite", "flash lite", "3.1 pro", "everyday help", "quick answers", "pro", "flash"],
+        txt_list=["4 hydrogen", "hydrogen", "4 argon", "argon", "3.5 flash lite", "flash-lite", "flash lite", "3.1 pro", "everyday help", "quick answers", "pro", "flash"],
         icon_list=["keyboard_arrow_down", "arrow_drop_down"],
         near_xpct=s1_x,
         near_ypct=s1_y,
         verify_next_txt=["4 hydrogen", "hydrogen", "everyday help", "3.5 flash lite", "quick answers"],
         wait_timeout=5.0,
-        verify_timeout=3.0,
+        verify_timeout=2.5,
         max_attempts=1,
         optional=True
     )
     if opened_picker:
         picked_h2 = wait_and_single_click_step(
             driver,
-            "Step #2A: Select '4 Hydrogen (Everyday help)'",
+            "Step #2: Select '4 Hydrogen (Everyday help)'",
             txt_list=["everyday help 4 hydrogen", "everday help 4 hydrogen", "4 hydrogen", "hydrogen", "everyday help"],
             near_xpct=s2_x,
             near_ypct=s2_y,
@@ -1200,78 +1159,63 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         if not picked_h2:
             wait_and_single_click_step(
                 driver,
-                "Step #2B: Select '3.5 Flash Lite'",
+                "Step #2 Fallback: Select '3.5 Flash Lite'",
                 txt_list=["quick answers 3.5 flash lite", "3.5 flash lite", "flash lite", "quick answers", "flash"],
                 near_xpct=s2_x,
                 near_ypct=s2_y,
-                wait_timeout=3.0,
-                verify_timeout=2.0,
+                wait_timeout=2.5,
+                verify_timeout=1.5,
                 max_attempts=1,
                 optional=True
             )
         time.sleep(0.8)
 
-    print("[Step #3 & #4] Opening 'Upload & tools' (+) -> Strictly Clicking 'Create video'...")
-    for attempt_cv in range(1, 4):
-        dismiss_any_agree_or_consent_popup(driver)
-        if verify_create_video_selected_or_detect_limit(driver) == "OK":
-            break
+    print("🎬 [Step #3 & #4] Opening 'Upload & tools' (+) -> Clicking 'Create video' ONCE...")
+    dismiss_any_agree_or_consent_popup(driver)
+    wait_and_single_click_step(
+        driver,
+        "Step #3: Upload & tools (+)",
+        aria_list=["upload & tools", "tools", "add", "plus", "open upload"],
+        txt_list=["+", "tools"],
+        icon_list=["add", "add_circle", "spark", "video_spark"],
+        near_xpct=s3_x,
+        near_ypct=s3_y,
+        verify_next_txt=["create video", "upload files", "upload image"],
+        wait_timeout=6.0,
+        verify_timeout=3.0,
+        max_attempts=2,
+        optional=False
+    )
+    time.sleep(0.6)
 
-        wait_and_single_click_step(
-            driver,
-            f"Step #3: Upload & tools (+) [Try {attempt_cv}]",
-            aria_list=["upload & tools", "tools", "add", "plus", "open upload"],
-            txt_list=["+", "tools"],
-            icon_list=["add", "add_circle", "spark", "video_spark"],
-            near_xpct=s3_x,
-            near_ypct=s3_y,
-            verify_next_txt=["create video", "upload files", "upload image"],
-            wait_timeout=5.0,
-            verify_timeout=3.0,
-            max_attempts=2,
-            optional=False
-        )
-        time.sleep(0.6)
+    wait_and_single_click_step(
+        driver,
+        "Step #4: Create video (STRICT VIDEO ONLY)",
+        aria_list=["create video"],
+        txt_list=["create video", "generate video"],
+        icon_list=["movie", "videocam", "video_spark", "smart_display"],
+        near_xpct=s4_x,
+        near_ypct=s4_y,
+        wait_timeout=6.0,
+        verify_timeout=2.5,
+        max_attempts=2,
+        optional=False
+    )
+    time.sleep(1.0)
 
-        wait_and_single_click_step(
-            driver,
-            f"Step #4: Create video (STRICT VIDEO ONLY) [Try {attempt_cv}]",
-            aria_list=["create video"],
-            txt_list=["create video", "generate video"],
-            icon_list=["movie", "videocam", "video_spark", "smart_display"],
-            near_xpct=s4_x,
-            near_ypct=s4_y,
-            wait_timeout=5.0,
-            verify_timeout=2.5,
-            max_attempts=2,
-            optional=False
-        )
-        time.sleep(1.0)
-
-        had_try_popup = wait_and_single_click_step(
-            driver,
-            "Step #5: Dismiss 'Try it / Agree' Popup",
-            txt_list=["try it", "got it", "agree", "i agree", "accept", "continue"],
-            near_xpct=s5_x,
-            near_ypct=s5_y,
-            wait_timeout=2.5,
-            verify_timeout=1.5,
-            max_attempts=1,
-            optional=True
-        )
-        dismiss_any_agree_or_consent_popup(driver)
-        time.sleep(0.8)
-
-        chk_after = verify_create_video_selected_or_detect_limit(driver)
-        if chk_after == "OK":
-            print("   Confirmed: 'Create video' tool chip is active in prompt box!")
-            break
-        elif chk_after.startswith("LIMIT:") and not had_try_popup:
-            lim_msg = chk_after.replace("LIMIT:", "").strip()
-            report_step_problem_instantly(driver, "Gemini Video Limit Reached", lim_msg)
-            raise GeminiLimitReachedError(f"Gemini Video Limit Reached: {lim_msg}")
-        else:
-            print(f"   Popup dismissed -> Re-clicking 'Create video' (Attempt {attempt_cv}/3)...")
+    wait_and_single_click_step(
+        driver,
+        "Step #5: Try it / Agree Popup",
+        txt_list=["try it", "got it", "agree", "i agree", "accept", "continue"],
+        near_xpct=s5_x,
+        near_ypct=s5_y,
+        wait_timeout=2.5,
+        verify_timeout=1.5,
+        max_attempts=1,
+        optional=True
+    )
+    dismiss_any_agree_or_consent_popup(driver)
+    time.sleep(0.8)
 
     print("📱 [Step #6 & #7] Setting Aspect Ratio to 'Portrait (9:16)'...")
     already_portrait = driver.execute_script(
@@ -1949,51 +1893,34 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
     return False
 
 def inject_character_files_into_gemini(driver, file_paths):
-    """
-    Step #10: Injects character reference images (`foji.png`, `meera_*.png`) into Gemini's
-    `<input type="file">` element (or via CDP DOM.setFileInputFiles / Clipboard DataTransfer fallback)
-    without ever opening an OS file dialog window!
-    """
     valid_paths = [os.path.abspath(p) for p in (file_paths or []) if p and os.path.exists(p)]
     if not valid_paths:
-        print("⚠️ No character reference images found to inject.")
         return True
-
     print(f"📸 [Step #10] Injecting {len(valid_paths)} reference image(s): {[os.path.basename(p) for p in valid_paths]}...")
-
-    # Method 1: Unhide or locate <input type="file"> and send all file paths
     try:
         from selenium.webdriver.common.by import By
         driver.execute_script("""
-            const inputs = document.querySelectorAll('input[type="file"]');
-            inputs.forEach(inp => {
+            document.querySelectorAll('input[type="file"]').forEach(inp => {
                 inp.style.display = 'block';
                 inp.style.visibility = 'visible';
                 inp.style.opacity = '1';
-                inp.style.width = '1px';
-                inp.style.height = '1px';
                 inp.removeAttribute('hidden');
             });
         """)
         file_inputs = driver.find_elements(By.CSS_SELECTOR, 'input[type="file"]')
         if file_inputs:
             target_inp = file_inputs[-1]
-            joined_paths = "\n".join(valid_paths)
             try:
-                target_inp.send_keys(joined_paths)
+                target_inp.send_keys("\n".join(valid_paths))
                 time.sleep(2.5)
-                print("   ✅ [Step #10] Injected character image(s) via <input type='file'>!")
                 return True
             except Exception:
                 for vp in valid_paths:
                     target_inp.send_keys(vp)
                     time.sleep(1.5)
-                print("   ✅ [Step #10] Injected character image(s) sequentially via <input type='file'>!")
                 return True
-    except Exception as e:
-        print(f"   ⚠️ Standard file input note: {e}")
-
-    # Method 2: Synthetic Drag-and-Drop / Clipboard Paste into Gemini prompt editor
+    except Exception:
+        pass
     try:
         js_drop = """
         const b64List = arguments[0];
@@ -2004,20 +1931,17 @@ def inject_character_files_into_gemini(driver, file_paths):
             const byteChars = atob(b64List[i]);
             const byteArr = new Uint8Array(byteChars.length);
             for (let j = 0; j < byteChars.length; j++) byteArr[j] = byteChars.charCodeAt(j);
-            const file = new File([byteArr], nameList[i], { type: 'image/png' });
-            dt.items.add(file);
+            dt.items.add(new File([byteArr], nameList[i], { type: 'image/png' }));
         }
-        const pasteEvt = new ClipboardEvent('paste', { bubbles: true, cancelable: true, clipboardData: dt });
         target.focus();
-        target.dispatchEvent(pasteEvt);
+        target.dispatchEvent(new ClipboardEvent('paste', { bubbles: true, cancelable: true, clipboardData: dt }));
         return true;
         """
         b64_list = [base64.b64encode(open(p, "rb").read()).decode("ascii") for p in valid_paths]
         name_list = [os.path.basename(p) for p in valid_paths]
         driver.execute_script(js_drop, b64_list, name_list)
         time.sleep(2.5)
-        print("   ✅ [Step #10] Injected character image(s) via Synthetic Clipboard Paste!")
         return True
-    except Exception as e2:
-        print(f"   ⚠️ Clipboard paste fallback note: {e2}")
-    return False
+    except Exception:
+        return False
+
