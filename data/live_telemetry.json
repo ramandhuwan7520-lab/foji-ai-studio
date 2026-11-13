@@ -1,8 +1,9 @@
 {
-  "stage_num": 0,
-  "stage_title": "Studio Ready",
-  "detail": "Ready for instant 3D generation",
-  "status": "idle",
-  "progress": 0,
-  "updated_epoch": 1794559740.2099924
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud 3D Studio",
+  "sub_detail": "Triggering GitHub Actions 3D Worker...",
+  "status": "active",
+  "progress": 18,
+  "updated_at": "01:26:30 AM",
+  "epoch": 1794599790.2311628
 }
