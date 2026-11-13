@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794600452352",
+    "type": "error",
+    "title": "Warning: Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "01:37 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794600452.3529742
+  },
+  {
     "id": "notif_1794600432238",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "08:16 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794538012.562311
-  },
-  {
-    "id": "notif_1794534265908",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Pehre Mein Tirange Ki Shaan | Cast: Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...)",
-    "status": "info",
-    "time_str": "07:14 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794534265.9089615
   }
 ]
