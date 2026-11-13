@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538431129",
+    "type": "info",
+    "title": "🔄 Switched to Account #2",
+    "message": "Account #1 issue (Google Account #1 asked for password on Cloud. Refresh cookies or set ) -> Switching to Account #2!",
+    "status": "info",
+    "time_str": "08:23 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538431.1297014
+  },
+  {
     "id": "notif_1794538428974",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "09:46 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794457001.4917414
-  },
-  {
-    "id": "notif_1794456889665",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti locked for 13 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "09:44 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794456889.665078
   }
 ]
