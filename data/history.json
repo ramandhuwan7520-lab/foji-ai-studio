@@ -1,5 +1,5 @@
 {
-  "generated_count": 27,
+  "generated_count": 28,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -73,7 +73,9 @@
     "love_meera",
     "training_ustad",
     "training_ustad",
-    "fauji_masti"
+    "fauji_masti",
+    "border_duty",
+    "border_duty"
   ],
   "history": [
     {
@@ -604,6 +606,23 @@
       "caption": "🎖️ Part 3: Fauji Haircut Ka Tyohaar | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!\"\n\n🔥 Zulfein gayi toh kya hua, ruraab wahi naya hai,\nFauji ki asli shaan uski vardi, na ki uska saya hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiMasti #ArmyLife #HaircutDay #IndianArmy #HaryanviComedy #Agniveer",
       "created_at": "13 Nov 2026, 01:51 AM IST",
       "completed_at": "13 Nov 2026, 01:57 AM IST"
+    },
+    {
+      "video_id": "Video_042_BorderDuty_Part_03_1113_104845",
+      "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
+      "track_id": "border_duty",
+      "track_name": "🏔️ LOC Border Patrol & Maa KaPyar",
+      "part_number": 3,
+      "include_meera": true,
+      "meera_outfit": "Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and parandi",
+      "emotion_name": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
+      "scene_summary": "A 3D Pixar-style 9:16 vertical shot at a high-altitude LOC ridge. The moon shines brightly over the jagged, snow-covered mountains. Makra is in full white winter tactical gear with a SIG Sauer rifle, his breath turning into thick mist in the -25°C air. He is crouching behind a frozen rock during a night ambush patrol. On the right side of the frame, a soft, dream-like vision of Meera appears in her Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and parandi, standing in a warm, golden mustard field. Makra looks at the moon, then back at the valley with sharp, determined eyes, his face covered in light frost while his hands grip the cold metal of his weapon.",
+      "dialogue_line_1_hinglish": "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
+      "shayari_hindi": "वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and parandi. EPISODE: 🏔️ LOC Border Patrol & Maa KaPyar - Part 3: Barfani Raat Aur Tirange Ki Aan. SCENE & ACTION: A 3D Pixar-style 9:16 vertical shot at a high-altitude LOC ridge. The moon shines brightly over the jagged, snow-covered mountains. Makra is in full white winter tactical gear with a SIG Sauer rifle, his breath turning into thick mist in the -25°C air. He is crouching behind a frozen rock during a night ambush patrol. On the right side of the frame, a soft, dream-like vision of Meera appears in her Magenta Pink Floral Printed Georgette Suit with golden gota-patti work and parandi, standing in a warm, golden mustard field. Makra looks at the moon, then back at the valley with sharp, determined eyes, his face covered in light frost while his hands grip the cold metal of his weapon. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
+      "created_at": "13 Nov 2026, 10:48 AM IST",
+      "completed_at": "13 Nov 2026, 10:51 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -677,7 +696,9 @@
     "Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.",
     "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!",
     "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!",
-    "Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!"
+    "Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!",
+    "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
+    "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai."
   ],
   "deleted_ids": [],
   "track_parts": {
