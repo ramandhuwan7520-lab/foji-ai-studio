@@ -171,26 +171,6 @@
   ],
   "scheduled_posts": [
     {
-      "id": "vid_raw_video_1110_023113_p2.mp4",
-      "video_file": "raw_video_1110_023113_p2.mp4",
-      "title": "Foji 3D Reel (raw_video_1110_023113_p2.mp4)",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "created_at": "10 Nov 2026, 06:00 AM",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-13_18:30",
-      "scheduled_epoch": 1794574800.0,
-      "scheduled_display": "13 Nov 2026 at 06:30 PM IST",
-      "date_label": "13 Nov 2026",
-      "time_label": "06:30 PM",
-      "scheduled_for": "2026-11-13 18:30:00",
-      "scheduled_full_badge": "13 Nov 2026 • 06:30 PM IST"
-    },
-    {
       "id": "vid_raw_video_1109_023124_p3.mp4",
       "video_file": "raw_video_1109_023124_p3.mp4",
       "title": "Foji 3D Reel (raw_video_1109_023124_p3.mp4)",
@@ -331,7 +311,7 @@
       "scheduled_full_badge": "16 Nov 2026 • 06:30 AM IST"
     }
   ],
-  "updated_epoch": 1794563497.4930916,
+  "updated_epoch": 1794574802.6822786,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
