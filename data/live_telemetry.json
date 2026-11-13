@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1794552581.9827552
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud 3D Studio",
+  "sub_detail": "Triggering GitHub Actions 3D Worker...",
+  "status": "active",
+  "progress": 18,
+  "updated_at": "12:37:18 PM",
+  "epoch": 1794553638.2974443
 }
