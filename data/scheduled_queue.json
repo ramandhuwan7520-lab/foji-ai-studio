@@ -171,26 +171,6 @@
   ],
   "scheduled_posts": [
     {
-      "id": "vid_raw_video_1109_023053_p1.mp4",
-      "video_file": "raw_video_1109_023053_p1.mp4",
-      "title": "Foji 3D Reel (raw_video_1109_023053_p1.mp4)",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "created_at": "09 Nov 2026, 06:00 AM",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-13_12:30",
-      "scheduled_epoch": 1794574800.0,
-      "scheduled_display": "13 Nov 2026 at 06:30 PM IST",
-      "date_label": "13 Nov 2026",
-      "time_label": "06:30 PM",
-      "scheduled_for": "2026-11-13 18:30:00",
-      "scheduled_full_badge": "13 Nov 2026 • 06:30 PM IST"
-    },
-    {
       "id": "vid_raw_video_1110_023113_p2.mp4",
       "video_file": "raw_video_1110_023113_p2.mp4",
       "title": "Foji 3D Reel (raw_video_1110_023113_p2.mp4)",
@@ -203,12 +183,12 @@
       "status": "scheduled",
       "scheduled_by": "Frontend",
       "scheduled_slot_key": "2026-11-13_18:30",
-      "scheduled_epoch": 1794618000.0,
-      "scheduled_display": "14 Nov 2026 at 06:30 AM IST",
-      "date_label": "14 Nov 2026",
-      "time_label": "06:30 AM",
-      "scheduled_for": "2026-11-14 06:30:00",
-      "scheduled_full_badge": "14 Nov 2026 • 06:30 AM IST"
+      "scheduled_epoch": 1794574800.0,
+      "scheduled_display": "13 Nov 2026 at 06:30 PM IST",
+      "date_label": "13 Nov 2026",
+      "time_label": "06:30 PM",
+      "scheduled_for": "2026-11-13 18:30:00",
+      "scheduled_full_badge": "13 Nov 2026 • 06:30 PM IST"
     },
     {
       "id": "vid_raw_video_1109_023124_p3.mp4",
@@ -223,12 +203,12 @@
       "status": "scheduled",
       "scheduled_by": "Frontend",
       "scheduled_slot_key": "2026-11-14_06:30",
-      "scheduled_epoch": 1794639600.0,
-      "scheduled_display": "14 Nov 2026 at 12:30 PM IST",
+      "scheduled_epoch": 1794618000.0,
+      "scheduled_display": "14 Nov 2026 at 06:30 AM IST",
       "date_label": "14 Nov 2026",
-      "time_label": "12:30 PM",
-      "scheduled_for": "2026-11-14 12:30:00",
-      "scheduled_full_badge": "14 Nov 2026 • 12:30 PM IST"
+      "time_label": "06:30 AM",
+      "scheduled_for": "2026-11-14 06:30:00",
+      "scheduled_full_badge": "14 Nov 2026 • 06:30 AM IST"
     },
     {
       "id": "vid_raw_video_1110_060115_p4.mp4",
@@ -243,12 +223,12 @@
       "status": "scheduled",
       "scheduled_by": "Frontend",
       "scheduled_slot_key": "2026-11-14_12:30",
-      "scheduled_epoch": 1794661200.0,
-      "scheduled_display": "14 Nov 2026 at 06:30 PM IST",
+      "scheduled_epoch": 1794639600.0,
+      "scheduled_display": "14 Nov 2026 at 12:30 PM IST",
       "date_label": "14 Nov 2026",
-      "time_label": "06:30 PM",
-      "scheduled_for": "2026-11-14 18:30:00",
-      "scheduled_full_badge": "14 Nov 2026 • 06:30 PM IST"
+      "time_label": "12:30 PM",
+      "scheduled_for": "2026-11-14 12:30:00",
+      "scheduled_full_badge": "14 Nov 2026 • 12:30 PM IST"
     },
     {
       "id": "vid_raw_video_1110_023138_p1.mp4",
@@ -263,12 +243,12 @@
       "status": "scheduled",
       "scheduled_by": "Frontend",
       "scheduled_slot_key": "2026-11-15_06:30",
-      "scheduled_epoch": 1794704400.0,
-      "scheduled_display": "15 Nov 2026 at 06:30 AM IST",
-      "date_label": "15 Nov 2026",
-      "time_label": "06:30 AM",
-      "scheduled_for": "2026-11-15 06:30:00",
-      "scheduled_full_badge": "15 Nov 2026 • 06:30 AM IST"
+      "scheduled_epoch": 1794661200.0,
+      "scheduled_display": "14 Nov 2026 at 06:30 PM IST",
+      "date_label": "14 Nov 2026",
+      "time_label": "06:30 PM",
+      "scheduled_for": "2026-11-14 18:30:00",
+      "scheduled_full_badge": "14 Nov 2026 • 06:30 PM IST"
     },
     {
       "id": "vid_raw_video_1109_023108_p3.mp4",
@@ -283,12 +263,12 @@
       "status": "scheduled",
       "scheduled_by": "Frontend",
       "scheduled_slot_key": "2026-11-15_12:30",
-      "scheduled_epoch": 1794726000.0,
-      "scheduled_display": "15 Nov 2026 at 12:30 PM IST",
+      "scheduled_epoch": 1794704400.0,
+      "scheduled_display": "15 Nov 2026 at 06:30 AM IST",
       "date_label": "15 Nov 2026",
-      "time_label": "12:30 PM",
-      "scheduled_for": "2026-11-15 12:30:00",
-      "scheduled_full_badge": "15 Nov 2026 • 12:30 PM IST"
+      "time_label": "06:30 AM",
+      "scheduled_for": "2026-11-15 06:30:00",
+      "scheduled_full_badge": "15 Nov 2026 • 06:30 AM IST"
     },
     {
       "id": "vid_raw_video_1110_083746_p4.mp4",
@@ -303,12 +283,12 @@
       "status": "scheduled",
       "scheduled_by": "Frontend",
       "scheduled_slot_key": "2026-11-15_18:30",
-      "scheduled_epoch": 1794747600.0,
-      "scheduled_display": "15 Nov 2026 at 06:30 PM IST",
+      "scheduled_epoch": 1794726000.0,
+      "scheduled_display": "15 Nov 2026 at 12:30 PM IST",
       "date_label": "15 Nov 2026",
-      "time_label": "06:30 PM",
-      "scheduled_for": "2026-11-15 18:30:00",
-      "scheduled_full_badge": "15 Nov 2026 • 06:30 PM IST"
+      "time_label": "12:30 PM",
+      "scheduled_for": "2026-11-15 12:30:00",
+      "scheduled_full_badge": "15 Nov 2026 • 12:30 PM IST"
     },
     {
       "id": "vid_Video_050_UnitRagda_Part_05_1111_192711.mp4",
@@ -323,12 +303,12 @@
       "status": "scheduled",
       "scheduled_by": "Frontend",
       "scheduled_slot_key": "2026-11-16_06:30",
-      "scheduled_epoch": 1794790800.0,
-      "scheduled_display": "16 Nov 2026 at 06:30 AM IST",
-      "date_label": "16 Nov 2026",
-      "time_label": "06:30 AM",
-      "scheduled_for": "2026-11-16 06:30:00",
-      "scheduled_full_badge": "16 Nov 2026 • 06:30 AM IST"
+      "scheduled_epoch": 1794747600.0,
+      "scheduled_display": "15 Nov 2026 at 06:30 PM IST",
+      "date_label": "15 Nov 2026",
+      "time_label": "06:30 PM",
+      "scheduled_for": "2026-11-15 18:30:00",
+      "scheduled_full_badge": "15 Nov 2026 • 06:30 PM IST"
     },
     {
       "id": "vid_raw_video_1109_055706_p4.mp4",
@@ -343,15 +323,15 @@
       "status": "scheduled",
       "scheduled_by": "Frontend",
       "scheduled_slot_key": "2026-11-16_12:30",
-      "scheduled_epoch": 1794812400.0,
-      "scheduled_display": "16 Nov 2026 at 12:30 PM IST",
+      "scheduled_epoch": 1794790800.0,
+      "scheduled_display": "16 Nov 2026 at 06:30 AM IST",
       "date_label": "16 Nov 2026",
-      "time_label": "12:30 PM",
-      "scheduled_for": "2026-11-16 12:30:00",
-      "scheduled_full_badge": "16 Nov 2026 • 12:30 PM IST"
+      "time_label": "06:30 AM",
+      "scheduled_for": "2026-11-16 06:30:00",
+      "scheduled_full_badge": "16 Nov 2026 • 06:30 AM IST"
     }
   ],
-  "updated_epoch": 1794561544.2801886,
+  "updated_epoch": 1794563473.5166516,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -503,6 +483,21 @@
       "ig_media_pk": "LIVE",
       "published_epoch": 1794397811.0293555,
       "cloud_purged": true
+    },
+    {
+      "id": "vid_raw_video_1109_023053_p1.mp4",
+      "video_file": "raw_video_1109_023053_p1.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story • Part 1",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "13 Nov 2026, 02:13 PM",
+      "status": "published",
+      "published_at": "13 Nov 2026, 02:16 PM IST",
+      "published_epoch": 1794559562.888395,
+      "ig_media_pk": "4029379908591642535"
     }
   ],
   "published_history": [

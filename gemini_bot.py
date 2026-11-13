@@ -163,6 +163,38 @@ def update_3d_telemetry(step_num, step_title, sub_detail="", status="active", pr
         pass
 
 
+def send_telegram_text_alert(msg_text):
+    try:
+        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
+        cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+        if tok and cid:
+            requests.post(
+                f"https://api.telegram.org/bot{tok}/sendMessage",
+                data={"chat_id": cid, "text": msg_text},
+                timeout=12
+            )
+    except Exception:
+        pass
+
+
+def send_telegram_photo_alert(photo_path, caption_text):
+    try:
+        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
+        cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+        if tok and cid and os.path.exists(photo_path):
+            with open(photo_path, "rb") as pf:
+                requests.post(
+                    f"https://api.telegram.org/bot{tok}/sendPhoto",
+                    data={"chat_id": cid, "caption": caption_text[:950]},
+                    files={"photo": pf},
+                    timeout=20
+                )
+        else:
+            send_telegram_text_alert(caption_text)
+    except Exception:
+        send_telegram_text_alert(caption_text)
+
+
 def report_step_problem_instantly(driver, step_title, error_details):
     if globals().get("_SUPPRESS_FAILOVER_NOTIF", False):
         print(f"[Failover Notice: {step_title}] {error_details}")
@@ -183,10 +215,10 @@ def report_step_problem_instantly(driver, step_title, error_details):
             has_shot = False
 
     tg_caption = (
-        f"*Foji AI Studio - Pipeline Alert*\n\n"
-        f"*Step:* `{step_title}`\n"
-        f"*Reason:* `{short_err}`\n"
-        f"*Time:* `{datetime.now(IST).strftime('%d %b %Y, %I:%M:%S %p IST')}`"
+        f"🚨 Foji AI Studio - Pipeline Alert\n\n"
+        f"📍 Step: {step_title}\n"
+        f"❌ Reason: {short_err}\n"
+        f"🕒 Time: {datetime.now(IST).strftime('%d %b %Y, %I:%M:%S %p IST')}"
     )
     if has_shot:
         send_telegram_photo_alert(shot_path, tg_caption)
@@ -331,28 +363,17 @@ def unpack_chrome_profile_vault_if_present(profile_dir):
 def _load_saved_session_bundle():
     slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
     if slot_k in globals().get("_RUNTIME_FRESH_COOKIES_MEM", {}) and len(_RUNTIME_FRESH_COOKIES_MEM[slot_k]) >= 8:
-        print(f"🔐 [Cookie Loader] Using live rotated session cookies in memory for Account #{slot_k}!")
+        print(f"🔐 [Pure Cookie Loader] Using active in-memory session cookies ({len(_RUNTIME_FRESH_COOKIES_MEM[slot_k])} cookies)!")
         return {"cookies": _RUNTIME_FRESH_COOKIES_MEM[slot_k], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
-    """
-    Loads cookies from:
-    1) `data/cloud_minted_cookies.json` (if running on Cloud and Cloud already minted a session on its own IP!)
-    2) `gemini_cookies_secret.txt` (your Laptop's pure cookies)
-    3) `GEMINI_COOKIES_JSON` environment variable
-    """
-    candidates = []
-    if os.name != "nt" and os.path.exists("data/cloud_minted_cookies.json"):
-        candidates.append("data/cloud_minted_cookies.json")
-    if os.path.exists(COOKIE_FILE):
-        candidates.append(COOKIE_FILE)
 
-    for c_path in candidates:
+    if os.path.exists(COOKIE_FILE):
         try:
-            with open(c_path, "r", encoding="utf-8") as f:
+            with open(COOKIE_FILE, "r", encoding="utf-8") as f:
                 raw = f.read().strip()
             if raw:
                 parsed = json.loads(raw)
                 if isinstance(parsed, dict) and len(parsed.get("cookies", [])) >= 8:
-                    print(f"🔐 [Cookie Loader] Loaded {len(parsed['cookies'])} cookies from '{c_path}'")
+                    print(f"🔐 [Pure Cookie Loader] Loaded {len(parsed['cookies'])} pure cookies from '{COOKIE_FILE}'")
                     return {
                         "cookies": parsed.get("cookies", []),
                         "user_agent": parsed.get("user_agent") or DEFAULT_WIN_UA,
@@ -1839,102 +1860,34 @@ if __name__ == "__main__":
 
 
 
-def _save_cloud_minted_cookies_separately(driver):
-    """When Cloud logs in using Email/Password, saves those Cloud-IP cookies to `data/cloud_minted_cookies.json`!"""
-    try:
-        driver.execute_cdp_cmd("Network.enable", {})
-        all_c = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
-        essential = [c for c in all_c if any(k in c.get("domain", "") for k in ["google", "youtube", "gstatic"])]
-        if len(essential) >= 8:
-            os.makedirs("data", exist_ok=True)
-            ua = driver.execute_script("return navigator.userAgent;") or DEFAULT_WIN_UA
-            bundle = {"user_agent": ua, "cookies": essential, "saved_at": time.time()}
-            with open("data/cloud_minted_cookies.json", "w", encoding="utf-8") as f:
-                json.dump(bundle, f, indent=2)
-            sync_file_to_github("data/cloud_minted_cookies.json", "Save Cloud-IP verified Google session")
-            print(f"☁️ [Layer 5] Saved {len(essential)} Cloud-Minted Google cookies to 'data/cloud_minted_cookies.json'!")
-    except Exception:
-        pass
-
-
-def _load_vault_credentials():
-    import zlib
-    email_val = os.getenv("GEMINI_EMAIL", "").strip()
-    pwd_val = (os.getenv("GEMINI_ACC1_PASSWORD") or os.getenv("GEMINI_PASSWORD") or os.getenv("GOOGLE_PASSWORD") or "").strip()
-    if os.path.exists("data/google_auth_vault.json"):
-        try:
-            vd = json.load(open("data/google_auth_vault.json", "r", encoding="utf-8"))
-            if vd.get("vault_Seal"):
-                dec = json.loads(zlib.decompress(base64.b64decode(vd["vault_Seal"])[::-1]).decode("utf-8"))
-                email_val = email_val or dec.get("u", "").strip()
-                pwd_val = pwd_val or dec.get("p", "").strip()
-            else:
-                email_val = email_val or vd.get("email", "").strip()
-                pwd_val = pwd_val or vd.get("password", "").strip()
-        except Exception:
-            pass
-    return email_val, pwd_val
-
-
 def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
-    """
-    5-Layer Google Auth Healer:
-    Automatically handles Account Chooser, Email Input, Password Input, and Post-Login Prompts!
-    """
     try:
         from selenium.webdriver.common.by import By
-        from selenium.webdriver.common.keys import Keys
         curr_url = (driver.current_url or "").lower()
         if "accounts.google.com" not in curr_url and "consent.google.com" not in curr_url:
             return False
 
-        email_val, pwd_val = _load_vault_credentials()
-
-        # 1. If Password Box is visible -> Type Password & Press ENTER!
         pwd_inputs = [p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"][name="Passwd"], input[type="password"]') if p.is_displayed()]
-        if pwd_inputs and pwd_val:
-            print("🔑 [Layer 3 Auto-Login] Google asked for Password -> Typing Password automatically...")
-            box = pwd_inputs[0]
-            box.click()
-            time.sleep(0.2)
-            box.clear()
-            box.send_keys(pwd_val)
-            time.sleep(0.3)
-            box.send_keys(Keys.ENTER)
-            time.sleep(5.0)
-            _save_cloud_minted_cookies_separately(driver)
+        if pwd_inputs:
+            return False
+
+        clicked_tile = driver.execute_script("""
+            const tiles = document.querySelectorAll('[data-identifier], [data-email]');
+            for (const t of tiles) {
+                if (t.offsetParent === null) continue;
+                const rowTxt = (t.innerText || t.textContent || '').toLowerCase();
+                if (!rowTxt.includes('signed out') && !rowTxt.includes('logged out')) {
+                    t.click();
+                    return true;
+                }
+            }
+            return false;
+        """)
+        if clicked_tile:
+            print("👤 [Pure Cookie Mode] Clicked active signed-in Google Account tile...")
+            time.sleep(2.5)
             return True
 
-        # 2. If Account Chooser Tile is visible -> Click the Account!
-        tiles = [t for t in driver.find_elements(By.CSS_SELECTOR, '[data-identifier], [data-email]') if t.is_displayed()]
-        if tiles:
-            # Prefer matching email tile if present
-            chosen_tile = tiles[0]
-            for t in tiles:
-                ident = (t.get_attribute("data-identifier") or t.get_attribute("data-email") or "").lower()
-                if email_val and email_val.lower() in ident:
-                    chosen_tile = t
-                    break
-            print(f"👤 [Layer 3 Auto-Login] Clicking Google Account tile...")
-            chosen_tile.click()
-            time.sleep(3.0)
-            return True
-
-        # 3. If Email Box ('identifierId') is visible -> Type Email & Press ENTER!
-        email_inputs = [e for e in driver.find_elements(By.CSS_SELECTOR, 'input[type="email"], input#identifierId') if e.is_displayed()]
-        if email_inputs and email_val:
-            print(f"📧 [Layer 3 Auto-Login] Typing Google Email ({email_val})...")
-            ebox = email_inputs[0]
-            ebox.click()
-            time.sleep(0.2)
-            ebox.clear()
-            ebox.send_keys(email_val)
-            time.sleep(0.3)
-            ebox.send_keys(Keys.ENTER)
-            time.sleep(3.5)
-            return True
-
-        # 4. If 'Not now' / 'Continue' / 'I agree' / 'Skip' security recovery prompt appears -> Click it!
         clicked_prompt = driver.execute_script("""
             const words = ['not now', 'continue', 'i agree', 'agree', 'accept all', 'skip', 'confirm', 'done'];
             for (const b of document.querySelectorAll('button, [role="button"]')) {
@@ -1947,9 +1900,9 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
             return '';
         """)
         if clicked_prompt:
-            print(f"✅ [Layer 4 Auto-Login] Clicked '{clicked_prompt}' on Google prompt!")
-            time.sleep(2.5)
+            print(f"✅ [Pure Cookie Mode] Clicked '{clicked_prompt}' consent prompt!")
+            time.sleep(2.0)
             return True
-    except Exception as e:
-        print(f"   ⚠️ Auto-login handler note: {e}")
+    except Exception:
+        pass
     return False
