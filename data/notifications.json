@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794552346171",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Ki Chadhayi Aur Aasmaani Irade | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:15 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794552346.1713033
+  },
+  {
     "id": "notif_1794552159611",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
