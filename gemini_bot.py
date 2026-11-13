@@ -344,18 +344,7 @@ _UNPACKED_PROFILES_THIS_RUN = set()
 _RUNTIME_FRESH_COOKIES_MEM = {}
 
 def unpack_chrome_profile_vault_if_present(profile_dir):
-    """Wipes any stale Cloud Chrome lock/state and freshly unpacks `data/chrome_profile_vault.zip` like Attempt 1!"""
-    if os.path.exists(PROFILE_VAULT_ZIP) and os.path.getsize(PROFILE_VAULT_ZIP) > 500:
-        try:
-            if os.name != "nt" and os.path.exists(profile_dir):
-                shutil.rmtree(profile_dir, ignore_errors=True)
-            os.makedirs(profile_dir, exist_ok=True)
-            with zipfile.ZipFile(PROFILE_VAULT_ZIP, "r") as zf:
-                zf.extractall(profile_dir)
-            print(f"📦 [Layer 1 Vault] Freshly restored Laptop Chrome Profile into '{profile_dir}'!")
-            return True
-        except Exception as e:
-            print(f"⚠️ Profile unpack note: {e}")
+    """Disabled on Linux because Windows DPAPI-encrypted SQLite Cookies conflict with CDP Network.setCookie."""
     return False
 
 
@@ -561,20 +550,35 @@ def dismiss_any_agree_or_consent_popup(driver):
 
 def save_all_browser_cookies_via_cdp(driver, force_save=False):
     """
-    Saves ALL Google cookies + Laptop User-Agent + LocalStorage into `gemini_cookies_secret.txt`.
-    STRICT PROTECTION: Never overwrites cookies when running headless on Cloud Linux!
-    Only saves when `force_save=True` (during `--save-cookies` on your Laptop).
+    When `is_gemini_truly_signed_in(driver)` is 100% True on Cloud, waits briefly for Google's
+    cookie rotation (`__Secure-1PSIDTS` / `SIDCC`) and updates ONLY the rotated cookie values in
+    `gemini_cookies_secret.txt`, syncing to GitHub so subsequent runs NEVER get 'asked for password'!
     """
-    if os.name != "nt" or not force_save:
-        return 0
     try:
+        if not force_save and not is_gemini_truly_signed_in(driver):
+            return 0
+
+        time.sleep(2.0)
         driver.execute_cdp_cmd("Network.enable", {})
         res = driver.execute_cdp_cmd("Network.getAllCookies", {})
-        all_cookies = res.get("cookies", [])
-        essential = []
-        for c in all_cookies:
+        live_cookies = res.get("cookies", [])
+
+        existing_bundle = {"user_agent": DEFAULT_WIN_UA, "cookies": [], "local_storage": {}}
+        if os.path.exists(COOKIE_FILE):
+            try:
+                existing_bundle = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
+            except Exception:
+                pass
+
+        # Map existing 51 Laptop cookies by (name, domain)
+        cookie_map = {}
+        for c in existing_bundle.get("cookies", []):
+            cookie_map[(c.get("name"), c.get("domain"))] = c
+
+        # Update with fresh rotated values from the live signed-in session
+        for c in live_cookies:
             dom = c.get("domain", "")
-            if any(k in dom for k in ["google", "youtube", "gstatic", "googleusercontent"]):
+            if any(k in dom for k in ["google", "youtube", "gstatic", "googleusercontent"]) and c.get("value"):
                 clean_c = {
                     "name": c["name"],
                     "value": c["value"],
@@ -586,62 +590,31 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                 }
                 if c.get("sameSite") in ("Strict", "Lax", "None"):
                     clean_c["sameSite"] = c["sameSite"]
-                # Extend cookie expiration by 180 days so it never expires prematurely
                 clean_c["expires"] = float(int(time.time()) + 86400 * 180)
                 if c.get("priority") in ("Low", "Medium", "High"):
                     clean_c["priority"] = c["priority"]
                 if c.get("sameParty") is not None:
                     clean_c["sameParty"] = bool(c["sameParty"])
-                essential.append(clean_c)
+                cookie_map[(clean_c["name"], dom)] = clean_c
 
-        ua = DEFAULT_WIN_UA
-        local_store = {}
-        try:
-            ua = driver.execute_script("return navigator.userAgent;") or DEFAULT_WIN_UA
-            local_store = driver.execute_script(
-                "let o={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); o[k]=localStorage.getItem(k);} return o;"
-            ) or {}
-        except Exception:
-            pass
-
-        names = {x["name"] for x in essential}
-        if ("SID" in names or "__Secure-1PSID" in names) and len(essential) >= 8:
+        merged_list = list(cookie_map.values())
+        names = {x["name"] for x in merged_list}
+        if "SID" in names and "__Secure-1PSID" in names and len(merged_list) >= 15:
             bundle = {
-                "user_agent": ua,
-                "cookies": essential,
-                "local_storage": local_store,
+                "user_agent": existing_bundle.get("user_agent") or DEFAULT_WIN_UA,
+                "cookies": merged_list,
+                "local_storage": existing_bundle.get("local_storage") or {},
                 "saved_at": time.time()
             }
             with open(COOKIE_FILE, "w", encoding="utf-8") as f:
-                f.write(json.dumps(bundle, indent=2))
-            print(f"💾 Locked {len(essential)} Pure Laptop Cookies into {COOKIE_FILE} (Read-Only on Cloud)!")
-            return len(essential)
+                json.dump(bundle, f, indent=2)
+            if os.name != "nt":
+                sync_file_to_github(COOKIE_FILE, "Keep rotated __Secure-1PSIDTS alive after verified Cloud login")
+                print(f"🔄 [Rolling Cookie Guard] Updated & synced {len(merged_list)} rotated cookies to GitHub!")
+            return len(merged_list)
     except Exception as e:
-        print(f"⚠️ Cookie save note: {e}")
+        print(f"⚠️ Cookie rotation save note: {e}")
     return 0
-
-
-def is_gemini_truly_signed_in(driver):
-    js_check = """
-    const url = location.href.toLowerCase();
-    if (!url.includes('gemini.google.com') || url.includes('accounts.google.com')) return false;
-
-    const signInBtns = Array.from(document.querySelectorAll('a, button, [role="button"]')).filter(el => {
-        if (el.offsetParent === null) return false;
-        const t = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
-        return t === 'sign in' || t === 'sign in to gemini';
-    });
-    if (signInBtns.length > 0) return false;
-
-    const hasPrompt = Boolean(
-        document.querySelector('[aria-label*="Enter a prompt" i], [aria-label*="Ask Gemini" i], rich-textarea, div[contenteditable="true"], textarea')
-    );
-    return hasPrompt;
-    """
-    try:
-        return bool(driver.execute_script(js_check))
-    except Exception:
-        return False
 
 
 def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
