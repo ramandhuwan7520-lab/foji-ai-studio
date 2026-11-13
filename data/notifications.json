@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794552159611",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Aur Junoon Ka Khel | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:12 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794552159.6110387
+  },
+  {
     "id": "notif_1794552155990",
     "type": "info",
     "title": "🔄 Switched to Account #1",
