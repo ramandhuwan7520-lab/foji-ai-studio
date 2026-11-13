@@ -35,18 +35,6 @@
       "caption": "🎖️ Part 3: Target Pe Nazar Aur Dil Mein Jigar | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!\"\n\n🔥 नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #AgniveerTraining #IndianArmy #FiringRange #DeshBhakti #ArmyLife",
       "created_at": "12 Nov 2026, 06:03 PM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_raw_video_1109_023053_p1.mp4",
-      "video_file": "raw_video_1109_023053_p1.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story • Part 1",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "created_at": "13 Nov 2026, 01:42 PM",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -229,7 +217,7 @@
       "scheduled_full_badge": "16 Nov 2026 • 06:30 AM IST"
     }
   ],
-  "updated_epoch": 1794557717.0989048,
+  "updated_epoch": 1794557762.3650608,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -290,6 +278,21 @@
     }
   ],
   "published_posts": [
+    {
+      "id": "vid_raw_video_1109_023053_p1.mp4",
+      "video_file": "raw_video_1109_023053_p1.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story • Part 1",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "13 Nov 2026, 01:42 PM",
+      "status": "published",
+      "published_at": "13 Nov 2026, 01:46 PM IST",
+      "published_epoch": 1794557762.365053,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
     {
       "id": "vid_raw_video_1110_023120_p1.mp4",
       "video_file": "raw_video_1110_023120_p1.mp4",
