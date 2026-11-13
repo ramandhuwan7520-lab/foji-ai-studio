@@ -299,13 +299,19 @@ def pack_essential_chrome_profile_to_zip(profile_dir):
         return False
 
 
+_UNPACKED_PROFILES_THIS_RUN = set()
+_RUNTIME_FRESH_COOKIES_MEM = {}
+
 def unpack_chrome_profile_vault_if_present(profile_dir):
+    if profile_dir in _UNPACKED_PROFILES_THIS_RUN:
+        return True
     """Restores the packed Chrome profile into `profile_dir` before launching Chrome on Cloud."""
     if os.path.exists(PROFILE_VAULT_ZIP) and os.path.getsize(PROFILE_VAULT_ZIP) > 500:
         try:
             os.makedirs(profile_dir, exist_ok=True)
             with zipfile.ZipFile(PROFILE_VAULT_ZIP, "r") as zf:
                 zf.extractall(profile_dir)
+            _UNPACKED_PROFILES_THIS_RUN.add(profile_dir)
             print(f"📦 [Layer 1 Vault] Restored Laptop Chrome Profile into '{profile_dir}'!")
             return True
         except Exception as e:
@@ -314,6 +320,10 @@ def unpack_chrome_profile_vault_if_present(profile_dir):
 
 
 def _load_saved_session_bundle():
+    slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+    if slot_k in globals().get("_RUNTIME_FRESH_COOKIES_MEM", {}) and len(_RUNTIME_FRESH_COOKIES_MEM[slot_k]) >= 8:
+        print(f"🔐 [Cookie Loader] Using live rotated session cookies in memory for Account #{slot_k}!")
+        return {"cookies": _RUNTIME_FRESH_COOKIES_MEM[slot_k], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
     """
     Loads cookies from:
     1) `data/cloud_minted_cookies.json` (if running on Cloud and Cloud already minted a session on its own IP!)
@@ -707,6 +717,11 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
 
         if is_gemini_truly_signed_in(driver):
             print("✅ Google Gemini Signed-In Workspace is 100% Open & Verified via Cookies!")
+                    try:
+                        slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+                        _RUNTIME_FRESH_COOKIES_MEM[slot_k] = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
+                    except Exception:
+                        pass
             time.sleep(1.5)
             # IMMORTAL COOKIE RENEWAL: Save rotated Google cookies on BOTH Laptop & Cloud so they NEVER expire!
             cnt = save_all_browser_cookies_via_cdp(driver)
@@ -1029,159 +1044,45 @@ def wait_and_single_click_step(
 
 
 def verify_create_video_selected_or_detect_limit(driver):
-    js_check_video_mode = """
-    const bodyTxt = (document.body ? document.body.innerText : '') || '';
-    const lines = bodyTxt.split('\\n').map(s => s.trim()).filter(Boolean);
-    for (const l of lines) {
-        const low = l.toLowerCase();
-        if (
-            (low.includes('limit') && (low.includes('video') || low.includes('reached') || low.includes('daily') || low.includes('quota'))) ||
-            low.includes('try again tomorrow') ||
-            low.includes("you've reached your") ||
-            low.includes('cannot create more videos') ||
-            low.includes('unavailable right now')
-        ) {
-            return {selected: false, limit_msg: l.slice(0, 220)};
+    """
+    Checks if 'Create video' chip is active, OR if an explicit Google Video Quota limit banner is visible.
+    Never triggers a false limit just because a 'Try it' dialog appeared!
+    """
+    js_check = """
+    const bodyTxt = (document.body.innerText || '').toLowerCase();
+    const limitPhrases = [
+        "you've reached your video generation limit",
+        "reached your limit for video",
+        "video generation limit reached",
+        "can't generate more videos right now",
+        "daily limit for video generation",
+        "generating too many videos",
+        "high traffic for video generation"
+    ];
+    for (const p of limitPhrases) {
+        if (bodyTxt.includes(p)) return 'LIMIT:' + p;
+    }
+    const chips = document.querySelectorAll('mat-chip, [role="button"], button, .tool-chip, span, div');
+    for (const c of chips) {
+        if (c.offsetParent === null) continue;
+        const r = c.getBoundingClientRect();
+        if (r.top < 250 || r.width > 320 || r.height > 75) continue;
+        const t = ((c.innerText || c.textContent || '') + ' ' + (c.getAttribute('aria-label') || '')).trim().toLowerCase();
+        if (t === 'create video' || t === 'video' || t.includes('remove create video') || t.includes('deselect create video')) {
+            return 'OK';
         }
     }
-
-    const hasAspectBtn = Boolean(
-        document.querySelector('[aria-label*="Aspect ratio" i], [aria-label*="Landscape" i], [aria-label*="Portrait" i]')
-    );
-    if (hasAspectBtn) {
-        return {selected: true, limit_msg: ''};
+    const ed = document.querySelector('div[contenteditable="true"], rich-textarea, textarea');
+    if (ed) {
+        const ph = (ed.getAttribute('aria-label') || ed.getAttribute('placeholder') || ed.getAttribute('data-placeholder') || '').toLowerCase();
+        if (ph.includes('video') || ph.includes('describe your video')) return 'OK';
     }
-
-    for (const el of document.querySelectorAll('button, [role="button"], mat-chip, div, span')) {
-        if (el.offsetParent === null) continue;
-        const r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.40) continue;
-        const t = ((el.innerText || '') + ' ' + (el.getAttribute('aria-label') || '')).trim().toLowerCase();
-        if (t.includes('aspect ratio') || t.includes('landscape (16:9)') || t.includes('portrait (9:16)') || t.includes('video')) {
-            if (el.tagName.includes('CHIP') || t.includes('aspect ratio') || t.includes('16:9') || t.includes('9:16')) {
-                return {selected: true, limit_msg: ''};
-            }
-        }
-    }
-
-    return {selected: false, limit_msg: ''};
+    return 'NOT_YET';
     """
     try:
-        return driver.execute_script(js_check_video_mode) or {"selected": False, "limit_msg": ""}
+        return driver.execute_script(js_check) or "NOT_YET"
     except Exception:
-        return {"selected": False, "limit_msg": ""}
-
-
-def fill_gemini_prompt_box_and_verify(driver, prompt_text):
-    clean_prompt = " ".join(prompt_text.splitlines()).strip()
-    js_fill = """
-    const txt = arguments[0];
-    let box = document.querySelector('[aria-label*="Enter a prompt for Gemini" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"][role="textbox"], div[contenteditable="true"], textarea');
-    if (!box) return '';
-    box.focus();
-
-    if (box.tagName.toLowerCase() === 'textarea') {
-        const setter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
-        if (setter) setter.call(box, txt);
-        else box.value = txt;
-        box.dispatchEvent(new Event('input', { bubbles: true }));
-        box.dispatchEvent(new Event('change', { bubbles: true }));
-        return (box.value || '').trim();
-    } else {
-        document.execCommand('selectAll', false, null);
-        document.execCommand('insertText', false, txt);
-        if ((box.innerText || '').trim().length < 15) {
-            box.innerText = txt;
-            box.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-        return (box.innerText || '').trim();
-    }
-    """
-    for _ in range(5):
-        p_el = find_gemini_element_by_spec(
-            driver,
-            aria_list=["enter a prompt for gemini", "ask gemini"],
-            near_xpct=51.5,
-            near_ypct=73.6
-        )
-        if p_el:
-            single_clean_click_xy(driver, p_el["x"], p_el["y"], "Step #11: Prompt Box")
-            time.sleep(0.4)
-
-        val = driver.execute_script(js_fill, clean_prompt) or ""
-        try:
-            box_el = driver.find_element(By.CSS_SELECTOR, "[aria-label*='Enter a prompt' i], rich-textarea div[contenteditable='true'], div[contenteditable='true'], textarea")
-            box_el.send_keys(" ")
-            time.sleep(0.1)
-            box_el.send_keys(Keys.BACKSPACE)
-        except Exception:
-            pass
-        time.sleep(0.6)
-        if len(val) >= 20:
-            print(f"   ✅ [Step #11] Verified fresh script inside Gemini Prompt Box ({len(val)} chars)!")
-            return True
-    return False
-
-
-def inject_character_files_into_gemini(driver, foji_img, fojan_img=None):
-    install_file_dialog_blocker(driver)
-    valid_paths = [os.path.abspath(p) for p in [foji_img, fojan_img] if p and os.path.exists(str(p))]
-    cast_desc = "BOTH Foji Makra & Fojan Meera" if len(valid_paths) > 1 else "ONLY Foji Makra (Solo Army Scene)"
-    update_3d_telemetry(4, "Stage 4: Uploading Characters", f"Injecting {cast_desc} into Gemini...", "active", 55)
-
-    file_inputs = []
-    for _ in range(30):
-        file_inputs = driver.find_elements(By.CSS_SELECTOR, "input[type=file]")
-        if file_inputs:
-            break
-        time.sleep(0.25)
-
-    uploaded = False
-    if file_inputs and valid_paths:
-        target_inp = file_inputs[-1]
-        try:
-            target_inp.send_keys("\n".join(valid_paths))
-            print(f"   📸 [Step #10] Injected {cast_desc} via <input type=file>!")
-            uploaded = True
-        except Exception:
-            try:
-                target_inp.send_keys(valid_paths[0])
-                time.sleep(1.8)
-                if len(valid_paths) > 1:
-                    inputs_2 = driver.find_elements(By.CSS_SELECTOR, "input[type=file]")
-                    if inputs_2:
-                        inputs_2[-1].send_keys(valid_paths[1])
-                print(f"   📸 [Step #10] Injected {cast_desc} sequentially via <input type=file>!")
-                uploaded = True
-            except Exception:
-                pass
-
-    if not uploaded and valid_paths:
-        files_payload = []
-        for p in valid_paths:
-            with open(p, "rb") as f:
-                b64 = base64.b64encode(f.read()).decode("utf-8")
-            ext = os.path.splitext(p)[1].lower().lstrip(".")
-            mime = "image/jpeg" if ext in ("jpg", "jpeg") else "image/png"
-            files_payload.append({"name": os.path.basename(p), "mime": mime, "b64": b64})
-
-        js_paste = """
-        const filesData = arguments[0];
-        const target = document.querySelector('[aria-label*="Enter a prompt" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"], textarea') || document.body;
-        target.focus();
-        const dt = new DataTransfer();
-        for (const item of filesData) {
-            const byteChars = atob(item.b64);
-            const byteNumbers = new Array(byteChars.length);
-            for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
-            dt.items.add(new File([new Uint8Array(byteNumbers)], item.name, { type: item.mime, lastModified: Date.now() }));
-        }
-        target.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
-        """
-        driver.execute_script(js_paste, files_payload)
-        print(f"   📸 [Step #10] Injected {cast_desc} via Clipboard DataTransfer fallback!")
-
-    time.sleep(3.5)
+        return "NOT_YET"
 
 
 def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_prompt):
