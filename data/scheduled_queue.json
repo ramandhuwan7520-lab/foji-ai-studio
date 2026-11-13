@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_Video_042_BorderDuty_Part_03_1113_104845.mp4",
-      "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
-      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
-      "track_id": "border_duty",
-      "part_number": 3,
-      "dialogue": "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
-      "shayari": "वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।",
-      "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
-      "created_at": "13 Nov 2026, 10:51 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_Video_031_LoveMeera_Part_06_1112_073634.mp4",
       "video_file": "Video_031_LoveMeera_Part_06_1112_073634.mp4",
       "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein",
@@ -111,6 +99,24 @@
       "scheduled_full_badge": "14 Nov 2026 • 06:30 PM IST"
     },
     {
+      "id": "vid_Video_042_BorderDuty_Part_03_1113_104845.mp4",
+      "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
+      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
+      "track_id": "border_duty",
+      "part_number": 3,
+      "dialogue": "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
+      "shayari": "वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।",
+      "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
+      "created_at": "13 Nov 2026, 10:51 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-14_18:30",
+      "scheduled_epoch": 1794661200.0,
+      "scheduled_display": "14 Nov 2026 at 06:30 PM IST",
+      "date_label": "14 Nov 2026",
+      "time_label": "06:30 PM"
+    },
+    {
       "id": "vid_raw_video_1109_023108_p3.mp4",
       "video_file": "raw_video_1109_023108_p3.mp4",
       "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar",
@@ -191,7 +197,7 @@
       "scheduled_full_badge": "16 Nov 2026 • 06:30 AM IST"
     }
   ],
-  "updated_epoch": 1794578489.599638,
+  "updated_epoch": 1794596706.5076256,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
