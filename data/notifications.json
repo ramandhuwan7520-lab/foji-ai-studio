@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794552581985_593",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "12:19 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794552581.9855366
+  },
+  {
     "id": "notif_1794552432450",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -588,175 +598,5 @@
     "time_str": "07:11 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794534080.6834419
-  },
-  {
-    "id": "notif_1794534076026",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "07:11 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794534076.0265007
-  },
-  {
-    "id": "notif_1794534055657",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Tirange Ka Pehra & Meera Ki Mannat | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
-    "status": "info",
-    "time_str": "07:10 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794534055.657864
-  },
-  {
-    "id": "notif_1794534014868",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Subah Aur Meera Ki Mannat | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
-    "status": "info",
-    "time_str": "07:10 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794534014.8687336
-  },
-  {
-    "id": "notif_1794534010309",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "07:10 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794534010.3097851
-  },
-  {
-    "id": "notif_1794533988865",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Subah Aur Meera Ki Mannat | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
-    "status": "info",
-    "time_str": "07:09 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794533988.8658478
-  },
-  {
-    "id": "notif_1794533955685",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Subah Aur Garam Chai | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "07:09 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794533955.6856656
-  },
-  {
-    "id": "notif_1794533951436",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "07:09 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794533951.4366376
-  },
-  {
-    "id": "notif_1794533921697",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Subah Aur Garam Chai | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "07:08 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794533921.6971545
-  },
-  {
-    "id": "notif_1794529945569",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Saye Aur Tirange Ki Shaan | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
-    "status": "info",
-    "time_str": "06:02 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794529945.5692918
-  },
-  {
-    "id": "notif_1794529941673",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "06:02 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794529941.6734202
-  },
-  {
-    "id": "notif_1794529921622",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Saye Aur Tirange Ki Shaan | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
-    "status": "info",
-    "time_str": "06:02 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794529921.6225064
-  },
-  {
-    "id": "notif_1794529893132",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Saaye Aur Tirange Ki Shaan | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "06:01 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794529893.1326077
-  },
-  {
-    "id": "notif_1794529886513",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "06:01 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794529886.5133204
-  },
-  {
-    "id": "notif_1794529857130",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Saaye Aur Tirange Ki Shaan | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "06:00 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794529857.1308346
-  },
-  {
-    "id": "notif_1794517428723",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Meera Ki Yaad | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
-    "status": "info",
-    "time_str": "02:33 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794517428.7234054
-  },
-  {
-    "id": "notif_1794517424665",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "02:33 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794517424.6654327
-  },
-  {
-    "id": "notif_1794517405063",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Meera Ki Yaad | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
-    "status": "info",
-    "time_str": "02:33 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794517405.063317
   }
 ]
