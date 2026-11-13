@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794529893132",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Saaye Aur Tirange Ki Shaan | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "06:01 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794529893.1326077
+  },
+  {
     "id": "notif_1794529886513",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "09:09 PM",
     "date_str": "11 Nov 2026",
     "timestamp": 1794411574.6014667
-  },
-  {
-    "id": "notif_1794411498965",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 2: Mud Crawl Aur Maidan-e-Jung locked for 13 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "09:08 PM",
-    "date_str": "11 Nov 2026",
-    "timestamp": 1794411498.9654298
   }
 ]
