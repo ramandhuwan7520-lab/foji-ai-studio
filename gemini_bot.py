@@ -1108,133 +1108,108 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     s9_x, s9_y = load_recorded_step_coords(9, 45.2, 46.0)
     s12_x, s12_y = load_recorded_step_coords(12, 82.3, 79.4)
 
-    print("⚡ [Step #1 & #2] Checking Gemini Mode Picker (4 Hydrogen -> 3.5 Flash Lite -> 3.1 Pro -> Flash)...")
-    already_good_mode = driver.execute_script(
-        """
-        const allTxt = Array.from(document.querySelectorAll('[aria-label*="mode" i], [data-test-id*="mode" i], mat-select, button')).map(el => (el.innerText || el.getAttribute('aria-label') || '').toLowerCase()).join(' ');
-        return allTxt.includes('4 hydrogen') || allTxt.includes('hydrogen') || allTxt.includes('3.5 flash');
-        """
+    print("[Step #1 & #2] Selecting '4 Hydrogen (Everyday help)' Mode...")
+    opened_picker = wait_and_single_click_step(
+        driver,
+        "Step #1: Open Mode Picker",
+        aria_list=["open mode picker", "mode picker", "model"],
+        txt_list=["4 hydrogen", "hydrogen", "4 argon", "argon", "3.5 flash lite", "flash lite", "3.1 pro", "everyday help", "quick answers", "pro", "flash"],
+        icon_list=["keyboard_arrow_down", "arrow_drop_down"],
+        near_xpct=s1_x,
+        near_ypct=s1_y,
+        verify_next_txt=["4 hydrogen", "hydrogen", "everyday help", "3.5 flash lite", "quick answers"],
+        wait_timeout=5.0,
+        verify_timeout=3.0,
+        max_attempts=1,
+        optional=True
     )
-    if not already_good_mode:
-        opened_picker = wait_and_single_click_step(
+    if opened_picker:
+        picked_h2 = wait_and_single_click_step(
             driver,
-            "Step #1: Open Mode Picker",
-            aria_list=["open mode picker", "mode picker", "model"],
-            txt_list=["4 hydrogen", "hydrogen", "3.5 flash lite", "flash lite", "3.1 pro", "4 argon", "everyday help", "everday help", "quick answers", "pro", "flash", "2.5", "3.8"],
-            icon_list=["keyboard_arrow_down", "arrow_drop_down"],
-            near_xpct=s1_x,
-            near_ypct=s1_y,
-            verify_next_txt=["4 hydrogen", "hydrogen", "everyday help", "everday help", "3.5 flash lite", "quick answers", "3.1 pro", "flash"],
-            wait_timeout=5.0,
-            verify_timeout=3.0,
+            "Step #2A: Select '4 Hydrogen (Everyday help)'",
+            txt_list=["everyday help 4 hydrogen", "everday help 4 hydrogen", "4 hydrogen", "hydrogen", "everyday help"],
+            near_xpct=s2_x,
+            near_ypct=s2_y,
+            wait_timeout=3.5,
+            verify_timeout=2.0,
             max_attempts=1,
             optional=True
         )
-        if opened_picker:
-            # Try 4 Hydrogen first; if not found, automatically fall back to 3.5 Flash Lite, 3.1 Pro, or Flash!
+        if not picked_h2:
             wait_and_single_click_step(
                 driver,
-                "Step #2: Select Best Video Model (4 Hydrogen / 3.5 Flash Lite / Pro)",
-                txt_list=[
-                    "everyday help 4 hydrogen", "everday help 4 hydrogen", "4 hydrogen", "hydrogen", "everyday help", "everday help",
-                    "quick answers 3.5 flash lite", "3.5 flash lite", "flash lite", "quick answers",
-                    "detailed research 3.1 pro", "3.1 pro", "code & analysis 4 argon", "4 argon",
-                    "3.8 flash", "2.5 flash", "flash"
-                ],
+                "Step #2B: Select '3.5 Flash Lite'",
+                txt_list=["quick answers 3.5 flash lite", "3.5 flash lite", "flash lite", "quick answers", "flash"],
                 near_xpct=s2_x,
                 near_ypct=s2_y,
-                wait_timeout=4.0,
-                verify_timeout=2.5,
+                wait_timeout=3.0,
+                verify_timeout=2.0,
                 max_attempts=1,
                 optional=True
             )
-            time.sleep(0.8)
-
-    print("🎬 [Step #3 & #4] Opening 'Upload & tools' (+) -> Strictly Clicking 'Create video' (NEVER Music!)...")
-    video_mode_active = False
-
-    for try_idx in range(1, 4):
-        driver.execute_script(
-            """
-            for (const el of document.querySelectorAll('button, mat-chip, [role="button"]')) {
-                if (el.offsetParent === null) continue;
-                const t = ((el.innerText || '') + ' ' + (el.getAttribute('aria-label') || '')).toLowerCase();
-                if ((t.includes('music') || t.includes('audio')) && (t.includes('remove') || t.includes('close') || t.includes('deselect') || el.tagName.includes('CHIP'))) {
-                    const closeBtn = el.querySelector('button, [aria-label*="remove" i], [aria-label*="close" i], mat-icon') || el;
-                    closeBtn.click();
-                }
-            }
-            """
-        )
-
-        wait_and_single_click_step(
-            driver,
-            "Step #3: Upload & tools (+)",
-            aria_list=["upload & tools", "add files", "open upload"],
-            icon_list=["plus", "add"],
-            near_xpct=s3_x,
-            near_ypct=s3_y,
-            verify_next_txt=["create video", "create videos", "upload files"]
-        )
         time.sleep(0.8)
 
-        cv_el = find_gemini_element_by_spec(
-            driver,
-            aria_list=["create video", "create videos", "video"],
-            txt_list=["create video", "create videos", "video (veo)"],
-            icon_list=["movie", "videocam", "video_stable"],
-            near_xpct=s4_x,
-            near_ypct=s4_y,
-            exclude_words=["music", "audio", "song", "image", "research", "canvas", "files", "drive", "code"]
-        )
-        if cv_el and cv_el.get("disabled"):
-            limit_txt = "⚠️ Gemini Video Generation Limit Reached! ('Create video' button disabled/locked hai)."
-            report_step_problem_instantly(driver, "Video Limit Reached", limit_txt)
-            raise GeminiLimitReachedError(limit_txt)
+    print("[Step #3 & #4] Opening 'Upload & tools' (+) -> Strictly Clicking 'Create video'...")
+    for attempt_cv in range(1, 4):
+        dismiss_any_agree_or_consent_popup(driver)
+        if verify_create_video_selected_or_detect_limit(driver) == "OK":
+            break
 
         wait_and_single_click_step(
             driver,
-            "Step #4: Create video (STRICT VIDEO ONLY)",
-            aria_list=["create video", "create videos"],
-            txt_list=["create video", "create videos"],
-            icon_list=["movie", "videocam"],
-            near_xpct=s4_x,
-            near_ypct=s4_y,
-            exclude_words=["music", "audio", "song", "image", "research", "canvas", "files", "drive", "code"]
+            f"Step #3: Upload & tools (+) [Try {attempt_cv}]",
+            aria_list=["upload & tools", "tools", "add", "plus", "open upload"],
+            txt_list=["+", "tools"],
+            icon_list=["add", "add_circle", "spark", "video_spark"],
+            near_xpct=s3_x,
+            near_ypct=s3_y,
+            verify_next_txt=["create video", "upload files", "upload image"],
+            wait_timeout=5.0,
+            verify_timeout=3.0,
+            max_attempts=2,
+            optional=False
         )
-        time.sleep(1.2)
+        time.sleep(0.6)
 
         wait_and_single_click_step(
             driver,
-            "Step #5: Try it Popup",
-            txt_list=["agree", "i agree", "accept", "try it", "got it", "continue"],
-            near_xpct=s5_x,
-            near_ypct=s5_y,
-            wait_timeout=3.0,
-            max_attempts=1,
-            optional=True
+            f"Step #4: Create video (STRICT VIDEO ONLY) [Try {attempt_cv}]",
+            aria_list=["create video"],
+            txt_list=["create video", "generate video"],
+            icon_list=["movie", "videocam", "video_spark", "smart_display"],
+            near_xpct=s4_x,
+            near_ypct=s4_y,
+            wait_timeout=5.0,
+            verify_timeout=2.5,
+            max_attempts=2,
+            optional=False
         )
         time.sleep(1.0)
 
+        had_try_popup = wait_and_single_click_step(
+            driver,
+            "Step #5: Dismiss 'Try it / Agree' Popup",
+            txt_list=["try it", "got it", "agree", "i agree", "accept", "continue"],
+            near_xpct=s5_x,
+            near_ypct=s5_y,
+            wait_timeout=2.5,
+            verify_timeout=1.5,
+            max_attempts=1,
+            optional=True
+        )
         dismiss_any_agree_or_consent_popup(driver)
-        chk = verify_create_video_selected_or_detect_limit(driver)
-        if chk.get("limit_msg"):
-            limit_txt = f"⚠️ Gemini Video Limit Reached: {chk['limit_msg']}"
-            report_step_problem_instantly(driver, "Video Limit Reached", limit_txt)
-            raise GeminiLimitReachedError(limit_txt)
+        time.sleep(0.8)
 
-        if chk.get("selected"):
-            video_mode_active = True
-            print("   ✅ [Step #4 Verified] 'Create video' tool is 100% ACTIVE!")
+        chk_after = verify_create_video_selected_or_detect_limit(driver)
+        if chk_after == "OK":
+            print("   Confirmed: 'Create video' tool chip is active in prompt box!")
             break
-
-        print(f"   🔄 'Create video' did not activate on attempt {try_idx}/3. Retrying...")
-        time.sleep(1.2)
-
-    if not video_mode_active:
-        limit_txt = "⚠️ Gemini Video Limit Reached ya 'Create video' option select nahi ho raha hai."
-        report_step_problem_instantly(driver, "Video Limit Reached", limit_txt)
-        raise GeminiLimitReachedError(limit_txt)
+        elif chk_after.startswith("LIMIT:") and not had_try_popup:
+            lim_msg = chk_after.replace("LIMIT:", "").strip()
+            report_step_problem_instantly(driver, "Gemini Video Limit Reached", lim_msg)
+            raise GeminiLimitReachedError(f"Gemini Video Limit Reached: {lim_msg}")
+        else:
+            print(f"   Popup dismissed -> Re-clicking 'Create video' (Attempt {attempt_cv}/3)...")
 
     print("📱 [Step #6 & #7] Setting Aspect Ratio to 'Portrait (9:16)'...")
     already_portrait = driver.execute_script(
