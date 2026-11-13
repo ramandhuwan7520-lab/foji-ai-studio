@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794534142237",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Choti Pe Duaon Ka Pehra | Cast: Makra + Meera (Wine Berry Silk Kurti with cream Banar...)",
+    "status": "info",
+    "time_str": "07:12 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794534142.2370222
+  },
+  {
     "id": "notif_1794534137567",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "06:31 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794445273.410611
-  },
-  {
-    "id": "notif_1794443581590",
-    "type": "error",
-    "title": "Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: Sorry, something went wrong. Please try your request again.",
-    "status": "error",
-    "time_str": "06:03 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794443581.590793
   }
 ]
