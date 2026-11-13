@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538474771",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Sannate Mein Tirange Ka Pehra | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
+    "status": "info",
+    "time_str": "08:24 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538474.7713563
+  },
+  {
     "id": "notif_1794538453492",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "09:51 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794457318.6839757
-  },
-  {
-    "id": "notif_1794457222771",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "Foji 3D Reel (raw_video_1109_023124_p3.mp4) locked for 14 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "09:50 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794457222.7715213
   }
 ]
