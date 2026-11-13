@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Stage 2: Cookie Sign-In (Account #2)",
-  "sub_detail": "Logging into Gemini & preparing Makra + Meera (Wine Berry Silk Kurti with cream Banar...)...",
-  "status": "active",
-  "progress": 25,
-  "updated_at": "07:11:55 AM",
-  "epoch": 1794534115.713884
+  "step_num": 0,
+  "step_title": "Gemini Cookie Expired",
+  "sub_detail": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "07:12:16 AM",
+  "epoch": 1794534136.000733
 }
