@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
-  "status": "active",
-  "progress": 45,
-  "updated_at": "12:02:03 PM",
-  "epoch": 1794551523.1180556
+  "step_num": 0,
+  "step_title": "Video Limit Reached",
+  "sub_detail": "\u26a0\ufe0f Gemini Video Limit Reached: Limit reached. Resets 10:42\u202fPM",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "12:02:17 PM",
+  "epoch": 1794551537.9289057
 }
