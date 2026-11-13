@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794546545025",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Sniper Aur Yaadon Ki Garmi | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "10:39 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794546545.025871
+  },
+  {
     "id": "notif_1794538517948",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "12:02 PM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794465164.6822772
-  },
-  {
-    "id": "notif_1794465060306",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Ungli Trigger Pe | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:01 PM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794465060.3061924
   }
 ]
