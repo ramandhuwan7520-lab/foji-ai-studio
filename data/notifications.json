@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794534265908",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Pehre Mein Tirange Ki Shaan | Cast: Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...)",
+    "status": "info",
+    "time_str": "07:14 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794534265.9089615
+  },
+  {
     "id": "notif_1794534261437",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "07:39 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794449340.670291
-  },
-  {
-    "id": "notif_1794449268992",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "07:37 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794449268.9929187
   }
 ]
