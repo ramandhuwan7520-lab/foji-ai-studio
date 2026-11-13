@@ -1,5 +1,25 @@
 [
   {
+    "id": "notif_1794596713873",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Dil Mein Jigar locked for 16 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "12:35 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794596713.8737323
+  },
+  {
+    "id": "notif_1794596707509",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan locked for 14 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "12:35 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794596707.5097795
+  },
+  {
     "id": "notif_1794574878367",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
@@ -778,25 +798,5 @@
     "time_str": "07:12 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794534137.5677767
-  },
-  {
-    "id": "notif_1794534117016",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Choti Pe Duaon Ka Pehra | Cast: Makra + Meera (Wine Berry Silk Kurti with cream Banar...)",
-    "status": "info",
-    "time_str": "07:11 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794534117.0162532
-  },
-  {
-    "id": "notif_1794534080683",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Tirange Ka Pehra & Meera Ki Mannat | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
-    "status": "info",
-    "time_str": "07:11 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794534080.6834419
   }
 ]
