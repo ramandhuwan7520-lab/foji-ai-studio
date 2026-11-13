@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794601010078",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Ki Chadhayi Aur Josh Ki Ladayi | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "01:46 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794601010.0782595
+  },
+  {
     "id": "notif_1794600452352",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "08:17 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794538044.2122867
-  },
-  {
-    "id": "notif_1794538012562",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Toofan Aur Tirange Ki Kasam | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "08:16 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794538012.562311
   }
 ]
