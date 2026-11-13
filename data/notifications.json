@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794551508022",
+    "type": "info",
+    "title": "🔄 Switched to Account #2",
+    "message": "Account #1 issue (⚠️ Gemini Video Limit Reached: Video Generation Traffic Limit) -> Switching to Account #2!",
+    "status": "info",
+    "time_str": "12:01 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794551508.0224273
+  },
+  {
     "id": "notif_1794551502086",
     "type": "error",
     "title": "Video Limit Reached",
