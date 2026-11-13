@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794533988865",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Subah Aur Meera Ki Mannat | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
+    "status": "info",
+    "time_str": "07:09 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794533988.8658478
+  },
+  {
     "id": "notif_1794533955685",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:16 PM",
     "date_str": "11 Nov 2026",
     "timestamp": 1794411972.3770435
-  },
-  {
-    "id": "notif_1794411949062",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "Foji 3D Reel (raw_video_1109_023124_p3.mp4) locked for 15 Nov 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "09:15 PM",
-    "date_str": "11 Nov 2026",
-    "timestamp": 1794411949.062765
   }
 ]
