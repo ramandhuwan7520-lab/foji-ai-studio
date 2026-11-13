@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794529921622",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Saye Aur Tirange Ki Shaan | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
+    "status": "info",
+    "time_str": "06:02 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794529921.6225064
+  },
+  {
     "id": "notif_1794529893132",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:10 PM",
     "date_str": "11 Nov 2026",
     "timestamp": 1794411617.168464
-  },
-  {
-    "id": "notif_1794411574601",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 2: Barfani Toofan Mein Yaadon Ka Pehra locked for 13 Nov 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "09:09 PM",
-    "date_str": "11 Nov 2026",
-    "timestamp": 1794411574.6014667
   }
 ]
