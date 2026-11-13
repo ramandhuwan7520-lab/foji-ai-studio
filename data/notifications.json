@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794551656175",
+    "type": "info",
+    "title": "🔄 Switched to Account #1",
+    "message": "Account #2 issue (Gemini could not sign in using cookies on Cloud. Run `python gemini_bo) -> Switching to Account #1!",
+    "status": "info",
+    "time_str": "12:04 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794551656.1754503
+  },
+  {
     "id": "notif_1794551653608",
     "type": "error",
     "title": "Gemini Login Error",
