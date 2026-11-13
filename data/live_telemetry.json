@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Stage 2: Cookie Sign-In (Account #1)",
-  "sub_detail": "Logging into Gemini & preparing Makra Only (Solo Army Scene)...",
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud 3D Studio",
+  "sub_detail": "Triggering GitHub Actions 3D Worker...",
   "status": "active",
-  "progress": 25,
-  "updated_at": "12:42:34 PM",
-  "epoch": 1794553954.2216346
+  "progress": 18,
+  "updated_at": "01:47:25 PM",
+  "epoch": 1794557845.8278086
 }
