@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538517948",
+    "type": "error",
+    "title": "Gemini Cookie Expired",
+    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
+    "status": "error",
+    "time_str": "08:25 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538517.9482105
+  },
+  {
     "id": "notif_1794538498899",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "12:01 PM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794465060.3061924
-  },
-  {
-    "id": "notif_1794457423371",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 5: Ret Ka Ragda & Palti ka Toofan locked for 16 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "09:53 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794457423.3711615
   }
 ]
