@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794534010309",
+    "type": "error",
+    "title": "Gemini Cookie Expired",
+    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
+    "status": "error",
+    "time_str": "07:10 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794534010.3097851
+  },
+  {
     "id": "notif_1794533988865",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "09:16 PM",
     "date_str": "11 Nov 2026",
     "timestamp": 1794412002.634749
-  },
-  {
-    "id": "notif_1794411972377",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 4: Digital Ishq Aur Border Ka Pehra locked for 15 Nov 2026 at 06:30 PM IST!",
-    "status": "success",
-    "time_str": "09:16 PM",
-    "date_str": "11 Nov 2026",
-    "timestamp": 1794411972.3770435
   }
 ]
