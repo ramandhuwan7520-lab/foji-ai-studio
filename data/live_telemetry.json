@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Stage 2: Cookie Sign-In (Account #2)",
-  "sub_detail": "Logging into Gemini & preparing Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)...",
-  "status": "active",
-  "progress": 25,
-  "updated_at": "08:24:57 AM",
-  "epoch": 1794538497.859293
+  "step_num": 0,
+  "step_title": "Gemini Cookie Expired",
+  "sub_detail": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "08:25:16 AM",
+  "epoch": 1794538516.8619502
 }
