@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794534014868",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Subah Aur Meera Ki Mannat | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
+    "status": "info",
+    "time_str": "07:10 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794534014.8687336
+  },
+  {
     "id": "notif_1794534010309",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "06:01 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794443475.0170872
-  },
-  {
-    "id": "notif_1794412002634",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🔥 Ustad Ka Ragda & Punishment — Part 5: Ret Ka Ragda & Palti ka Toofan locked for 16 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "09:16 PM",
-    "date_str": "11 Nov 2026",
-    "timestamp": 1794412002.634749
   }
 ]
