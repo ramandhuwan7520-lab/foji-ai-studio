@@ -34,6 +34,7 @@ if __name__ == "__main__":
                     print(f"✅ [BATCH {i+1}/{cnt}] Completed: {os.path.basename(out_vid)}")
                     break
             except Exception as e:
+                last_err_msg = str(e)
                 print(f"⚠️ [BATCH {i+1}/{cnt} - Attempt {attempt}/2] Error: {e}")
                 time.sleep(5)
 

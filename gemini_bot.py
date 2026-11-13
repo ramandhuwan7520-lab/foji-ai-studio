@@ -717,11 +717,11 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
 
         if is_gemini_truly_signed_in(driver):
             print("✅ Google Gemini Signed-In Workspace is 100% Open & Verified via Cookies!")
-                    try:
-                        slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-                        _RUNTIME_FRESH_COOKIES_MEM[slot_k] = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
-                    except Exception:
-                        pass
+            try:
+                slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+                _RUNTIME_FRESH_COOKIES_MEM[slot_k] = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
+            except Exception:
+                pass
             time.sleep(1.5)
             # IMMORTAL COOKIE RENEWAL: Save rotated Google cookies on BOTH Laptop & Cloud so they NEVER expire!
             cnt = save_all_browser_cookies_via_cdp(driver)
