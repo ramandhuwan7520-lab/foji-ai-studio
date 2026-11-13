@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794534080683",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Tirange Ka Pehra & Meera Ki Mannat | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
+    "status": "info",
+    "time_str": "07:11 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794534080.6834419
+  },
+  {
     "id": "notif_1794534076026",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "06:01 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794443513.0812588
-  },
-  {
-    "id": "notif_1794443507989",
-    "type": "warning",
-    "title": "?? 1st Account Limit -> Using 2nd Account!",
-    "message": "Account #1 Limit/Issue (Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD). Switching to 2nd Account Cookies automatically!",
-    "status": "success",
-    "time_str": "06:01 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794443507.9896731
   }
 ]
