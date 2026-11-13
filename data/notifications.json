@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794529857130",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Saaye Aur Tirange Ki Shaan | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "06:00 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794529857.1308346
+  },
+  {
     "id": "notif_1794517428723",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
