@@ -1,5 +1,65 @@
 [
   {
+    "id": "notif_1794547291502",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_042_BorderDuty_Part_03_1113_104845.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "10:51 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794547291.5029657
+  },
+  {
+    "id": "notif_1794547212300",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "10:50 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794547212.3004608
+  },
+  {
+    "id": "notif_1794547176122",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "10:49 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794547176.1222267
+  },
+  {
+    "id": "notif_1794547171845",
+    "type": "info",
+    "title": "🔄 Switched to Account #2",
+    "message": "Account #1 issue (⚠️ Gemini Video Limit Reached: Video Generation Traffic Limit) -> Switching to Account #2!",
+    "status": "info",
+    "time_str": "10:49 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794547171.8458478
+  },
+  {
+    "id": "notif_1794547167279",
+    "type": "error",
+    "title": "Video Limit Reached",
+    "message": "⚠️ Gemini Video Limit Reached: Video Generation Traffic Limit",
+    "status": "error",
+    "time_str": "10:49 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794547167.27941
+  },
+  {
+    "id": "notif_1794547128548",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "10:48 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794547128.5490217
+  },
+  {
     "id": "notif_1794547050966_149",
     "type": "stopped",
     "title": "Generation Stopped",
