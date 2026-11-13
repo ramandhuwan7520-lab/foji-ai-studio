@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538012562",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Toofan Aur Tirange Ki Kasam | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "08:16 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538012.562311
+  },
+  {
     "id": "notif_1794534265908",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "07:39 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794449363.259553
-  },
-  {
-    "id": "notif_1794449340670",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading Video_031_LoveMeera_Part_06_1112_073634.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "07:39 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794449340.670291
   }
 ]
