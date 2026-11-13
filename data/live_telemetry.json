@@ -1,9 +1,8 @@
 {
-  "step_num": 1,
-  "step_title": "Warning: Gemini Cookie Expired",
-  "sub_detail": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-  "status": "error",
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Ready",
+  "status": "idle",
   "progress": 0,
-  "updated_at": "01:37:31 AM",
-  "epoch": 1794600451.1290755
+  "epoch": 1794600487.4476154
 }
