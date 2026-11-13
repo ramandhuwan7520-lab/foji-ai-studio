@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538434338",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Chai Aur Garam Yaadein | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "08:23 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538434.338177
+  },
+  {
     "id": "notif_1794538431129",
     "type": "info",
     "title": "🔄 Switched to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "09:47 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794457022.1417778
-  },
-  {
-    "id": "notif_1794457001491",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "Foji 3D Reel (raw_video_1109_023053_p1.mp4) locked for 13 Nov 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "09:46 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794457001.4917414
   }
 ]
