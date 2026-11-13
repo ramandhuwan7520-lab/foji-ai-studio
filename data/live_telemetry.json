@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
-  "status": "active",
-  "progress": 45,
-  "updated_at": "03:26:45 PM",
-  "epoch": 1794563805.057131
+  "step_num": 1,
+  "step_title": "Warning: Gemini Cookie Expired",
+  "sub_detail": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "06:02:33 PM",
+  "epoch": 1794573153.3384843
 }
