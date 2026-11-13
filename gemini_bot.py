@@ -421,6 +421,46 @@ def install_file_dialog_blocker(driver):
 # ==============================================================================
 # 🔐 PURE COOKIE + FINGERPRINT + LOCALSTORAGE ENGINE (NO PASSWORD NEEDED!)
 # ==============================================================================
+
+
+def dismiss_any_agree_or_consent_popup(driver):
+    """
+    Automatically checks if an 'Agree', 'I agree', 'Accept', 'Try it', 'Got it', or 'Continue'
+    popup/dialog is on screen during video generation. If present, clicks it immediately;
+    if not present, continues immediately without any delay!
+    """
+    js_click_agree = """
+    const targetWords = ['agree', 'i agree', 'accept', 'try it', 'got it', 'continue', 'allow'];
+    const candidates = document.querySelectorAll(
+        'mat-dialog-container button, [role="dialog"] button, .cdk-overlay-container button, button, [role="button"]'
+    );
+    for (const btn of candidates) {
+        if (btn.offsetParent === null) continue;
+        const r = btn.getBoundingClientRect();
+        if (r.width < 20 || r.height < 18 || r.width > 360 || r.height > 90) continue;
+        const txt = ((btn.innerText || btn.textContent || '') + ' ' + (btn.getAttribute('aria-label') || '')).trim().toLowerCase().replace(/\\s+/g, ' ');
+        for (const w of targetWords) {
+            if (txt === w || txt.startsWith(w + ' ') || txt.endsWith(' ' + w)) {
+                // Make sure we don't accidentally click 'disagree' or 'cancel'
+                if (txt.includes('disagree') || txt.includes('cancel') || txt.includes('no thanks')) continue;
+                btn.click();
+                return txt;
+            }
+        }
+    }
+    return '';
+    """
+    try:
+        clicked_txt = driver.execute_script(js_click_agree)
+        if clicked_txt:
+            print(f"   ✅ [Auto-Popup Handler] Clicked '{clicked_txt}' popup button automatically!")
+            time.sleep(0.8)
+            return True
+    except Exception:
+        pass
+    return False
+
+
 def save_all_browser_cookies_via_cdp(driver):
     """
     Saves ALL Google cookies (with exact domain, hostOnly, sameSite, priority) +
@@ -1177,7 +1217,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         wait_and_single_click_step(
             driver,
             "Step #5: Try it Popup",
-            txt_list=["try it", "got it"],
+            txt_list=["agree", "i agree", "accept", "try it", "got it", "continue"],
             near_xpct=s5_x,
             near_ypct=s5_y,
             wait_timeout=3.0,
@@ -1186,6 +1226,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         )
         time.sleep(1.0)
 
+        dismiss_any_agree_or_consent_popup(driver)
         chk = verify_create_video_selected_or_detect_limit(driver)
         if chk.get("limit_msg"):
             limit_txt = f"⚠️ Gemini Video Limit Reached: {chk['limit_msg']}"
@@ -1268,6 +1309,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         report_step_problem_instantly(driver, "Step #11: Fill Prompt Box", "Could not fill script into Gemini prompt box.")
         raise RuntimeError("Step #11 (Fill Prompt Box) failed.")
 
+    dismiss_any_agree_or_consent_popup(driver)
     print("🚀 [Step #12] Clicking 'Send message' (`arrow_upward`)...")
     js_verify_sent = """
     const box = document.querySelector('[aria-label*="Enter a prompt" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"], textarea');
@@ -1570,15 +1612,35 @@ def _are_slot1_and_slot2_identical():
     return False
 
 
+def _has_valid_cookies_in_file(filepath, env_name):
+    if os.path.exists(filepath) and os.path.getsize(filepath) > 300:
+        return True
+    if len(os.getenv(env_name, "").strip()) > 300:
+        return True
+    return False
+
+
 def _get_preferred_starting_slot():
-    """If Account #1 already reached its daily video limit today, start directly with Account #2 (Zero wasted time!)."""
+    """
+    ALWAYS starts with Account #1 (`gemini_cookies_secret.txt`) if available!
+    Only skips to Account #2 if Account #1 explicitly hit `GeminiLimitReachedError` (Daily Video Quota) earlier today.
+    """
+    has_acc1 = _has_valid_cookies_in_file("gemini_cookies_secret.txt", "GEMINI_COOKIES_JSON")
+    has_acc2 = _has_valid_cookies_in_file("gemini_cookies_secret_2.txt", "GEMINI_COOKIES_JSON_2") and not _are_slot1_and_slot2_identical()
+
+    if not has_acc1 and has_acc2:
+        return 2
+    if not has_acc2:
+        return 1
+
     limit_state_file = "data/account_limit_state.json"
     today_ist = datetime.now(IST).strftime("%Y-%m-%d")
     if os.path.exists(limit_state_file):
         try:
             st = json.load(open(limit_state_file, "r", encoding="utf-8"))
-            if st.get("acc1_limit_date") == today_ist and os.path.exists("gemini_cookies_secret_2.txt") and not _are_slot1_and_slot2_identical():
-                print("⚡ [Smart Account Router] Account #1 already hit daily limit today -> Starting directly with Account #2!")
+            # Expire the lock after 6 hours or at midnight IST so Account #1 is always checked fresh!
+            if st.get("acc1_limit_date") == today_ist and (time.time() - float(st.get("updated_epoch", 0))) < 21600:
+                print("⚡ [Smart Account Router] Account #1 hit Video Quota earlier today -> Using Account #2!")
                 return 2
         except Exception:
             pass
@@ -1592,42 +1654,39 @@ def _mark_account1_limit_for_today():
         os.makedirs("data", exist_ok=True)
         with open(limit_state_file, "w", encoding="utf-8") as f:
             json.dump({"acc1_limit_date": today_ist, "updated_epoch": time.time()}, f)
-        sync_file_to_github(limit_state_file, "Mark Account #1 daily limit for today")
+        sync_file_to_github(limit_state_file, "Mark Account #1 daily video quota for today")
     except Exception:
         pass
 
 
 def generate_video_in_gemini(pending_pkg=None):
     global _ACTIVE_COOKIE_ACCOUNT_SLOT, _SUPPRESS_FAILOVER_NOTIF
-    has_second_acc = (
-        (os.path.exists("gemini_cookies_secret_2.txt") or bool(os.getenv("GEMINI_COOKIES_JSON_2", "").strip()))
-        and not _are_slot1_and_slot2_identical()
-    )
-    start_slot = _get_preferred_starting_slot() if has_second_acc else 1
-    _ACTIVE_COOKIE_ACCOUNT_SLOT = start_slot
+    has_acc1 = _has_valid_cookies_in_file("gemini_cookies_secret.txt", "GEMINI_COOKIES_JSON")
+    has_acc2 = _has_valid_cookies_in_file("gemini_cookies_secret_2.txt", "GEMINI_COOKIES_JSON_2") and not _are_slot1_and_slot2_identical()
 
-    # Suppress intermediate Telegram error screenshots on Slot #1 if Slot #2 is ready as backup!
-    _SUPPRESS_FAILOVER_NOTIF = (start_slot == 1 and has_second_acc)
+    start_slot = _get_preferred_starting_slot()
+    fallback_slot = 2 if (start_slot == 1 and has_acc2) else (1 if (start_slot == 2 and has_acc1) else None)
+
+    _ACTIVE_COOKIE_ACCOUNT_SLOT = start_slot
+    _SUPPRESS_FAILOVER_NOTIF = bool(fallback_slot is not None)
+    print(f"🎯 [Account Router] Primary Slot: Account #{start_slot} | Backup Slot: {f'Account #{fallback_slot}' if fallback_slot else 'None'}")
+
     try:
         return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
     except Exception as first_err:
         _SUPPRESS_FAILOVER_NOTIF = False
-        if start_slot == 1 and has_second_acc:
+        # ONLY mark Account #1 daily limit if the error was genuinely a Video Quota/Limit error!
+        if start_slot == 1 and isinstance(first_err, GeminiLimitReachedError):
             _mark_account1_limit_for_today()
-            msg = f"Account #1 Limit/Issue -> Switching to Account #2 automatically!"
+
+        if fallback_slot is not None:
+            msg = f"Account #{start_slot} issue ({str(first_err)[:70]}) -> Switching to Account #{fallback_slot}!"
             print(f"🔄 [AUTO-FAILOVER] {msg}")
-            update_3d_telemetry(2, "🔄 Switching to Account #2", msg, "active", 22)
-            push_app_notification("info", "🔄 Switched to Account #2", msg, "info")
-            _ACTIVE_COOKIE_ACCOUNT_SLOT = 2
+            update_3d_telemetry(2, f"🔄 Switching to Account #{fallback_slot}", msg, "active", 22)
+            push_app_notification("info", f"🔄 Switched to Account #{fallback_slot}", msg, "info")
+            _ACTIVE_COOKIE_ACCOUNT_SLOT = fallback_slot
             return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
-        elif start_slot == 2:
-            # If started on Account #2 and it had an issue, try Account #1 once
-            print("🔄 [AUTO-FAILOVER] Trying Account #1...")
-            _ACTIVE_COOKIE_ACCOUNT_SLOT = 1
-            return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
-        # If Slot 2 was identical or not set up yet, tell user clearly
-        if _are_slot1_and_slot2_identical():
-            print("⚠️ Account #2 had a duplicate copy of Account #1 cookies! Run: python gemini_bot.py --save-cookies-2")
+
         report_step_problem_instantly(None, "Video Generation Paused", str(first_err)[:180])
         raise first_err
 
@@ -1687,6 +1746,8 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
         update_3d_telemetry(3, "Stage 3: Create Video & 9:16 Portrait", f"Selecting Create Video + 9:16 + Uploading ({cast_info})...", "active", 45)
         execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, base_video_prompt)
 
+        time.sleep(1.2)
+        dismiss_any_agree_or_consent_popup(driver)
         update_3d_telemetry(5, "Stage 5: Prompt Sent -> Rendering Started!", f"Gemini Veo is rendering {unique_fname}...", "active", 68)
         push_app_notification("info", "🚀 Step 5: 3D Video Rendering Started!", f"{pending_pkg.get('emotion_name')} is now rendering in Gemini!", "info")
         time.sleep(4)
@@ -1736,6 +1797,7 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             except Exception:
                 pass
 
+            dismiss_any_agree_or_consent_popup(driver)
             st = get_gemini_reply_and_video_status(driver, ignored_video_urls)
             is_gen = st.get("is_generating", False)
             new_vids = st.get("new_video_urls", [])

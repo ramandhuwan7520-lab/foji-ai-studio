@@ -3893,9 +3893,9 @@ html, body {
             </div>
             <div style="margin-bottom:14px;">
               <label style="font-size:0.74rem;color:#94a3b8;font-weight:700;">Daily Publishing Slots:</label>
-              <input type="time" id="fns-slot-1" value="07:00" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.14);color:#fff;padding:9px;border-radius:9px;" />
-              <input type="time" id="fns-slot-2" value="13:30" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.14);color:#fff;padding:9px;border-radius:9px;" />
-              <input type="time" id="fns-slot-3" value="19:30" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.14);color:#fff;padding:9px;border-radius:9px;" />
+              <input type="time" id="fns-slot-1" value="06:30" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.14);color:#fff;padding:9px;border-radius:9px;" />
+              <input type="time" id="fns-slot-2" value="12:30" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.14);color:#fff;padding:9px;border-radius:9px;" />
+              <input type="time" id="fns-slot-3" value="18:30" style="width:100%;box-sizing:border-box;margin-top:6px;background:#081020;border:1px solid rgba(255,255,255,0.14);color:#fff;padding:9px;border-radius:9px;" />
             </div>
             <button class="fns-cta-generate" style="width:100%;padding:11px;" onclick="fnsSaveScheduleSlots()">Save Schedule</button>
           </div>
@@ -4808,6 +4808,14 @@ async function fnsRefreshHub() {
     const r = await fetch('/api/universe/status?t=' + Date.now());
     const d = await r.json();
     _fnsState = d.director_state || _fnsState;
+    if (_fnsState && Array.isArray(_fnsState.daily_slots) && _fnsState.daily_slots.length >= 3) {
+      const s1El = document.getElementById('fns-slot-1');
+      const s2El = document.getElementById('fns-slot-2');
+      const s3El = document.getElementById('fns-slot-3');
+      if (s1El && document.activeElement !== s1El) s1El.value = _fnsState.daily_slots[0];
+      if (s2El && document.activeElement !== s2El) s2El.value = _fnsState.daily_slots[1];
+      if (s3El && document.activeElement !== s3El) s3El.value = _fnsState.daily_slots[2];
+    }
     _fnsTracks = d.tracks || [];
     if (d.server_time_ist) {
       const clk = document.getElementById('fns-server-clock');
@@ -5068,9 +5076,9 @@ async function fnsStartFullVideoGeneration(cnt=1) {
 
 async function fnsSaveScheduleSlots() {
   const nt = document.getElementById('fns-cfg-night-time').value || '02:30';
-  const s1 = document.getElementById('fns-slot-1').value || '07:00';
-  const s2 = document.getElementById('fns-slot-2').value || '13:30';
-  const s3 = document.getElementById('fns-slot-3').value || '19:30';
+  const s1 = document.getElementById('fns-slot-1').value || '06:30';
+  const s2 = document.getElementById('fns-slot-2').value || '12:30';
+  const s3 = document.getElementById('fns-slot-3').value || '18:30';
   await fetch('/api/universe/save_schedule', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},

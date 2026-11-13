@@ -176,6 +176,7 @@ def get_director_state():
 
 
 def save_director_state(state):
+    state['updated_epoch'] = time.time()
     os.makedirs("data", exist_ok=True)
     with open(DIRECTOR_STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2, ensure_ascii=False)
@@ -649,7 +650,7 @@ def get_schedule_config():
         "night_batch_time": "02:30",
         "night_batch_count": 3,
         "pre_slot_minutes": 30,
-        "daily_slots": ["06:30", "12:30", "19:30"],
+        "daily_slots": ["06:30", "12:30", "18:30"],
         "auto_pilot_enabled": True,
         "last_triggered_keys": []
     }
@@ -932,14 +933,14 @@ def calculate_next_available_slot_ist():
     If 06:30 and 12:30 are taken, the 3rd video ALWAYS gets 19:30 today (or 06:30 tomorrow)!
     """
     cfg = get_schedule_config()
-    raw_slots = cfg.get("daily_slots", ["06:30", "12:30", "19:30"])
+    raw_slots = cfg.get("daily_slots", ["06:30", "12:30", "18:30"])
     clean_slots = []
     for s in raw_slots:
         s_str = str(s).strip()
         if ":" in s_str:
             clean_slots.append(s_str)
     if not clean_slots:
-        clean_slots = ["06:30", "12:30", "19:30"]
+        clean_slots = ["06:30", "12:30", "18:30"]
 
     def _slot_minutes(hm_str):
         try:
@@ -1130,6 +1131,13 @@ def pull_latest_cloud_state_for_frontend():
             local_p = os.path.abspath(rel_json)
             os.makedirs(os.path.dirname(local_p), exist_ok=True)
             should_write = True
+            if rel_json == "data/director_state.json" and os.path.exists(local_p):
+                try:
+                    loc_d = json.load(open(local_p, "r", encoding="utf-8"))
+                    if float(remote_data.get("updated_epoch", 0)) < float(loc_d.get("updated_epoch", 0)):
+                        should_write = False
+                except Exception:
+                    pass
             if rel_json == "data/live_telemetry.json" and os.path.exists(local_p):
                 try:
                     with open(local_p, "r", encoding="utf-8") as lf:
