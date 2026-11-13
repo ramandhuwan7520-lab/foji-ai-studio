@@ -1,3 +1,4 @@
+import zipfile
 # 🛡️ IPV4 SSL HANDSHAKE FIX FOR PYTHON 3.14
 try:
     import socket as _sock
@@ -241,32 +242,120 @@ def ensure_clean_matching_chromedriver_in_python():
                     pass
 
 
-def _load_saved_session_bundle():
-    """Strictly loads Account #1 cookies (`gemini_cookies_secret.txt`) without any Cloud overwrite or Account #2 switching."""
-    print(f"🔐 [Cookie Loader] Loading Account #1 from '{COOKIE_FILE}'...")
-    raw = ""
-    if os.path.exists(COOKIE_FILE):
+
+PROFILE_VAULT_ZIP = "data/chrome_profile_vault.zip"
+CLOUD_MINTED_COOKIE_FILE = "data/cloud_minted_cookies.json"
+
+
+def pack_essential_chrome_profile_to_zip(profile_dir):
+    """
+    Layer #1: Packs the actual Chrome SQLite Cookie DB, Local Storage LevelDB, and Preferences
+    from `chrome_gemini_pro_profile_1` into a lightweight zip (`data/chrome_profile_vault.zip`)
+    so Cloud Linux opens the EXACT same browser profile state as your Laptop!
+    """
+    os.makedirs("data", exist_ok=True)
+    essential_rel_paths = [
+        "Local State",
+        os.path.join("Default", "Preferences"),
+        os.path.join("Default", "Secure Preferences"),
+        os.path.join("Default", "Cookies"),
+        os.path.join("Default", "Network", "Cookies"),
+        os.path.join("Default", "Web Data"),
+        os.path.join("Default", "Login Data"),
+    ]
+    essential_dirs = [
+        os.path.join("Default", "Local Storage"),
+        os.path.join("Default", "Session Storage"),
+        os.path.join("Default", "Sync Data"),
+    ]
+    count_files = 0
+    try:
+        with zipfile.ZipFile(PROFILE_VAULT_ZIP, "w", zipfile.ZIP_DEFLATED) as zf:
+            for rel_p in essential_rel_paths:
+                full_p = os.path.join(profile_dir, rel_p)
+                if os.path.exists(full_p) and os.path.isfile(full_p):
+                    try:
+                        zf.write(full_p, rel_p)
+                        count_files += 1
+                    except Exception:
+                        pass
+            for rel_d in essential_dirs:
+                full_d = os.path.join(profile_dir, rel_d)
+                if os.path.exists(full_d) and os.path.isdir(full_d):
+                    for root, _, files in os.walk(full_d):
+                        for fn in files:
+                            if fn.endswith((".log", ".ldb", ".sst", "CURRENT", "MANIFEST")) or os.path.getsize(os.path.join(root, fn)) < 2 * 1024 * 1024:
+                                fp = os.path.join(root, fn)
+                                arcname = os.path.relpath(fp, profile_dir)
+                                try:
+                                    zf.write(fp, arcname)
+                                    count_files += 1
+                                except Exception:
+                                    pass
+        print(f"📦 [Layer 1 Vault] Packed {count_files} core Chrome profile files into '{PROFILE_VAULT_ZIP}' ({os.path.getsize(PROFILE_VAULT_ZIP)//1024} KB)!")
+        return True
+    except Exception as e:
+        print(f"⚠️ Profile zip note: {e}")
+        return False
+
+
+def unpack_chrome_profile_vault_if_present(profile_dir):
+    """Restores the packed Chrome profile into `profile_dir` before launching Chrome on Cloud."""
+    if os.path.exists(PROFILE_VAULT_ZIP) and os.path.getsize(PROFILE_VAULT_ZIP) > 500:
         try:
-            with open(COOKIE_FILE, "r", encoding="utf-8") as f:
+            os.makedirs(profile_dir, exist_ok=True)
+            with zipfile.ZipFile(PROFILE_VAULT_ZIP, "r") as zf:
+                zf.extractall(profile_dir)
+            print(f"📦 [Layer 1 Vault] Restored Laptop Chrome Profile into '{profile_dir}'!")
+            return True
+        except Exception as e:
+            print(f"⚠️ Profile unpack note: {e}")
+    return False
+
+
+def _load_saved_session_bundle():
+    """
+    Loads cookies from:
+    1) `data/cloud_minted_cookies.json` (if running on Cloud and Cloud already minted a session on its own IP!)
+    2) `gemini_cookies_secret.txt` (your Laptop's pure cookies)
+    3) `GEMINI_COOKIES_JSON` environment variable
+    """
+    candidates = []
+    if os.name != "nt" and os.path.exists("data/cloud_minted_cookies.json"):
+        candidates.append("data/cloud_minted_cookies.json")
+    if os.path.exists(COOKIE_FILE):
+        candidates.append(COOKIE_FILE)
+
+    for c_path in candidates:
+        try:
+            with open(c_path, "r", encoding="utf-8") as f:
                 raw = f.read().strip()
+            if raw:
+                parsed = json.loads(raw)
+                if isinstance(parsed, dict) and len(parsed.get("cookies", [])) >= 8:
+                    print(f"🔐 [Cookie Loader] Loaded {len(parsed['cookies'])} cookies from '{c_path}'")
+                    return {
+                        "cookies": parsed.get("cookies", []),
+                        "user_agent": parsed.get("user_agent") or DEFAULT_WIN_UA,
+                        "local_storage": parsed.get("local_storage", {})
+                    }
+                elif isinstance(parsed, list) and len(parsed) >= 8:
+                    return {"cookies": parsed, "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
         except Exception:
             pass
-    if not raw:
-        raw = os.getenv("GEMINI_COOKIES_JSON", "").strip()
-    if not raw:
-        return {"cookies": [], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
-    try:
-        parsed = json.loads(raw)
-        if isinstance(parsed, list):
-            return {"cookies": parsed, "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
-        if isinstance(parsed, dict):
-            return {
-                "cookies": parsed.get("cookies", []),
-                "user_agent": parsed.get("user_agent") or DEFAULT_WIN_UA,
-                "local_storage": parsed.get("local_storage", {})
-            }
-    except Exception:
-        pass
+
+    raw_env = os.getenv("GEMINI_COOKIES_JSON", "").strip()
+    if raw_env:
+        try:
+            parsed = json.loads(raw_env)
+            if isinstance(parsed, dict):
+                return {
+                    "cookies": parsed.get("cookies", []),
+                    "user_agent": parsed.get("user_agent") or DEFAULT_WIN_UA,
+                    "local_storage": parsed.get("local_storage", {})
+                }
+        except Exception:
+            pass
     return {"cookies": [], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
 
 
@@ -629,7 +718,10 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
             curr_url = (driver.current_url or "").lower()
 
             # Check if an account chooser ('Choose an account') is on screen -> click it (No password needed if cookie is valid!)
-            if "accounts.google.com" in curr_url:
+            if "accounts.google.com" in curr_url or "consent.google.com" in curr_url:
+                if _auto_handle_google_password_screen_if_shown(driver, 1):
+                    time.sleep(2.0)
+                    continue
                 state = driver.execute_script(
                     """
                     const passInput = document.querySelector('input[type="password"][name="Passwd"], input[type="password"]');
@@ -1580,6 +1672,10 @@ def export_fresh_gemini_cookies_from_local():
             proc.terminate()
         except Exception:
             pass
+        time.sleep(1.5)
+        prof_d = os.path.abspath("chrome_gemini_pro_profile_1")
+        if os.path.exists(prof_d):
+            pack_essential_chrome_profile_to_zip(prof_d)
 
 
 def generate_video_in_gemini(pending_pkg=None):
@@ -1858,56 +1954,117 @@ if __name__ == "__main__":
 
 
 
+def _save_cloud_minted_cookies_separately(driver):
+    """When Cloud logs in using Email/Password, saves those Cloud-IP cookies to `data/cloud_minted_cookies.json`!"""
+    try:
+        driver.execute_cdp_cmd("Network.enable", {})
+        all_c = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
+        essential = [c for c in all_c if any(k in c.get("domain", "") for k in ["google", "youtube", "gstatic"])]
+        if len(essential) >= 8:
+            os.makedirs("data", exist_ok=True)
+            ua = driver.execute_script("return navigator.userAgent;") or DEFAULT_WIN_UA
+            bundle = {"user_agent": ua, "cookies": essential, "saved_at": time.time()}
+            with open("data/cloud_minted_cookies.json", "w", encoding="utf-8") as f:
+                json.dump(bundle, f, indent=2)
+            sync_file_to_github("data/cloud_minted_cookies.json", "Save Cloud-IP verified Google session")
+            print(f"☁️ [Layer 5] Saved {len(essential)} Cloud-Minted Google cookies to 'data/cloud_minted_cookies.json'!")
+    except Exception:
+        pass
+
+
+def _load_vault_credentials():
+    import zlib
+    email_val = os.getenv("GEMINI_EMAIL", "").strip()
+    pwd_val = (os.getenv("GEMINI_ACC1_PASSWORD") or os.getenv("GEMINI_PASSWORD") or os.getenv("GOOGLE_PASSWORD") or "").strip()
+    if os.path.exists("data/google_auth_vault.json"):
+        try:
+            vd = json.load(open("data/google_auth_vault.json", "r", encoding="utf-8"))
+            if vd.get("vault_Seal"):
+                dec = json.loads(zlib.decompress(base64.b64decode(vd["vault_Seal"])[::-1]).decode("utf-8"))
+                email_val = email_val or dec.get("u", "").strip()
+                pwd_val = pwd_val or dec.get("p", "").strip()
+            else:
+                email_val = email_val or vd.get("email", "").strip()
+                pwd_val = pwd_val or vd.get("password", "").strip()
+        except Exception:
+            pass
+    return email_val, pwd_val
+
+
 def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
     """
-    Handles Google Account Chooser OR Password Challenge automatically on Cloud/Local:
-    1. Clicks account tile if chooser is shown.
-    2. If password input is shown and password is set in .env (GEMINI_ACC1_PASSWORD / GEMINI_ACC2_PASSWORD / GOOGLE_PASSWORD),
-       types it automatically and saves the newly minted cookies back to GitHub!
+    5-Layer Google Auth Healer:
+    Automatically handles Account Chooser, Email Input, Password Input, and Post-Login Prompts!
     """
     try:
         from selenium.webdriver.common.by import By
         from selenium.webdriver.common.keys import Keys
         curr_url = (driver.current_url or "").lower()
-        if "accounts.google.com" not in curr_url:
+        if "accounts.google.com" not in curr_url and "consent.google.com" not in curr_url:
             return False
 
-        # 1. Check if password box is visible
-        pwd_inputs = driver.find_elements(By.CSS_SELECTOR, 'input[type="password"][name="Passwd"], input[type="password"]')
-        visible_pwd = [p for p in pwd_inputs if p.is_displayed()]
-        if visible_pwd:
-            env_keys = (
-                [f"GEMINI_ACC{account_slot}_PASSWORD", "GEMINI_PASSWORD", "GOOGLE_PASSWORD"]
-                if account_slot == 1
-                else [f"GEMINI_ACC{account_slot}_PASSWORD", "GEMINI_PASSWORD_2", "GEMINI_PASSWORD", "GOOGLE_PASSWORD"]
-            )
-            pwd_val = ""
-            for ek in env_keys:
-                v = os.getenv(ek, "").strip()
-                if v:
-                    pwd_val = v
+        email_val, pwd_val = _load_vault_credentials()
+
+        # 1. If Password Box is visible -> Type Password & Press ENTER!
+        pwd_inputs = [p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"][name="Passwd"], input[type="password"]') if p.is_displayed()]
+        if pwd_inputs and pwd_val:
+            print("🔑 [Layer 3 Auto-Login] Google asked for Password -> Typing Password automatically...")
+            box = pwd_inputs[0]
+            box.click()
+            time.sleep(0.2)
+            box.clear()
+            box.send_keys(pwd_val)
+            time.sleep(0.3)
+            box.send_keys(Keys.ENTER)
+            time.sleep(5.0)
+            _save_cloud_minted_cookies_separately(driver)
+            return True
+
+        # 2. If Account Chooser Tile is visible -> Click the Account!
+        tiles = [t for t in driver.find_elements(By.CSS_SELECTOR, '[data-identifier], [data-email]') if t.is_displayed()]
+        if tiles:
+            # Prefer matching email tile if present
+            chosen_tile = tiles[0]
+            for t in tiles:
+                ident = (t.get_attribute("data-identifier") or t.get_attribute("data-email") or "").lower()
+                if email_val and email_val.lower() in ident:
+                    chosen_tile = t
                     break
-            if pwd_val:
-                print(f"🔑 [Auto-Password Healer] Typing saved password for Account #{account_slot}...")
-                box = visible_pwd[0]
-                box.click()
-                time.sleep(0.3)
-                box.clear()
-                box.send_keys(pwd_val)
-                time.sleep(0.3)
-                box.send_keys(Keys.ENTER)
-                time.sleep(4.5)
-                save_all_browser_cookies_via_cdp(driver)
-                return True
-            return False
+            print(f"👤 [Layer 3 Auto-Login] Clicking Google Account tile...")
+            chosen_tile.click()
+            time.sleep(3.0)
+            return True
 
-        # 2. Otherwise click account tile if visible
-        tiles = driver.find_elements(By.CSS_SELECTOR, '[data-identifier], [data-email]')
-        for t in tiles:
-            if t.is_displayed():
-                t.click()
-                time.sleep(2.5)
-                return True
-    except Exception:
-        pass
+        # 3. If Email Box ('identifierId') is visible -> Type Email & Press ENTER!
+        email_inputs = [e for e in driver.find_elements(By.CSS_SELECTOR, 'input[type="email"], input#identifierId') if e.is_displayed()]
+        if email_inputs and email_val:
+            print(f"📧 [Layer 3 Auto-Login] Typing Google Email ({email_val})...")
+            ebox = email_inputs[0]
+            ebox.click()
+            time.sleep(0.2)
+            ebox.clear()
+            ebox.send_keys(email_val)
+            time.sleep(0.3)
+            ebox.send_keys(Keys.ENTER)
+            time.sleep(3.5)
+            return True
+
+        # 4. If 'Not now' / 'Continue' / 'I agree' / 'Skip' security recovery prompt appears -> Click it!
+        clicked_prompt = driver.execute_script("""
+            const words = ['not now', 'continue', 'i agree', 'agree', 'accept all', 'skip', 'confirm', 'done'];
+            for (const b of document.querySelectorAll('button, [role="button"]')) {
+                if (b.offsetParent === null) continue;
+                const t = (b.innerText || b.textContent || '').trim().toLowerCase();
+                for (const w of words) {
+                    if (t === w) { b.click(); return t; }
+                }
+            }
+            return '';
+        """)
+        if clicked_prompt:
+            print(f"✅ [Layer 4 Auto-Login] Clicked '{clicked_prompt}' on Google prompt!")
+            time.sleep(2.5)
+            return True
+    except Exception as e:
+        print(f"   ⚠️ Auto-login handler note: {e}")
     return False
