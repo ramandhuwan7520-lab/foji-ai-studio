@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Step 1: Launching Cloud 3D Studio",
-  "sub_detail": "Triggering GitHub Actions 3D Worker...",
+  "step_num": 6,
+  "step_title": "Stage 6: Rendering 3D Video (1.0 min)",
+  "sub_detail": "Gemini Veo rendering Video_042_BorderDuty_Part_03_1113_104845.mp4... (61s elapsed)",
   "status": "active",
-  "progress": 18,
-  "updated_at": "10:48:02 AM",
-  "epoch": 1794547082.3876758
+  "progress": 77,
+  "updated_at": "10:51:23 AM",
+  "epoch": 1794547283.8817172
 }
