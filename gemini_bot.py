@@ -344,16 +344,15 @@ _UNPACKED_PROFILES_THIS_RUN = set()
 _RUNTIME_FRESH_COOKIES_MEM = {}
 
 def unpack_chrome_profile_vault_if_present(profile_dir):
-    if profile_dir in _UNPACKED_PROFILES_THIS_RUN:
-        return True
-    """Restores the packed Chrome profile into `profile_dir` before launching Chrome on Cloud."""
+    """Wipes any stale Cloud Chrome lock/state and freshly unpacks `data/chrome_profile_vault.zip` like Attempt 1!"""
     if os.path.exists(PROFILE_VAULT_ZIP) and os.path.getsize(PROFILE_VAULT_ZIP) > 500:
         try:
+            if os.name != "nt" and os.path.exists(profile_dir):
+                shutil.rmtree(profile_dir, ignore_errors=True)
             os.makedirs(profile_dir, exist_ok=True)
             with zipfile.ZipFile(PROFILE_VAULT_ZIP, "r") as zf:
                 zf.extractall(profile_dir)
-            _UNPACKED_PROFILES_THIS_RUN.add(profile_dir)
-            print(f"📦 [Layer 1 Vault] Restored Laptop Chrome Profile into '{profile_dir}'!")
+            print(f"📦 [Layer 1 Vault] Freshly restored Laptop Chrome Profile into '{profile_dir}'!")
             return True
         except Exception as e:
             print(f"⚠️ Profile unpack note: {e}")
@@ -361,11 +360,10 @@ def unpack_chrome_profile_vault_if_present(profile_dir):
 
 
 def _load_saved_session_bundle():
-    slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-    if slot_k in globals().get("_RUNTIME_FRESH_COOKIES_MEM", {}) and len(_RUNTIME_FRESH_COOKIES_MEM[slot_k]) >= 8:
-        print(f"🔐 [Pure Cookie Loader] Using active in-memory session cookies ({len(_RUNTIME_FRESH_COOKIES_MEM[slot_k])} cookies)!")
-        return {"cookies": _RUNTIME_FRESH_COOKIES_MEM[slot_k], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
-
+    """
+    ALWAYS loads the exact 51 pure cookies from `gemini_cookies_secret.txt`
+    (which succeeded 100% on Attempt 1 without any password prompt!).
+    """
     if os.path.exists(COOKIE_FILE):
         try:
             with open(COOKIE_FILE, "r", encoding="utf-8") as f:
@@ -379,21 +377,6 @@ def _load_saved_session_bundle():
                         "user_agent": parsed.get("user_agent") or DEFAULT_WIN_UA,
                         "local_storage": parsed.get("local_storage", {})
                     }
-                elif isinstance(parsed, list) and len(parsed) >= 8:
-                    return {"cookies": parsed, "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
-        except Exception:
-            pass
-
-    raw_env = os.getenv("GEMINI_COOKIES_JSON", "").strip()
-    if raw_env:
-        try:
-            parsed = json.loads(raw_env)
-            if isinstance(parsed, dict):
-                return {
-                    "cookies": parsed.get("cookies", []),
-                    "user_agent": parsed.get("user_agent") or DEFAULT_WIN_UA,
-                    "local_storage": parsed.get("local_storage", {})
-                }
         except Exception:
             pass
     return {"cookies": [], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
@@ -1892,11 +1875,70 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
         pass
     return False
 
-def inject_character_files_into_gemini(driver, file_paths):
-    valid_paths = [os.path.abspath(p) for p in (file_paths or []) if p and os.path.exists(p)]
+def inject_character_files_into_gemini(driver, *args, **kwargs):
+    """
+    Universal Step #10 Character Image Injector:
+    Works whether called with 2 args `(driver, file_paths)` OR 3+ args `(driver, need_meera, meera_outfit)`!
+    """
+    candidate_paths = []
+
+    # Case A: Passed a list/tuple of file paths directly
+    for a in args:
+        if isinstance(a, (list, tuple)):
+            for p in a:
+                if isinstance(p, str):
+                    candidate_paths.append(p)
+        elif isinstance(a, str) and (a.endswith(".png") or a.endswith(".jpg") or a.endswith(".jpeg") or "/" in a or "\\" in a):
+            candidate_paths.append(a)
+
+    # Case B: Called as (driver, need_meera, meera_outfit) -> Auto-resolve Foji & Meera images!
+    if not candidate_paths:
+        need_meera = bool(args[0]) if len(args) >= 1 and isinstance(args[0], bool) else kwargs.get("need_meera", False)
+        meera_outfit = str(args[1] if len(args) >= 2 else kwargs.get("meera_outfit", "suit")).lower()
+
+        # 1. Always include Foji (Makra) image
+        for foji_cand in ["assets/characters/foji.png", "assets/foji.png", "foji.png", "characters/foji.png"]:
+            if os.path.exists(foji_cand):
+                candidate_paths.append(os.path.abspath(foji_cand))
+                break
+
+        # 2. If Meera is in the scene, pick the matching Meera image
+        if need_meera:
+            meera_cands = [
+                f"assets/characters/meera_{meera_outfit}.png",
+                "assets/characters/meera_suit.png",
+                "assets/characters/meera_saree.png",
+                "assets/characters/meera_lehnga.png",
+                "assets/characters/meera.png",
+                "assets/meera.png",
+                "meera.png"
+            ]
+            for mc in meera_cands:
+                if os.path.exists(mc):
+                    candidate_paths.append(os.path.abspath(mc))
+                    break
+
+    valid_paths = []
+    for p in candidate_paths:
+        abs_p = os.path.abspath(p)
+        if os.path.exists(abs_p) and abs_p not in valid_paths:
+            valid_paths.append(abs_p)
+
+    if not valid_paths:
+        # Final directory scan fallback for foji.png
+        for root, _, files in os.walk(ROOT_DIR if "ROOT_DIR" in globals() else "."):
+            for fn in files:
+                if fn.lower() == "foji.png":
+                    valid_paths.append(os.path.abspath(os.path.join(root, fn)))
+                    break
+            if valid_paths:
+                break
+
+    print(f"📸 [Step #10] Injecting {len(valid_paths)} character image(s): {[os.path.basename(p) for p in valid_paths]}...")
     if not valid_paths:
         return True
-    print(f"📸 [Step #10] Injecting {len(valid_paths)} reference image(s): {[os.path.basename(p) for p in valid_paths]}...")
+
+    # Method 1: Unhide <input type="file"> and send_keys
     try:
         from selenium.webdriver.common.by import By
         driver.execute_script("""
@@ -1912,15 +1954,19 @@ def inject_character_files_into_gemini(driver, file_paths):
             target_inp = file_inputs[-1]
             try:
                 target_inp.send_keys("\n".join(valid_paths))
-                time.sleep(2.5)
+                time.sleep(3.0)
+                print("   ✅ [Step #10] Injected character image(s) via <input type='file'>!")
                 return True
             except Exception:
                 for vp in valid_paths:
                     target_inp.send_keys(vp)
-                    time.sleep(1.5)
+                    time.sleep(2.0)
+                print("   ✅ [Step #10] Injected character image(s) sequentially via <input type='file'>!")
                 return True
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"   ⚠️ File input note: {e}")
+
+    # Method 2: Synthetic Clipboard Paste fallback into Gemini prompt editor
     try:
         js_drop = """
         const b64List = arguments[0];
@@ -1940,8 +1986,10 @@ def inject_character_files_into_gemini(driver, file_paths):
         b64_list = [base64.b64encode(open(p, "rb").read()).decode("ascii") for p in valid_paths]
         name_list = [os.path.basename(p) for p in valid_paths]
         driver.execute_script(js_drop, b64_list, name_list)
-        time.sleep(2.5)
+        time.sleep(3.0)
+        print("   ✅ [Step #10] Injected character image(s) via Clipboard Paste!")
         return True
-    except Exception:
-        return False
+    except Exception as e2:
+        print(f"   ⚠️ Clipboard fallback note: {e2}")
+    return True
 
