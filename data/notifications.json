@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794534076026",
+    "type": "error",
+    "title": "Gemini Cookie Expired",
+    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
+    "status": "error",
+    "time_str": "07:11 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794534076.0265007
+  },
+  {
     "id": "notif_1794534055657",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "06:01 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794443507.9896731
-  },
-  {
-    "id": "notif_1794443505084",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "06:01 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794443505.0847135
   }
 ]
