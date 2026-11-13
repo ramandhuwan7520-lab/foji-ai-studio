@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794552428786",
+    "type": "info",
+    "title": "🔄 Switched to Account #1",
+    "message": "Account #2 issue (Google Account #2 asked for password on Cloud. Refresh cookies or set ) -> Switching to Account #1!",
+    "status": "info",
+    "time_str": "12:17 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794552428.7863295
+  },
+  {
     "id": "notif_1794552426419",
     "type": "error",
     "title": "Gemini Cookie Expired",
