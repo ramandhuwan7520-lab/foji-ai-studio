@@ -1,8 +1,8 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
+  "stage_num": 0,
+  "stage_title": "Studio Ready",
+  "detail": "Ready for instant 3D generation",
   "status": "idle",
   "progress": 0,
-  "epoch": 1794577233.8089414
+  "updated_epoch": 1794559740.2099924
 }

@@ -578,17 +578,37 @@ def dismiss_any_agree_or_consent_popup(driver):
 
 def save_all_browser_cookies_via_cdp(driver, force_save=False):
     """
-    Saves ALL Google cookies + Laptop User-Agent + LocalStorage into `gemini_cookies_secret.txt`.
-    STRICT PROTECTION: Never overwrites cookies when running headless on Cloud Linux!
-    Only saves when `force_save=True` (during `--save-cookies` on your Laptop).
+    Saves or updates verified Google cookies into `gemini_cookies_secret.txt`:
+    - SAFETY GUARD #1: Before saving on Cloud, strictly verifies `is_gemini_truly_signed_in(driver)` is True!
+      (Never saves if on accounts.google.com or logged out!)
+    - SAFETY GUARD #2: Merges fresh rotating tokens (`__Secure-1PSIDTS`, `__Secure-3PSIDTS`, `SIDCC`, `__Secure-1PSIDCC`)
+      into the existing Laptop cookie bundle while preserving your Laptop's User-Agent & LocalStorage!
+      This keeps your session alive 24/7 across 06:30, 12:30, and 18:30 runs without ever expiring!
     """
-    if os.name != "nt" or not force_save:
-        return 0
     try:
+        if not force_save and not is_gemini_truly_signed_in(driver):
+            return 0
+
         driver.execute_cdp_cmd("Network.enable", {})
         res = driver.execute_cdp_cmd("Network.getAllCookies", {})
         all_cookies = res.get("cookies", [])
-        essential = []
+
+        # Load existing bundle to preserve Laptop User-Agent, LocalStorage, and base cookies
+        existing_bundle = {"user_agent": DEFAULT_WIN_UA, "cookies": [], "local_storage": {}}
+        if os.path.exists(COOKIE_FILE):
+            try:
+                existing_bundle = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
+                if not isinstance(existing_bundle, dict):
+                    existing_bundle = {"user_agent": DEFAULT_WIN_UA, "cookies": [], "local_storage": {}}
+            except Exception:
+                pass
+
+        cookie_map = {}
+        for old_c in existing_bundle.get("cookies", []):
+            key = (old_c.get("name", ""), old_c.get("domain", ""))
+            cookie_map[key] = old_c
+
+        fresh_count = 0
         for c in all_cookies:
             dom = c.get("domain", "")
             if any(k in dom for k in ["google", "youtube", "gstatic", "googleusercontent"]):
@@ -603,36 +623,47 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                 }
                 if c.get("sameSite") in ("Strict", "Lax", "None"):
                     clean_c["sameSite"] = c["sameSite"]
-                # Extend cookie expiration by 180 days so it never expires prematurely
                 clean_c["expires"] = float(int(time.time()) + 86400 * 180)
                 if c.get("priority") in ("Low", "Medium", "High"):
                     clean_c["priority"] = c["priority"]
                 if c.get("sameParty") is not None:
                     clean_c["sameParty"] = bool(c["sameParty"])
-                essential.append(clean_c)
+                cookie_map[(clean_c["name"], dom)] = clean_c
+                fresh_count += 1
 
-        ua = DEFAULT_WIN_UA
-        local_store = {}
-        try:
-            ua = driver.execute_script("return navigator.userAgent;") or DEFAULT_WIN_UA
-            local_store = driver.execute_script(
-                "let o={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); o[k]=localStorage.getItem(k);} return o;"
-            ) or {}
-        except Exception:
-            pass
+        merged_cookies = list(cookie_map.values())
+        names = {x["name"] for x in merged_cookies}
+        if ("SID" in names or "__Secure-1PSID" in names) and len(merged_cookies) >= 15:
+            ua = existing_bundle.get("user_agent") or DEFAULT_WIN_UA
+            local_store = existing_bundle.get("local_storage") or {}
+            if os.name == "nt":
+                try:
+                    ua = driver.execute_script("return navigator.userAgent;") or ua
+                    local_store = driver.execute_script(
+                        "let o={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); o[k]=localStorage.getItem(k);} return o;"
+                    ) or local_store
+                except Exception:
+                    pass
 
-        names = {x["name"] for x in essential}
-        if ("SID" in names or "__Secure-1PSID" in names) and len(essential) >= 8:
             bundle = {
                 "user_agent": ua,
-                "cookies": essential,
+                "cookies": merged_cookies,
                 "local_storage": local_store,
                 "saved_at": time.time()
             }
             with open(COOKIE_FILE, "w", encoding="utf-8") as f:
-                f.write(json.dumps(bundle, indent=2))
-            print(f"💾 Locked {len(essential)} Pure Laptop Cookies into {COOKIE_FILE} (Read-Only on Cloud)!")
-            return len(essential)
+                json.dump(bundle, f, indent=2)
+
+            slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+            if "_RUNTIME_FRESH_COOKIES_MEM" in globals():
+                _RUNTIME_FRESH_COOKIES_MEM[slot_k] = merged_cookies
+
+            if os.name != "nt":
+                sync_file_to_github(COOKIE_FILE, "Auto-refresh verified rotating __Secure-1PSIDTS cookie token")
+                print(f"🔄 [Rolling Token Guard] Synced {len(merged_cookies)} verified rotating cookies to GitHub so session NEVER expires!")
+            else:
+                print(f"💾 Locked {len(merged_cookies)} Pure Cookies into {COOKIE_FILE}!")
+            return len(merged_cookies)
     except Exception as e:
         print(f"⚠️ Cookie save note: {e}")
     return 0
@@ -747,6 +778,7 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
 
         if is_gemini_truly_signed_in(driver):
             print("✅ Google Gemini Signed-In Workspace is 100% Open & Verified via Cookies!")
+            save_all_browser_cookies_via_cdp(driver)
             try:
                 slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
                 _RUNTIME_FRESH_COOKIES_MEM[slot_k] = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
@@ -1906,3 +1938,86 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
     except Exception:
         pass
     return False
+
+def inject_character_files_into_gemini(driver, file_paths):
+    """
+    Step #10: Injects character reference images (`foji.png`, `meera_*.png`) into Gemini's
+    `<input type="file">` element (or via CDP DOM.setFileInputFiles / Clipboard DataTransfer fallback)
+    without ever opening an OS file dialog window!
+    """
+    valid_paths = [os.path.abspath(p) for p in (file_paths or []) if p and os.path.exists(p)]
+    if not valid_paths:
+        print("⚠️ No character reference images found to inject.")
+        return True
+
+    print(f"📸 [Step #10] Injecting {len(valid_paths)} reference image(s): {[os.path.basename(p) for p in valid_paths]}...")
+
+    # Method 1: Unhide or locate <input type="file"> and send all file paths
+    try:
+        from selenium.webdriver.common.by import By
+        driver.execute_script("""
+            const inputs = document.querySelectorAll('input[type="file"]');
+            inputs.forEach(inp => {
+                inp.style.display = 'block';
+                inp.style.visibility = 'visible';
+                inp.style.opacity = '1';
+                inp.style.width = '1px';
+                inp.style.height = '1px';
+                inp.removeAttribute('hidden');
+            });
+        """)
+        file_inputs = driver.find_elements(By.CSS_SELECTOR, 'input[type="file"]')
+        if file_inputs:
+            target_inp = file_inputs[-1]
+            joined_paths = "\n".join(valid_paths)
+            try:
+                target_inp.send_keys(joined_paths)
+                time.sleep(2.5)
+                print("   ✅ [Step #10] Injected character image(s) via <input type='file'>!")
+                return True
+            except Exception:
+                for vp in valid_paths:
+                    target_inp.send_keys(vp)
+                    time.sleep(1.5)
+                print("   ✅ [Step #10] Injected character image(s) sequentially via <input type='file'>!")
+                return True
+    except Exception as e:
+        print(f"   ⚠️ Standard file input note: {e}")
+
+    # Method 2: Synthetic Drag-and-Drop / Clipboard Paste into Gemini prompt editor
+    try:
+        js_drop = """
+        const b64List = arguments[0];
+        const nameList = arguments[1];
+        const target = document.querySelector('div[contenteditable="true"], rich-textarea, .ql-editor') || document.body;
+        const dt = new DataTransfer();
+        for (let i = 0; i < b64List.length; i++) {
+            const byteChars = atob(b64List[i]);
+            const byteArr = new Uint8Array(byteChars.length);
+            for (let j = 0; j < byteChars.length; j++) byteArr[j] = byteChars.charCodeAt(j);
+            const file = new File([byteArr], nameList[i], { type: 'image/png' });
+            dt.items.add(file);
+        }
+        const pasteEvt = new ClipboardEvent('paste', { bubbles: true, cancelable: true, clipboardData: dt });
+        target.focus();
+        target.dispatchEvent(pasteEvt);
+        return true;
+        """
+        b64_list = [base64.b64encode(open(p, "rb").read()).decode("ascii") for p in valid_paths]
+        name_list = [os.path.basename(p) for p in valid_paths]
+        driver.execute_script(js_drop, b64_list, name_list)
+        time.sleep(2.5)
+        print("   ✅ [Step #10] Injected character image(s) via Synthetic Clipboard Paste!")
+        return True
+    except Exception as e2:
+        print(f"   ⚠️ Clipboard paste fallback note: {e2}")
+    return False
+
+
+if __name__ == "__main__":
+    if "--save-cookies" in sys.argv:
+        export_fresh_gemini_cookies_from_local()
+    elif "--record-blueprint" in sys.argv:
+        record_10_step_blueprint_interactively()
+    else:
+        generate_video_in_gemini()
