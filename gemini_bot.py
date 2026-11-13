@@ -609,9 +609,23 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
             except Exception:
                 pass
 
+    # Stage 1: Warm up Google Auth cookies on accounts.google.com first if we injected cookies
+    if cookies and not skip_cookie_inject:
+        try:
+            driver.get("https://accounts.google.com/ServiceLogin?hl=en")
+            time.sleep(1.5)
+            # Click account tile immediately if chooser appears on accounts.google.com
+            driver.execute_script("""
+                const acc = document.querySelector('[data-identifier], [data-email]');
+                if (acc && acc.offsetParent !== null) acc.click();
+            """)
+            time.sleep(1.0)
+        except Exception:
+            pass
+
     print("🌐 Opening Google Gemini (`https://gemini.google.com/app`)...")
     driver.get(GEMINI_URL)
-    time.sleep(1.8)
+    time.sleep(2.2)
 
     # Restore localStorage keys if available
     if saved_ls and not skip_cookie_inject:
@@ -1580,7 +1594,7 @@ def export_fresh_gemini_cookies_from_local():
     print("=" * 75 + "\n")
     driver, proc = launch_resilient_chrome_session(os.path.abspath("output/raw_videos"), start_blank=True)
     try:
-        if inject_cookies_and_open_gemini(driver, skip_cookie_inject=True):
+        if inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
             count = save_all_browser_cookies_via_cdp(driver)
             print(f"\n🎉 SUCCESS! Exported {count} Pure Cookies for Account #{slot} -> {target_f} & Synced to Cloud!")
     finally:
@@ -1959,18 +1973,55 @@ if __name__ == "__main__":
 
 
 def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
-    """Pure Cookie Mode: Never types password (avoids human verification). Clicks account chooser tile or RotateCookies if needed."""
+    """
+    Handles Google Account Chooser OR Password Challenge automatically on Cloud/Local:
+    1. Clicks account tile if chooser is shown.
+    2. If password input is shown and password is set in .env (GEMINI_ACC1_PASSWORD / GEMINI_ACC2_PASSWORD / GOOGLE_PASSWORD),
+       types it automatically and saves the newly minted cookies back to GitHub!
+    """
     try:
-        import time
         from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.keys import Keys
         curr_url = (driver.current_url or "").lower()
-        if "accounts.google.com" in curr_url:
-            tiles = driver.find_elements(By.CSS_SELECTOR, '[data-identifier], [data-email]')
-            for t in tiles:
-                if t.is_displayed():
-                    t.click()
-                    time.sleep(3)
-                    return True
+        if "accounts.google.com" not in curr_url:
+            return False
+
+        # 1. Check if password box is visible
+        pwd_inputs = driver.find_elements(By.CSS_SELECTOR, 'input[type="password"][name="Passwd"], input[type="password"]')
+        visible_pwd = [p for p in pwd_inputs if p.is_displayed()]
+        if visible_pwd:
+            env_keys = (
+                [f"GEMINI_ACC{account_slot}_PASSWORD", "GEMINI_PASSWORD", "GOOGLE_PASSWORD"]
+                if account_slot == 1
+                else [f"GEMINI_ACC{account_slot}_PASSWORD", "GEMINI_PASSWORD_2", "GEMINI_PASSWORD", "GOOGLE_PASSWORD"]
+            )
+            pwd_val = ""
+            for ek in env_keys:
+                v = os.getenv(ek, "").strip()
+                if v:
+                    pwd_val = v
+                    break
+            if pwd_val:
+                print(f"🔑 [Auto-Password Healer] Typing saved password for Account #{account_slot}...")
+                box = visible_pwd[0]
+                box.click()
+                time.sleep(0.3)
+                box.clear()
+                box.send_keys(pwd_val)
+                time.sleep(0.3)
+                box.send_keys(Keys.ENTER)
+                time.sleep(4.5)
+                save_all_browser_cookies_via_cdp(driver)
+                return True
+            return False
+
+        # 2. Otherwise click account tile if visible
+        tiles = driver.find_elements(By.CSS_SELECTOR, '[data-identifier], [data-email]')
+        for t in tiles:
+            if t.is_displayed():
+                t.click()
+                time.sleep(2.5)
+                return True
     except Exception:
         pass
     return False
