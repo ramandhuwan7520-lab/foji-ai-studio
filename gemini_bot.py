@@ -163,26 +163,35 @@ def update_3d_telemetry(step_num, step_title, sub_detail="", status="active", pr
         pass
 
 
-def report_step_problem_instantly(driver, step_name, problem_detail):
-    # If Account #1 is active and Account #2 is available for failover, do NOT alarm user yet — let Account #2 take over!
-    slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-    has_acc2 = os.path.exists("gemini_cookies_secret_2.txt") or bool(os.getenv("GEMINI_COOKIES_JSON_2", "").strip())
-    if slot == 1 and has_acc2 and not globals().get("_SUPPRESS_FAILOVER_NOTIF"):
-        print(f"🔄 [Account #1 Notice: {step_name}] {problem_detail} -> Will auto-switch to Account #2!")
+def report_step_problem_instantly(driver, step_title, error_details):
+    if globals().get("_SUPPRESS_FAILOVER_NOTIF", False):
+        print(f"[Failover Notice: {step_title}] {error_details}")
         return
-    os.makedirs("data", exist_ok=True)
-    snap_path = "data/gemini_step_problem.png"
-    full_msg = f"❌ [{step_name}] {problem_detail}"
-    print(full_msg)
-    try:
-        if driver:
-            driver.save_screenshot(snap_path)
-            send_telegram_photo(snap_path, f"⚠️ *{step_name}:*\n{problem_detail}")
-    except Exception:
-        send_alert(f"⚠️ *{step_name}:*\n{problem_detail}")
-    update_3d_telemetry(0, step_name, problem_detail[:180], "error", 0)
-    push_app_notification("error", step_name, problem_detail[:180], "error")
+    short_err = str(error_details or "Unknown issue").strip()[:220]
+    print(f"[PIPELINE ERROR - {step_title}] {short_err}")
+    update_3d_telemetry(1, f"Warning: {step_title}", short_err, "error", 0)
+    push_app_notification("error", f"Warning: {step_title}", short_err, "error")
 
+    shot_path = "output/debug_step_error.png"
+    has_shot = False
+    if driver is not None:
+        try:
+            os.makedirs("output", exist_ok=True)
+            driver.save_screenshot(shot_path)
+            has_shot = os.path.exists(shot_path)
+        except Exception:
+            has_shot = False
+
+    tg_caption = (
+        f"*Foji AI Studio - Pipeline Alert*\n\n"
+        f"*Step:* `{step_title}`\n"
+        f"*Reason:* `{short_err}`\n"
+        f"*Time:* `{datetime.now(IST).strftime('%d %b %Y, %I:%M:%S %p IST')}`"
+    )
+    if has_shot:
+        send_telegram_photo_alert(shot_path, tg_caption)
+    else:
+        send_telegram_text_alert(tg_caption)
 
 def find_image(prefix):
     folder = "assets/characters"
