@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538495666",
+    "type": "info",
+    "title": "🔄 Switched to Account #2",
+    "message": "Account #1 issue (Google Account #1 asked for password on Cloud. Refresh cookies or set ) -> Switching to Account #2!",
+    "status": "info",
+    "time_str": "08:24 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538495.666565
+  },
+  {
     "id": "notif_1794538493633",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "09:53 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794457396.4847422
-  },
-  {
-    "id": "notif_1794457338110",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar locked for 15 Nov 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "09:52 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794457338.110283
   }
 ]
