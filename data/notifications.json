@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794538048829",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Toofan Aur Tirange Ki Kasam | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "08:17 AM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794538048.829037
+  },
+  {
     "id": "notif_1794538044212",
     "type": "error",
     "title": "Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "08:23 AM",
     "date_str": "12 Nov 2026",
     "timestamp": 1794452030.7449727
-  },
-  {
-    "id": "notif_1794450370237_423",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "07:56 AM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794450370.2371304
   }
 ]
