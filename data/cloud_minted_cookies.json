@@ -17,7 +17,7 @@
     },
     {
       "domain": ".gemini.google.com",
-      "expires": 1829117924.13229,
+      "expires": 1829122006.548582,
       "httpOnly": false,
       "name": "_ga",
       "path": "/",
@@ -432,21 +432,6 @@
     {
       "domain": ".google.com",
       "expires": 1810106970,
-      "httpOnly": true,
-      "name": "NID",
-      "path": "/",
-      "priority": "Medium",
-      "sameSite": "None",
-      "secure": true,
-      "session": false,
-      "size": 429,
-      "sourcePort": 443,
-      "sourceScheme": "Secure",
-      "value": "CrwCCAES7gEBM9Aglwt_ChoSuEfPxwhQXi7qrYop2TOVT25ADJfE2EONuSsWIHg-2fwqmaftgcBB-nsw8FDtaUHHyImLedwQoqZCceSS5dyIDWMYheVGXWm3CPJ03OmGTkqLf2YW3L3tVelwl1iy4oZksBEa5Yjs75JvwclWZ3siDVHBvdbeZmc0xBepzjT01Mpqktp409K2XqEhhgmdRN6W7B2OVyVlAmddtWLYc0cbaR3rDKu5rMnotJ8RHDYzb1e8N0TVPNuo1ca8JP8i_oE8PyMxjZoKOCayzozG-n161p98v3yL2sLtfIMwxCoO4u27_vKdKAEyRQFwSkLPpt-63dQCTjjl1ZyM4UO60c1FRFy6PX_x5a9E0yg-xrTZlBO3WT6euW8cvHURDVzejHBpS4BNaaEEAogX5xvXDg"
-    },
-    {
-      "domain": ".google.com",
-      "expires": 1810106970,
       "httpOnly": false,
       "name": "SID",
       "path": "/",
@@ -659,8 +644,23 @@
       "value": "APD_SKEefFEzeSPyle-Pnrp46Qy0utUtHW6qDFxGhr3WTWsBsIxYOUlQFW7rx4VGnxPMzne8"
     },
     {
+      "domain": ".google.com",
+      "expires": 1810357139.136839,
+      "httpOnly": true,
+      "name": "NID",
+      "path": "/",
+      "priority": "Medium",
+      "sameSite": "None",
+      "secure": true,
+      "session": false,
+      "size": 430,
+      "sourcePort": 443,
+      "sourceScheme": "Secure",
+      "value": "Cr0CCAES7wEBM9Aglxgr4JheAI80DmLbFNYJ9pzVDEOCqvE6zrvCBqxedGDCA8cGQi3st-Uvnd0QPQak7ULMYuGtViNsFJEgFIu-ydUzP__Xx1lIrts5FF0sMRVmzP3W8-75Cqdjzy8L4i7LNPgUq5hWO8hvUGRq06wGETM5E8icmnZM1fXKIK6gInhXahyyhavyjGpVpjYvZ1oIchhEWpk9vS6viT5e2SCmG4xvplJ4kZaCkAR9YwHjiRFFvW9v6KI019DdqyIFMseIk3GZt74hBLiPfM3rZ6LtGvvMXRVQIgR98z03K3fyldMDRJzGO-2CkVyz7CgBMkUBcEpCzxUQ_Y2OkRMFk8j6IrfTlxyNHHKXBMI2j_ssJLitis0VFiIZ6fQLevB6yCXoqwz1GKHCavLdjpLkdel_Z_vjdw8"
+    },
+    {
       "domain": ".gemini.google.com",
-      "expires": 1829117924.131778,
+      "expires": 1829122006.547709,
       "httpOnly": false,
       "name": "_ga_BF8Q35BMLM",
       "path": "/",
@@ -670,11 +670,11 @@
       "size": 59,
       "sourcePort": 443,
       "sourceScheme": "Secure",
-      "value": "GS2.1.s1794557924$o4$g0$t1794557924$j60$l0$h0"
+      "value": "GS2.1.s1794562006$o5$g0$t1794562006$j60$l0$h0"
     },
     {
       "domain": ".gemini.google.com",
-      "expires": 1829117926.651394,
+      "expires": 1829122008.200621,
       "httpOnly": false,
       "name": "_ga_WC57KJ50ZZ",
       "path": "/",
@@ -684,8 +684,8 @@
       "size": 59,
       "sourcePort": 443,
       "sourceScheme": "Secure",
-      "value": "GS2.1.s1794557923$o5$g1$t1794557926$j57$l0$h0"
+      "value": "GS2.1.s1794562005$o6$g1$t1794562008$j57$l0$h0"
     }
   ],
-  "saved_at": 1794557938.443511
+  "saved_at": 1794562020.115764
 }
