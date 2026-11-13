@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794551502086",
+    "type": "error",
+    "title": "Video Limit Reached",
+    "message": "⚠️ Gemini Video Limit Reached: Video Generation Traffic Limit",
+    "status": "error",
+    "time_str": "12:01 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794551502.086137
+  },
+  {
     "id": "notif_1794551464290",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
