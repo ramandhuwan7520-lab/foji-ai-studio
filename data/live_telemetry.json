@@ -1,9 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "Video Limit Reached",
-  "sub_detail": "\u26a0\ufe0f Gemini Video Limit Reached: Video Generation Traffic Limit",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "12:01:39 PM",
-  "epoch": 1794551499.7895987
+  "step_num": 2,
+  "step_title": "\ud83d\udd04 Switching to Account #2",
+  "sub_detail": "Account #1 issue (\u26a0\ufe0f Gemini Video Limit Reached: Video Generation Traffic Limit) -> Switching to Account #2!",
+  "status": "active",
+  "progress": 22,
+  "updated_at": "12:01:46 PM",
+  "epoch": 1794551506.4418721
 }
