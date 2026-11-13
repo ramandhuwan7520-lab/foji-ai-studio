@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Stage 2: Cookie Sign-In (Account #2)",
-  "sub_detail": "Logging into Gemini & preparing Makra Only (Solo Army Scene)...",
-  "status": "active",
-  "progress": 25,
-  "updated_at": "12:02:29 PM",
-  "epoch": 1794551549.682335
+  "step_num": 0,
+  "step_title": "Gemini Login Error",
+  "sub_detail": "Gemini could not sign in using cookies on Cloud. Run `python gemini_bot.py --save-cookies` on laptop.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "12:04:12 PM",
+  "epoch": 1794551652.3627248
 }
