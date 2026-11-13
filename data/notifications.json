@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794562240023",
+    "type": "error",
+    "title": "Warning: Gemini Login Error",
+    "message": "Gemini could not sign in using cookies on Cloud. Run `python gemini_bot.py --save-cookies` on laptop.",
+    "status": "error",
+    "time_str": "03:00 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794562240.0231173
+  },
+  {
     "id": "notif_1794562129980",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
