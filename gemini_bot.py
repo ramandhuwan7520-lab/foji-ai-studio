@@ -242,31 +242,17 @@ def ensure_clean_matching_chromedriver_in_python():
 
 
 def _load_saved_session_bundle():
-    """Loads saved cookies + exact Windows User-Agent + LocalStorage for Account #1 or Account #2."""
-    slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-    target_file = "gemini_cookies_secret_2.txt" if slot == 2 else COOKIE_FILE
-    target_env = "GEMINI_COOKIES_JSON_2" if slot == 2 else "GEMINI_COOKIES_JSON"
-
-    print(f"🔐 [Cookie Loader] Active Account Slot #{slot} -> Reading from '{target_file}'...")
-    # Always try pulling latest auto-renewed cookie file from GitHub if on Cloud
-    if os.name != "nt":
-        try:
-            import foji_universe_director as _fud
-            rem_c = _fud._fetch_github_json_zero_cache(target_file)
-            if rem_c:
-                with open(target_file, "w", encoding="utf-8") as wf:
-                    json.dump(rem_c, wf, indent=2)
-        except Exception:
-            pass
+    """Strictly loads Account #1 cookies (`gemini_cookies_secret.txt`) without any Cloud overwrite or Account #2 switching."""
+    print(f"🔐 [Cookie Loader] Loading Account #1 from '{COOKIE_FILE}'...")
     raw = ""
-    if os.path.exists(target_file):
+    if os.path.exists(COOKIE_FILE):
         try:
-            with open(target_file, "r", encoding="utf-8") as f:
+            with open(COOKIE_FILE, "r", encoding="utf-8") as f:
                 raw = f.read().strip()
         except Exception:
             pass
     if not raw:
-        raw = os.getenv(target_env, "").strip()
+        raw = os.getenv("GEMINI_COOKIES_JSON", "").strip()
     if not raw:
         return {"cookies": [], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
     try:
@@ -461,11 +447,14 @@ def dismiss_any_agree_or_consent_popup(driver):
     return False
 
 
-def save_all_browser_cookies_via_cdp(driver):
+def save_all_browser_cookies_via_cdp(driver, force_save=False):
     """
-    Saves ALL Google cookies (with exact domain, hostOnly, sameSite, priority) +
-    your Laptop's exact User-Agent + Gemini LocalStorage into `gemini_cookies_secret.txt`.
+    Saves ALL Google cookies + Laptop User-Agent + LocalStorage into `gemini_cookies_secret.txt`.
+    STRICT PROTECTION: Never overwrites cookies when running headless on Cloud Linux!
+    Only saves when `force_save=True` (during `--save-cookies` on your Laptop).
     """
+    if os.name != "nt" or not force_save:
+        return 0
     try:
         driver.execute_cdp_cmd("Network.enable", {})
         res = driver.execute_cdp_cmd("Network.getAllCookies", {})
@@ -485,8 +474,8 @@ def save_all_browser_cookies_via_cdp(driver):
                 }
                 if c.get("sameSite") in ("Strict", "Lax", "None"):
                     clean_c["sameSite"] = c["sameSite"]
-                if c.get("expires") and float(c["expires"]) > 0:
-                    clean_c["expires"] = float(c["expires"])
+                # Extend cookie expiration by 180 days so it never expires prematurely
+                clean_c["expires"] = float(int(time.time()) + 86400 * 180)
                 if c.get("priority") in ("Low", "Medium", "High"):
                     clean_c["priority"] = c["priority"]
                 if c.get("sameParty") is not None:
@@ -505,18 +494,15 @@ def save_all_browser_cookies_via_cdp(driver):
 
         names = {x["name"] for x in essential}
         if ("SID" in names or "__Secure-1PSID" in names) and len(essential) >= 8:
-            slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-            target_cookie_file = "gemini_cookies_secret_2.txt" if slot == 2 else COOKIE_FILE
             bundle = {
                 "user_agent": ua,
                 "cookies": essential,
                 "local_storage": local_store,
                 "saved_at": time.time()
             }
-            with open(target_cookie_file, "w", encoding="utf-8") as f:
+            with open(COOKIE_FILE, "w", encoding="utf-8") as f:
                 f.write(json.dumps(bundle, indent=2))
-            sync_file_to_github(target_cookie_file, f"Auto-renew Google Gemini cookies for Account #{slot}")
-
+            print(f"💾 Locked {len(essential)} Pure Laptop Cookies into {COOKIE_FILE} (Read-Only on Cloud)!")
             return len(essential)
     except Exception as e:
         print(f"⚠️ Cookie save note: {e}")
@@ -609,19 +595,7 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
             except Exception:
                 pass
 
-    # Stage 1: Warm up Google Auth cookies on accounts.google.com first if we injected cookies
-    if cookies and not skip_cookie_inject:
-        try:
-            driver.get("https://accounts.google.com/ServiceLogin?hl=en")
-            time.sleep(1.5)
-            # Click account tile immediately if chooser appears on accounts.google.com
-            driver.execute_script("""
-                const acc = document.querySelector('[data-identifier], [data-email]');
-                if (acc && acc.offsetParent !== null) acc.click();
-            """)
-            time.sleep(1.0)
-        except Exception:
-            pass
+
 
     print("🌐 Opening Google Gemini (`https://gemini.google.com/app`)...")
     driver.get(GEMINI_URL)
@@ -1595,7 +1569,7 @@ def export_fresh_gemini_cookies_from_local():
     driver, proc = launch_resilient_chrome_session(os.path.abspath("output/raw_videos"), start_blank=True)
     try:
         if inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
-            count = save_all_browser_cookies_via_cdp(driver)
+            count = save_all_browser_cookies_via_cdp(driver, force_save=True)
             print(f"\n🎉 SUCCESS! Exported {count} Pure Cookies for Account #{slot} -> {target_f} & Synced to Cloud!")
     finally:
         try:
@@ -1608,101 +1582,13 @@ def export_fresh_gemini_cookies_from_local():
             pass
 
 
-def _are_slot1_and_slot2_identical():
-    """Checks if gemini_cookies_secret.txt and gemini_cookies_secret_2.txt belong to the exact same Google account."""
-    try:
-        if not os.path.exists("gemini_cookies_secret.txt") or not os.path.exists("gemini_cookies_secret_2.txt"):
-            return False
-        b1 = json.load(open("gemini_cookies_secret.txt", "r", encoding="utf-8"))
-        b2 = json.load(open("gemini_cookies_secret_2.txt", "r", encoding="utf-8"))
-        c1 = {c["name"]: c["value"] for c in (b1.get("cookies", []) if isinstance(b1, dict) else b1)}
-        c2 = {c["name"]: c["value"] for c in (b2.get("cookies", []) if isinstance(b2, dict) else b2)}
-        if c1.get("SID") and c1.get("SID") == c2.get("SID"):
-            return True
-        if c1.get("__Secure-1PSID") and c1.get("__Secure-1PSID") == c2.get("__Secure-1PSID"):
-            return True
-    except Exception:
-        pass
-    return False
-
-
-def _has_valid_cookies_in_file(filepath, env_name):
-    if os.path.exists(filepath) and os.path.getsize(filepath) > 300:
-        return True
-    if len(os.getenv(env_name, "").strip()) > 300:
-        return True
-    return False
-
-
-def _get_preferred_starting_slot():
-    """
-    ALWAYS starts with Account #1 (`gemini_cookies_secret.txt`) if available!
-    Only skips to Account #2 if Account #1 explicitly hit `GeminiLimitReachedError` (Daily Video Quota) earlier today.
-    """
-    has_acc1 = _has_valid_cookies_in_file("gemini_cookies_secret.txt", "GEMINI_COOKIES_JSON")
-    has_acc2 = _has_valid_cookies_in_file("gemini_cookies_secret_2.txt", "GEMINI_COOKIES_JSON_2") and not _are_slot1_and_slot2_identical()
-
-    if not has_acc1 and has_acc2:
-        return 2
-    if not has_acc2:
-        return 1
-
-    limit_state_file = "data/account_limit_state.json"
-    today_ist = datetime.now(IST).strftime("%Y-%m-%d")
-    if os.path.exists(limit_state_file):
-        try:
-            st = json.load(open(limit_state_file, "r", encoding="utf-8"))
-            # Expire the lock after 6 hours or at midnight IST so Account #1 is always checked fresh!
-            if st.get("acc1_limit_date") == today_ist and (time.time() - float(st.get("updated_epoch", 0))) < 21600:
-                print("⚡ [Smart Account Router] Account #1 hit Video Quota earlier today -> Using Account #2!")
-                return 2
-        except Exception:
-            pass
-    return 1
-
-
-def _mark_account1_limit_for_today():
-    limit_state_file = "data/account_limit_state.json"
-    today_ist = datetime.now(IST).strftime("%Y-%m-%d")
-    try:
-        os.makedirs("data", exist_ok=True)
-        with open(limit_state_file, "w", encoding="utf-8") as f:
-            json.dump({"acc1_limit_date": today_ist, "updated_epoch": time.time()}, f)
-        sync_file_to_github(limit_state_file, "Mark Account #1 daily video quota for today")
-    except Exception:
-        pass
-
-
 def generate_video_in_gemini(pending_pkg=None):
+    """Strictly uses ONLY Account #1 (`gemini_cookies_secret.txt`). Account #2 is completely disabled."""
     global _ACTIVE_COOKIE_ACCOUNT_SLOT, _SUPPRESS_FAILOVER_NOTIF
-    has_acc1 = _has_valid_cookies_in_file("gemini_cookies_secret.txt", "GEMINI_COOKIES_JSON")
-    has_acc2 = _has_valid_cookies_in_file("gemini_cookies_secret_2.txt", "GEMINI_COOKIES_JSON_2") and not _are_slot1_and_slot2_identical()
-
-    start_slot = _get_preferred_starting_slot()
-    fallback_slot = 2 if (start_slot == 1 and has_acc2) else (1 if (start_slot == 2 and has_acc1) else None)
-
-    _ACTIVE_COOKIE_ACCOUNT_SLOT = start_slot
-    _SUPPRESS_FAILOVER_NOTIF = bool(fallback_slot is not None)
-    print(f"🎯 [Account Router] Primary Slot: Account #{start_slot} | Backup Slot: {f'Account #{fallback_slot}' if fallback_slot else 'None'}")
-
-    try:
-        return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
-    except Exception as first_err:
-        _SUPPRESS_FAILOVER_NOTIF = False
-        # ONLY mark Account #1 daily limit if the error was genuinely a Video Quota/Limit error!
-        if start_slot == 1 and isinstance(first_err, GeminiLimitReachedError):
-            _mark_account1_limit_for_today()
-
-        if fallback_slot is not None:
-            msg = f"Account #{start_slot} issue ({str(first_err)[:70]}) -> Switching to Account #{fallback_slot}!"
-            print(f"🔄 [AUTO-FAILOVER] {msg}")
-            update_3d_telemetry(2, f"🔄 Switching to Account #{fallback_slot}", msg, "active", 22)
-            push_app_notification("info", f"🔄 Switched to Account #{fallback_slot}", msg, "info")
-            _ACTIVE_COOKIE_ACCOUNT_SLOT = fallback_slot
-            return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
-
-        report_step_problem_instantly(None, "Video Generation Paused", str(first_err)[:180])
-        raise first_err
+    _ACTIVE_COOKIE_ACCOUNT_SLOT = 1
+    _SUPPRESS_FAILOVER_NOTIF = False
+    print("🎯 [Account Engine] Using ONLY Account #1 (Account #2 is disabled).")
+    return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
 
 
 def _single_attempt_generate_video_in_gemini(pending_pkg=None):
