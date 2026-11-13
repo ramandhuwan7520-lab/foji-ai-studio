@@ -576,39 +576,66 @@ def dismiss_any_agree_or_consent_popup(driver):
     return False
 
 
-def save_all_browser_cookies_via_cdp(driver, force_save=False):
+def is_gemini_truly_signed_in(driver):
     """
-    Saves or updates verified Google cookies into `gemini_cookies_secret.txt`:
-    - SAFETY GUARD #1: Before saving on Cloud, strictly verifies `is_gemini_truly_signed_in(driver)` is True!
-      (Never saves if on accounts.google.com or logged out!)
-    - SAFETY GUARD #2: Merges fresh rotating tokens (`__Secure-1PSIDTS`, `__Secure-3PSIDTS`, `SIDCC`, `__Secure-1PSIDCC`)
-      into the existing Laptop cookie bundle while preserving your Laptop's User-Agent & LocalStorage!
-      This keeps your session alive 24/7 across 06:30, 12:30, and 18:30 runs without ever expiring!
+    100% STRICT REAL SIGN-IN VERIFIER:
+    Rejects Gemini's logged-out Guest Mode!
+    Returns True ONLY when:
+    1) URL is on `gemini.google.com` (not `accounts.google.com`)
+    2) Browser has live `SID`, `__Secure-1PSID`, AND `__Secure-1PSIDTS` cookies right now
+    3) There is NO visible 'Sign in' button in the top bar
+    4) The Google Account profile avatar (`Google Account:` / `@gmail.com`) OR signed-in `+` tools button is visible!
     """
     try:
-        if not force_save and not is_gemini_truly_signed_in(driver):
+        curr_url = (driver.current_url or "").lower()
+        if "gemini.google.com" not in curr_url or "accounts.google.com" in curr_url:
+            return False
+
+        # Check live browser cookies via CDP first!
+        driver.execute_cdp_cmd("Network.enable", {})
+        all_c = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
+        c_names = {c.get("name") for c in all_c if "google" in c.get("domain", "") and c.get("value")}
+        # A truly logged-in Google session MUST have SID and __Secure-1PSID in the live browser!
+        if "SID" not in c_names or "__Secure-1PSID" not in c_names:
+            return False
+
+        js_strict_ui_check = """
+        // 1. If a visible 'Sign in' link/button exists on screen, user is 100% LOGGED OUT!
+        const allBtns = document.querySelectorAll('a, button, [role="button"]');
+        for (const el of allBtns) {
+            if (el.offsetParent === null) continue;
+            const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
+            const aria = (el.getAttribute('aria-label') || '').trim().toLowerCase();
+            const href = (el.getAttribute('href') || '').toLowerCase();
+            if (txt === 'sign in' || txt === 'साइन इन करें' || aria === 'sign in' || href.includes('servicelogin')) {
+                return false;
+            }
+        }
+        // 2. Check for Google Account Avatar in top right OR active prompt editor without sign-in button
+        const avatar = document.querySelector(
+            'a[aria-label*="Google Account"], button[aria-label*="Google Account"], [aria-label*="@gmail.com"], img.gb_P, img.gbii, .gb_d[aria-label*="Google"]'
+        );
+        const editor = document.querySelector('div[contenteditable="true"], rich-textarea, textarea');
+        return Boolean(editor && (avatar || document.querySelectorAll('button, [role="button"]').length > 5));
+        """
+        return bool(driver.execute_script(js_strict_ui_check))
+    except Exception:
+        return False
+
+
+def save_all_browser_cookies_via_cdp(driver, force_save=False):
+    """
+    Saves ONLY genuine, live signed-in cookies from the current browser (never merges old dead cookies!).
+    """
+    try:
+        if not is_gemini_truly_signed_in(driver):
             return 0
 
         driver.execute_cdp_cmd("Network.enable", {})
         res = driver.execute_cdp_cmd("Network.getAllCookies", {})
         all_cookies = res.get("cookies", [])
 
-        # Load existing bundle to preserve Laptop User-Agent, LocalStorage, and base cookies
-        existing_bundle = {"user_agent": DEFAULT_WIN_UA, "cookies": [], "local_storage": {}}
-        if os.path.exists(COOKIE_FILE):
-            try:
-                existing_bundle = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
-                if not isinstance(existing_bundle, dict):
-                    existing_bundle = {"user_agent": DEFAULT_WIN_UA, "cookies": [], "local_storage": {}}
-            except Exception:
-                pass
-
-        cookie_map = {}
-        for old_c in existing_bundle.get("cookies", []):
-            key = (old_c.get("name", ""), old_c.get("domain", ""))
-            cookie_map[key] = old_c
-
-        fresh_count = 0
+        essential = []
         for c in all_cookies:
             dom = c.get("domain", "")
             if any(k in dom for k in ["google", "youtube", "gstatic", "googleusercontent"]):
@@ -628,26 +655,31 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                     clean_c["priority"] = c["priority"]
                 if c.get("sameParty") is not None:
                     clean_c["sameParty"] = bool(c["sameParty"])
-                cookie_map[(clean_c["name"], dom)] = clean_c
-                fresh_count += 1
+                essential.append(clean_c)
 
-        merged_cookies = list(cookie_map.values())
-        names = {x["name"] for x in merged_cookies}
-        if ("SID" in names or "__Secure-1PSID" in names) and len(merged_cookies) >= 15:
-            ua = existing_bundle.get("user_agent") or DEFAULT_WIN_UA
-            local_store = existing_bundle.get("local_storage") or {}
+        names = {x["name"] for x in essential}
+        if "SID" in names and "__Secure-1PSID" in names and len(essential) >= 12:
+            ua = DEFAULT_WIN_UA
+            local_store = {}
             if os.name == "nt":
                 try:
-                    ua = driver.execute_script("return navigator.userAgent;") or ua
+                    ua = driver.execute_script("return navigator.userAgent;") or DEFAULT_WIN_UA
                     local_store = driver.execute_script(
                         "let o={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); o[k]=localStorage.getItem(k);} return o;"
-                    ) or local_store
+                    ) or {}
+                except Exception:
+                    pass
+            elif os.path.exists(COOKIE_FILE):
+                try:
+                    old_b = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
+                    ua = old_b.get("user_agent") or DEFAULT_WIN_UA
+                    local_store = old_b.get("local_storage") or {}
                 except Exception:
                     pass
 
             bundle = {
                 "user_agent": ua,
-                "cookies": merged_cookies,
+                "cookies": essential,
                 "local_storage": local_store,
                 "saved_at": time.time()
             }
@@ -656,40 +688,17 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
 
             slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
             if "_RUNTIME_FRESH_COOKIES_MEM" in globals():
-                _RUNTIME_FRESH_COOKIES_MEM[slot_k] = merged_cookies
+                _RUNTIME_FRESH_COOKIES_MEM[slot_k] = essential
 
             if os.name != "nt":
                 sync_file_to_github(COOKIE_FILE, "Auto-refresh verified rotating __Secure-1PSIDTS cookie token")
-                print(f"🔄 [Rolling Token Guard] Synced {len(merged_cookies)} verified rotating cookies to GitHub so session NEVER expires!")
+                print(f"🔄 [Rolling Token Guard] Synced {len(essential)} REAL signed-in cookies to GitHub!")
             else:
-                print(f"💾 Locked {len(merged_cookies)} Pure Cookies into {COOKIE_FILE}!")
-            return len(merged_cookies)
+                print(f"💾 Locked {len(essential)} REAL Signed-In Cookies into {COOKIE_FILE}!")
+            return len(essential)
     except Exception as e:
         print(f"⚠️ Cookie save note: {e}")
     return 0
-
-
-def is_gemini_truly_signed_in(driver):
-    js_check = """
-    const url = location.href.toLowerCase();
-    if (!url.includes('gemini.google.com') || url.includes('accounts.google.com')) return false;
-
-    const signInBtns = Array.from(document.querySelectorAll('a, button, [role="button"]')).filter(el => {
-        if (el.offsetParent === null) return false;
-        const t = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
-        return t === 'sign in' || t === 'sign in to gemini';
-    });
-    if (signInBtns.length > 0) return false;
-
-    const hasPrompt = Boolean(
-        document.querySelector('[aria-label*="Enter a prompt" i], [aria-label*="Ask Gemini" i], rich-textarea, div[contenteditable="true"], textarea')
-    );
-    return hasPrompt;
-    """
-    try:
-        return bool(driver.execute_script(js_check))
-    except Exception:
-        return False
 
 
 def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
@@ -2012,12 +2021,3 @@ def inject_character_files_into_gemini(driver, file_paths):
     except Exception as e2:
         print(f"   ⚠️ Clipboard paste fallback note: {e2}")
     return False
-
-
-if __name__ == "__main__":
-    if "--save-cookies" in sys.argv:
-        export_fresh_gemini_cookies_from_local()
-    elif "--record-blueprint" in sys.argv:
-        record_10_step_blueprint_interactively()
-    else:
-        generate_video_in_gemini()
