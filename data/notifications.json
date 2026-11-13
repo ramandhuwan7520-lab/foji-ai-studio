@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794552006562_963",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "12:10 PM",
+    "date_str": "13 Nov 2026",
+    "timestamp": 1794552006.562626
+  },
+  {
     "id": "notif_1794551660089",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -588,175 +598,5 @@
     "time_str": "02:33 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794517405.063317
-  },
-  {
-    "id": "notif_1794517292168",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Sarhad Pe Ishq Ka Pehra | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "02:31 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794517292.1680665
-  },
-  {
-    "id": "notif_1794517287396",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "02:31 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794517287.3960752
-  },
-  {
-    "id": "notif_1794517264668",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Sarhad Pe Ishq Ka Pehra | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "02:31 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794517264.6687198
-  },
-  {
-    "id": "notif_1794515282128",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar (Video_031_FaujiMasti_Part_03_1113_015153.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "01:58 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515282.1289296
-  },
-  {
-    "id": "notif_1794515081469",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading Video_031_FaujiMasti_Part_03_1113_015153.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "01:54 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515081.4690368
-  },
-  {
-    "id": "notif_1794515022386",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "01:53 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794515022.3865316
-  },
-  {
-    "id": "notif_1794514915997",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "01:51 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794514915.997452
-  },
-  {
-    "id": "notif_1794512387234",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "01:09 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794512387.2341177
-  },
-  {
-    "id": "notif_1794512365295",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Trauma Aur Zero-Cut | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "01:09 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794512365.2954965
-  },
-  {
-    "id": "notif_1794512360232",
-    "type": "warning",
-    "title": "?? 1st Account Limit -> Using 2nd Account!",
-    "message": "Account #1 Limit/Issue (Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD). Switching to 2nd Account Cookies automatically!",
-    "status": "success",
-    "time_str": "01:09 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794512360.2320435
-  },
-  {
-    "id": "notif_1794512339742",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Trauma Aur Zero-Cut | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "01:08 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794512339.7420692
-  },
-  {
-    "id": "notif_1794512327840",
-    "type": "error",
-    "title": "Video Limit Reached",
-    "message": "⚠️ Gemini Video Limit Reached: Limit reached. Resets 12:42 PM",
-    "status": "error",
-    "time_str": "01:08 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794512327.8403087
-  },
-  {
-    "id": "notif_1794512301963",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Haircut ka Hatyakand | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "01:08 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794512301.9638338
-  },
-  {
-    "id": "notif_1794512297130",
-    "type": "warning",
-    "title": "?? 1st Account Limit -> Using 2nd Account!",
-    "message": "Account #1 Limit/Issue (Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD). Switching to 2nd Account Cookies automatically!",
-    "status": "success",
-    "time_str": "01:08 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794512297.1308734
-  },
-  {
-    "id": "notif_1794512272425",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 3: Haircut ka Hatyakand | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "01:07 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794512272.4259653
-  },
-  {
-    "id": "notif_1794510761047_238",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "12:42 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794510761.0479505
-  },
-  {
-    "id": "notif_1794508187108",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Dil Mein Jigar locked for 16 Nov 2026 at 06:30 PM IST!",
-    "status": "success",
-    "time_str": "11:59 PM",
-    "date_str": "12 Nov 2026",
-    "timestamp": 1794508187.1085174
   }
 ]
