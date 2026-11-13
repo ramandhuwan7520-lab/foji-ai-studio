@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794596750107",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein locked for 17 Nov 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "12:35 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794596750.1079478
+  },
+  {
     "id": "notif_1794596713873",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "07:12 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794534142.2370222
-  },
-  {
-    "id": "notif_1794534137567",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "07:12 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794534137.5677767
   }
 ]
