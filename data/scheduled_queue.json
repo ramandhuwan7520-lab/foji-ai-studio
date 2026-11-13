@@ -13,18 +13,6 @@
       "status": "awaiting_approval"
     },
     {
-      "id": "vid_Video_031_LoveMeera_Part_06_1112_073634.mp4",
-      "video_file": "Video_031_LoveMeera_Part_06_1112_073634.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein",
-      "track_id": "love_meera",
-      "part_number": 6,
-      "dialogue": "Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.",
-      "shayari": "Sarhad ki raahon mein bhatakti hain ye yaadein teri,\nVardi ki shaan mein chhipi hai har fariyad meri.",
-      "caption": "🎖️ Part 6: Railway Station Ki Yaadein | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.\"\n\n🔥 Sarhad ki raahon mein bhatakti hain ye yaadein teri,\nVardi ki shaan mein chhipi hai har fariyad meri.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#FojiLove #Agniveer #MeeraMakra #IndianArmy #LongDistanceLove #DesiRomance",
-      "created_at": "12 Nov 2026, 07:39 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_Video_031_FaujiMasti_Part_03_1113_015153.mp4",
       "video_file": "Video_031_FaujiMasti_Part_03_1113_015153.mp4",
       "title": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar",
@@ -46,6 +34,18 @@
       "shayari": "नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।",
       "caption": "🎖️ Part 3: Target Pe Nazar Aur Dil Mein Jigar | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!\"\n\n🔥 नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #AgniveerTraining #IndianArmy #FiringRange #DeshBhakti #ArmyLife",
       "created_at": "12 Nov 2026, 06:03 PM IST",
+      "status": "awaiting_approval"
+    },
+    {
+      "id": "vid_raw_video_1109_023053_p1.mp4",
+      "video_file": "raw_video_1109_023053_p1.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story • Part 1",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "13 Nov 2026, 01:42 PM",
       "status": "awaiting_approval"
     }
   ],
@@ -131,6 +131,24 @@
       "scheduled_full_badge": "14 Nov 2026 • 06:30 PM IST"
     },
     {
+      "id": "vid_Video_031_LoveMeera_Part_06_1112_073634.mp4",
+      "video_file": "Video_031_LoveMeera_Part_06_1112_073634.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein",
+      "track_id": "love_meera",
+      "part_number": 6,
+      "dialogue": "Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.",
+      "shayari": "Sarhad ki raahon mein bhatakti hain ye yaadein teri,\nVardi ki shaan mein chhipi hai har fariyad meri.",
+      "caption": "🎖️ Part 6: Railway Station Ki Yaadein | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye patriyan chahe kitni bhi lambi hon, khatam tere ghar pe hi hongi, thoda sabar rakh, tera foji vardi ki kasam nibha kar jaldi lautega.\"\n\n🔥 Sarhad ki raahon mein bhatakti hain ye yaadein teri,\nVardi ki shaan mein chhipi hai har fariyad meri.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#FojiLove #Agniveer #MeeraMakra #IndianArmy #LongDistanceLove #DesiRomance",
+      "created_at": "12 Nov 2026, 07:39 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-14_18:30",
+      "scheduled_epoch": 1794661200.0,
+      "scheduled_display": "14 Nov 2026 at 06:30 PM IST",
+      "date_label": "14 Nov 2026",
+      "time_label": "06:30 PM"
+    },
+    {
       "id": "vid_raw_video_1109_023108_p3.mp4",
       "video_file": "raw_video_1109_023108_p3.mp4",
       "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar",
@@ -211,7 +229,7 @@
       "scheduled_full_badge": "16 Nov 2026 • 06:30 AM IST"
     }
   ],
-  "updated_epoch": 1794557634.7105868,
+  "updated_epoch": 1794557717.0989048,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -272,21 +290,6 @@
     }
   ],
   "published_posts": [
-    {
-      "id": "vid_raw_video_1109_023053_p1.mp4",
-      "video_file": "raw_video_1109_023053_p1.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story • Part 1",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "created_at": "13 Nov 2026, 01:41 PM",
-      "status": "published",
-      "published_at": "13 Nov 2026, 01:43 PM IST",
-      "published_epoch": 1794557634.7105799,
-      "ig_media_pk": "4029363742133331465"
-    },
     {
       "id": "vid_raw_video_1110_023120_p1.mp4",
       "video_file": "raw_video_1110_023120_p1.mp4",
