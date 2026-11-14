@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794616276740",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Pithu Load Aur Pahad Ki Chadai | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:01 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794616276.7402017
+  },
+  {
     "id": "notif_1794616244720",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "08:23 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794538434.338177
-  },
-  {
-    "id": "notif_1794538431129",
-    "type": "info",
-    "title": "🔄 Switched to Account #2",
-    "message": "Account #1 issue (Google Account #1 asked for password on Cloud. Refresh cookies or set ) -> Switching to Account #2!",
-    "status": "info",
-    "time_str": "08:23 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794538431.1297014
   }
 ]
