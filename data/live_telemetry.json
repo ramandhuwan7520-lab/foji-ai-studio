@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
-  "status": "active",
-  "progress": 45,
-  "updated_at": "09:34:11 PM",
-  "epoch": 1794672251.7164338
+  "step_num": 1,
+  "step_title": "Warning: Step #11: Fill Prompt Box",
+  "sub_detail": "Could not fill script into Gemini prompt box.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "09:34:33 PM",
+  "epoch": 1794672273.0862577
 }
