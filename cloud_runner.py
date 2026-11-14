@@ -19,7 +19,7 @@ if __name__ == "__main__":
         print(f"🎬 [BATCH ENGINE] Starting Video {i+1} of {cnt}...")
         print(f"=======================================================")
         success_this_slot = False
-        for attempt in range(1, 3):
+        for attempt in range(1, 2):
             try:
                 # Pull latest part tracker before each video so Part numbers & Equal-Part Balancer are 100% accurate!
                 pkg = fud.build_real_foji_universe_package(
@@ -35,7 +35,7 @@ if __name__ == "__main__":
                     break
             except Exception as e:
                 last_err_msg = str(e)
-                print(f"⚠️ [BATCH {i+1}/{cnt} - Attempt {attempt}/2] Error: {e}")
+                print(f"⚠️ [BATCH {i+1}/{cnt} - Attempt {attempt}/1] Error: {e}")
                 time.sleep(5)
 
         if i < cnt - 1:
