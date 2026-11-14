@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794669439627",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Dil Mein Jigar locked for 16 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "08:47 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794669439.628018
+  },
+  {
     "id": "notif_1794639705458",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
@@ -788,15 +798,5 @@
     "time_str": "10:49 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794547167.27941
-  },
-  {
-    "id": "notif_1794547128548",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "10:48 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794547128.5490217
   }
 ]
