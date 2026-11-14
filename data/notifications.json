@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794690156809",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_032_FaujiMasti_Part_04_1115_023057.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "02:32 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794690156.810005
+  },
+  {
     "id": "notif_1794690097694",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "12:12 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794552155.9902332
-  },
-  {
-    "id": "notif_1794552153735",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "12:12 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794552153.7352915
   }
 ]
