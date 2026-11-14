@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794698983507",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: BPET Ka Dum Aur Kandhon Pe Hum | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:59 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794698983.50764
+  },
+  {
     "id": "notif_1794698957044",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "12:37 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794553676.726091
-  },
-  {
-    "id": "notif_1794553303356",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "raw_video_1109_023053_p1.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "12:31 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794553303.3563764
   }
 ]
