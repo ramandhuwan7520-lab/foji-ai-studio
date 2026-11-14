@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794673601322",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_032_TrainingUstad_Part_04_1114_215449.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "09:56 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794673601.3226397
+  },
+  {
     "id": "notif_1794673541340",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "12:11 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794552097.2563608
-  },
-  {
-    "id": "notif_1794552094626",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "12:11 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794552094.6261067
   }
 ]
