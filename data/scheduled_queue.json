@@ -1,18 +1,5 @@
 {
-  "unapproved_videos": [
-    {
-      "id": "vid_Video_031_FaujiMasti_Part_03_1113_015153.mp4",
-      "video_file": "Video_031_FaujiMasti_Part_03_1113_015153.mp4",
-      "title": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar",
-      "track_id": "fauji_masti",
-      "part_number": 3,
-      "dialogue": "Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!",
-      "shayari": "Zulfein gayi toh kya hua, ruraab wahi naya hai,\nFauji ki asli shaan uski vardi, na ki uska saya hai.",
-      "caption": "🎖️ Part 3: Fauji Haircut Ka Tyohaar | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!\"\n\n🔥 Zulfein gayi toh kya hua, ruraab wahi naya hai,\nFauji ki asli shaan uski vardi, na ki uska saya hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiMasti #ArmyLife #HaircutDay #IndianArmy #HaryanviComedy #Agniveer",
-      "created_at": "13 Nov 2026, 01:57 AM IST",
-      "status": "awaiting_approval"
-    }
-  ],
+  "unapproved_videos": [],
   "scheduled_posts": [
     {
       "id": "vid_raw_video_1109_023108_p3.mp4",
@@ -167,7 +154,7 @@
       "time_label": "12:30 PM"
     }
   ],
-  "updated_epoch": 1794669452.6262925,
+  "updated_epoch": 1794669465.887739,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
