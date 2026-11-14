@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794698926740",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Vardi Ki Shaan Aur Ustad Ki Jaan | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:58 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794698926.7409494
+  },
+  {
     "id": "notif_1794698230860",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "12:19 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794552581.9855366
-  },
-  {
-    "id": "notif_1794552432450",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Lohe Ka Dalaal Aur Heavy Lifting | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:17 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794552432.4507966
   }
 ]
