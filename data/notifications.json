@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794669452725",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story • Part 1 locked for 17 Nov 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "08:47 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794669452.7255044
+  },
+  {
     "id": "notif_1794669446029",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "10:49 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794547176.1222267
-  },
-  {
-    "id": "notif_1794547171845",
-    "type": "info",
-    "title": "🔄 Switched to Account #2",
-    "message": "Account #1 issue (⚠️ Gemini Video Limit Reached: Video Generation Traffic Limit) -> Switching to Account #2!",
-    "status": "info",
-    "time_str": "10:49 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794547171.8458478
   }
 ]
