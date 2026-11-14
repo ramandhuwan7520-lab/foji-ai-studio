@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794673614702",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "⚔️ Agniveer Training Center & Drill — Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai (Video_032_TrainingUstad_Part_04_1114_215449.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "09:56 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794673614.7029512
+  },
+  {
     "id": "notif_1794673601322",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
@@ -788,15 +798,5 @@
     "time_str": "12:11 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794552101.2312315
-  },
-  {
-    "id": "notif_1794552097256",
-    "type": "info",
-    "title": "🔄 Switched to Account #1",
-    "message": "Account #2 issue (Google Account #2 asked for password on Cloud. Refresh cookies or set ) -> Switching to Account #1!",
-    "status": "info",
-    "time_str": "12:11 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794552097.2563608
   }
 ]
