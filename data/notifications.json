@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794618846788",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rasse Pe Josh Aur Vatan Ka Hosh | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:44 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794618846.788506
+  },
+  {
     "id": "notif_1794618815279",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "08:24 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794538493.6340172
-  },
-  {
-    "id": "notif_1794538474771",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barf Ke Sannate Mein Tirange Ka Pehra | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
-    "status": "info",
-    "time_str": "08:24 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794538474.7713563
   }
 ]
