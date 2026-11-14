@@ -1,5 +1,5 @@
 {
-  "generated_count": 30,
+  "generated_count": 31,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -77,7 +77,8 @@
     "border_duty",
     "border_duty",
     "training_ustad",
-    "fauji_masti"
+    "fauji_masti",
+    "border_duty"
   ],
   "history": [
     {
@@ -659,6 +660,23 @@
       "caption": "🎖️ Part 4: Midnight Mobile Ka Mission | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, main toh bas torch jala ke apne phate huye mozze sil raha tha, mobile toh mere liye dushman ka nishana hai, main bhala ise kyu chhuunga!\"\n\n🔥 Chupke-chupke mobile chalana bhi ek kamaal ka art hai,\nUstad ki ek dahaad pe zor se dhadak jata hamara heart hai!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FojiMakra #ArmyBarracks #MidnightMission #DesiHumor #IndianArmyLife #Agniveer",
       "created_at": "15 Nov 2026, 02:30 AM IST",
       "completed_at": "15 Nov 2026, 02:32 AM IST"
+    },
+    {
+      "video_id": "Video_032_BorderDuty_Part_04_1115_044337",
+      "video_file": "Video_032_BorderDuty_Part_04_1115_044337.mp4",
+      "track_id": "border_duty",
+      "track_name": "🏔️ LOC Border Patrol & Maa KaPyar",
+      "part_number": 4,
+      "include_meera": true,
+      "meera_outfit": "Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair",
+      "emotion_name": "🏔️ LOC Border Patrol & Maa KaPyar — Part 4: Barfani Jung Aur Meera Ka Rang",
+      "scene_summary": "A stunning 3D Pixar-style 9:16 vertical split-screen. On the left, Foji Makra is in white winter tactical gear, lying prone in a snowy ambush position at the LOC, his face painted with camouflage and frost on his eyebrows as he grips his INSAS rifle. On the right, a vibrant memory of Meera in a Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair, smiling brightly against the backdrop of a warm Haryanvi sunset. The camera slowly zooms into Makra's steely eyes as they reflect the golden glow of Meera's outfit despite the freezing blue blizzard around him.",
+      "dialogue_line_1_hinglish": "Meera, yahan barf ki chadar mein dushman ko dhoond raha hoon, par teri bandhani kurti ki chamak meri band aankhon mein bhi ujaala kar deti hai.",
+      "shayari_hindi": "सरहद की बर्फ भी अब मोम सी पिघलने लगी है,\nजब से तेरी यादों की आंच मेरे सीने में जलने लगी है।",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair. EPISODE: 🏔️ LOC Border Patrol & Maa KaPyar - Part 4: Barfani Jung Aur Meera Ka Rang. SCENE & ACTION: A stunning 3D Pixar-style 9:16 vertical split-screen. On the left, Foji Makra is in white winter tactical gear, lying prone in a snowy ambush position at the LOC, his face painted with camouflage and frost on his eyebrows as he grips his INSAS rifle. On the right, a vibrant memory of Meera in a Mustard Yellow Rajasthani Bandhani Kurti with mirror-work lehenga skirt and braided hair, smiling brightly against the backdrop of a warm Haryanvi sunset. The camera slowly zooms into Makra's steely eyes as they reflect the golden glow of Meera's outfit despite the freezing blue blizzard around him. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Meera, yahan barf ki chadar mein dushman ko dhoond raha hoon, par teri bandhani kurti ki chamak meri band aankhon mein bhi ujaala kar deti hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 4: Barfani Jung Aur Meera Ka Rang | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, yahan barf ki chadar mein dushman ko dhoond raha hoon, par teri bandhani kurti ki chamak meri band aankhon mein bhi ujaala kar deti hai.\"\n\n🔥 सरहद की बर्फ भी अब मोम सी पिघलने लगी है,\nजब से तेरी यादों की आंच मेरे सीने में जलने लगी है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #MeeraKaPyaar #BorderPatrol",
+      "created_at": "15 Nov 2026, 04:43 AM IST",
+      "completed_at": "15 Nov 2026, 04:45 AM IST"
     }
   ],
   "failed_dialogues": [
@@ -736,7 +754,8 @@
     "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
     "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
     "Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!",
-    "Ustad ji, main toh bas torch jala ke apne phate huye mozze sil raha tha, mobile toh mere liye dushman ka nishana hai, main bhala ise kyu chhuunga!"
+    "Ustad ji, main toh bas torch jala ke apne phate huye mozze sil raha tha, mobile toh mere liye dushman ka nishana hai, main bhala ise kyu chhuunga!",
+    "Meera, yahan barf ki chadar mein dushman ko dhoond raha hoon, par teri bandhani kurti ki chamak meri band aankhon mein bhi ujaala kar deti hai."
   ],
   "deleted_ids": [],
   "track_parts": {
