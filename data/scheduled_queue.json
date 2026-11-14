@@ -51,26 +51,6 @@
   ],
   "scheduled_posts": [
     {
-      "id": "vid_raw_video_1110_060115_p4.mp4",
-      "video_file": "raw_video_1110_060115_p4.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 4: Digital Ishq Aur Border Ka Pehra",
-      "track_id": "love_meera",
-      "part_number": 4,
-      "dialogue": "Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.",
-      "shayari": "Faasle tay honge ek din, par tera intezaar hi meri ibadat hai,\nIs vardee ki shaan aur tera ishq, bas yahi meri poori kainaat hai.",
-      "caption": "🎖️ Part 4: Digital Ishq Aur Border Ka Pehra | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye pixelated chehra bhi mere liye duniya ki sabse haseen tasveer hai, network chahe kitna bhi nakhre kare, par meri dhadkano ka tower hamesha tere ghar ki taraf hi rukh karta hai.\"\n\n🔥 Faasle tay honge ek din, par tera intezaar hi meri ibadat hai,\nIs vardee ki shaan aur tera ishq, bas yahi meri poori kainaat hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FojiMakra #MeeraKiYaad #AgniveerLove #IndianArmyStatus #PixarStyleIndia #BorderIshq",
-      "created_at": "10 Nov 2026, 06:06 AM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-14_12:30",
-      "scheduled_epoch": 1794639600.0,
-      "scheduled_display": "14 Nov 2026 at 12:30 PM IST",
-      "date_label": "14 Nov 2026",
-      "time_label": "12:30 PM",
-      "scheduled_for": "2026-11-14 12:30:00",
-      "scheduled_full_badge": "14 Nov 2026 • 12:30 PM IST"
-    },
-    {
       "id": "vid_raw_video_1110_023138_p1.mp4",
       "video_file": "raw_video_1110_023138_p1.mp4",
       "title": "Foji 3D Reel (raw_video_1110_023138_p1.mp4)",
@@ -171,7 +151,7 @@
       "scheduled_full_badge": "16 Nov 2026 • 06:30 AM IST"
     }
   ],
-  "updated_epoch": 1794621715.9690063,
+  "updated_epoch": 1794639619.0491726,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
