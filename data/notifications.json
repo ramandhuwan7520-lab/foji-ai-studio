@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794670561494",
+    "type": "error",
+    "title": "Warning: Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "09:06 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794670561.4948983
+  },
+  {
     "id": "notif_1794670529724",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "10:51 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794547291.5029657
-  },
-  {
-    "id": "notif_1794547212300",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "10:50 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794547212.3004608
   }
 ]
