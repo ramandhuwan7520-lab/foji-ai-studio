@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794699004069",
+    "type": "error",
+    "title": "Warning: Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "05:00 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794699004.0690746
+  },
+  {
     "id": "notif_1794698983507",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "12:38 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794553710.0597897
-  },
-  {
-    "id": "notif_1794553676726",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Ki Chadayi Aur Fauji Ki Padayi | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:37 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794553676.726091
   }
 ]
