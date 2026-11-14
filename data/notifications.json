@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794673039991",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "⚔️ Agniveer Training Center & Drill — Part 4: Assault Course Ki Chunauti Aur Steel Body is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:47 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794673039.9917579
+  },
+  {
     "id": "notif_1794673003035",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "12:04 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794551656.1754503
-  },
-  {
-    "id": "notif_1794551653608",
-    "type": "error",
-    "title": "Gemini Login Error",
-    "message": "Gemini could not sign in using cookies on Cloud. Run `python gemini_bot.py --save-cookies` on laptop.",
-    "status": "error",
-    "time_str": "12:04 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794551653.6084096
   }
 ]
