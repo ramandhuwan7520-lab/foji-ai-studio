@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794673492488",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:54 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794673492.4883952
+  },
+  {
     "id": "notif_1794673314476",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "12:11 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794552062.767085
-  },
-  {
-    "id": "notif_1794552006562_963",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "12:10 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794552006.562626
   }
 ]
