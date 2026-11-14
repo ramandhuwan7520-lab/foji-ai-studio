@@ -647,7 +647,7 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
 def get_schedule_config():
     os.makedirs("data", exist_ok=True)
     default_cfg = {
-        "night_batch_time": "02:30",
+        "night_batch_time": "01:00, 01:30, 02:00",
         "night_batch_count": 3,
         "pre_slot_minutes": 30,
         "daily_slots": ["06:30", "12:30", "18:30"],

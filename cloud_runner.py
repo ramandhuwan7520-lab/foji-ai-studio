@@ -1,3 +1,61 @@
+
+def send_completed_reel_to_telegram(res_pkg):
+    """Sends the newly generated reel (.mp4) + notification straight to Telegram!"""
+    try:
+        import requests
+        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
+        cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+        if os.path.exists("data/telegram_config.json"):
+            try:
+                cfg = json.load(open("data/telegram_config.json", "r", encoding="utf-8"))
+                tok = str(cfg.get("bot_token") or tok).strip()
+                cid = str(cfg.get("chat_id") or cid).strip()
+            except Exception:
+                pass
+        if not tok or not cid:
+            return
+        v_file = ""
+        title = "Foji AI Reel"
+        sched_disp = "Scheduled in Queue"
+        if isinstance(res_pkg, dict):
+            v_file = res_pkg.get("video_path") or res_pkg.get("video_file") or ""
+            title = res_pkg.get("title") or res_pkg.get("topic") or title
+            sched_disp = res_pkg.get("scheduled_display") or res_pkg.get("scheduled_for") or sched_disp
+        elif isinstance(res_pkg, str):
+            v_file = res_pkg
+
+        if v_file and not os.path.exists(v_file):
+            cand = os.path.join("output", os.path.basename(v_file))
+            if os.path.exists(cand):
+                v_file = cand
+
+        caption = (
+            f"🎬 *Foji AI Studio — New Reel Generated!*\n\n"
+            f"📌 *Title:* `{title}`\n"
+            f"📁 *File:* `{os.path.basename(v_file) if v_file else 'Reel.mp4'}`\n"
+            f"⏰ *Schedule:* `{sched_disp}`\n"
+            f"✅ *Status:* Saved to Studio Vault & Synced!"
+        )
+        if v_file and os.path.exists(v_file) and os.path.getsize(v_file) > 50000:
+            with open(v_file, "rb") as vf:
+                r = requests.post(
+                    f"https://api.telegram.org/bot{tok}/sendVideo",
+                    data={"chat_id": cid, "caption": caption[:950], "parse_mode": "Markdown"},
+                    files={"video": vf},
+                    timeout=90
+                )
+            print(f"📲 [Telegram Video Sent] Delivered '{os.path.basename(v_file)}' to Telegram (HTTP {r.status_code})!")
+        else:
+            requests.post(
+                f"https://api.telegram.org/bot{tok}/sendMessage",
+                data={"chat_id": cid, "text": caption, "parse_mode": "Markdown"},
+                timeout=15
+            )
+            print("📲 [Telegram Success Message Sent]!")
+    except Exception as e:
+        print(f"⚠️ Telegram video delivery note: {e}")
+
+
 import os
 import sys
 import time

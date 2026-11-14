@@ -16,7 +16,16 @@ on:
         required: false
         default: ''
   schedule:
-    - cron: '0 21 * * *'
+    # Reel #1 at 01:00 AM IST (19:30 UTC)
+    - cron: '30 19 * * *'
+    # Reel #2 at 01:30 AM IST (20:00 UTC)
+    - cron: '0 20 * * *'
+    # Reel #3 at 02:00 AM IST (20:30 UTC)
+    - cron: '30 20 * * *'
+    # 30-Min Prior Safety Checks (06:00 AM, 12:00 PM, 06:00 PM IST)
+    - cron: '30 0 * * *'
+    - cron: '30 6 * * *'
+    - cron: '30 12 * * *'
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
