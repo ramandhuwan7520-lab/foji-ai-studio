@@ -1,5 +1,5 @@
 {
-  "generated_count": 28,
+  "generated_count": 29,
   "recent_tracks": [
     "funny",
     "fighting",
@@ -75,7 +75,8 @@
     "training_ustad",
     "fauji_masti",
     "border_duty",
-    "border_duty"
+    "border_duty",
+    "training_ustad"
   ],
   "history": [
     {
@@ -623,6 +624,23 @@
       "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
       "created_at": "13 Nov 2026, 10:48 AM IST",
       "completed_at": "13 Nov 2026, 10:51 AM IST"
+    },
+    {
+      "video_id": "Video_032_TrainingUstad_Part_04_1114_215449",
+      "video_file": "Video_032_TrainingUstad_Part_04_1114_215449.mp4",
+      "track_id": "training_ustad",
+      "track_name": "⚔️ Agniveer Training Center & Drill",
+      "part_number": 4,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "⚔️ Agniveer Training Center & Drill — Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai",
+      "scene_summary": "A high-octane 3D Pixar-style 9:16 vertical shot under a scorching midday sun at the academy's obstacle course. Makra, wearing a sweat-drenched olive-green PT vest and shorts, is halfway up a thick, vertical hemp rope. His biceps are bulging and veins are popping on his forearms as he grips the coarse rope. Below, the strict moustached Ustad stands with his hands on his hips, looking up with a demanding glare. Dust motes dance in the harsh light, and beads of sweat glisten on Makra's determined face as he pulls himself higher against the gravity.",
+      "dialogue_line_1_hinglish": "Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!",
+      "shayari_hindi": "हाथों में छाले हैं और पैरों में थकान भारी है,\nपर ये फौजी अब रुकने वाला नहीं, क्योंकि वतन की तैयारी है।",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: ⚔️ Agniveer Training Center & Drill - Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai. SCENE & ACTION: A high-octane 3D Pixar-style 9:16 vertical shot under a scorching midday sun at the academy's obstacle course. Makra, wearing a sweat-drenched olive-green PT vest and shorts, is halfway up a thick, vertical hemp rope. His biceps are bulging and veins are popping on his forearms as he grips the coarse rope. Below, the strict moustached Ustad stands with his hands on his hips, looking up with a demanding glare. Dust motes dance in the harsh light, and beads of sweat glisten on Makra's determined face as he pulls himself higher against the gravity. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!\"\n\n🔥 हाथों में छाले हैं और पैरों में थकान भारी है,\nपर ये फौजी अब रुकने वाला नहीं, क्योंकि वतन की तैयारी है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FojiMakra #IndianArmy #AgniveerTraining #RopeClimb #ArmyMotivation #PixarAnimation",
+      "created_at": "14 Nov 2026, 09:54 PM IST",
+      "completed_at": "14 Nov 2026, 09:56 PM IST"
     }
   ],
   "failed_dialogues": [
@@ -698,7 +716,8 @@
     "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!",
     "Ustad ji, gaon mein toh chhoriyan mere baalon ki deewani thi, par aapne toh katori cut maar ke mera hero se zero banne ka safar ek minute mein poora kar diya!",
     "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
-    "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai."
+    "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
+    "Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!"
   ],
   "deleted_ids": [],
   "track_parts": {
