@@ -163,32 +163,44 @@ def update_3d_telemetry(step_num, step_title, sub_detail="", status="active", pr
         pass
 
 
+def _get_live_telegram_creds():
+    """Always prefers `data/telegram_config.json` over outdated GitHub Actions Secrets!"""
+    if os.path.exists("data/telegram_config.json"):
+        try:
+            cfg = json.load(open("data/telegram_config.json", "r", encoding="utf-8"))
+            if cfg.get("bot_token") and cfg.get("chat_id"):
+                return str(cfg["bot_token"]).strip(), str(cfg["chat_id"]).strip()
+        except Exception:
+            pass
+    return "9169384078:AAEhB_IJ_ADxvqKHlXqElPnZHh0cRU6zzlU", "9059287136"
+
+
 def send_telegram_text_alert(msg_text):
     try:
-        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "9169384078:AAEhB_IJ_ADxvqKHlXqElPnZHh0cRU6zzlU").strip()
-        cid = (os.getenv("TELEGRAM_CHAT_ID") or "9059287136").strip()
+        tok, cid = _get_live_telegram_creds()
         if tok and cid:
-            requests.post(
+            r = requests.post(
                 f"https://api.telegram.org/bot{tok}/sendMessage",
                 data={"chat_id": cid, "text": msg_text},
-                timeout=12
+                timeout=15
             )
-    except Exception:
-        pass
+            print(f"📲 [Telegram Alert Sent] HTTP {r.status_code}")
+    except Exception as e:
+        print(f"⚠️ Telegram text alert error: {e}")
 
 
 def send_telegram_photo_alert(photo_path, caption_text):
     try:
-        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "9169384078:AAEhB_IJ_ADxvqKHlXqElPnZHh0cRU6zzlU").strip()
-        cid = (os.getenv("TELEGRAM_CHAT_ID") or "9059287136").strip()
+        tok, cid = _get_live_telegram_creds()
         if tok and cid and os.path.exists(photo_path):
             with open(photo_path, "rb") as pf:
-                requests.post(
+                r = requests.post(
                     f"https://api.telegram.org/bot{tok}/sendPhoto",
                     data={"chat_id": cid, "caption": caption_text[:950]},
                     files={"photo": pf},
-                    timeout=20
+                    timeout=25
                 )
+            print(f"📲 [Telegram Photo Alert Sent] HTTP {r.status_code}")
         else:
             send_telegram_text_alert(caption_text)
     except Exception:
@@ -344,7 +356,18 @@ _UNPACKED_PROFILES_THIS_RUN = set()
 _RUNTIME_FRESH_COOKIES_MEM = {}
 
 def unpack_chrome_profile_vault_if_present(profile_dir):
-    """Disabled on Linux because Windows DPAPI-encrypted SQLite Cookies conflict with CDP Network.setCookie."""
+    """Restores cross-platform LocalStorage & SessionStorage into `profile_dir` before launching Chrome on Cloud."""
+    if os.path.exists(PROFILE_VAULT_ZIP) and os.path.getsize(PROFILE_VAULT_ZIP) > 200:
+        try:
+            if os.name != "nt" and os.path.exists(profile_dir):
+                shutil.rmtree(profile_dir, ignore_errors=True)
+            os.makedirs(profile_dir, exist_ok=True)
+            with zipfile.ZipFile(PROFILE_VAULT_ZIP, "r") as zf:
+                zf.extractall(profile_dir)
+            print(f"📦 [Layer 1 Vault] Restored LocalStorage & SessionStorage into '{profile_dir}'!")
+            return True
+        except Exception as e:
+            print(f"⚠️ Profile unpack note: {e}")
     return False
 
 
