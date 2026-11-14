@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794673293308",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan locked for 15 Nov 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "09:51 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794673293.3080862
+  },
+  {
     "id": "notif_1794673039991",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "12:04 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794551660.0895994
-  },
-  {
-    "id": "notif_1794551656175",
-    "type": "info",
-    "title": "🔄 Switched to Account #1",
-    "message": "Account #2 issue (Gemini could not sign in using cookies on Cloud. Run `python gemini_bo) -> Switching to Account #1!",
-    "status": "info",
-    "time_str": "12:04 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794551656.1754503
   }
 ]
