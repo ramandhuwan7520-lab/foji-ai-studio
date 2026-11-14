@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794690060116",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 4: Midnight Mobile Ka Mission | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "02:31 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794690060.116625
+  },
+  {
     "id": "notif_1794673614702",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "12:12 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794552131.4837103
-  },
-  {
-    "id": "notif_1794552101231",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Deewar Ke Paar Aur Fauji Raftaar | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:11 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794552101.2312315
   }
 ]
