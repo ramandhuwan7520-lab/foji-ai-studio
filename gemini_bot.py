@@ -165,8 +165,8 @@ def update_3d_telemetry(step_num, step_title, sub_detail="", status="active", pr
 
 def send_telegram_text_alert(msg_text):
     try:
-        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
-        cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "9169384078:AAEhB_IJ_ADxvqKHlXqElPnZHh0cRU6zzlU").strip()
+        cid = (os.getenv("TELEGRAM_CHAT_ID") or "9059287136").strip()
         if tok and cid:
             requests.post(
                 f"https://api.telegram.org/bot{tok}/sendMessage",
@@ -179,8 +179,8 @@ def send_telegram_text_alert(msg_text):
 
 def send_telegram_photo_alert(photo_path, caption_text):
     try:
-        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
-        cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+        tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "9169384078:AAEhB_IJ_ADxvqKHlXqElPnZHh0cRU6zzlU").strip()
+        cid = (os.getenv("TELEGRAM_CHAT_ID") or "9059287136").strip()
         if tok and cid and os.path.exists(photo_path):
             with open(photo_path, "rb") as pf:
                 requests.post(
@@ -546,6 +546,42 @@ def dismiss_any_agree_or_consent_popup(driver):
     except Exception:
         pass
     return False
+
+
+def is_gemini_truly_signed_in(driver):
+    """
+    Verifies that Gemini is genuinely signed in on `gemini.google.com`:
+    1) Rejects `accounts.google.com` or pages with a visible 'Sign in' button.
+    2) Confirms live `SID` and `__Secure-1PSID` cookies exist in the browser.
+    3) Confirms the prompt box (`contenteditable` / `rich-textarea`) is ready!
+    """
+    try:
+        curr_url = (driver.current_url or "").lower()
+        if "gemini.google.com" not in curr_url or "accounts.google.com" in curr_url:
+            return False
+
+        driver.execute_cdp_cmd("Network.enable", {})
+        all_c = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
+        c_names = {c.get("name") for c in all_c if "google" in c.get("domain", "") and c.get("value")}
+        if "SID" not in c_names or "__Secure-1PSID" not in c_names:
+            return False
+
+        js_check = """
+        for (const el of document.querySelectorAll('a, button, [role="button"]')) {
+            if (el.offsetParent === null) continue;
+            const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
+            const aria = (el.getAttribute('aria-label') || '').trim().toLowerCase();
+            const href = (el.getAttribute('href') || '').toLowerCase();
+            if (txt === 'sign in' || txt === 'साइन इन करें' || aria === 'sign in' || href.includes('servicelogin')) {
+                return false;
+            }
+        }
+        const ed = document.querySelector('div[contenteditable="true"], rich-textarea, textarea');
+        return Boolean(ed);
+        """
+        return bool(driver.execute_script(js_check))
+    except Exception:
+        return False
 
 
 def save_all_browser_cookies_via_cdp(driver, force_save=False):
@@ -1706,8 +1742,8 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
                     send_telegram_video(output_video_path, tg_caption)
                 else:
                     # Direct Telegram sendVideo API call so video ALWAYS arrives on Telegram!
-                    tg_tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
-                    tg_cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+                    tg_tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "9169384078:AAEhB_IJ_ADxvqKHlXqElPnZHh0cRU6zzlU").strip()
+                    tg_cid = (os.getenv("TELEGRAM_CHAT_ID") or "9059287136").strip()
                     if tg_tok and tg_cid:
                         kb_markup = json.dumps({
                             "inline_keyboard": [
