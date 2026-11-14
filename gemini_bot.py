@@ -1828,80 +1828,175 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
 
 
 
-def fill_gemini_prompt_box_and_verify(driver, prompt_text):
+def fill_gemini_prompt_box_and_verify(driver, prompt_text, *args, **kwargs):
     """
-    Step #11: Types/injects the AI video generation prompt into Gemini's prompt box
-    (`div[contenteditable="true"]`, `rich-textarea`, or `textarea`) and verifies it is non-empty!
+    Universal Step #11 Prompt Box Filler:
+    - Accepts `(driver, prompt_text)` OR `(driver, prompt_text, s11_x, s11_y)` via `*args, **kwargs`!
+    - Closes any leftover `+ Upload files` overlay/menu backdrop first.
+    - Waits 2.5s for `foji_character.jpg` image thumbnail upload to settle.
+    - Uses CDP `Input.insertText` + Quill-safe DOM insertion + Selenium `send_keys` (NEVER `innerHTML = ''`!).
     """
     from selenium.webdriver.common.by import By
     from selenium.webdriver.common.keys import Keys
+    from selenium.webdriver.common.action_chains import ActionChains
+
     clean_prompt = str(prompt_text or "").strip()
     if not clean_prompt:
         clean_prompt = "Create a high quality 3D Pixar style vertical 9:16 video of this Indian Army soldier in action."
 
-    for attempt in range(1, 4):
+    # 1. Close any open Material menu / CDK overlay backdrop left over from Step #9 ('Upload files')
+    try:
+        driver.execute_script("""
+            const backdrops = document.querySelectorAll('.cdk-overlay-backdrop, .mat-menu-backdrop');
+            backdrops.forEach(b => { try { b.click(); } catch(e) {} });
+        """)
+        ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+    except Exception:
+        pass
+
+    # Wait briefly for uploaded character image chip to finish attaching in prompt bar
+    time.sleep(2.5)
+
+    for attempt in range(1, 5):
         try:
             dismiss_any_agree_or_consent_popup(driver)
-            js_fill = """
-            const text = arguments[0];
-            const selectors = [
-                'div.ql-editor[contenteditable="true"]',
-                'rich-textarea div[contenteditable="true"]',
-                'div[contenteditable="true"][ role="textbox"]',
-                'div[contenteditable="true"]',
-                'textarea'
-            ];
-            let box = null;
-            for (const s of selectors) {
-                const els = document.querySelectorAll(s);
-                for (const el of els) {
-                    if (el.offsetParent !== null) { box = el; break; }
+
+            # Focus the visible prompt editor (`rich-textarea`, `.ql-editor`, `div[contenteditable="true"]`, or `textarea`)
+            focused = driver.execute_script("""
+                const selectors = [
+                    'rich-textarea div.ql-editor[contenteditable="true"]',
+                    'div.ql-editor[contenteditable="true"]',
+                    'rich-textarea div[contenteditable="true"]',
+                    'div[contenteditable="true"][role="textbox"]',
+                    'div[contenteditable="true"]',
+                    'textarea'
+                ];
+                for (const s of selectors) {
+                    for (const el of document.querySelectorAll(s)) {
+                        const r = el.getBoundingClientRect();
+                        if (r.width > 50 && r.height > 10) {
+                            el.scrollIntoView({ block: 'center' });
+                            el.click();
+                            el.focus();
+                            return true;
+                        }
+                    }
                 }
-                if (box) break;
-            }
-            if (!box) return false;
-            box.focus();
-            if (box.tagName.toLowerCase() === 'textarea') {
-                box.value = text;
-                box.dispatchEvent(new Event('input', { bubbles: true }));
-                box.dispatchEvent(new Event('change', { bubbles: true }));
-                return true;
-            }
-            box.innerHTML = '';
-            document.execCommand('insertText', false, text);
-            if ((box.innerText || '').trim().length < 5) {
-                box.textContent = text;
-                box.dispatchEvent(new InputEvent('input', { bubbles: true, data: text, inputType: 'insertText' }));
-            }
-            return (box.innerText || box.textContent || '').trim().length >= 5;
-            """
-            ok = driver.execute_script(js_fill, clean_prompt)
-            time.sleep(1.2)
-            if ok:
-                # Send a trailing space via Selenium keys so Angular/Material unlocks the Send button!
-                editors = [e for e in driver.find_elements(By.CSS_SELECTOR, 'div[contenteditable="true"], textarea') if e.is_displayed()]
+                return false;
+            """)
+            time.sleep(0.5)
+
+            # Method A: Chrome DevTools Protocol `Input.insertText` (Types directly into focused editor at native browser level!)
+            if focused:
+                try:
+                    driver.execute_cdp_cmd("Input.insertText", {"text": clean_prompt})
+                    time.sleep(1.0)
+                except Exception:
+                    pass
+
+            # Check if text is now inside the editor
+            curr_len = driver.execute_script("""
+                for (const el of document.querySelectorAll('div.ql-editor, div[contenteditable="true"], textarea')) {
+                    const t = (el.innerText || el.value || el.textContent || '').trim();
+                    if (t.length >= 10) return t.length;
+                }
+                return 0;
+            """) or 0
+
+            # Method B: Quill-safe `<p>` text injection + InputEvent (without breaking Quill structure)
+            if curr_len < 10:
+                driver.execute_script("""
+                    const txt = arguments[0];
+                    const ed = document.querySelector('div.ql-editor[contenteditable="true"], div[contenteditable="true"], textarea');
+                    if (!ed) return false;
+                    ed.focus();
+                    if (ed.tagName.toLowerCase() === 'textarea') {
+                        ed.value = txt;
+                    } else {
+                        let p = ed.querySelector('p');
+                        if (!p) {
+                            p = document.createElement('p');
+                            ed.appendChild(p);
+                        }
+                        p.textContent = txt;
+                        ed.classList.remove('ql-blank');
+                    }
+                    ed.dispatchEvent(new InputEvent('beforeinput', { bubbles: true, cancelable: true, inputType: 'insertText', data: txt }));
+                    ed.dispatchEvent(new InputEvent('input', { bubbles: true, cancelable: true, inputType: 'insertText', data: txt }));
+                    ed.dispatchEvent(new Event('change', { bubbles: true }));
+                    return true;
+                """, clean_prompt)
+                time.sleep(1.0)
+
+            # Method C: Direct Selenium element `send_keys`
+            curr_len = driver.execute_script("""
+                for (const el of document.querySelectorAll('div.ql-editor, div[contenteditable="true"], textarea')) {
+                    const t = (el.innerText || el.value || el.textContent || '').trim();
+                    if (t.length >= 10) return t.length;
+                }
+                return 0;
+            """) or 0
+
+            if curr_len < 10:
+                editors = [e for e in driver.find_elements(By.CSS_SELECTOR, 'div.ql-editor, div[contenteditable="true"], textarea') if e.is_displayed()]
                 if editors:
-                    try:
-                        editors[0].send_keys(" ")
-                    except Exception:
-                        pass
-                time.sleep(0.8)
-                print(f"   ✅ [Step #11] Prompt injected & verified ({len(clean_prompt)} chars)!")
+                    ed_el = editors[0]
+                    ed_el.click()
+                    # Strip non-BMP emojis only if needed by ChromeDriver send_keys
+                    bmp_prompt = "".join(ch for ch in clean_prompt if ord(ch) <= 0xFFFF)
+                    ed_el.send_keys(bmp_prompt)
+                    time.sleep(1.0)
+
+            # Send a space key so Angular Material unlocks the Send button
+            try:
+                editors = [e for e in driver.find_elements(By.CSS_SELECTOR, 'div.ql-editor, div[contenteditable="true"], textarea') if e.is_displayed()]
+                if editors:
+                    editors[0].send_keys(" ")
+            except Exception:
+                pass
+
+            final_len = driver.execute_script("""
+                for (const el of document.querySelectorAll('div.ql-editor, div[contenteditable="true"], textarea')) {
+                    const t = (el.innerText || el.value || el.textContent || '').trim();
+                    if (t.length >= 5) return t.length;
+                }
+                return 0;
+            """) or 0
+
+            if final_len >= 5:
+                print(f"   ✅ [Step #11] Prompt successfully filled & verified ({final_len} chars in editor)!")
                 return True
+
         except Exception as e:
-            print(f"   ⚠️ [Step #11 Attempt {attempt}] Prompt fill note: {e}")
-            time.sleep(1.0)
+            print(f"   ⚠️ [Step #11 Attempt {attempt}/4] Note: {e}")
+        time.sleep(1.2)
+
     return False
 
 
-def click_gemini_send_button_strictly(driver):
+def click_gemini_send_button_strictly(driver, *args, **kwargs):
     """
-    Step #12: Clicks the 'Send message' / 'Submit' button (or presses Enter inside the prompt box)
-    to start video generation!
+    Universal Step #12 Send Button Clicker (accepts any extra coordinate args via `*args, **kwargs`).
+    Waits briefly for any uploaded image spinner to finish, then clicks Send or presses Enter!
     """
     from selenium.webdriver.common.by import By
     from selenium.webdriver.common.keys import Keys
-    for attempt in range(1, 4):
+
+    # Wait up to 8s if image upload progress spinner is still active so Send button isn't disabled
+    for _ in range(8):
+        is_ready = driver.execute_script("""
+            for (const s of ['button[aria-label*="Send" i]', 'button.send-button', 'button[aria-label*="Submit" i]']) {
+                for (const b of document.querySelectorAll(s)) {
+                    if (b.offsetParent !== null && !b.disabled && b.getAttribute('aria-disabled') !== 'true') return true;
+                }
+            }
+            return false;
+        """)
+        if is_ready:
+            break
+        time.sleep(1.0)
+
+    for attempt in range(1, 5):
         try:
             dismiss_any_agree_or_consent_popup(driver)
             clicked = driver.execute_script("""
@@ -1913,11 +2008,11 @@ def click_gemini_send_button_strictly(driver):
                     'button[mattooltip*="Send" i]'
                 ];
                 for (const s of selectors) {
-                    const btns = document.querySelectorAll(s);
-                    for (const b of btns) {
-                        if (b.offsetParent !== null && !b.disabled && b.getAttribute('aria-disabled') !== 'true') {
+                    for (const b of document.querySelectorAll(s)) {
+                        if (b.offsetParent !== null) {
+                            b.removeAttribute('disabled');
                             b.click();
-                            return 'aria-send';
+                            return 'send-btn';
                         }
                     }
                 }
@@ -1927,7 +2022,7 @@ def click_gemini_send_button_strictly(driver):
                     if (t === 'send' || t === 'arrow_upward') {
                         const btn = icon.closest('button, [role="button"]') || icon;
                         btn.click();
-                        return 'icon-send';
+                        return 'send-icon';
                     }
                 }
                 return '';
@@ -1938,45 +2033,45 @@ def click_gemini_send_button_strictly(driver):
                 dismiss_any_agree_or_consent_popup(driver)
                 return True
 
-            # Fallback: Press ENTER inside the prompt editor
-            editors = [e for e in driver.find_elements(By.CSS_SELECTOR, 'div[contenteditable="true"], textarea') if e.is_displayed()]
+            editors = [e for e in driver.find_elements(By.CSS_SELECTOR, 'div.ql-editor, div[contenteditable="true"], textarea') if e.is_displayed()]
             if editors:
                 editors[0].send_keys(Keys.ENTER)
-                print("   🚀 [Step #12] Triggered Send via ENTER key!")
+                print("   🚀 [Step #12] Submitted prompt via ENTER key!")
                 time.sleep(2.0)
                 dismiss_any_agree_or_consent_popup(driver)
                 return True
         except Exception as e:
-            print(f"   ⚠️ [Step #12 Attempt {attempt}] Send click note: {e}")
-        time.sleep(1.0)
+            print(f"   ⚠️ [Step #12 Attempt {attempt}] Send note: {e}")
+        time.sleep(1.2)
     return False
 
 
-def wait_and_download_generated_video(driver, output_video_path, timeout_sec=420):
+def wait_and_download_generated_video(driver, output_video_path=None, *args, **kwargs):
     """
-    Step #13: Waits for Gemini Veo / Video generation to finish, automatically clicks any
-    'Agree' / 'I agree' consent dialog if shown, detects the generated `<video>` or Download button,
-    and saves the `.mp4` to `output_video_path`!
+    Universal Step #13 Video Generator & Downloader (accepts any extra arguments via `*args, **kwargs`).
     """
+    if not output_video_path or not isinstance(output_video_path, str):
+        os.makedirs("output", exist_ok=True)
+        output_video_path = f"output/generated_foji_{int(time.time())}.mp4"
     os.makedirs(os.path.dirname(os.path.abspath(output_video_path)), exist_ok=True)
+
+    timeout_sec = 420
     start_t = time.time()
-    print(f"⏳ [Step #13] Waiting for Gemini to generate video (up to {timeout_sec}s)...")
+    print(f"⏳ [Step #13] Waiting for Gemini to generate video -> {output_video_path} (up to {timeout_sec}s)...")
 
     while (time.time() - start_t) < timeout_sec:
         elapsed = int(time.time() - start_t)
         dismiss_any_agree_or_consent_popup(driver)
 
-        # 1. Check if Google displayed an explicit video generation quota/limit message AFTER submitting prompt
-        chk_lim = verify_create_video_selected_or_detect_limit(driver)
-        if chk_lim.startswith("LIMIT:"):
-            lim_txt = chk_lim.replace("LIMIT:", "").strip()
-            report_step_problem_instantly(driver, "Gemini Video Limit Reached", lim_txt)
-            raise GeminiLimitReachedError(f"Gemini Video Limit Reached: {lim_txt}")
+        if elapsed > 10:
+            chk_lim = verify_create_video_selected_or_detect_limit(driver)
+            if chk_lim.startswith("LIMIT:"):
+                lim_txt = chk_lim.replace("LIMIT:", "").strip()
+                report_step_problem_instantly(driver, "Gemini Video Limit Reached", lim_txt)
+                raise GeminiLimitReachedError(f"Gemini Video Limit Reached: {lim_txt}")
 
-        # 2. Check if a `<video>` element with a valid `src` or a download link is ready on screen!
         video_info = driver.execute_script("""
-            const vids = document.querySelectorAll('video');
-            for (const v of vids) {
+            for (const v of document.querySelectorAll('video')) {
                 const src = v.currentSrc || v.src || (v.querySelector('source') ? v.querySelector('source').src : '');
                 if (src && (src.startsWith('http') || src.startsWith('blob:'))) {
                     return { type: 'video_src', url: src };
@@ -1992,9 +2087,7 @@ def wait_and_download_generated_video(driver, output_video_path, timeout_sec=420
 
         if video_info and video_info.get("url"):
             v_url = video_info["url"]
-            print(f"   🎬 [Step #13] Video element detected ({v_url[:65]}...) at {elapsed}s! Downloading...")
-
-            # Method A: Fetch video bytes directly inside browser context (works for both blob: and authenticated https:// URLs!)
+            print(f"   🎬 [Step #13] Video ready ({v_url[:60]}...) at {elapsed}s! Downloading...")
             try:
                 b64_video = driver.execute_async_script("""
                     const url = arguments[0];
@@ -2017,12 +2110,11 @@ def wait_and_download_generated_video(driver, output_video_path, timeout_sec=420
                     with open(output_video_path, "wb") as vf:
                         vf.write(raw_bytes)
                     if os.path.exists(output_video_path) and os.path.getsize(output_video_path) > 50000:
-                        print(f"   🎉 [Step #13] Video downloaded via Browser Fetch -> {output_video_path} ({os.path.getsize(output_video_path)//1024} KB)!")
-                        return output_video_path
+                        print(f"   🎉 [Step #13] Video saved -> {output_video_path} ({os.path.getsize(output_video_path)//1024} KB)!")
+                        return True
             except Exception as e_f:
                 print(f"   ⚠️ Browser fetch note: {e_f}")
 
-            # Method B: Click Gemini's 'Download video' button and capture from download folder or requests with cookies
             try:
                 if v_url.startswith("http"):
                     sess = requests.Session()
@@ -2032,10 +2124,10 @@ def wait_and_download_generated_video(driver, output_video_path, timeout_sec=420
                     if r.status_code == 200 and len(r.content) > 50000:
                         with open(output_video_path, "wb") as vf:
                             vf.write(r.content)
-                        print(f"   🎉 [Step #13] Video downloaded via Authenticated HTTP -> {output_video_path} ({len(r.content)//1024} KB)!")
-                        return output_video_path
+                        print(f"   🎉 [Step #13] Video saved via HTTP -> {output_video_path} ({len(r.content)//1024} KB)!")
+                        return True
             except Exception as e_r:
-                print(f"   ⚠️ Direct HTTP download note: {e_r}")
+                print(f"   ⚠️ Direct HTTP note: {e_r}")
 
         if elapsed % 15 == 0:
             pct = min(92, 40 + int((elapsed / timeout_sec) * 52))
@@ -2045,11 +2137,12 @@ def wait_and_download_generated_video(driver, output_video_path, timeout_sec=420
         time.sleep(5.0)
 
     report_step_problem_instantly(driver, "Step #13 Video Timeout", f"Video did not finish rendering within {timeout_sec}s")
-    return None
+    return False
 
 
 def record_10_step_blueprint_interactively():
-    print("Blueprint already locked in data/gemini_10_step_blueprint.json")
+    print("Blueprint locked in data/gemini_10_step_blueprint.json")
+
 
 if __name__ == "__main__":
     if "--save-cookies-2" in sys.argv:
