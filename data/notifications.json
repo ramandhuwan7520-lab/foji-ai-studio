@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794690172206",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 4: Midnight Mobile Ka Mission (Video_032_FaujiMasti_Part_04_1115_023057.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "02:32 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794690172.206143
+  },
+  {
     "id": "notif_1794690156809",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
@@ -788,15 +798,5 @@
     "time_str": "12:12 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794552159.6110387
-  },
-  {
-    "id": "notif_1794552155990",
-    "type": "info",
-    "title": "🔄 Switched to Account #1",
-    "message": "Account #2 issue (Google Account #2 asked for password on Cloud. Refresh cookies or set ) -> Switching to Account #1!",
-    "status": "info",
-    "time_str": "12:12 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794552155.9902332
   }
 ]
