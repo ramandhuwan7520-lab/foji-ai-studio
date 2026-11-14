@@ -152,9 +152,27 @@
       "scheduled_display": "17 Nov 2026 at 12:30 PM IST",
       "date_label": "17 Nov 2026",
       "time_label": "12:30 PM"
+    },
+    {
+      "id": "vid_Video_032_TrainingUstad_Part_04_1114_215449.mp4",
+      "video_file": "Video_032_TrainingUstad_Part_04_1114_215449.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai",
+      "track_id": "training_ustad",
+      "part_number": 4,
+      "dialogue": "Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!",
+      "shayari": "हाथों में छाले हैं और पैरों में थकान भारी है,\nपर ये फौजी अब रुकने वाला नहीं, क्योंकि वतन की तैयारी है।",
+      "caption": "🎖️ Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!\"\n\n🔥 हाथों में छाले हैं और पैरों में थकान भारी है,\nपर ये फौजी अब रुकने वाला नहीं, क्योंकि वतन की तैयारी है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FojiMakra #IndianArmy #AgniveerTraining #RopeClimb #ArmyMotivation #PixarAnimation",
+      "created_at": "14 Nov 2026, 09:56 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-17_18:30",
+      "scheduled_epoch": 1794920400.0,
+      "scheduled_display": "17 Nov 2026 at 06:30 PM IST",
+      "date_label": "17 Nov 2026",
+      "time_label": "06:30 PM"
     }
   ],
-  "updated_epoch": 1794673314.4725425,
+  "updated_epoch": 1794673673.6311274,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
