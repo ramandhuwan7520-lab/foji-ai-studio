@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering Video_032_FaujiMasti_Part_04_1115_023057.mp4...",
   "status": "active",
-  "progress": 45,
-  "updated_at": "02:31:12 AM",
-  "epoch": 1794690072.1699402
+  "progress": 68,
+  "updated_at": "02:31:36 AM",
+  "epoch": 1794690096.6090052
 }
