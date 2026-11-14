@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794639705458",
+    "type": "success",
+    "title": "📸 Reel Posted on Instagram!",
+    "message": "raw_video_1110_060115_p4.mp4 is now LIVE on @ai_foji_lovelife!",
+    "status": "success",
+    "time_str": "12:31 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794639705.4584212
+  },
+  {
     "id": "notif_1794637885582",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "10:48 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794547128.5490217
-  },
-  {
-    "id": "notif_1794547050966_149",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "10:47 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794547050.9666853
   }
 ]
