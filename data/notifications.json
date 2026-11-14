@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794637885582",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rifle Drill Aur Ustad Ka Khauf | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:01 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794637885.5823615
+  },
+  {
     "id": "notif_1794637858804",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "10:47 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794547050.9666853
-  },
-  {
-    "id": "notif_1794546585811",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Sniper Aur Yaadon Ki Garmi is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "10:39 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794546585.8116524
   }
 ]
