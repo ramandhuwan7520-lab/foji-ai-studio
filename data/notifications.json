@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794618815279",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: 10-Foot Ki Deewar Aur Josh-e-Agniveer | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:43 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794618815.2795038
+  },
+  {
     "id": "notif_1794618094571",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
@@ -788,15 +798,5 @@
     "time_str": "08:24 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794538474.7713563
-  },
-  {
-    "id": "notif_1794538453492",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #2 asked for password on Cloud. Refresh cookies or set GEMINI_ACC2_PASSWORD.",
-    "status": "error",
-    "time_str": "08:24 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794538453.492246
   }
 ]
