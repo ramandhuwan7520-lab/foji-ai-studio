@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794673314476",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story • Part 1 locked for 17 Nov 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "09:51 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794673314.4768937
+  },
+  {
     "id": "notif_1794673293308",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "12:10 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794552006.562626
-  },
-  {
-    "id": "notif_1794551660089",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Raat Ka Route March Aur Lohe Ke Kadam | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:04 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794551660.0895994
   }
 ]
