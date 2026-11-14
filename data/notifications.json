@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794670573121",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Aur Junoon Ka Imtihaan | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:06 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794670573.1214092
+  },
+  {
     "id": "notif_1794670561494",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "10:51 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794547310.7455552
-  },
-  {
-    "id": "notif_1794547291502",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading Video_042_BorderDuty_Part_03_1113_104845.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "10:51 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794547291.5029657
   }
 ]
