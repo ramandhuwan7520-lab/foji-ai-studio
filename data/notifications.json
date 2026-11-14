@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794672237111",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Ki Chadhai Aur Josh Ki Kadai | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:33 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794672237.1111813
+  },
+  {
     "id": "notif_1794671307966",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "12:02 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794551539.425439
-  },
-  {
-    "id": "notif_1794551512179",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Deewar-e-Hausla Aur Ustad Ka Josh | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:01 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794551512.1795573
   }
 ]
