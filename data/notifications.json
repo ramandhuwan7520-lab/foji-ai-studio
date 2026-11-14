@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794672274597",
+    "type": "error",
+    "title": "Warning: Step #11: Fill Prompt Box",
+    "message": "Could not fill script into Gemini prompt box.",
+    "status": "error",
+    "time_str": "09:34 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794672274.5972261
+  },
+  {
     "id": "notif_1794672237111",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "12:02 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794551551.0669224
-  },
-  {
-    "id": "notif_1794551539425",
-    "type": "error",
-    "title": "Video Limit Reached",
-    "message": "⚠️ Gemini Video Limit Reached: Limit reached. Resets 10:42 PM",
-    "status": "error",
-    "time_str": "12:02 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794551539.425439
   }
 ]
