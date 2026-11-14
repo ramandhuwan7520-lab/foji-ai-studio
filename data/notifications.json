@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794616244720",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rasse Ka Josh Aur Pithu Ka Bojh | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:00 AM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794616244.7204309
+  },
+  {
     "id": "notif_1794603693810",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "08:23 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794538431.1297014
-  },
-  {
-    "id": "notif_1794538428974",
-    "type": "error",
-    "title": "Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "08:23 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794538428.9742298
   }
 ]
