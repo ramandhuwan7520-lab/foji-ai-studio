@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794669446029",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein locked for 17 Nov 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "08:47 PM",
+    "date_str": "14 Nov 2026",
+    "timestamp": 1794669446.029463
+  },
+  {
     "id": "notif_1794669439627",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "10:49 AM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794547171.8458478
-  },
-  {
-    "id": "notif_1794547167279",
-    "type": "error",
-    "title": "Video Limit Reached",
-    "message": "⚠️ Gemini Video Limit Reached: Video Generation Traffic Limit",
-    "status": "error",
-    "time_str": "10:49 AM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794547167.27941
   }
 ]
