@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
-  "sub_detail": "Saving Video_032_TrainingUstad_Part_04_1114_215449.mp4 & pushing to Telegram/Frontend...",
-  "status": "active",
-  "progress": 94,
-  "updated_at": "09:56:39 PM",
-  "epoch": 1794673599.9550285
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "Video_032_TrainingUstad_Part_04_1114_215449.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "09:56:53 PM",
+  "epoch": 1794673613.4317534
 }
