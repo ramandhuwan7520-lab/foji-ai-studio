@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794701273423",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Vardi Ki Kaswat Aur Shaan-e-Drill | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "05:37 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794701273.423986
+  },
+  {
     "id": "notif_1794701246848",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "01:48 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794557888.3054426
-  },
-  {
-    "id": "notif_1794557776419",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan locked for 17 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "01:46 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794557776.4197621
   }
 ]
