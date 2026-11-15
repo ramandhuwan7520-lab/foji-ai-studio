@@ -27,24 +27,6 @@
   ],
   "scheduled_posts": [
     {
-      "id": "vid_Video_042_BorderDuty_Part_03_1113_104845.mp4",
-      "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
-      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
-      "track_id": "border_duty",
-      "part_number": 3,
-      "dialogue": "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
-      "shayari": "वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।",
-      "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
-      "created_at": "13 Nov 2026, 10:51 AM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-15_06:30",
-      "scheduled_epoch": 1794704400.0,
-      "scheduled_display": "15 Nov 2026 at 06:30 AM IST",
-      "date_label": "15 Nov 2026",
-      "time_label": "06:30 AM"
-    },
-    {
       "id": "vid_raw_video_1110_083746_p4.mp4",
       "video_file": "raw_video_1110_083746_p4.mp4",
       "title": "🔥 Ustad Ka Ragda & Punishment — Part 4: Raat Ka Ragda & Haathi-Chaal",
@@ -177,7 +159,7 @@
       "time_label": "06:30 PM"
     }
   ],
-  "updated_epoch": 1794704491.0004103,
+  "updated_epoch": 1794704517.31419,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -411,6 +393,21 @@
     }
   ],
   "published_history": [
+    {
+      "id": "vid_raw_video_1109_023108_p3.mp4",
+      "video_file": "raw_video_1109_023108_p3.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar",
+      "track_id": "love_meera",
+      "part_number": 3,
+      "dialogue": "Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.",
+      "shayari": "Kagaz pe utari hai maine apni poori dunya,\nTu sarhad pe sambhalna khud ko aur ye mera ishq.",
+      "caption": "🎖️ Part 3: Chithhi Ka Intezaar Aur Pyaar | ❤️ Foji Makra & Fojan Meera Love Story\n\n🗣️ \"Meera, ye chithhi tera khat nahi, meri saans hai. Jab border pe sannata hota hai, toh teri likhi baatein mere kaano mein teri payal ki tarah bajti hain.\"\n\n🔥 Kagaz pe utari hai maine apni poori dunya,\nTu sarhad pe sambhalna khud ko aur ye mera ishq.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #FojanMeera #IndianArmyLove #Agniveer #LongDistanceRelationship #DesiPixar",
+      "created_at": "09 Nov 2026, 02:40 AM IST",
+      "status": "published",
+      "published_at": "15 Nov 2026, 06:31 AM IST",
+      "published_epoch": 1794704491.0004058,
+      "ig_media_pk": "4030595639425576111"
+    },
     {
       "id": "vid_raw_video_1110_060115_p4.mp4",
       "video_file": "raw_video_1110_060115_p4.mp4",
