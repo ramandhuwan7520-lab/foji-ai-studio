@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794785366423",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Raat Ka Pehra Aur Jungle Ki Chunnauti | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:59 AM",
+    "date_str": "16 Nov 2026",
+    "timestamp": 1794785366.4235644
+  },
+  {
     "id": "notif_1794785335904",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "08:47 PM",
     "date_str": "14 Nov 2026",
     "timestamp": 1794669452.7255044
-  },
-  {
-    "id": "notif_1794669446029",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "❤️ Foji Makra & Fojan Meera Love Story — Part 6: Railway Station Ki Yaadein locked for 17 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "08:47 PM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794669446.029463
   }
 ]
