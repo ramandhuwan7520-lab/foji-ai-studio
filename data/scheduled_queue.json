@@ -318,7 +318,7 @@
       "scheduled_iso": "2026-11-17T12:30:00+05:30"
     }
   ],
-  "updated_epoch": 1794725637.470303,
+  "updated_epoch": 1794725798.7635615,
   "unapproved_reels": [
     {
       "id": "vid_raw_video_1108_060049_p1.mp4",
@@ -484,7 +484,8 @@
       "status": "published",
       "published_at": "13 Nov 2026, 02:16 PM IST",
       "published_epoch": 1794559562.888395,
-      "ig_media_pk": "4029379908591642535"
+      "ig_media_pk": "4029379908591642535",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1110_023113_p2.mp4",
@@ -609,7 +610,8 @@
       "status": "published",
       "published_at": "13 Nov 2026, 02:16 PM IST",
       "published_epoch": 1794559562.888395,
-      "ig_media_pk": "4029379908591642535"
+      "ig_media_pk": "4029379908591642535",
+      "cloud_purged": true
     },
     {
       "id": "vid_raw_video_1110_023113_p2.mp4",
