@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794701246848",
+    "type": "error",
+    "title": "Warning: Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "05:37 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794701246.8481028
+  },
+  {
     "id": "notif_1794701213084",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "01:46 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794557776.4197621
-  },
-  {
-    "id": "notif_1794557635014",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "raw_video_1109_023053_p1.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "01:43 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794557635.0148342
   }
 ]
