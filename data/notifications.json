@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794751855418",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Pithu Ka Bojh Aur Irado Ki Unchai | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "07:40 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794751855.4181266
+  },
+  {
     "id": "notif_1794751830601",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
