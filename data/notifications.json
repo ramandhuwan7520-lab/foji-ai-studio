@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794701342234",
+    "type": "error",
+    "title": "Warning: Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "05:39 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794701342.2347243
+  },
+  {
     "id": "notif_1794701322566",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "02:58 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794562111.5668788
-  },
-  {
-    "id": "notif_1794561994624",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Aur Junoon Ka Imtihaan | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "02:56 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794561994.6248279
   }
 ]
