@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794726079437_233",
+    "type": "error",
+    "title": "Scheduled Post Paused",
+    "message": "raw_video_1109_023124_p3.mp4 kept safe in Pending: Video file raw_video_1109_023124_p3.mp4 not found!",
+    "status": "error",
+    "time_str": "12:31 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794726079.4370406
+  },
+  {
     "id": "notif_1794726063233",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -588,55 +598,5 @@
     "time_str": "06:45 AM",
     "date_str": "14 Nov 2026",
     "timestamp": 1794618912.138186
-  },
-  {
-    "id": "notif_1794618891105",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Lohe Ke Pipes Aur Hauslon Ki Udaan | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:44 AM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794618891.1051393
-  },
-  {
-    "id": "notif_1794618877760",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rassi Chadhne Ka Junoon | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:44 AM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794618877.760715
-  },
-  {
-    "id": "notif_1794618846788",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: Rasse Pe Josh Aur Vatan Ka Hosh | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:44 AM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794618846.788506
-  },
-  {
-    "id": "notif_1794618815279",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 4: 10-Foot Ki Deewar Aur Josh-e-Agniveer | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:43 AM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794618815.2795038
-  },
-  {
-    "id": "notif_1794618094571",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "raw_video_1109_023124_p3.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "06:31 AM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794618094.5720012
   }
 ]
