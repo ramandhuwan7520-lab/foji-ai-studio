@@ -692,22 +692,156 @@ def get_scheduled_queue():
                         clean_pub.append(item)
                 data["published_posts"] = clean_pub
                 data["published_history"] = clean_pub
+                if "enforce_smart_cascade_schedule" in globals():
+                    try:
+                        enforce_smart_cascade_schedule(data)
+                    except Exception:
+                        pass
                 return data
         except Exception:
             pass
     return {"unapproved_videos": [], "scheduled_posts": [], "published_posts": [], "published_history": [], "updated_epoch": 0}
 
 
-def save_scheduled_queue(qdata, sync_cloud=True):
+
+def _parse_item_slot_epoch(item):
+    """Reliably extracts the scheduled epoch timestamp from a queue item."""
+    IST_TZ = timezone(timedelta(hours=5, minutes=30))
+    for k in ("scheduled_epoch", "target_epoch"):
+        val = item.get(k)
+        if isinstance(val, (int, float)) and val > 1700000000:
+            return float(val)
+    sf = str(item.get("scheduled_for") or "").strip()
+    if sf:
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M"):
+            try:
+                dt = datetime.strptime(sf, fmt).replace(tzinfo=IST_TZ)
+                return dt.timestamp()
+            except Exception:
+                pass
+    return 0.0
+
+
+def _get_next_valid_slot_after(ref_epoch):
+    """
+    Given any timestamp `ref_epoch`, returns the exact next slot (`06:30`, `12:30`, or `18:30` IST)
+    that is strictly AFTER `ref_epoch` (by at least 5 minutes).
+    """
+    IST_TZ = timezone(timedelta(hours=5, minutes=30))
+    base_dt = datetime.fromtimestamp(ref_epoch, tz=IST_TZ)
+    for day_offset in range(0, 365):
+        cand_date = (base_dt + timedelta(days=day_offset)).date()
+        for hm in ("06:30", "12:30", "18:30"):
+            hh, mm = map(int, hm.split(":"))
+            slot_dt = datetime(cand_date.year, cand_date.month, cand_date.day, hh, mm, 0, tzinfo=IST_TZ)
+            if slot_dt.timestamp() > (ref_epoch + 300):
+                return slot_dt
+    return base_dt + timedelta(hours=6)
+
+
+def _stamp_slot_fields_on_item(item, slot_dt):
+    """Writes ALL exact keys used by `calculate_next_available_slot_ist` & `approve_and_schedule_video_item`."""
+    item["status"] = "scheduled"
+    item["scheduled_slot_key"] = slot_dt.strftime("%Y-%m-%d_%H:%M")
+    item["scheduled_iso"] = slot_dt.isoformat()
+    item["scheduled_epoch"] = slot_dt.timestamp()
+    item["scheduled_for"] = slot_dt.strftime("%Y-%m-%d %H:%M:%S")
+    item["date_label"] = slot_dt.strftime("%d %b %Y")
+    item["time_label"] = slot_dt.strftime("%I:%M %p")
+    item["scheduled_display"] = slot_dt.strftime("%d %b %Y at %I:%M %p IST")
+    item["scheduled_full_badge"] = f"{item['date_label']} • {item['time_label']} IST"
+    return item
+
+
+def enforce_smart_cascade_schedule(q_data):
+    """
+    SMART DOMINO CASCADE SCHEDULER:
+    1) Removes any already-published videos (from `published_posts` & `posted_ledger.json`).
+    2) If ANY scheduled video missed its slot (older than 15 mins in the past) or has a duplicate time,
+       it automatically shifts it to the next upcoming slot and cascades all subsequent videos forward 1-by-1!
+    3) New videos are ALWAYS scheduled strictly AFTER the LAST scheduled video in the queue!
+    """
+    IST_TZ = timezone(timedelta(hours=5, minutes=30))
+    now_ep = datetime.now(IST_TZ).timestamp()
+
+    ledger_p = "data/posted_ledger.json"
+    led_map = {}
+    if os.path.exists(ledger_p):
+        try:
+            led_map = json.load(open(ledger_p, "r", encoding="utf-8"))
+        except Exception:
+            pass
+    for p_item in q_data.get("published_posts", []):
+        vf = p_item.get("video_file")
+        if vf:
+            led_map[vf] = p_item
+    try:
+        with open(ledger_p, "w", encoding="utf-8") as lf:
+            json.dump(led_map, lf, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+
+    pub_files = set(led_map.keys())
+    q_data["published_posts"] = list(led_map.values())
+    sched_list = [s for s in q_data.get("scheduled_posts", []) if s.get("video_file") and s.get("video_file") not in pub_files]
+    q_data["unapproved_videos"] = [u for u in q_data.get("unapproved_videos", []) if u.get("video_file") and u.get("video_file") not in pub_files]
+
+    seen_vf = set()
+    unique_sched = []
+    for s in sched_list:
+        vf = s.get("video_file")
+        if vf not in seen_vf:
+            seen_vf.add(vf)
+            unique_sched.append(s)
+
+    with_ts = []
+    without_ts = []
+    for s in unique_sched:
+        ep = _parse_item_slot_epoch(s)
+        if ep > 0:
+            s["_parsed_ep"] = ep
+            with_ts.append(s)
+        else:
+            without_ts.append(s)
+
+    with_ts.sort(key=lambda x: x["_parsed_ep"])
+    ordered_sched = with_ts + without_ts
+
+    cursor_epoch = now_ep - 900
+    for item in ordered_sched:
+        item_ep = item.pop("_parsed_ep", 0.0) or _parse_item_slot_epoch(item)
+        if item_ep > cursor_epoch:
+            slot_dt = datetime.fromtimestamp(item_ep, tz=IST_TZ)
+            hm_str = slot_dt.strftime("%H:%M")
+            if hm_str not in ("06:30", "12:30", "18:30"):
+                slot_dt = _get_next_valid_slot_after(max(cursor_epoch, now_ep))
+        else:
+            slot_dt = _get_next_valid_slot_after(max(cursor_epoch, now_ep))
+
+        _stamp_slot_fields_on_item(item, slot_dt)
+        cursor_epoch = slot_dt.timestamp()
+
+    q_data["scheduled_posts"] = ordered_sched
+    return q_data
+
+
+def save_scheduled_queue(q_data, sync_cloud=True):
+    """Runs Smart Domino Cascade Scheduler before every save and pushes via `push_json_to_github_instantly`."""
     global _LOCAL_QUEUE_MODIFIED_TS
-    _LOCAL_QUEUE_MODIFIED_TS = time.time()
-    qdata["updated_epoch"] = _LOCAL_QUEUE_MODIFIED_TS
+    try:
+        enforce_smart_cascade_schedule(q_data)
+    except Exception as e:
+        print(f"Schedule cascade note: {e}")
+    q_data["updated_epoch"] = time.time()
+    _LOCAL_QUEUE_MODIFIED_TS = q_data["updated_epoch"]
     os.makedirs("data", exist_ok=True)
     with open(QUEUE_FILE, "w", encoding="utf-8") as f:
-        json.dump(qdata, f, indent=2, ensure_ascii=False)
-    if sync_cloud:
-        push_json_to_github_instantly(QUEUE_FILE, "Update scheduled & published queue state")
-
+        json.dump(q_data, f, indent=2, ensure_ascii=False)
+    if sync_cloud and "push_json_to_github_instantly" in globals():
+        try:
+            push_json_to_github_instantly(QUEUE_FILE, "Sync smart-cascaded scheduled queue")
+        except Exception:
+            pass
 
 
 def _infer_track_and_part_from_filename(fname, meta=None):
@@ -928,67 +1062,31 @@ def build_master_all_reels_vault():
 
 def calculate_next_available_slot_ist():
     """
-    STRICT SEQUENTIAL SLOT CALCULATOR:
-    Assigns videos in exact chronological sequence across daily_slots (e.g. 06:30, 12:30, 19:30).
-    If 06:30 and 12:30 are taken, the 3rd video ALWAYS gets 19:30 today (or 06:30 tomorrow)!
+    SMART SEQUENTIAL & ALWAYS-AFTER-LAST SLOT CALCULATOR:
+    1) Runs `enforce_smart_cascade_schedule(q)` first so any missed slots are cascaded forward.
+    2) Finds the LAST scheduled video's timestamp (`max_scheduled_epoch`) in `scheduled_posts`.
+    3) Assigns the newly scheduled video to the exact next slot (`06:30`, `12:30`, or `18:30` IST)
+       strictly AFTER that last scheduled video!
     """
-    cfg = get_schedule_config()
-    raw_slots = cfg.get("daily_slots", ["06:30", "12:30", "18:30"])
-    clean_slots = []
-    for s in raw_slots:
-        s_str = str(s).strip()
-        if ":" in s_str:
-            clean_slots.append(s_str)
-    if not clean_slots:
-        clean_slots = ["06:30", "12:30", "18:30"]
-
-    def _slot_minutes(hm_str):
-        try:
-            h, m = [int(x) for x in hm_str.split(":")[:2]]
-            return h * 60 + m
-        except Exception:
-            return 390
-
-    slots = sorted(list(set(clean_slots)), key=_slot_minutes)
     q = get_scheduled_queue()
-    taken_keys = {
-        item.get("scheduled_slot_key")
-        for item in q.get("scheduled_posts", [])
-        if item.get("status") == "scheduled"
-    }
+    enforce_smart_cascade_schedule(q)
 
-    now_ist = datetime.now(IST)
-    for day_offset in range(0, 30):
-        target_date = now_ist + timedelta(days=day_offset)
-        date_str = target_date.strftime("%Y-%m-%d")
-        display_date = target_date.strftime("%d %b %Y")
-        for hm in slots:
-            try:
-                hh, mm = [int(x) for x in hm.split(":")[:2]]
-            except Exception:
-                hh, mm = 6, 30
-            slot_dt = target_date.replace(hour=hh, minute=mm, second=0, microsecond=0)
-            if slot_dt <= now_ist + timedelta(minutes=1):
-                continue
-            slot_key = f"{date_str}_{hh:02d}:{mm:02d}"
-            if slot_key not in taken_keys:
-                return {
-                    "slot_key": slot_key,
-                    "scheduled_iso": slot_dt.isoformat(),
-                    "scheduled_epoch": slot_dt.timestamp(),
-                    "display_time": slot_dt.strftime("%d %b %Y at %I:%M %p IST"),
-                    "date_label": display_date,
-                    "time_label": slot_dt.strftime("%I:%M %p")
-                }
+    now_ep = datetime.now(IST).timestamp()
+    max_ep = now_ep
+    for item in q.get("scheduled_posts", []):
+        if item.get("status") == "scheduled":
+            ep = _parse_item_slot_epoch(item)
+            if ep > max_ep:
+                max_ep = ep
 
-    fallback_dt = now_ist + timedelta(hours=4)
+    slot_dt = _get_next_valid_slot_after(max_ep)
     return {
-        "slot_key": fallback_dt.strftime("%Y-%m-%d_%H:%M"),
-        "scheduled_iso": fallback_dt.isoformat(),
-        "scheduled_epoch": fallback_dt.timestamp(),
-        "display_time": fallback_dt.strftime("%d %b %Y at %I:%M %p IST"),
-        "date_label": fallback_dt.strftime("%d %b %Y"),
-        "time_label": fallback_dt.strftime("%I:%M %p")
+        "slot_key": slot_dt.strftime("%Y-%m-%d_%H:%M"),
+        "scheduled_iso": slot_dt.isoformat(),
+        "scheduled_epoch": slot_dt.timestamp(),
+        "display_time": slot_dt.strftime("%d %b %Y at %I:%M %p IST"),
+        "date_label": slot_dt.strftime("%d %b %Y"),
+        "time_label": slot_dt.strftime("%I:%M %p")
     }
 
 

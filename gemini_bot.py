@@ -612,17 +612,50 @@ def is_gemini_truly_signed_in(driver):
 
 def save_all_browser_cookies_via_cdp(driver, force_save=False):
     """
-    STRICT READ-ONLY ON CLOUD:
-    Never overwrites `gemini_cookies_secret.txt` when running on Linux Cloud!
-    This guarantees Cloud headless runs NEVER corrupt or invalidate your Laptop's pure cookies!
+    SURGICAL 5-TOKEN ROLLING REFRESHER:
+    Updates ONLY the 5 rotating tokens (`__Secure-1PSIDTS`, `__Secure-3PSIDTS`, `SIDCC`, `__Secure-1PSIDCC`, `__Secure-3PSIDCC`)
+    when `is_gemini_truly_signed_in(driver)` is True on Cloud, keeping base 51 cookies 100% locked!
     """
-    if os.name != "nt" or not force_save:
-        return 0
     try:
+        if not force_save and not is_gemini_truly_signed_in(driver):
+            return 0
+
         driver.execute_cdp_cmd("Network.enable", {})
-        all_cookies = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
+        live_cookies = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
+
+        if os.name != "nt":
+            if not os.path.exists(COOKIE_FILE):
+                return 0
+            bundle = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
+            base_cookies = bundle.get("cookies", [])
+            rotating_names = {"__Secure-1PSIDTS", "__Secure-3PSIDTS", "SIDCC", "__Secure-1PSIDCC", "__Secure-3PSIDCC"}
+            live_rot_map = {}
+            for lc in live_cookies:
+                if lc.get("name") in rotating_names and "google" in lc.get("domain", "") and lc.get("value"):
+                    live_rot_map[(lc["name"], lc["domain"])] = lc["value"]
+
+            if not live_rot_map:
+                return len(base_cookies)
+
+            updated_any = False
+            for bc in base_cookies:
+                key = (bc.get("name"), bc.get("domain"))
+                if key in live_rot_map and bc.get("value") != live_rot_map[key]:
+                    bc["value"] = live_rot_map[key]
+                    bc["expires"] = float(int(time.time()) + 86400 * 180)
+                    updated_any = True
+
+            if updated_any:
+                bundle["cookies"] = base_cookies
+                bundle["saved_at"] = time.time()
+                with open(COOKIE_FILE, "w", encoding="utf-8") as f:
+                    json.dump(bundle, f, indent=2)
+                sync_file_to_github(COOKIE_FILE, "Refresh 5 rotating PSIDTS/SIDCC tokens after verified login")
+                print("🔐 [5-Token Guard] Updated rotating PSIDTS/SIDCC tokens on GitHub (Base 51 cookies untouched)!")
+            return len(base_cookies)
+
         essential = []
-        for c in all_cookies:
+        for c in live_cookies:
             dom = c.get("domain", "")
             if any(k in dom for k in ["google", "youtube", "gstatic", "googleusercontent"]) and c.get("value"):
                 clean_c = {
@@ -650,8 +683,8 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
             with open(COOKIE_FILE, "w", encoding="utf-8") as f:
                 json.dump({"user_agent": ua, "cookies": essential, "local_storage": local_store, "saved_at": time.time()}, f, indent=2)
             return len(essential)
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"⚠️ Cookie token note: {e}")
     return 0
 
 
