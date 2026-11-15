@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794724254696",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: 10 KM Ki Daud Aur Pithu Ka Bojh | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:00 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794724254.6962144
+  },
+  {
     "id": "notif_1794722645473_167",
     "type": "stopped",
     "title": "Generation Stopped",
