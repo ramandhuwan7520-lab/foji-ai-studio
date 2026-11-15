@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794722287068",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 4: Midnight Mobile Ka Mission locked for 15 Nov 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "11:28 AM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794722287.0685296
+  },
+  {
     "id": "notif_1794702674668",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "03:25 PM",
     "date_str": "13 Nov 2026",
     "timestamp": 1794563740.6665072
-  },
-  {
-    "id": "notif_1794562240023",
-    "type": "error",
-    "title": "Warning: Gemini Login Error",
-    "message": "Gemini could not sign in using cookies on Cloud. Run `python gemini_bot.py --save-cookies` on laptop.",
-    "status": "error",
-    "time_str": "03:00 PM",
-    "date_str": "13 Nov 2026",
-    "timestamp": 1794562240.0231173
   }
 ]
