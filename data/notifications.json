@@ -1,5 +1,75 @@
 [
   {
+    "id": "notif_1794726360356",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 5: Pyaaz Ka Surgical Strike | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:36 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794726360.356634
+  },
+  {
+    "id": "notif_1794726326063",
+    "type": "error",
+    "title": "Warning: Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "12:35 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794726326.0637932
+  },
+  {
+    "id": "notif_1794726306253",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 5: Bada Khana Ka Haryanvi Thumka | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:35 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794726306.253437
+  },
+  {
+    "id": "notif_1794726287370",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "⚔️ Agniveer Training Center & Drill — Part 5: Route March Ka Josh Aur Baarish Ka Khamosh (Video_037_TrainingUstad_Part_05_1115_123236.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "12:34 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794726287.370484
+  },
+  {
+    "id": "notif_1794726274430",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_037_TrainingUstad_Part_05_1115_123236.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:34 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794726274.4306707
+  },
+  {
+    "id": "notif_1794726204079",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "⚔️ Agniveer Training Center & Drill — Part 5: Route March Ka Josh Aur Baarish Ka Khamosh is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:33 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794726204.0790434
+  },
+  {
+    "id": "notif_1794726159332",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Route March Ka Josh Aur Baarish Ka Khamosh | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:32 PM",
+    "date_str": "15 Nov 2026",
+    "timestamp": 1794726159.3321292
+  },
+  {
     "id": "notif_1794726079437_233",
     "type": "error",
     "title": "Scheduled Post Paused",
