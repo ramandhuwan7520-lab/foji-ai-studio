@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (1.4 min)",
-  "sub_detail": "Gemini Veo rendering Video_036_TrainingUstad_Part_05_1115_123332.mp4... (84s elapsed)",
-  "status": "active",
-  "progress": 78,
-  "updated_at": "12:36:05 PM",
-  "epoch": 1794726365.9673393
+  "step_num": 1,
+  "step_title": "Warning: Gemini Cookie Expired",
+  "sub_detail": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "12:36:19 PM",
+  "epoch": 1794726379.2321193
 }
