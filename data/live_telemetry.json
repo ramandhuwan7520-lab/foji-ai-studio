@@ -1,9 +1,9 @@
 {
   "step_num": 1,
-  "step_title": "Warning: Gemini Cookie Expired",
-  "sub_detail": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "05:44:57 AM",
-  "epoch": 1794788097.4430242
+  "step_title": "Step 1: Launching Cloud 3D Studio",
+  "sub_detail": "Triggering GitHub Actions 3D Worker...",
+  "status": "active",
+  "progress": 18,
+  "updated_at": "06:00:13 AM",
+  "epoch": 1794789013.2325213
 }
