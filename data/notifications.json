@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794788078437",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Barish, Barood Aur Ba-Kamaal Discipline | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "05:44 AM",
+    "date_str": "16 Nov 2026",
+    "timestamp": 1794788078.4376967
+  },
+  {
     "id": "notif_1794788052965",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "09:51 PM",
     "date_str": "14 Nov 2026",
     "timestamp": 1794673293.3080862
-  },
-  {
-    "id": "notif_1794673039991",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 4: Assault Course Ki Chunauti Aur Steel Body is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:47 PM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794673039.9917579
   }
 ]
