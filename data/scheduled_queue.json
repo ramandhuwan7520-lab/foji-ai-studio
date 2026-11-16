@@ -257,7 +257,8 @@
       "scheduled_full_badge": "16 Nov 2026 • 12:30 PM IST",
       "published_at": "16 Nov 2026, 07:44 AM IST",
       "published_epoch": 1794795298.2845695,
-      "ig_media_pk": "4031357389984933324"
+      "ig_media_pk": "4031357389984933324",
+      "cloud_purged": true
     }
   ],
   "published_history": [
@@ -384,7 +385,32 @@
       "published_epoch": 1794574877.988787,
       "ig_media_pk": "4029508381926495875",
       "cloud_purged": true
+    },
+    {
+      "id": "vid_Video_030_TrainingUstad_Part_03_1112_180056.mp4",
+      "video_file": "Video_030_TrainingUstad_Part_03_1112_180056.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 3: Target Pe Nazar Aur Dil Mein Jigar",
+      "track_id": "training_ustad",
+      "part_number": 3,
+      "dialogue": "Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!",
+      "shayari": "नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।",
+      "caption": "🎖️ Part 3: Target Pe Nazar Aur Dil Mein Jigar | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh aankh micholi khelte the, par yahan is lohe ki nali se dushman ki kismat likhna seekh rahe hain, nishana ab bilkul sateek hai!\"\n\n🔥 नज़र लक्ष्य पर है और उंगली घोड़े पर तैयार है,\nये खाकी वर्दी नहीं, मेरे देश का अटूट प्यार है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FojiMakra #AgniveerTraining #IndianArmy #FiringRange #DeshBhakti #ArmyLife",
+      "created_at": "12 Nov 2026, 06:03 PM IST",
+      "status": "published",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-16_12:30",
+      "scheduled_epoch": 1794812400.0,
+      "scheduled_display": "16 Nov 2026 at 12:30 PM IST",
+      "date_label": "16 Nov 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-11-16T12:30:00+05:30",
+      "scheduled_for": "2026-11-16 12:30:00",
+      "scheduled_full_badge": "16 Nov 2026 • 12:30 PM IST",
+      "published_at": "16 Nov 2026, 07:44 AM IST",
+      "published_epoch": 1794795298.2845695,
+      "ig_media_pk": "4031357389984933324",
+      "cloud_purged": true
     }
   ],
-  "updated_epoch": 1794795298.2850113
+  "updated_epoch": 1794798909.356509
 }
