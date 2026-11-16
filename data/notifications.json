@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794788032396",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Shashtra Drill Aur Chamakti Vardi | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "05:43 AM",
+    "date_str": "16 Nov 2026",
+    "timestamp": 1794788032.3968816
+  },
+  {
     "id": "notif_1794788008113",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "09:46 PM",
     "date_str": "14 Nov 2026",
     "timestamp": 1794673003.0357466
-  },
-  {
-    "id": "notif_1794672274597",
-    "type": "error",
-    "title": "Warning: Step #11: Fill Prompt Box",
-    "message": "Could not fill script into Gemini prompt box.",
-    "status": "error",
-    "time_str": "09:34 PM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794672274.5972261
   }
 ]
