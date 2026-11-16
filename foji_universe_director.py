@@ -925,7 +925,7 @@ def sync_raw_videos_into_unapproved_queue():
     changed = False
     for item in q.get("unapproved_videos", []):
         vf = item.get("video_file")
-        if not vf or vf not in valid_disk_mp4s or vf in scheduled_files or vf in published_files or vf in seen_unapproved:
+        if not vf or vf in scheduled_files or vf in published_files or vf in seen_unapproved:
             changed = True
             continue
         seen_unapproved.add(vf)
