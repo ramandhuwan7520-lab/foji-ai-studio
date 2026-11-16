@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794810673699",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Raat Ka Paramedic March Aur Saans Ki Imtehan | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:01 PM",
+    "date_str": "16 Nov 2026",
+    "timestamp": 1794810673.6995413
+  },
+  {
     "id": "notif_1794789094567",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "09:56 PM",
     "date_str": "14 Nov 2026",
     "timestamp": 1794673601.3226397
-  },
-  {
-    "id": "notif_1794673541340",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:55 PM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794673541.3409073
   }
 ]
