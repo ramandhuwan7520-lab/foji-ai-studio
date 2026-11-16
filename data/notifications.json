@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794832267154",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: 20 KM Ka Pithu Aur Lohe Ka Junoon | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:01 PM",
+    "date_str": "16 Nov 2026",
+    "timestamp": 1794832267.1542146
+  },
+  {
     "id": "notif_1794813117097",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "04:45 AM",
     "date_str": "15 Nov 2026",
     "timestamp": 1794698107.2176707
-  },
-  {
-    "id": "notif_1794698057905",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 4: Barfani Jung Aur Meera Ka Rang is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "04:44 AM",
-    "date_str": "15 Nov 2026",
-    "timestamp": 1794698057.9056165
   }
 ]
