@@ -1762,69 +1762,97 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             bname = os.path.basename(output_video_path)
             rel_vid_path = f"output/raw_videos/{bname}"
 
-            # 1. Send the MP4 Video directly to Telegram Bot with Approve/Schedule Caption!
-            tg_caption = (
-                f"🎉 *New 3D Foji Reel Ready!*\n"
-                f"🎬 *Episode:* {pending_pkg.get('emotion_name')}\n"
-                f"👥 *Cast:* `{cast_info}`\n"
-                f"📁 *File:* `{bname}`\n\n"
-                f"🗣️ _{pending_pkg.get('dialogue_line_1_hinglish')}_\n\n"
-                f"✅ Video Frontend Vault & Ready Queue mein bhi aa gayi hai!"
+            # 1. Deliver the MP4 Video directly to Telegram Bot (with Plain-Text Fallback so underscores NEVER fail!)
+            tg_caption_plain = (
+                f"🎉 New 3D Foji Reel Ready!\n\n"
+                f"🎬 Episode: {pending_pkg.get('emotion_name', 'Foji 3D Story')}\n"
+                f"👥 Cast: {cast_info}\n"
+                f"📁 File: {bname}\n\n"
+                f"🗣️ {pending_pkg.get('dialogue_line_1_hinglish', '')}\n\n"
+                f"✅ Video Frontend Vault & Ready Queue mein aa gayi hai!"
             )
             try:
                 print(f"📲 Sending completed MP4 ({bname}) to Telegram...")
-                if "send_telegram_video" in globals():
-                    send_telegram_video(output_video_path, tg_caption)
+                tg_tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "").strip()
+                tg_cid = (os.getenv("TELEGRAM_CHAT_ID") or "").strip()
+                if os.path.exists("data/telegram_config.json"):
+                    try:
+                        tcfg = json.load(open("data/telegram_config.json", "r", encoding="utf-8"))
+                        tg_tok = str(tcfg.get("bot_token") or tg_tok).strip()
+                        tg_cid = str(tcfg.get("chat_id") or tg_cid).strip()
+                    except Exception:
+                        pass
+                if not tg_tok:
+                    tg_tok = "9169384078:AAEhB_IJ_ADxvqKHlXqElPnZHh0cRU6zzlU"
+                if not tg_cid:
+                    tg_cid = "9059287136"
+
+                kb_markup = json.dumps({
+                    "inline_keyboard": [
+                        [
+                            {"text": "✅ Approve & Post (IG+FB)", "callback_data": f"approve_post:{bname}"},
+                            {"text": "⏰ Approve & Schedule", "callback_data": f"approve_sched:{bname}"}
+                        ],
+                        [
+                            {"text": "🔄 Regenerate", "callback_data": f"regen:{bname}"},
+                            {"text": "🗑️ Delete", "callback_data": f"delete:{bname}"}
+                        ]
+                    ]
+                })
+                with open(output_video_path, "rb") as vf_tg:
+                    r_tg = requests.post(
+                        f"https://api.telegram.org/bot{tg_tok}/sendVideo",
+                        data={"chat_id": tg_cid, "caption": tg_caption_plain[:980], "reply_markup": kb_markup},
+                        files={"video": (bname, vf_tg, "video/mp4")},
+                        timeout=120
+                    )
+                if r_tg.status_code == 200:
+                    print(f"✅ Video ({bname}) successfully delivered to Telegram (HTTP 200)!")
                 else:
-                    # Direct Telegram sendVideo API call so video ALWAYS arrives on Telegram!
-                    tg_tok = (os.getenv("TELEGRAM_BOT_TOKEN") or "9169384078:AAEhB_IJ_ADxvqKHlXqElPnZHh0cRU6zzlU").strip()
-                    tg_cid = (os.getenv("TELEGRAM_CHAT_ID") or "9059287136").strip()
-                    if tg_tok and tg_cid:
-                        kb_markup = json.dumps({
-                            "inline_keyboard": [
-                                [
-                                    {"text": "✅ Approve & Post (IG+FB)", "callback_data": f"approve_post:{bname}"},
-                                    {"text": "⏰ Approve & Schedule", "callback_data": f"approve_sched:{bname}"}
-                                ],
-                                [
-                                    {"text": "🔄 Regenerate", "callback_data": f"regen:{bname}"},
-                                    {"text": "🗑️ Delete", "callback_data": f"delete:{bname}"}
-                                ]
-                            ]
-                        })
-                        with open(output_video_path, "rb") as vf_tg:
-                            requests.post(
-                                f"https://api.telegram.org/bot{tg_tok}/sendVideo",
-                                data={"chat_id": tg_cid, "caption": tg_caption[:980], "parse_mode": "Markdown", "reply_markup": kb_markup},
-                                files={"video": (bname, vf_tg, "video/mp4")},
-                                timeout=90
-                            )
-                print("✅ Video successfully delivered to Telegram!")
+                    print(f"⚠️ Telegram sendVideo HTTP {r_tg.status_code}: {r_tg.text[:160]}")
             except Exception as tg_e:
                 print(f"⚠️ Telegram video send warning: {tg_e}")
 
-            # 2. Upload the unique MP4 file to GitHub so Render/Local Frontend can stream it immediately!
+            # 2. Upload MP4 + Thumbnail (.mp4.jpg) to GitHub so Render/Local Frontend can stream it immediately!
             print(f"📡 Syncing {rel_vid_path} to GitHub/Render for Frontend Preview & Vault...")
             sync_file_to_github(rel_vid_path, f"Sync generated 9:16 video {bname} for Frontend")
-            # Also generate & sync HD Poster Thumbnail (.mp4.jpg) so Cloud UI never shows a black video box!
             try:
                 import shutil as _sh
                 ff_bin = _sh.which("ffmpeg")
                 thumb_out = output_video_path + ".jpg"
                 if ff_bin:
-                    subprocess.run([ff_bin, "-y", "-ss", "00:00:02.50", "-i", output_video_path, "-frames:v", "1", "-q:v", "2", thumb_out], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15)
+                    subprocess.run([ff_bin, "-y", "-ss", "00:00:02.00", "-i", output_video_path, "-frames:v", "1", "-q:v", "2", thumb_out], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15)
                 if os.path.exists(thumb_out) and os.path.getsize(thumb_out) > 2000:
                     sync_file_to_github(f"{rel_vid_path}.jpg", f"Sync HD thumbnail for {bname}")
             except Exception:
                 pass
-            # Also save refreshed cookies at end of successful video generation!
+
             try:
                 save_all_browser_cookies_via_cdp(driver)
             except Exception:
                 pass
 
-            # 3. Record completed video & advance Part Number in history.json, episode_tracker.json & scheduled_queue.json!
+            # 3. Update cloud_mp4_index.json, history.json, episode_tracker.json & scheduled_queue.json!
             try:
+                import foji_universe_director as _fud
+                # Pull latest remote queue & cloud index first so we never overwrite newer schedule state
+                rem_q = _fud._fetch_github_json_zero_cache("data/scheduled_queue.json")
+                if isinstance(rem_q, dict) and (rem_q.get("scheduled_posts") or rem_q.get("unapproved_videos")):
+                    with open("data/scheduled_queue.json", "w", encoding="utf-8") as qf:
+                        json.dump(rem_q, qf, indent=2, ensure_ascii=False)
+
+                c_idx = []
+                if os.path.exists("data/cloud_mp4_index.json"):
+                    try:
+                        c_idx = json.load(open("data/cloud_mp4_index.json", "r", encoding="utf-8"))
+                    except Exception:
+                        c_idx = []
+                if bname not in c_idx:
+                    c_idx.insert(0, bname)
+                with open("data/cloud_mp4_index.json", "w", encoding="utf-8") as cf:
+                    json.dump(c_idx, cf, indent=2)
+                sync_file_to_github("data/cloud_mp4_index.json", f"Index {bname} in cloud_mp4_index.json")
+
                 with open("data/history.json", "r", encoding="utf-8") as f:
                     h_now = json.load(f)
                 h_now["generated_count"] = int(h_now.get("generated_count", 0)) + 1
@@ -1834,16 +1862,18 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
                 with open("data/history.json", "w", encoding="utf-8") as f:
                     json.dump(h_now, f, indent=2, ensure_ascii=False)
                 sync_file_to_github("data/history.json", f"Record completed video {bname}")
-            except Exception:
-                pass
 
-            try:
-                import foji_universe_director as _fud
                 _fud.mark_episode_part_completed(pending_pkg.get("track_id", "love_meera"), pending_pkg.get("part_number", 1))
-                _fud.sync_raw_videos_into_unapproved_queue()
-                _fud.push_json_to_github_instantly("data/scheduled_queue.json", f"Add {bname} to Frontend Ready Queue")
-            except Exception:
-                pass
+                q_updated = _fud.sync_raw_videos_into_unapproved_queue()
+                # Ensure the newly generated video is at the very top of unapproved_videos
+                u_list = q_updated.get("unapproved_videos", [])
+                new_entry = next((x for x in u_list if x.get("video_file") == bname), None)
+                if new_entry:
+                    u_list = [new_entry] + [x for x in u_list if x.get("video_file") != bname]
+                    q_updated["unapproved_videos"] = u_list
+                _fud.save_scheduled_queue(q_updated, sync_cloud=True)
+            except Exception as sync_e:
+                print(f"⚠️ Post-generation queue sync note: {sync_e}")
 
             update_3d_telemetry(8, "Stage 8: Video Ready on Telegram & Frontend!", f"{bname} delivered to Telegram & Studio Vault!", "completed", 100)
             push_app_notification("success", "🎉 New 3D Reel Ready!", f"{pending_pkg.get('emotion_name')} ({bname}) is live on Telegram & Frontend Vault!", "success")

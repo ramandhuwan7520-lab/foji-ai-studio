@@ -904,33 +904,34 @@ def _infer_track_and_part_from_filename(fname, meta=None):
 
 def sync_raw_videos_into_unapproved_queue():
     """
-    Scans BOTH `output/raw_videos/*.mp4` AND `data/history.json` so EVERY video ever generated
-    (including all 3 night-batch videos at 2:30 AM and 6:00 AM) is visible in the Frontend!
+    CLOUD & RENDER SAFE VAULT SYNC:
+    - Never wipes `unapproved_videos` when running on Render (where `output/raw_videos` is empty on local disk)!
+    - Combines local `output/raw_videos/*.mp4`, `data/cloud_mp4_index.json`, and `data/history.json`
+      so EVERY generated video immediately appears in the Frontend Ready Queue & Master Vault!
     """
     q = get_scheduled_queue()
     scheduled_files = {item.get("video_file") for item in q.get("scheduled_posts", []) if item.get("video_file")}
     published_files = {item.get("video_file") for item in q.get("published_posts", []) if item.get("video_file")}
 
+    del_set = set()
+    if os.path.exists("data/deleted_ids.json"):
+        try:
+            del_set.update(str(x) for x in json.load(open("data/deleted_ids.json", "r", encoding="utf-8")))
+        except Exception:
+            pass
+
     raw_dir = "output/raw_videos"
     os.makedirs(raw_dir, exist_ok=True)
-    valid_disk_mp4s = {f for f in os.listdir(raw_dir) if f.endswith(".mp4") and os.path.getsize(os.path.join(raw_dir, f)) > 100 * 1024}
+    valid_mp4s = {
+        f for f in os.listdir(raw_dir)
+        if f.endswith(".mp4") and os.path.getsize(os.path.join(raw_dir, f)) > 50 * 1024
+    }
     if os.path.exists("data/cloud_mp4_index.json"):
         try:
             with open("data/cloud_mp4_index.json", "r", encoding="utf-8") as cf:
-                valid_disk_mp4s.update(json.load(cf))
+                valid_mp4s.update(x for x in json.load(cf) if str(x).endswith(".mp4"))
         except Exception:
             pass
-    clean_unapproved = []
-    seen_unapproved = set()
-    changed = False
-    for item in q.get("unapproved_videos", []):
-        vf = item.get("video_file")
-        if not vf or vf in scheduled_files or vf in published_files or vf in seen_unapproved:
-            changed = True
-            continue
-        seen_unapproved.add(vf)
-        clean_unapproved.append(item)
-    q["unapproved_videos"] = clean_unapproved
 
     hist_map = {}
     if os.path.exists(HISTORY_FILE):
@@ -940,46 +941,55 @@ def sync_raw_videos_into_unapproved_queue():
             for h in hd.get("history", []):
                 vid_id = h.get("video_id")
                 vfile = h.get("video_file") or (f"raw_video_{vid_id}.mp4" if vid_id else "")
-                if vfile:
+                if vfile and vfile.endswith(".mp4"):
                     hist_map[vfile] = h
+                    valid_mp4s.add(vfile)
         except Exception:
             pass
 
-    raw_dir = "output/raw_videos"
-    os.makedirs(raw_dir, exist_ok=True)
-    mp4_files = sorted(
-        [f for f in os.listdir(raw_dir) if f.endswith(".mp4")],
-        key=lambda x: os.path.getmtime(os.path.join(raw_dir, x)),
-        reverse=True
-    )
+    # Also keep all existing unapproved_videos that aren't scheduled/published/deleted
+    for item in q.get("unapproved_videos", []):
+        vf = item.get("video_file")
+        if vf and vf.endswith(".mp4"):
+            valid_mp4s.add(vf)
 
-    # ONLY include real MP4 files (>100KB) that actually exist on disk (no failed/ghost entries!)
-    all_candidate_files = sorted(list(valid_disk_mp4s), reverse=True)
+    valid_mp4s = {f for f in valid_mp4s if f not in del_set}
+
+    clean_unapproved = []
+    seen_unapproved = set()
+    changed = False
+    for item in q.get("unapproved_videos", []):
+        vf = item.get("video_file")
+        if not vf or vf in del_set or vf in scheduled_files or vf in published_files or vf in seen_unapproved:
+            changed = True
+            continue
+        seen_unapproved.add(vf)
+        clean_unapproved.append(item)
+    q["unapproved_videos"] = clean_unapproved
+
+    def _vid_sort_ts(fname):
+        fp = os.path.join(raw_dir, fname)
+        if os.path.exists(fp):
+            return os.path.getmtime(fp)
+        m_dt = re.search(r"_(\d{4})_(\d{6})", fname)
+        if m_dt:
+            try:
+                dt = datetime.strptime(f"2026{m_dt.group(1)}{m_dt.group(2)}", "%Y%m%d%H%M%S").replace(tzinfo=IST)
+                return dt.timestamp()
+            except Exception:
+                pass
+        return 0.0
+
+    all_candidate_files = sorted(list(valid_mp4s), key=_vid_sort_ts, reverse=True)
 
     for fname in all_candidate_files:
         if fname not in scheduled_files and fname not in published_files and fname not in seen_unapproved:
             meta = hist_map.get(fname, {})
-            if meta.get("posted") or meta.get("status") == "published":
-                q["published_posts"].append({
-                    "id": f"pub_{fname}",
-                    "video_file": fname,
-                    "title": meta.get("emotion_name", f"Foji 3D Reel ({fname})"),
-                    "track_id": meta.get("track_id", "love_meera"),
-                    "part_number": meta.get("part_number", 1),
-                    "dialogue": meta.get("dialogue_line_1_hinglish", ""),
-                    "caption": meta.get("caption", ""),
-                    "published_at": meta.get("posted_at") or meta.get("completed_at") or "Posted on IG",
-                    "status": "published"
-                })
-                published_files.add(fname)
-                changed = True
-                continue
-
             full_p = os.path.join(raw_dir, fname)
             mtime_str = (
                 datetime.fromtimestamp(os.path.getmtime(full_p), IST).strftime("%d %b %Y, %I:%M %p")
                 if os.path.exists(full_p)
-                else (meta.get("created_at") or "Today")
+                else (meta.get("completed_at") or meta.get("created_at") or "Ready in Studio")
             )
             inf_tid, inf_pnum, inf_title = _infer_track_and_part_from_filename(fname, meta)
             q["unapproved_videos"].append({
@@ -998,7 +1008,9 @@ def sync_raw_videos_into_unapproved_queue():
             changed = True
 
     if changed:
-        save_scheduled_queue(q, sync_cloud=False)
+        os.makedirs("data", exist_ok=True)
+        with open(QUEUE_FILE, "w", encoding="utf-8") as f:
+            json.dump(q, f, indent=2, ensure_ascii=False)
     return q
 
 
@@ -1286,13 +1298,30 @@ def pull_latest_cloud_state_for_frontend():
                 with open(local_p, "w", encoding="utf-8") as wf:
                     json.dump(remote_data, wf, indent=2, ensure_ascii=False)
 
-    if (time.time() - _LOCAL_QUEUE_MODIFIED_TS) > 12.0:
+    if (time.time() - _LOCAL_QUEUE_MODIFIED_TS) > 5.0:
         remote_q = _fetch_github_json_zero_cache(QUEUE_FILE)
         if isinstance(remote_q, dict):
             loc_q = get_scheduled_queue()
-            if float(remote_q.get("updated_epoch", 0)) > float(loc_q.get("updated_epoch", 0)):
+            if float(remote_q.get("updated_epoch", 0)) >= float(loc_q.get("updated_epoch", 0)):
                 with open(QUEUE_FILE, "w", encoding="utf-8") as wf:
                     json.dump(remote_q, wf, indent=2, ensure_ascii=False)
+            else:
+                # Merge any newly generated unapproved video from remote_q so it never gets missed!
+                loc_known = {
+                    x.get("video_file")
+                    for k in ("unapproved_videos", "scheduled_posts", "published_posts")
+                    for x in loc_q.get(k, [])
+                }
+                added_new = False
+                for ru in remote_q.get("unapproved_videos", []):
+                    rvf = ru.get("video_file")
+                    if rvf and rvf not in loc_known:
+                        loc_q.setdefault("unapproved_videos", []).insert(0, ru)
+                        loc_known.add(rvf)
+                        added_new = True
+                if added_new:
+                    with open(QUEUE_FILE, "w", encoding="utf-8") as wf:
+                        json.dump(loc_q, wf, indent=2, ensure_ascii=False)
 
     # ZERO-RAM CLOUD INDEX: On Render/Linux, DO NOT download 25+ MP4s into 512MB RAM!
     # Only record their filenames in data/cloud_mp4_index.json so the Vault knows about every video with 0 MB RAM!

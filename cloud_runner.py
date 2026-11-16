@@ -40,7 +40,7 @@ def send_completed_reel_to_telegram(res_pkg):
             with open(v_file, "rb") as vf:
                 r = requests.post(
                     f"https://api.telegram.org/bot{tok}/sendVideo",
-                    data={"chat_id": cid, "caption": caption[:950], "parse_mode": "Markdown"},
+                    data={"chat_id": cid, "caption": caption[:950]},
                     files={"video": vf},
                     timeout=90
                 )
@@ -48,7 +48,7 @@ def send_completed_reel_to_telegram(res_pkg):
         else:
             requests.post(
                 f"https://api.telegram.org/bot{tok}/sendMessage",
-                data={"chat_id": cid, "text": caption, "parse_mode": "Markdown"},
+                data={"chat_id": cid, "text": caption},
                 timeout=15
             )
             print("📲 [Telegram Success Message Sent]!")
