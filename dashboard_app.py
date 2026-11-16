@@ -2104,6 +2104,34 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
     return pub_item
 
 
+_LAST_BG_CLOUD_PULL_TS = 0.0
+_BG_CLOUD_PULL_LOCK = threading.Lock()
+_CACHED_UNIVERSE_STATUS = None
+_CACHED_UNIVERSE_TS = 0.0
+_IN_FLIGHT_SCHEDULED_LOCK = set()
+
+
+def _trigger_nonblocking_cloud_pull_if_needed():
+    """Non-blocking background cloud state puller called by `/api/universe/status`."""
+    global _LAST_BG_CLOUD_PULL_TS
+    now_t = time.time()
+    if (now_t - _LAST_BG_CLOUD_PULL_TS) < 4.0:
+        return
+    _LAST_BG_CLOUD_PULL_TS = now_t
+
+    def _pull_job():
+        if not _BG_CLOUD_PULL_LOCK.acquire(blocking=False):
+            return
+        try:
+            _fud.pull_latest_cloud_state_for_frontend()
+        except Exception:
+            pass
+        finally:
+            _BG_CLOUD_PULL_LOCK.release()
+
+    threading.Thread(target=_pull_job, daemon=True).start()
+
+
 def _background_master_scheduler_daemon():
     """
     SMART AUTO-POSTER & DOMINO CASCADE DAEMON (MANUAL REEL GENERATION ONLY!):
@@ -2112,11 +2140,11 @@ def _background_master_scheduler_daemon():
       1) Auto-cascades any post that missed its slot while server was offline (>2 hours old).
       2) When `time.time() >= due_epoch`, uploads the due video to Instagram (`@ai_foji_lovelife`).
       3) If upload succeeds -> `mark_video_as_published_in_vault` moves it to Published!
-      4) If upload fails for any reason -> Instead of throwing it back to Pending, it automatically
-         shifts the failed post to the NEXT time slot (`force_shift_video_file=vfile`) and domino-cascades
-         all subsequent scheduled videos forward by 1 slot!
+      4) If upload fails for any reason -> Automatically shifts the failed post to the NEXT time slot
+         (`force_shift_video_file=vfile`) and domino-cascades all subsequent scheduled videos forward by 1 slot!
     """
-    time.sleep(10)
+    global _CACHED_UNIVERSE_TS
+    time.sleep(8)
     try:
         _fud.pull_latest_cloud_state_for_frontend()
     except Exception:
@@ -2143,7 +2171,6 @@ def _background_master_scheduler_daemon():
             after_snaps = [(p.get("video_file"), p.get("scheduled_slot_key")) for p in q.get("scheduled_posts", [])]
             if before_snaps != after_snaps:
                 _fud.save_scheduled_queue(q, sync_cloud=True)
-                global _CACHED_UNIVERSE_TS
                 _CACHED_UNIVERSE_TS = 0
 
             # 3. Check for Due Scheduled Posts (`time.time() >= due_epoch`)
@@ -2162,7 +2189,6 @@ def _background_master_scheduler_daemon():
                 if not vfile:
                     continue
 
-                # If already published, clean from scheduled_posts
                 if vfile in pub_files:
                     q["scheduled_posts"] = [p for p in q.get("scheduled_posts", []) if p.get("video_file") != vfile]
                     _fud.save_scheduled_queue(q, sync_cloud=True)
@@ -2176,7 +2202,6 @@ def _background_master_scheduler_daemon():
                         pub_res = _publish_specific_video_to_ig(vpath, post.get("caption", ""), allow_repost=False)
                         print(f"✅ [Smart Auto-Poster] Successfully published '{vfile}' on Instagram!")
                         _CACHED_UNIVERSE_TS = 0
-                        # Send Telegram confirmation
                         try:
                             import gemini_bot
                             link = pub_res.get("permalink", "") if isinstance(pub_res, dict) else ""
@@ -2219,8 +2244,11 @@ def _background_master_scheduler_daemon():
         time.sleep(25)
 
 
+if not os.environ.get("IS_CLOUD_WORKER"):
+    threading.Thread(target=_background_master_scheduler_daemon, daemon=True).start()
+
+
 def _start_render_anti_sleep_keepalive():
-    """Pings own external Render URL every 4 minutes so Render Free Tier NEVER goes to sleep!"""
     def _ping_loop():
         time.sleep(15)
         while True:
@@ -2235,6 +2263,7 @@ def _start_render_anti_sleep_keepalive():
                 pass
             time.sleep(240)
     threading.Thread(target=_ping_loop, daemon=True).start()
+
 
 if os.environ.get("RENDER") or os.name != "nt":
     _start_render_anti_sleep_keepalive()

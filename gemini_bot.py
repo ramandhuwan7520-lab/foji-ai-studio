@@ -1799,17 +1799,46 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
                         ]
                     ]
                 })
-                with open(output_video_path, "rb") as vf_tg:
-                    r_tg = requests.post(
-                        f"https://api.telegram.org/bot{tg_tok}/sendVideo",
-                        data={"chat_id": tg_cid, "caption": tg_caption_plain[:980], "reply_markup": kb_markup},
-                        files={"video": (bname, vf_tg, "video/mp4")},
-                        timeout=120
-                    )
-                if r_tg.status_code == 200:
-                    print(f"✅ Video ({bname}) successfully delivered to Telegram (HTTP 200)!")
-                else:
-                    print(f"⚠️ Telegram sendVideo HTTP {r_tg.status_code}: {r_tg.text[:160]}")
+                tg_sent_ok = False
+                for tg_try in range(1, 4):
+                    try:
+                        # Try curl IPv4 HTTP/1.1 first (immune to Python requests SSL/502 chunk drops!)
+                        curl_bin = "curl.exe" if os.name == "nt" else "curl"
+                        c_res = subprocess.run(
+                            [
+                                curl_bin, "-4", "--http1.1", "-s",
+                                "--connect-timeout", "15", "--max-time", "120",
+                                "-X", "POST", f"https://api.telegram.org/bot{tg_tok}/sendVideo",
+                                "-F", f"chat_id={tg_cid}",
+                                "-F", f"caption={tg_caption_plain[:950]}",
+                                "-F", f"reply_markup={kb_markup}",
+                                "-F", f"video=@{output_video_path};type=video/mp4"
+                            ],
+                            capture_output=True, text=True
+                        )
+                        if '"ok":true' in (c_res.stdout or ""):
+                            print(f"✅ Video ({bname}) successfully delivered to Telegram via curl (Attempt {tg_try})!")
+                            tg_sent_ok = True
+                            break
+                    except Exception:
+                        pass
+                    try:
+                        with open(output_video_path, "rb") as vf_tg:
+                            r_tg = requests.post(
+                                f"https://api.telegram.org/bot{tg_tok}/sendVideo",
+                                data={"chat_id": tg_cid, "caption": tg_caption_plain[:950], "reply_markup": kb_markup},
+                                files={"video": (bname, vf_tg, "video/mp4")},
+                                timeout=120
+                            )
+                        if r_tg.status_code == 200 and r_tg.json().get("ok"):
+                            print(f"✅ Video ({bname}) successfully delivered to Telegram via requests (Attempt {tg_try})!")
+                            tg_sent_ok = True
+                            break
+                        else:
+                            print(f"⚠️ Telegram sendVideo Attempt {tg_try} HTTP {r_tg.status_code}: {r_tg.text[:120]}")
+                    except Exception as e_r:
+                        print(f"⚠️ Telegram sendVideo Attempt {tg_try} note: {e_r}")
+                    time.sleep(3)
             except Exception as tg_e:
                 print(f"⚠️ Telegram video send warning: {tg_e}")
 
