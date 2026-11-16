@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794813096438",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Night Navigation Aur Andhere Ki Jung | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:41 PM",
+    "date_str": "16 Nov 2026",
+    "timestamp": 1794813096.4381516
+  },
+  {
     "id": "notif_1794813065396",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "04:43 AM",
     "date_str": "15 Nov 2026",
     "timestamp": 1794698019.9246037
-  },
-  {
-    "id": "notif_1794690172206",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 4: Midnight Mobile Ka Mission (Video_032_FaujiMasti_Part_04_1115_023057.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "02:32 AM",
-    "date_str": "15 Nov 2026",
-    "timestamp": 1794690172.206143
   }
 ]
