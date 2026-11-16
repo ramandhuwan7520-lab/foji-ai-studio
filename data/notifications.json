@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794787980847",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Raat Ka Route March Aur Pithu Ka Bhar | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "05:43 AM",
+    "date_str": "16 Nov 2026",
+    "timestamp": 1794787980.8471794
+  },
+  {
     "id": "notif_1794786026015",
     "type": "error",
     "title": "Warning: Gemini Cookie Expired",
@@ -788,15 +798,5 @@
     "time_str": "09:33 PM",
     "date_str": "14 Nov 2026",
     "timestamp": 1794672237.1111813
-  },
-  {
-    "id": "notif_1794671307966",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "09:18 PM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794671307.9663737
   }
 ]
