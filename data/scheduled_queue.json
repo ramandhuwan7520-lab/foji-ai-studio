@@ -257,25 +257,6 @@
       "scheduled_full_badge": "17 Nov 2026 • 12:30 PM IST"
     },
     {
-      "id": "vid_raw_video_1110_023138_p1.mp4",
-      "video_file": "raw_video_1110_023138_p1.mp4",
-      "title": "Foji 3D Reel (raw_video_1110_023138_p1.mp4)",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "status": "scheduled",
-      "scheduled_epoch": 1794920400.0,
-      "scheduled_slot_key": "2026-11-17_18:30",
-      "scheduled_iso": "2026-11-17T18:30:00+05:30",
-      "scheduled_for": "2026-11-17 18:30:00",
-      "date_label": "17 Nov 2026",
-      "time_label": "06:30 PM",
-      "scheduled_display": "17 Nov 2026 at 06:30 PM IST",
-      "scheduled_full_badge": "17 Nov 2026 • 06:30 PM IST"
-    },
-    {
       "id": "vid_raw_video_1109_023108_p3.mp4",
       "video_file": "raw_video_1109_023108_p3.mp4",
       "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 3: Chithhi Ka Intezaar Aur Pyaar",
@@ -557,6 +538,28 @@
       "published_epoch": 1794795298.2845695,
       "ig_media_pk": "4031357389984933324",
       "cloud_purged": true
+    },
+    {
+      "id": "vid_raw_video_1110_023138_p1.mp4",
+      "video_file": "raw_video_1110_023138_p1.mp4",
+      "title": "Foji 3D Reel (raw_video_1110_023138_p1.mp4)",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "status": "published",
+      "scheduled_epoch": 1794920400.0,
+      "scheduled_slot_key": "2026-11-17_18:30",
+      "scheduled_iso": "2026-11-17T18:30:00+05:30",
+      "scheduled_for": "2026-11-17 18:30:00",
+      "date_label": "17 Nov 2026",
+      "time_label": "06:30 PM",
+      "scheduled_display": "17 Nov 2026 at 06:30 PM IST",
+      "scheduled_full_badge": "17 Nov 2026 • 06:30 PM IST",
+      "published_at": "16 Nov 2026, 11:55 PM IST",
+      "published_epoch": 1794853528.7313232,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
   "published_history": [
@@ -707,7 +710,29 @@
       "published_epoch": 1794795298.2845695,
       "ig_media_pk": "4031357389984933324",
       "cloud_purged": true
+    },
+    {
+      "id": "vid_raw_video_1110_023138_p1.mp4",
+      "video_file": "raw_video_1110_023138_p1.mp4",
+      "title": "Foji 3D Reel (raw_video_1110_023138_p1.mp4)",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "status": "published",
+      "scheduled_epoch": 1794920400.0,
+      "scheduled_slot_key": "2026-11-17_18:30",
+      "scheduled_iso": "2026-11-17T18:30:00+05:30",
+      "scheduled_for": "2026-11-17 18:30:00",
+      "date_label": "17 Nov 2026",
+      "time_label": "06:30 PM",
+      "scheduled_display": "17 Nov 2026 at 06:30 PM IST",
+      "scheduled_full_badge": "17 Nov 2026 • 06:30 PM IST",
+      "published_at": "16 Nov 2026, 11:55 PM IST",
+      "published_epoch": 1794853528.7313232,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794851305.2116294
+  "updated_epoch": 1794853528.7323003
 }
