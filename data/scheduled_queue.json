@@ -219,25 +219,6 @@
   ],
   "scheduled_posts": [
     {
-      "id": "vid_raw_video_1109_023124_p3.mp4",
-      "video_file": "raw_video_1109_023124_p3.mp4",
-      "title": "❤️ Foji Makra & Fojan Meera Love Story • Part 3",
-      "track_id": "love_meera",
-      "part_number": 3,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "status": "scheduled",
-      "scheduled_epoch": 1794877200.0,
-      "scheduled_slot_key": "2026-11-17_06:30",
-      "scheduled_iso": "2026-11-17T06:30:00+05:30",
-      "scheduled_for": "2026-11-17 06:30:00",
-      "date_label": "17 Nov 2026",
-      "time_label": "06:30 AM",
-      "scheduled_display": "17 Nov 2026 at 06:30 AM IST",
-      "scheduled_full_badge": "17 Nov 2026 • 06:30 AM IST"
-    },
-    {
       "id": "vid_raw_video_1110_060115_p4.mp4",
       "video_file": "raw_video_1110_060115_p4.mp4",
       "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 4: Digital Ishq Aur Border Ka Pehra",
@@ -566,6 +547,28 @@
       "published_at": "17 Nov 2026, 12:12 AM IST",
       "published_epoch": 1794854526.252998,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_1109_023124_p3.mp4",
+      "video_file": "raw_video_1109_023124_p3.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story • Part 3",
+      "track_id": "love_meera",
+      "part_number": 3,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "status": "published",
+      "scheduled_epoch": 1794877200.0,
+      "scheduled_slot_key": "2026-11-17_06:30",
+      "scheduled_iso": "2026-11-17T06:30:00+05:30",
+      "scheduled_for": "2026-11-17 06:30:00",
+      "date_label": "17 Nov 2026",
+      "time_label": "06:30 AM",
+      "scheduled_display": "17 Nov 2026 at 06:30 AM IST",
+      "scheduled_full_badge": "17 Nov 2026 • 06:30 AM IST",
+      "published_at": "17 Nov 2026, 12:12 AM IST",
+      "published_epoch": 1794854538.9094224,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
   "published_history": [
@@ -782,7 +785,29 @@
       "published_at": "17 Nov 2026, 12:12 AM IST",
       "published_epoch": 1794854526.252998,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_1109_023124_p3.mp4",
+      "video_file": "raw_video_1109_023124_p3.mp4",
+      "title": "❤️ Foji Makra & Fojan Meera Love Story • Part 3",
+      "track_id": "love_meera",
+      "part_number": 3,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "status": "published",
+      "scheduled_epoch": 1794877200.0,
+      "scheduled_slot_key": "2026-11-17_06:30",
+      "scheduled_iso": "2026-11-17T06:30:00+05:30",
+      "scheduled_for": "2026-11-17 06:30:00",
+      "date_label": "17 Nov 2026",
+      "time_label": "06:30 AM",
+      "scheduled_display": "17 Nov 2026 at 06:30 AM IST",
+      "scheduled_full_badge": "17 Nov 2026 • 06:30 AM IST",
+      "published_at": "17 Nov 2026, 12:12 AM IST",
+      "published_epoch": 1794854538.9094224,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794854526.2538586
+  "updated_epoch": 1794854538.9103003
 }
