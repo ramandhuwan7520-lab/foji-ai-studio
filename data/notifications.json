@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794788098564",
+    "type": "error",
+    "title": "Warning: Gemini Cookie Expired",
+    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
+    "status": "error",
+    "time_str": "05:44 AM",
+    "date_str": "16 Nov 2026",
+    "timestamp": 1794788098.5645819
+  },
+  {
     "id": "notif_1794788078437",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:51 PM",
     "date_str": "14 Nov 2026",
     "timestamp": 1794673314.4768937
-  },
-  {
-    "id": "notif_1794673293308",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan locked for 15 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "09:51 PM",
-    "date_str": "14 Nov 2026",
-    "timestamp": 1794673293.3080862
   }
 ]
