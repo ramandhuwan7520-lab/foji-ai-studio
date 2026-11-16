@@ -692,11 +692,6 @@ def get_scheduled_queue():
                         clean_pub.append(item)
                 data["published_posts"] = clean_pub
                 data["published_history"] = clean_pub
-                if "enforce_smart_cascade_schedule" in globals():
-                    try:
-                        enforce_smart_cascade_schedule(data)
-                    except Exception:
-                        pass
                 return data
         except Exception:
             pass
@@ -719,22 +714,42 @@ def _parse_item_slot_epoch(item):
                 return dt.timestamp()
             except Exception:
                 pass
+    sk = str(item.get("scheduled_slot_key") or "").strip()
+    if sk:
+        try:
+            dt = datetime.strptime(sk, "%Y-%m-%d_%H:%M").replace(tzinfo=IST_TZ)
+            return dt.timestamp()
+        except Exception:
+            pass
     return 0.0
+
+
+def _get_configured_daily_slots():
+    try:
+        cfg = get_schedule_config()
+        raw = cfg.get("daily_slots") or cfg.get("times") or ["06:30", "12:30", "18:30"]
+        cleaned = sorted(list({str(x).strip() for x in raw if ":" in str(x)}))
+        if cleaned:
+            return cleaned
+    except Exception:
+        pass
+    return ["06:30", "12:30", "18:30"]
 
 
 def _get_next_valid_slot_after(ref_epoch):
     """
     Given any timestamp `ref_epoch`, returns the exact next slot (`06:30`, `12:30`, or `18:30` IST)
-    that is strictly AFTER `ref_epoch` (by at least 5 minutes).
+    that is strictly AFTER `ref_epoch` (by at least 2 minutes).
     """
     IST_TZ = timezone(timedelta(hours=5, minutes=30))
     base_dt = datetime.fromtimestamp(ref_epoch, tz=IST_TZ)
+    slots = _get_configured_daily_slots()
     for day_offset in range(0, 365):
         cand_date = (base_dt + timedelta(days=day_offset)).date()
-        for hm in ("06:30", "12:30", "18:30"):
-            hh, mm = map(int, hm.split(":"))
+        for hm in slots:
+            hh, mm = map(int, hm.split(":")[:2])
             slot_dt = datetime(cand_date.year, cand_date.month, cand_date.day, hh, mm, 0, tzinfo=IST_TZ)
-            if slot_dt.timestamp() > (ref_epoch + 300):
+            if slot_dt.timestamp() > (ref_epoch + 120):
                 return slot_dt
     return base_dt + timedelta(hours=6)
 
@@ -753,13 +768,16 @@ def _stamp_slot_fields_on_item(item, slot_dt):
     return item
 
 
-def enforce_smart_cascade_schedule(q_data):
+def enforce_smart_cascade_schedule(q_data, force_shift_video_file=None):
     """
-    SMART DOMINO CASCADE SCHEDULER:
-    1) Removes any already-published videos (from `published_posts` & `posted_ledger.json`).
-    2) If ANY scheduled video missed its slot (older than 15 mins in the past) or has a duplicate time,
-       it automatically shifts it to the next upcoming slot and cascades all subsequent videos forward 1-by-1!
-    3) New videos are ALWAYS scheduled strictly AFTER the LAST scheduled video in the queue!
+    SMART DOMINO CASCADE SCHEDULER (WITH 2-HOUR ACTIVE DUE WINDOW FOR AUTO-POSTER!):
+    1) Keeps any video that is currently DUE (`now - 2 hours <= scheduled_epoch <= now`) at its
+       exact due timestamp so `_background_master_scheduler_daemon` can publish it to Instagram!
+    2) If a video MISSED its slot by more than 2 hours (`scheduled_epoch < now - 7200`),
+       OR if `force_shift_video_file` is passed (when an upload attempt fails at slot time),
+       OR if two videos have the same duplicate slot,
+       it automatically shifts that video to the NEXT upcoming future slot and domino-cascades
+       all subsequent scheduled videos forward 1-by-1 (`06:30 -> 12:30 -> 18:30 -> next day 06:30`)!
     """
     IST_TZ = timezone(timedelta(hours=5, minutes=30))
     now_ep = datetime.now(IST_TZ).timestamp()
@@ -776,6 +794,7 @@ def enforce_smart_cascade_schedule(q_data):
         if vf:
             led_map[vf] = p_item
     try:
+        os.makedirs("data", exist_ok=True)
         with open(ledger_p, "w", encoding="utf-8") as lf:
             json.dump(led_map, lf, indent=2, ensure_ascii=False)
     except Exception:
@@ -783,6 +802,7 @@ def enforce_smart_cascade_schedule(q_data):
 
     pub_files = set(led_map.keys())
     q_data["published_posts"] = list(led_map.values())
+    q_data["published_history"] = list(led_map.values())
     sched_list = [s for s in q_data.get("scheduled_posts", []) if s.get("video_file") and s.get("video_file") not in pub_files]
     q_data["unapproved_videos"] = [u for u in q_data.get("unapproved_videos", []) if u.get("video_file") and u.get("video_file") not in pub_files]
 
@@ -807,15 +827,26 @@ def enforce_smart_cascade_schedule(q_data):
     with_ts.sort(key=lambda x: x["_parsed_ep"])
     ordered_sched = with_ts + without_ts
 
-    cursor_epoch = now_ep - 900
+    # Allow a 2-hour active due window (`now_ep - 7200`) so a post due right now stays due for the Auto-Poster,
+    # UNLESS `force_shift_video_file` explicitly requests shifting a failed due post to the next future slot!
+    cursor_epoch = now_ep - 7200
+    valid_slots = set(_get_configured_daily_slots())
+
     for item in ordered_sched:
+        vf = item.get("video_file")
         item_ep = item.pop("_parsed_ep", 0.0) or _parse_item_slot_epoch(item)
-        if item_ep > cursor_epoch:
+
+        if force_shift_video_file and vf == force_shift_video_file:
+            # This post failed at its due time -> shift it to the next future slot after `now_ep`
+            # which automatically pushes cursor_epoch forward and cascades all following videos!
+            slot_dt = _get_next_valid_slot_after(max(cursor_epoch, now_ep))
+        elif item_ep > cursor_epoch:
             slot_dt = datetime.fromtimestamp(item_ep, tz=IST_TZ)
             hm_str = slot_dt.strftime("%H:%M")
-            if hm_str not in ("06:30", "12:30", "18:30"):
+            if hm_str not in valid_slots:
                 slot_dt = _get_next_valid_slot_after(max(cursor_epoch, now_ep))
         else:
+            # Missed slot (>2 hours old) or duplicate collision with previous video -> cascade to next future slot!
             slot_dt = _get_next_valid_slot_after(max(cursor_epoch, now_ep))
 
         _stamp_slot_fields_on_item(item, slot_dt)

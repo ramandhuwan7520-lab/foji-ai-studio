@@ -2002,6 +2002,20 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
         _RECENTLY_PUBLISHED_guard[vname] = now_t
 
     vpath = os.path.abspath(os.path.join("output/raw_videos", vname))
+    if not os.path.exists(vpath) or os.path.getsize(vpath) < 50000:
+        try:
+            os.makedirs(os.path.dirname(vpath), exist_ok=True)
+            gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
+            repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+            raw_url = f"https://raw.githubusercontent.com/{repo}/main/output/raw_videos/{vname}"
+            headers = {"Authorization": f"Bearer {gh_pat}"} if gh_pat else {}
+            r_dl = requests.get(raw_url, headers=headers, timeout=45)
+            if r_dl.status_code == 200 and len(r_dl.content) > 50000:
+                with open(vpath, "wb") as vf_out:
+                    vf_out.write(r_dl.content)
+                print(f"📥 [Auto-Poster] Pulled '{vname}' ({len(r_dl.content)//1024} KB) from GitHub for Instagram upload!")
+        except Exception as dl_e:
+            print(f"⚠️ Auto-fetch MP4 note: {dl_e}")
     if not os.path.exists(vpath) or os.path.getsize(vpath) < 10000:
         try:
             import requests as _req
@@ -2091,8 +2105,18 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
 
 
 def _background_master_scheduler_daemon():
-    # Wait 12 seconds after server boot & pull latest GitHub state first so restarts NEVER re-trigger old posts!
-    time.sleep(12)
+    """
+    SMART AUTO-POSTER & DOMINO CASCADE DAEMON (MANUAL REEL GENERATION ONLY!):
+    - Auto Reel Generation (Night Batch & T-30 Pre-Slot) is 100% DISABLED so cookies NEVER expire from background runs!
+    - Checks `scheduled_posts` every 25 seconds:
+      1) Auto-cascades any post that missed its slot while server was offline (>2 hours old).
+      2) When `time.time() >= due_epoch`, uploads the due video to Instagram (`@ai_foji_lovelife`).
+      3) If upload succeeds -> `mark_video_as_published_in_vault` moves it to Published!
+      4) If upload fails for any reason -> Instead of throwing it back to Pending, it automatically
+         shifts the failed post to the NEXT time slot (`force_shift_video_file=vfile`) and domino-cascades
+         all subsequent scheduled videos forward by 1 slot!
+    """
+    time.sleep(10)
     try:
         _fud.pull_latest_cloud_state_for_frontend()
     except Exception:
@@ -2100,11 +2124,7 @@ def _background_master_scheduler_daemon():
 
     while True:
         try:
-            now_ist = datetime.now(_fud.IST)
-            today_str = now_ist.strftime("%Y-%m-%d")
-            curr_hm = now_ist.strftime("%H:%M")
-
-            # Sync remote queue before checking due posts
+            # 1. Sync remote queue from GitHub if newer
             try:
                 rem_q = _fud._fetch_github_json_zero_cache("data/scheduled_queue.json")
                 if isinstance(rem_q, dict):
@@ -2115,199 +2135,88 @@ def _background_master_scheduler_daemon():
             except Exception:
                 pass
 
-            cfg = _fud.get_schedule_config()
             q = _fud.get_scheduled_queue()
 
-            if cfg.get("auto_pilot_enabled", True):
-                triggered = set(cfg.get("last_triggered_keys", []))
+            # 2. Check if any old slot (>2 hours past due) needs auto-cascade shifting first
+            before_snaps = [(p.get("video_file"), p.get("scheduled_slot_key")) for p in q.get("scheduled_posts", [])]
+            _fud.enforce_smart_cascade_schedule(q)
+            after_snaps = [(p.get("video_file"), p.get("scheduled_slot_key")) for p in q.get("scheduled_posts", [])]
+            if before_snaps != after_snaps:
+                _fud.save_scheduled_queue(q, sync_cloud=True)
+                global _CACHED_UNIVERSE_TS
+                _CACHED_UNIVERSE_TS = 0
 
-                # 1. Night Batch at 02:30 AM IST
-                night_hm = cfg.get("night_batch_time", "02:30")
-                night_key = f"NIGHT_BATCH_{today_str}_{night_hm}"
-                if curr_hm == night_hm and night_key not in triggered:
-                    triggered.add(night_key)
-                    cfg["last_triggered_keys"] = list(triggered)[-60:]
-                    _fud.save_schedule_config(cfg)
-                    batch_cnt = int(cfg.get("night_batch_count", 3))
-                    _execute_single_or_batch_generation(count=batch_cnt, reason_label=f"02:30 AM Night Batch ({batch_cnt} Reels)")
+            # 3. Check for Due Scheduled Posts (`time.time() >= due_epoch`)
+            sched_list = list(q.get("scheduled_posts", []))
+            pub_files = {
+                p.get("video_file")
+                for p in (q.get("published_posts", []) + q.get("published_history", []))
+                if p.get("video_file")
+            }
 
-                # 2. T-30 Minute Pre-Slot Trigger
-                pre_mins = int(cfg.get("pre_slot_minutes", 30))
-                for slot_hm in cfg.get("daily_slots", ["06:30", "12:30", "19:30"]):
+            now_ts = time.time()
+            for post in sched_list:
+                vfile = post.get("video_file", "")
+                due_epoch = float(post.get("scheduled_epoch") or _fud._parse_item_slot_epoch(post) or 0)
+
+                if not vfile:
+                    continue
+
+                # If already published, clean from scheduled_posts
+                if vfile in pub_files:
+                    q["scheduled_posts"] = [p for p in q.get("scheduled_posts", []) if p.get("video_file") != vfile]
+                    _fud.save_scheduled_queue(q, sync_cloud=True)
+                    continue
+
+                if due_epoch > 0 and now_ts >= due_epoch and vfile not in _IN_FLIGHT_SCHEDULED_LOCK:
+                    _IN_FLIGHT_SCHEDULED_LOCK.add(vfile)
+                    vpath = os.path.join("output/raw_videos", vfile)
                     try:
-                        sh, sm = [int(x) for x in slot_hm.split(":")[:2]]
-                        slot_dt = now_ist.replace(hour=sh, minute=sm, second=0, microsecond=0)
-                        pre_dt = slot_dt - timedelta(minutes=pre_mins)
-                        pre_hm = pre_dt.strftime("%H:%M")
-                        pre_key = f"PRE30_{today_str}_{slot_hm}"
-                        if curr_hm == pre_hm and pre_key not in triggered:
-                            triggered.add(pre_key)
-                            cfg["last_triggered_keys"] = list(triggered)[-60:]
-                            _fud.save_schedule_config(cfg)
-                            _execute_single_or_batch_generation(count=1, reason_label=f"T-30 Min Pre-Schedule Trigger ({slot_hm})")
-                    except Exception:
-                        pass
-
-                # 3. Due Scheduled Posts (Strictly 1 post, with immediate Cloud Removal + Anti-Duplicate check!)
-                sched_list = list(q.get("scheduled_posts", []))
-                pub_files = {
-                    p.get("video_file")
-                    for p in (q.get("published_posts", []) + q.get("published_history", []))
-                    if p.get("video_file")
-                }
-
-                for post in sched_list:
-                    due_epoch = float(post.get("scheduled_epoch", 0))
-                    vfile = post.get("video_file", "")
-
-                    # If already in published_posts, silently clean it from scheduled_posts so it NEVER posts twice!
-                    if vfile in pub_files:
-                        q["scheduled_posts"] = [p for p in q.get("scheduled_posts", []) if p.get("video_file") != vfile]
-                        _fud.save_scheduled_queue(q, sync_cloud=True)
-                        continue
-
-                    if due_epoch > 0 and time.time() >= due_epoch and vfile and vfile not in _IN_FLIGHT_SCHEDULED_LOCK:
-                        _IN_FLIGHT_SCHEDULED_LOCK.add(vfile)
-                        # Remove from scheduled_posts & push to GitHub BEFORE starting upload!
-                        q["scheduled_posts"] = [p for p in q.get("scheduled_posts", []) if p.get("video_file") != vfile]
-                        _fud.save_scheduled_queue(q, sync_cloud=True)
-
-                        vpath = os.path.join("output/raw_videos", vfile)
+                        print(f"🚀 [Smart Auto-Poster] Slot Due for '{vfile}' ({post.get('scheduled_display')}) -> Uploading to Instagram...")
+                        pub_res = _publish_specific_video_to_ig(vpath, post.get("caption", ""), allow_repost=False)
+                        print(f"✅ [Smart Auto-Poster] Successfully published '{vfile}' on Instagram!")
+                        _CACHED_UNIVERSE_TS = 0
+                        # Send Telegram confirmation
                         try:
-                            _publish_specific_video_to_ig(vpath, post.get("caption", ""), allow_repost=False)
-                        except Exception as pub_err:
-                            # Put the reel back into unapproved_videos so a failed scheduled post is NEVER lost!
-                            _IN_FLIGHT_SCHEDULED_LOCK.discard(vfile)
-                            q_restore = _fud.get_scheduled_queue()
-                            post["status"] = "awaiting_approval"
-                            if not any(x.get("video_file") == vfile for x in q_restore.get("unapproved_videos", [])):
-                                q_restore.setdefault("unapproved_videos", []).insert(0, post)
-                            _fud.save_scheduled_queue(q_restore, sync_cloud=True)
-                            log_notification("error", "Scheduled Post Paused", f"{vfile} kept safe in Pending: {str(pub_err)[:120]}", "error")
-                        break
-        except Exception:
-            pass
-        try:
-            _fud.auto_purge_posted_videos_older_than_1_hour()
-        except Exception:
-            pass
-        trim_system_memory()
-        time.sleep(30)
-
-# Run scheduler ONLY on Render Cloud (or if explicitly enabled), NEVER on both Laptop & Cloud simultaneously!
-if not globals().get("_FOJI_MASTER_SCHEDULER_STARTED") and (os.environ.get("RENDER") or os.environ.get("ENABLE_LOCAL_SCHEDULER") == "1"):
-    globals()["_FOJI_MASTER_SCHEDULER_STARTED"] = True
-    _threading.Thread(target=_background_master_scheduler_daemon, daemon=True).start()
-
-
-_LAST_BG_CLOUD_PULL_TS = 0.0
-_CACHED_UNIVERSE_STATUS = None
-_CACHED_UNIVERSE_TS = 0.0
-
-def _trigger_nonblocking_cloud_pull_if_needed():
-    global _LAST_BG_CLOUD_PULL_TS
-    now_t = time.time()
-    if now_t - _LAST_BG_CLOUD_PULL_TS < 45.0:
-        return
-    _LAST_BG_CLOUD_PULL_TS = now_t
-    def _bg_pull():
-        try:
-            _fud.pull_latest_cloud_state_for_frontend()
-        except Exception:
-            pass
-    threading.Thread(target=_bg_pull, daemon=True).start()
-
-
-@app.route("/api/universe/ig_insights", methods=["GET"])
-def api_universe_ig_insights():
-    from flask import request, jsonify
-    cache_file = "data/ig_insights_cache.json"
-    now_t = time.time()
-
-    force_refresh = (request.args.get("refresh") == "1")
-    if not force_refresh and os.path.exists(cache_file):
-        try:
-            with open(cache_file, "r", encoding="utf-8") as f:
-                cdata = json.load(f)
-            if now_t - float(cdata.get("cached_at", 0)) < 300:
-                return jsonify(cdata)
-        except Exception:
-            pass
-
-    vault = _fud.build_master_all_reels_vault()
-    published_reels = [v for v in vault if v.get("vault_status") == "published"]
-
-    insights = {
-        "ok": True,
-        "username": "ai_foji_lovelife",
-        "connected": os.path.exists(IG_SESSION_FILE),
-        "followers": 0,
-        "total_posted": len(published_reels),
-        "total_views": 0,
-        "total_likes": 0,
-        "total_comments": 0,
-        "total_shares": 0,
-        "reels_metrics": [],
-        "cached_at": now_t,
-        "updated_str": datetime.now(IST).strftime("%I:%M %p IST")
-    }
-
-    try:
-        if os.path.exists(IG_SESSION_FILE):
-            cl = get_authenticated_ig_client()
-            uid = getattr(cl, "user_id", None) or "22494488394"
-            try:
-                uinfo = cl.user_info(str(uid))
-                insights["followers"] = int(getattr(uinfo, "follower_count", 0) or 0)
-            except Exception:
-                pass
-
-            medias = []
-            try:
-                medias = cl.user_medias_v1(str(uid), amount=12)
-            except Exception:
-                medias = []
-
-            for m in medias:
-                v_cnt = int(getattr(m, "play_count", 0) or getattr(m, "view_count", 0) or 0)
-                l_cnt = int(getattr(m, "like_count", 0) or 0)
-                c_cnt = int(getattr(m, "comment_count", 0) or 0)
-                s_cnt = int(getattr(m, "reshare_count", 0) or max(1, int(l_cnt * 0.18)))
-                code_str = str(getattr(m, "code", "") or "")
-                cap_txt = str(getattr(m, "caption_text", "") or "").strip()
-                lines = cap_txt.splitlines()
-                clean_title = lines[0][:48] if lines else f"Reel {code_str}"
-
-                insights["total_views"] += v_cnt
-                insights["total_likes"] += l_cnt
-                insights["total_comments"] += c_cnt
-                insights["total_shares"] += s_cnt
-                insights["reels_metrics"].append({
-                    "code": code_str,
-                    "permalink": f"https://www.instagram.com/reel/{code_str}/" if code_str else "",
-                    "title": clean_title,
-                    "views": v_cnt,
-                    "likes": l_cnt,
-                    "comments": c_cnt,
-                    "shares": s_cnt
-                })
-    except Exception:
-        pass
-
-    try:
-        os.makedirs("data", exist_ok=True)
-        with open(cache_file, "w", encoding="utf-8") as f:
-            json.dump(insights, f, indent=2)
-    except Exception:
-        pass
-
-    return jsonify(insights)
-
-
-
-@app.route("/api/ping", methods=["GET"])
-def api_keepalive_ping():
-    return jsonify({"alive": True, "ts": int(time.time())}), 200
+                            import gemini_bot
+                            link = pub_res.get("permalink", "") if isinstance(pub_res, dict) else ""
+                            gemini_bot.send_telegram_text_alert(
+                                f"✅ Foji AI Studio — Scheduled Reel Auto-Posted!\n\n"
+                                f"🎬 File: {vfile}\n"
+                                f"⏰ Slot: {post.get('scheduled_display')}\n"
+                                f"🔗 Link: {link}"
+                            )
+                        except Exception:
+                            pass
+                    except Exception as pub_err:
+                        print(f"⚠️ [Smart Auto-Poster] Upload failed for '{vfile}': {pub_err} -> Auto-Shifting to next slot & cascading queue!")
+                        q_shift = _fud.get_scheduled_queue()
+                        _fud.enforce_smart_cascade_schedule(q_shift, force_shift_video_file=vfile)
+                        _fud.save_scheduled_queue(q_shift, sync_cloud=True)
+                        _CACHED_UNIVERSE_TS = 0
+                        new_slot_str = next((x.get("scheduled_display") for x in q_shift.get("scheduled_posts", []) if x.get("video_file") == vfile), "Next Slot")
+                        log_notification(
+                            "warning",
+                            "Scheduled Post Auto-Shifted",
+                            f"{vfile} could not post ({str(pub_err)[:90]}). Auto-shifted to {new_slot_str} & cascaded queue!",
+                            "warning"
+                        )
+                        try:
+                            import gemini_bot
+                            gemini_bot.send_telegram_text_alert(
+                                f"⚠️ Foji AI Studio — Scheduled Post Auto-Shifted!\n\n"
+                                f"🎬 File: {vfile}\n"
+                                f"❗ Reason: {str(pub_err)[:120]}\n"
+                                f"⏭️ Shifted To: {new_slot_str} (All following videos cascaded forward!)"
+                            )
+                        except Exception:
+                            pass
+                    finally:
+                        _IN_FLIGHT_SCHEDULED_LOCK.discard(vfile)
+                    break
+        except Exception as e_loop:
+            print(f"Scheduler loop note: {e_loop}")
+        time.sleep(25)
 
 
 def _start_render_anti_sleep_keepalive():
