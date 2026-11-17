@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Step 1: Launching Cloud 3D Studio",
-  "sub_detail": "Triggering GitHub Actions 3D Worker...",
+  "step_num": 3,
+  "step_title": "Stage 3: Create Video & 9:16 Portrait",
+  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
   "status": "active",
-  "progress": 18,
-  "updated_at": "11:36:47 PM",
-  "epoch": 1794938807.9777315
+  "progress": 45,
+  "updated_at": "11:38:56 PM",
+  "epoch": 1794938936.6682453
 }
