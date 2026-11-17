@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_raw_video_8.mp4",
-      "video_file": "raw_video_8.mp4",
-      "title": "Foji Nok-Jhok & Chai • Part 1",
-      "track_id": "comedy",
-      "part_number": 1,
-      "dialogue": "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
-      "shayari": "",
-      "caption": "❤️ Foji Nok-Jhok & Chai • Part 1 🇮🇳✨\n🪖 \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\"\n💖 \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
-      "created_at": "27 Oct 2026, 07:10 PM",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_7.mp4",
       "video_file": "raw_video_7.mp4",
       "title": "Chithi & Homecoming • Part 1",
@@ -655,6 +643,21 @@
       "published_at": "17 Nov 2026, 08:36 PM IST",
       "published_epoch": 1794927985.9502287,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_8.mp4",
+      "video_file": "raw_video_8.mp4",
+      "title": "Foji Nok-Jhok & Chai • Part 1",
+      "track_id": "comedy",
+      "part_number": 1,
+      "dialogue": "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+      "shayari": "",
+      "caption": "❤️ Foji Nok-Jhok & Chai • Part 1 🇮🇳✨\n🪖 \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\"\n💖 \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "27 Oct 2026, 07:10 PM",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:36 PM IST",
+      "published_epoch": 1794927999.5327146,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
   "published_history": [
@@ -1053,7 +1056,22 @@
       "published_at": "17 Nov 2026, 08:36 PM IST",
       "published_epoch": 1794927985.9502287,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_8.mp4",
+      "video_file": "raw_video_8.mp4",
+      "title": "Foji Nok-Jhok & Chai • Part 1",
+      "track_id": "comedy",
+      "part_number": 1,
+      "dialogue": "Meera, agli post se sidha gaon wali train pakad ke aa raha hu!",
+      "shayari": "",
+      "caption": "❤️ Foji Nok-Jhok & Chai • Part 1 🇮🇳✨\n🪖 \"Meera, agli post se sidha gaon wali train pakad ke aa raha hu!\"\n💖 \"Foji sahab, aapki vardi ki chamak se hi mera sindoor mahakta hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "27 Oct 2026, 07:10 PM",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:36 PM IST",
+      "published_epoch": 1794927999.5327146,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794927985.951607
+  "updated_epoch": 1794927999.5344481
 }
