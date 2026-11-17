@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
-  "sub_detail": "Saving Video_052_FaujiMasti_Part_05_1117_124630.mp4 & pushing to Telegram/Frontend...",
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud 3D Studio",
+  "sub_detail": "Triggering GitHub Actions 3D Worker...",
   "status": "active",
-  "progress": 94,
-  "updated_at": "12:51:45 PM",
-  "epoch": 1794900105.2196145
+  "progress": 18,
+  "updated_at": "05:31:19 PM",
+  "epoch": 1794916879.5149374
 }
