@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (2.9 min)",
-  "sub_detail": "Gemini Veo rendering Video_053_BorderDuty_Part_05_1117_173209.mp4... (173s elapsed)",
+  "step_title": "Stage 6: Rendering 3D Video (3.1 min)",
+  "sub_detail": "Gemini Veo rendering Video_053_BorderDuty_Part_05_1117_173209.mp4... (186s elapsed)",
   "status": "active",
-  "progress": 83,
-  "updated_at": "05:35:49 PM",
-  "epoch": 1794917149.8697038
+  "progress": 84,
+  "updated_at": "05:36:03 PM",
+  "epoch": 1794917163.387287
 }
