@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Step 1: Launching Cloud 3D Studio",
-  "sub_detail": "Triggering GitHub Actions 3D Worker...",
+  "step_num": 6,
+  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
+  "sub_detail": "Rendering Video_053_UnitRagda_Part_06_1117_203142.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
-  "progress": 18,
-  "updated_at": "08:30:44 PM",
-  "epoch": 1794927644.2734072
+  "progress": 75,
+  "updated_at": "08:32:39 PM",
+  "epoch": 1794927759.8911161
 }
