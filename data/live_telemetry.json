@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...))...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering Video_053_BorderDuty_Part_05_1117_173209.mp4...",
   "status": "active",
-  "progress": 45,
-  "updated_at": "05:32:20 PM",
-  "epoch": 1794916940.6565042
+  "progress": 68,
+  "updated_at": "05:32:45 PM",
+  "epoch": 1794916965.1787882
 }
