@@ -650,7 +650,8 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                 bundle["saved_at"] = time.time()
                 with open(COOKIE_FILE, "w", encoding="utf-8") as f:
                     json.dump(bundle, f, indent=2)
-                sync_file_to_github(COOKIE_FILE, "Refresh 5 rotating PSIDTS/SIDCC tokens after verified login")
+                # Cloud read-only cookie mode: do not overwrite GitHub cookie file from Linux worker
+                pass
                 print("🔐 [5-Token Guard] Updated rotating PSIDTS/SIDCC tokens on GitHub (Base 51 cookies untouched)!")
             return len(base_cookies)
 
