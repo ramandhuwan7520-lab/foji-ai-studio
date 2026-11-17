@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_raw_video_10.mp4",
-      "video_file": "raw_video_10.mp4",
-      "title": "LOC Vigil & Braveheart • Part 1",
-      "track_id": "border_action",
-      "part_number": 1,
-      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
-      "shayari": "",
-      "caption": "❤️ LOC Vigil & Braveheart • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
-      "created_at": "01 Nov 2026, 10:33 AM",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_Video_031_FaujiMasti_Part_03_1113_015153.mp4",
       "video_file": "Video_031_FaujiMasti_Part_03_1113_015153.mp4",
       "title": "😂 Barrack Masti, Mess & Brotherhood — Part 3: Fauji Haircut Ka Tyohaar",
@@ -673,6 +661,21 @@
       "published_at": "17 Nov 2026, 08:37 PM IST",
       "published_epoch": 1794928070.8207018,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_10.mp4",
+      "video_file": "raw_video_10.mp4",
+      "title": "LOC Vigil & Braveheart • Part 1",
+      "track_id": "border_action",
+      "part_number": 1,
+      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+      "shayari": "",
+      "caption": "❤️ LOC Vigil & Braveheart • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "01 Nov 2026, 10:33 AM",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:38 PM IST",
+      "published_epoch": 1794928084.968269,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
   "published_history": [
@@ -1161,7 +1164,22 @@
       "published_at": "17 Nov 2026, 08:37 PM IST",
       "published_epoch": 1794928070.8207018,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_10.mp4",
+      "video_file": "raw_video_10.mp4",
+      "title": "LOC Vigil & Braveheart • Part 1",
+      "track_id": "border_action",
+      "part_number": 1,
+      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+      "shayari": "",
+      "caption": "❤️ LOC Vigil & Braveheart • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "01 Nov 2026, 10:33 AM",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:38 PM IST",
+      "published_epoch": 1794928084.968269,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794928070.8266013
+  "updated_epoch": 1794928084.9740686
 }
