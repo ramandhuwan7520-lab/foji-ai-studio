@@ -1,9 +1,8 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "Video_053_BorderDuty_Part_05_1117_173209.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "05:40:03 PM",
-  "epoch": 1794917403.0938394
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Ready",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1794917482.3724198
 }
