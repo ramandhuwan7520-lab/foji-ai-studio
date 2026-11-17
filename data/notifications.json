@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794916931958",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 5: Barfani Raat Mein Dil Ki Dhadkan | Cast: Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...)",
+    "status": "info",
+    "time_str": "05:32 PM",
+    "date_str": "17 Nov 2026",
+    "timestamp": 1794916931.9588692
+  },
+  {
     "id": "notif_1794900131513",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "05:36 AM",
     "date_str": "15 Nov 2026",
     "timestamp": 1794701213.0841694
-  },
-  {
-    "id": "notif_1794699055529",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "05:00 AM",
-    "date_str": "15 Nov 2026",
-    "timestamp": 1794699055.5298567
   }
 ]
