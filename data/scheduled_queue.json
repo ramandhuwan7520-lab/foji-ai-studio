@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_raw_video_6.mp4",
-      "video_file": "raw_video_6.mp4",
-      "title": "Tiranga Shaan & Duty • Part 1",
-      "track_id": "patriotic",
-      "part_number": 1,
-      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
-      "shayari": "",
-      "caption": "❤️ Tiranga Shaan & Duty • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
-      "created_at": "26 Oct 2026, 07:59 PM",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_5.mp4",
       "video_file": "raw_video_5.mp4",
       "title": "Foji & Fojan Love Saga • Part 1",
@@ -661,6 +649,21 @@
       "published_at": "17 Nov 2026, 08:37 PM IST",
       "published_epoch": 1794928028.1869516,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_6.mp4",
+      "video_file": "raw_video_6.mp4",
+      "title": "Tiranga Shaan & Duty • Part 1",
+      "track_id": "patriotic",
+      "part_number": 1,
+      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+      "shayari": "",
+      "caption": "❤️ Tiranga Shaan & Duty • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "26 Oct 2026, 07:59 PM",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:37 PM IST",
+      "published_epoch": 1794928037.6682737,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
   "published_history": [
@@ -1089,7 +1092,22 @@
       "published_at": "17 Nov 2026, 08:37 PM IST",
       "published_epoch": 1794928028.1869516,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_6.mp4",
+      "video_file": "raw_video_6.mp4",
+      "title": "Tiranga Shaan & Duty • Part 1",
+      "track_id": "patriotic",
+      "part_number": 1,
+      "dialogue": "Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!",
+      "shayari": "",
+      "caption": "❤️ Tiranga Shaan & Duty • Part 1 🇮🇳✨\n🪖 \"Dekh Meera, tirange ki shaan aur tera pyar hi meri taqat hai!\"\n💖 \"Batao kab aaoge, pura gaon apne Foji ka intezar kar raha hai!\"\n.\n#FojiFojan #IndianArmy #FojiLoveStory #3DAnimation #ArmyWife #DesiLove #ReelsIndia",
+      "created_at": "26 Oct 2026, 07:59 PM",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:37 PM IST",
+      "published_epoch": 1794928037.6682737,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794928028.1882854
+  "updated_epoch": 1794928037.6719341
 }
