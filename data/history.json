@@ -1,5 +1,5 @@
 {
-  "generated_count": 32,
+  "generated_count": 33,
   "history": [
     {
       "track_id": "funny",
@@ -614,6 +614,29 @@
       "caption": "🎖️ Part 5: Rifle Dismantle Aur Ustad Ki Daant | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh cycle ki chain utarne pe thik kar dete the, par yahan ye lohe ke purzon ne toh dimaag ki hi chain tight kar di hai!\"\n\n🔥 Aankhon pe patti aur haathon mein lohe ka gumaan,\nfauji ki pehchan hoti hai andhere mein bhi teer chalaane ka armaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiAI #AgniveerLife #IndianArmy #PixarStyle #FaujiVibes #TrainingAcademy",
       "created_at": "16 Nov 2026, 09:07 PM IST",
       "completed_at": "16 Nov 2026, 09:09 PM IST"
+    },
+    {
+      "video_id": "Video_052_FaujiMasti_Part_05_1117_124630",
+      "video_file": "Video_052_FaujiMasti_Part_05_1117_124630.mp4",
+      "track_id": "fauji_masti",
+      "track_name": "😂 Barrack Masti, Mess & Brotherhood",
+      "part_number": 5,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "😂 Barrack Masti, Mess & Brotherhood — Part 5: Bada Khana Dance & Desi Jugalbandi",
+      "scene_summary": "3D Pixar-style 9:16 vertical shot. Inside the decorated army mess hall during 'Bada Khana'. Colorful lights and paper streamers hang from the ceiling. Makra, wearing his rolled-up olive-green uniform sleeves, is mid-air doing a high-energy Haryanvi folk dance step on a wooden chair. Ustad stands in the background with a stern face that slowly turns into a proud, amused smile, while unit brothers clap and cheer in rhythm.",
+      "dialogue_line_1_hinglish": "Ustad ji, plate mein khana chahe jitna bhi kam ho, par dance floor pe humari energy dekh kar dushman ki bhi half-time hi bolti band ho jayegi!",
+      "shayari_hindi": "Khane ki thali ho ya fauji mehfil ka samaan,\nnaachne mein aage rehta hai hamesha apna haryanvi jawan!",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 😂 Barrack Masti, Mess & Brotherhood - Part 5: Bada Khana Dance & Desi Jugalbandi. SCENE & ACTION: 3D Pixar-style 9:16 vertical shot. Inside the decorated army mess hall during 'Bada Khana'. Colorful lights and paper streamers hang from the ceiling. Makra, wearing his rolled-up olive-green uniform sleeves, is mid-air doing a high-energy Haryanvi folk dance step on a wooden chair. Ustad stands in the background with a stern face that slowly turns into a proud, amused smile, while unit brothers clap and cheer in rhythm. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, plate mein khana chahe jitna bhi kam ho, par dance floor pe humari energy dekh kar dushman ki bhi half-time hi bolti band ho jayegi!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 5: Bada Khana Dance & Desi Jugalbandi | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, plate mein khana chahe jitna bhi kam ho, par dance floor pe humari energy dekh kar dushman ki bhi half-time hi bolti band ho jayegi!\"\n\n🔥 Khane ki thali ho ya fauji mehfil ka samaan,\nnaachne mein aage rehta hai hamesha apna haryanvi jawan!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiAIStudio #BadaKhana #DesiComedy #AgniveerLife #FaujiBrothers #ArmyMessMasti",
+      "created_at": "17 Nov 2026, 12:46 PM IST",
+      "completed_at": "17 Nov 2026, 12:52 PM IST"
     }
+  ],
+  "recent_tracks": [
+    "fauji_masti"
+  ],
+  "failed_dialogues": [
+    "Ustad ji, plate mein khana chahe jitna bhi kam ho, par dance floor pe humari energy dekh kar dushman ki bhi half-time hi bolti band ho jayegi!"
   ]
 }
