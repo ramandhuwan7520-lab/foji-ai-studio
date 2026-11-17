@@ -296,6 +296,27 @@
       "scheduled_iso": "2026-11-21T06:30:00+05:30",
       "scheduled_for": "2026-11-21 06:30:00",
       "scheduled_full_badge": "21 Nov 2026 • 06:30 AM IST"
+    },
+    {
+      "id": "vid_Video_053_BorderDuty_Part_05_1117_173209.mp4",
+      "video_file": "Video_053_BorderDuty_Part_05_1117_173209.mp4",
+      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 5: Barfani Raat Mein Dil Ki Dhadkan",
+      "track_id": "border_duty",
+      "part_number": 5,
+      "dialogue": "Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.",
+      "shayari": "Sarhad ki ye thandi hawayein ab mujhe darr nahi dikhati, kyunki teri yaadon ki garmahat mere seene mein ek alag hi aag jagati.",
+      "caption": "🎖️ Part 5: Barfani Raat Mein Dil Ki Dhadkan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.\"\n\n🔥 Sarhad ki ye thandi hawayein ab mujhe darr nahi dikhati, kyunki teri yaadon ki garmahat mere seene mein ek alag hi aag jagati.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiAI #IndianArmy #MakraAndMeera #SiachenDiaries #AgniveerLife #PixarStyleArmy",
+      "created_at": "17 Nov 2026, 05:40 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-21_12:30",
+      "scheduled_epoch": 1795244400.0,
+      "scheduled_display": "21 Nov 2026 at 12:30 PM IST",
+      "date_label": "21 Nov 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-11-21T12:30:00+05:30",
+      "scheduled_for": "2026-11-21 12:30:00",
+      "scheduled_full_badge": "21 Nov 2026 • 12:30 PM IST"
     }
   ],
   "published_posts": [
@@ -952,5 +973,5 @@
       "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794900124.7232192
+  "updated_epoch": 1794918009.4775138
 }
