@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794917384603",
+    "type": "info",
+    "title": "📥 Step 7: Video Rendered! Downloading...",
+    "message": "Downloading Video_053_BorderDuty_Part_05_1117_173209.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "05:39 PM",
+    "date_str": "17 Nov 2026",
+    "timestamp": 1794917384.6034536
+  },
+  {
     "id": "notif_1794916966371",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "05:37 AM",
     "date_str": "15 Nov 2026",
     "timestamp": 1794701273.423986
-  },
-  {
-    "id": "notif_1794701246848",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "05:37 AM",
-    "date_str": "15 Nov 2026",
-    "timestamp": 1794701246.8481028
   }
 ]
