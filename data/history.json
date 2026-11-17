@@ -1,5 +1,5 @@
 {
-  "generated_count": 33,
+  "generated_count": 34,
   "history": [
     {
       "track_id": "funny",
@@ -631,12 +631,31 @@
       "caption": "🎖️ Part 5: Bada Khana Dance & Desi Jugalbandi | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, plate mein khana chahe jitna bhi kam ho, par dance floor pe humari energy dekh kar dushman ki bhi half-time hi bolti band ho jayegi!\"\n\n🔥 Khane ki thali ho ya fauji mehfil ka samaan,\nnaachne mein aage rehta hai hamesha apna haryanvi jawan!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiAIStudio #BadaKhana #DesiComedy #AgniveerLife #FaujiBrothers #ArmyMessMasti",
       "created_at": "17 Nov 2026, 12:46 PM IST",
       "completed_at": "17 Nov 2026, 12:52 PM IST"
+    },
+    {
+      "video_id": "Video_053_BorderDuty_Part_05_1117_173209",
+      "video_file": "Video_053_BorderDuty_Part_05_1117_173209.mp4",
+      "track_id": "border_duty",
+      "track_name": "🏔️ LOC Border Patrol & Maa KaPyar",
+      "part_number": 5,
+      "include_meera": true,
+      "meera_outfit": "Pastel Peach & Mint Chikankari Anarkali Suit with pearl earrings and flowing scarf",
+      "emotion_name": "🏔️ LOC Border Patrol & Maa KaPyar — Part 5: Barfani Raat Mein Dil Ki Dhadkan",
+      "scene_summary": "A 3D Pixar-style 9:16 vertical split-screen. On the left, Foji Makra sits inside a cramped, dimly lit bunker, holding a frozen radio handset, his face etched with determination and cold-induced redness. On the right, Meera is shown standing in a soft-lit, cozy village veranda, wearing a beautiful Pastel Peach & Mint Chikankari Anarkali Suit with pearl earrings and a flowing scarf, holding a glowing diya. The background transitions from the icy blue hues of the Siachen glacier to the warm, golden glow of a quiet Indian village night.",
+      "dialogue_line_1_hinglish": "Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.",
+      "shayari_hindi": "Sarhad ki ye thandi hawayein ab mujhe darr nahi dikhati, kyunki teri yaadon ki garmahat mere seene mein ek alag hi aag jagati.",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images (Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! In this episode, Meera MUST wear a brand-new outfit: Pastel Peach & Mint Chikankari Anarkali Suit with pearl earrings and flowing scarf. EPISODE: 🏔️ LOC Border Patrol & Maa KaPyar - Part 5: Barfani Raat Mein Dil Ki Dhadkan. SCENE & ACTION: A 3D Pixar-style 9:16 vertical split-screen. On the left, Foji Makra sits inside a cramped, dimly lit bunker, holding a frozen radio handset, his face etched with determination and cold-induced redness. On the right, Meera is shown standing in a soft-lit, cozy village veranda, wearing a beautiful Pastel Peach & Mint Chikankari Anarkali Suit with pearl earrings and a flowing scarf, holding a glowing diya. The background transitions from the icy blue hues of the Siachen glacier to the warm, golden glow of a quiet Indian village night. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 5: Barfani Raat Mein Dil Ki Dhadkan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.\"\n\n🔥 Sarhad ki ye thandi hawayein ab mujhe darr nahi dikhati, kyunki teri yaadon ki garmahat mere seene mein ek alag hi aag jagati.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiAI #IndianArmy #MakraAndMeera #SiachenDiaries #AgniveerLife #PixarStyleArmy",
+      "created_at": "17 Nov 2026, 05:32 PM IST",
+      "completed_at": "17 Nov 2026, 05:40 PM IST"
     }
   ],
   "recent_tracks": [
-    "fauji_masti"
+    "fauji_masti",
+    "border_duty"
   ],
   "failed_dialogues": [
-    "Ustad ji, plate mein khana chahe jitna bhi kam ho, par dance floor pe humari energy dekh kar dushman ki bhi half-time hi bolti band ho jayegi!"
+    "Ustad ji, plate mein khana chahe jitna bhi kam ho, par dance floor pe humari energy dekh kar dushman ki bhi half-time hi bolti band ho jayegi!",
+    "Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai."
   ]
 }
