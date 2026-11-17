@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_raw_video_1109_010404_p1.mp4",
-      "video_file": "raw_video_1109_010404_p1.mp4",
-      "title": "⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda",
-      "track_id": "training_ustad",
-      "part_number": 1,
-      "dialogue": "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!",
-      "shayari": "Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.",
-      "caption": "🎖️ Part 1: 4 AM Ki Whistle Aur Pehla Ragda | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!\"\n\n🔥 Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#AgniveerLife #ArmyTraining #FojiMakra #IndianArmy #DesiHumor #JaiHind",
-      "created_at": "09 Nov 2026, 01:10 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_1108_202515_p2.mp4",
       "video_file": "raw_video_1108_202515_p2.mp4",
       "title": "❤️ Foji Makra & Fojan Meera Love Story — Part 2: Sarhad Ki Thand Aur Yaadon Ki Garmi",
@@ -653,6 +641,21 @@
       "published_at": "17 Nov 2026, 08:35 PM IST",
       "published_epoch": 1794927955.7846298,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_1109_010404_p1.mp4",
+      "video_file": "raw_video_1109_010404_p1.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda",
+      "track_id": "training_ustad",
+      "part_number": 1,
+      "dialogue": "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!",
+      "shayari": "Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.",
+      "caption": "🎖️ Part 1: 4 AM Ki Whistle Aur Pehla Ragda | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!\"\n\n🔥 Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#AgniveerLife #ArmyTraining #FojiMakra #IndianArmy #DesiHumor #JaiHind",
+      "created_at": "09 Nov 2026, 01:10 AM IST",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:36 PM IST",
+      "published_epoch": 1794927963.3433897,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
   "published_history": [
@@ -1025,7 +1028,22 @@
       "published_at": "17 Nov 2026, 08:35 PM IST",
       "published_epoch": 1794927955.7846298,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_1109_010404_p1.mp4",
+      "video_file": "raw_video_1109_010404_p1.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 1: 4 AM Ki Whistle Aur Pehla Ragda",
+      "track_id": "training_ustad",
+      "part_number": 1,
+      "dialogue": "Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!",
+      "shayari": "Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.",
+      "caption": "🎖️ Part 1: 4 AM Ki Whistle Aur Pehla Ragda | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh suraj humein jagata tha, par yahan toh aapki seeti ne neend ke saath saath saare veham bhi uda diye, ab toh bas ragda hi sahara hai!\"\n\n🔥 Nind ko tyaga hai ab sapno ko paane ke liye,\nYe vardi ki chamak kafi hai zamane ko dikhane ke liye.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#AgniveerLife #ArmyTraining #FojiMakra #IndianArmy #DesiHumor #JaiHind",
+      "created_at": "09 Nov 2026, 01:10 AM IST",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:36 PM IST",
+      "published_epoch": 1794927963.3433897,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794927955.7861402
+  "updated_epoch": 1794927963.3458366
 }
