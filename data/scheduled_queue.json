@@ -1,18 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_raw_video_4.mp4",
-      "video_file": "raw_video_4.mp4",
-      "title": "Foji & Fojan: Shaq aur Haq (Part 1)",
-      "track_id": "fighting",
-      "part_number": 1,
-      "dialogue": "Raat ko kiska phone aa raha hai?",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "created_at": "11 Nov 2026, 02:40 PM",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_3.mp4",
       "video_file": "raw_video_3.mp4",
       "title": "Foji & Fojan: Fauji Discipline vs Biwi ke Nakhre (Part 1)",
@@ -667,6 +655,21 @@
       "published_at": "17 Nov 2026, 08:37 PM IST",
       "published_epoch": 1794928053.0684717,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_4.mp4",
+      "video_file": "raw_video_4.mp4",
+      "title": "Foji & Fojan: Shaq aur Haq (Part 1)",
+      "track_id": "fighting",
+      "part_number": 1,
+      "dialogue": "Raat ko kiska phone aa raha hai?",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "11 Nov 2026, 02:40 PM",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:37 PM IST",
+      "published_epoch": 1794928064.4825878,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
   "published_history": [
@@ -1125,7 +1128,22 @@
       "published_at": "17 Nov 2026, 08:37 PM IST",
       "published_epoch": 1794928053.0684717,
       "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_4.mp4",
+      "video_file": "raw_video_4.mp4",
+      "title": "Foji & Fojan: Shaq aur Haq (Part 1)",
+      "track_id": "fighting",
+      "part_number": 1,
+      "dialogue": "Raat ko kiska phone aa raha hai?",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "created_at": "11 Nov 2026, 02:40 PM",
+      "status": "published",
+      "published_at": "17 Nov 2026, 08:37 PM IST",
+      "published_epoch": 1794928064.4825878,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794928053.0790896
+  "updated_epoch": 1794928064.4877174
 }
