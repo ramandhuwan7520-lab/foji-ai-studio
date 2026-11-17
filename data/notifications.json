@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794917404360",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 5: Barfani Raat Mein Dil Ki Dhadkan (Video_053_BorderDuty_Part_05_1117_173209.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "05:40 PM",
+    "date_str": "17 Nov 2026",
+    "timestamp": 1794917404.3603907
+  },
+  {
     "id": "notif_1794917384603",
     "type": "info",
     "title": "📥 Step 7: Video Rendered! Downloading...",
@@ -788,15 +798,5 @@
     "time_str": "05:38 AM",
     "date_str": "15 Nov 2026",
     "timestamp": 1794701293.5126743
-  },
-  {
-    "id": "notif_1794701273423",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Vardi Ki Kaswat Aur Shaan-e-Drill | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "05:37 AM",
-    "date_str": "15 Nov 2026",
-    "timestamp": 1794701273.423986
   }
 ]
