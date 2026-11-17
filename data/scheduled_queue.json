@@ -169,18 +169,6 @@
       "status": "awaiting_approval"
     },
     {
-      "id": "vid_Video_042_BorderDuty_Part_03_1113_104845.mp4",
-      "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
-      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
-      "track_id": "border_duty",
-      "part_number": 3,
-      "dialogue": "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
-      "shayari": "वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।",
-      "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
-      "created_at": "13 Nov 2026, 10:51 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_Video_032_BorderDuty_Part_04_1115_044337.mp4",
       "video_file": "Video_032_BorderDuty_Part_04_1115_044337.mp4",
       "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 4: Barfani Jung Aur Meera Ka Rang",
@@ -312,6 +300,27 @@
       "time_label": "06:30 AM",
       "scheduled_display": "20 Nov 2026 at 06:30 AM IST",
       "scheduled_full_badge": "20 Nov 2026 • 06:30 AM IST"
+    },
+    {
+      "id": "vid_Video_042_BorderDuty_Part_03_1113_104845.mp4",
+      "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
+      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
+      "track_id": "border_duty",
+      "part_number": 3,
+      "dialogue": "Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.",
+      "shayari": "वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।",
+      "caption": "🎖️ Part 3: Barfani Raat Aur Tirange Ki Aan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, is sunsaan barfili pahadi pe jab thand ragon ko jamati hai, toh teri hansi ki garmi hi mujhe dushman ke samne chattan banakar khada rakhti hai.\"\n\n🔥 वतन की मोहब्बत में हमने खुद को जलाया है,\nबर्फ की चादर में भी तिरंगे को दिल से लगाया है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#IndianArmy #FojiMakra #SiachenLife #PatrioticVibes #HaryanviFoji #DeshBhakti",
+      "created_at": "13 Nov 2026, 10:51 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-20_12:30",
+      "scheduled_epoch": 1795158000.0,
+      "scheduled_display": "20 Nov 2026 at 12:30 PM IST",
+      "date_label": "20 Nov 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-11-20T12:30:00+05:30",
+      "scheduled_for": "2026-11-20 12:30:00",
+      "scheduled_full_badge": "20 Nov 2026 • 12:30 PM IST"
     }
   ],
   "published_posts": [
@@ -834,5 +843,5 @@
       "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794854547.728779
+  "updated_epoch": 1794899425.356317
 }
