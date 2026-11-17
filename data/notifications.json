@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794929110598",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🔥 Ustad Ka Ragda & Punishment — Part 6: Tire-Flip Ka Tandav aur Lohe Ke Dhande | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "08:55 PM",
+    "date_str": "17 Nov 2026",
+    "timestamp": 1794929110.5985951
+  },
+  {
     "id": "notif_1794929027927_467",
     "type": "stopped",
     "title": "Generation Stopped",
