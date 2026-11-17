@@ -1,42 +1,6 @@
 {
   "unapproved_videos": [
     {
-      "id": "vid_raw_video_1109_060126_p2.mp4",
-      "video_file": "raw_video_1109_060126_p2.mp4",
-      "title": "⚔️ Agniveer Training Center & Drill — Part 2: Mud Crawl Aur Maidan-e-Jung",
-      "track_id": "training_ustad",
-      "part_number": 2,
-      "dialogue": "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
-      "shayari": "किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।",
-      "caption": "🎖️ Part 2: Mud Crawl Aur Maidan-e-Jung | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!\"\n\n🔥 किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#AgniveerTraining #IndianArmy #FaujiLife #MakraFoji #ArmyDrill #HaryanviSoldier",
-      "created_at": "09 Nov 2026, 06:07 AM IST",
-      "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_raw_video_1109_120057_p3.mp4",
-      "video_file": "raw_video_1109_120057_p3.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
-      "track_id": "unit_ragda",
-      "part_number": 3,
-      "dialogue": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
-      "shayari": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
-      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
-      "created_at": "09 Nov 2026, 12:08 PM IST",
-      "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_raw_video_1110_120055_p2.mp4",
-      "video_file": "raw_video_1110_120055_p2.mp4",
-      "title": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand",
-      "track_id": "fauji_masti",
-      "part_number": 2,
-      "dialogue": "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
-      "shayari": "Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!",
-      "caption": "🎖️ Part 2: Peti Inspection Ka Kaand | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!\"\n\n🔥 Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMasti #ArmyLife #IndianArmy #BarrackComedy #MakraFoji #DesiHumor",
-      "created_at": "10 Nov 2026, 12:05 PM IST",
-      "status": "awaiting_approval"
-    },
-    {
       "id": "vid_raw_video_1111_062859_p2.mp4",
       "video_file": "raw_video_1111_062859_p2.mp4",
       "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 2: Barfani Toofan Mein Yaadon Ka Pehra",
@@ -602,6 +566,51 @@
       "published_at": "17 Nov 2026, 12:44 PM IST",
       "published_epoch": 1794899675.5170944,
       "ig_media_pk": "4032232978912636036"
+    },
+    {
+      "id": "vid_raw_video_1109_060126_p2.mp4",
+      "video_file": "raw_video_1109_060126_p2.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 2: Mud Crawl Aur Maidan-e-Jung",
+      "track_id": "training_ustad",
+      "part_number": 2,
+      "dialogue": "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
+      "shayari": "किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।",
+      "caption": "🎖️ Part 2: Mud Crawl Aur Maidan-e-Jung | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!\"\n\n🔥 किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#AgniveerTraining #IndianArmy #FaujiLife #MakraFoji #ArmyDrill #HaryanviSoldier",
+      "created_at": "09 Nov 2026, 06:07 AM IST",
+      "status": "published",
+      "published_at": "17 Nov 2026, 12:49 PM IST",
+      "published_epoch": 1794899953.0366054,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_1109_120057_p3.mp4",
+      "video_file": "raw_video_1109_120057_p3.mp4",
+      "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
+      "track_id": "unit_ragda",
+      "part_number": 3,
+      "dialogue": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
+      "shayari": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
+      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
+      "created_at": "09 Nov 2026, 12:08 PM IST",
+      "status": "published",
+      "published_at": "17 Nov 2026, 12:49 PM IST",
+      "published_epoch": 1794899963.0585938,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_1110_120055_p2.mp4",
+      "video_file": "raw_video_1110_120055_p2.mp4",
+      "title": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand",
+      "track_id": "fauji_masti",
+      "part_number": 2,
+      "dialogue": "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
+      "shayari": "Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!",
+      "caption": "🎖️ Part 2: Peti Inspection Ka Kaand | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!\"\n\n🔥 Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMasti #ArmyLife #IndianArmy #BarrackComedy #MakraFoji #DesiHumor",
+      "created_at": "10 Nov 2026, 12:05 PM IST",
+      "status": "published",
+      "published_at": "17 Nov 2026, 12:49 PM IST",
+      "published_epoch": 1794899974.8611887,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
   "published_history": [
@@ -884,7 +893,52 @@
       "published_at": "17 Nov 2026, 12:44 PM IST",
       "published_epoch": 1794899675.5170944,
       "ig_media_pk": "4032232978912636036"
+    },
+    {
+      "id": "vid_raw_video_1109_060126_p2.mp4",
+      "video_file": "raw_video_1109_060126_p2.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 2: Mud Crawl Aur Maidan-e-Jung",
+      "track_id": "training_ustad",
+      "part_number": 2,
+      "dialogue": "Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!",
+      "shayari": "किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।",
+      "caption": "🎖️ Part 2: Mud Crawl Aur Maidan-e-Jung | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon ki mitti mein kusti ladi thi toh pehlwan bane, par yahan is kichad mein ghiste-ghiste asli fauji ban rahe hain, ab toh paseena bhi barood ki tarah mehakne laga hai!\"\n\n🔥 किरदार निखरता है रगड़े की आग में तप कर,\nये वर्दी नहीं, ज़िम्मेदारी है जो आती है तकदीर से लड़ कर।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#AgniveerTraining #IndianArmy #FaujiLife #MakraFoji #ArmyDrill #HaryanviSoldier",
+      "created_at": "09 Nov 2026, 06:07 AM IST",
+      "status": "published",
+      "published_at": "17 Nov 2026, 12:49 PM IST",
+      "published_epoch": 1794899953.0366054,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_1109_120057_p3.mp4",
+      "video_file": "raw_video_1109_120057_p3.mp4",
+      "title": "🔥 Ustad Ka Ragda & Punishment — Part 3: Baarish, Keechad aur Ustad ki Seeti",
+      "track_id": "unit_ragda",
+      "part_number": 3,
+      "dialogue": "Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!",
+      "shayari": "Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.",
+      "caption": "🎖️ Part 3: Baarish, Keechad aur Ustad ki Seeti | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, baarish toh thandak dene aayi thi, par aapke ragde ne khoon mein aisi aag laga di ki ye keechad bhi ab angaara lagne laga hai!\"\n\n🔥 Paseene aur keechad se likh rahe hain hum apni kismat ki dastaan, \nYe vardi hi hai hamara guroor, aur ye ragda hi hai hamari shaan.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#FaujiLife #IndianArmy #Agniveer #Ragda #ArmyTraining #FojiAIStudio",
+      "created_at": "09 Nov 2026, 12:08 PM IST",
+      "status": "published",
+      "published_at": "17 Nov 2026, 12:49 PM IST",
+      "published_epoch": 1794899963.0585938,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
+    },
+    {
+      "id": "vid_raw_video_1110_120055_p2.mp4",
+      "video_file": "raw_video_1110_120055_p2.mp4",
+      "title": "😂 Barrack Masti, Mess & Brotherhood — Part 2: Peti Inspection Ka Kaand",
+      "track_id": "fauji_masti",
+      "part_number": 2,
+      "dialogue": "Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!",
+      "shayari": "Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!",
+      "caption": "🎖️ Part 2: Peti Inspection Ka Kaand | 😂 Barrack Masti, Mess & Brotherhood\n\n🗣️ \"Ustad ji, ye jo hawa mein mithas hai na, ye meri kadi mehnat ki kamayi hai, chori-chakari toh hum Haryanviyon ke khoon mein hi koni!\"\n\n🔥 Anushasan ki dhaar hai aur Ustad ki kadak boli,\nPakde gaye jo mess ke chor, toh samjho ghis gayi toli!\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#FojiMasti #ArmyLife #IndianArmy #BarrackComedy #MakraFoji #DesiHumor",
+      "created_at": "10 Nov 2026, 12:05 PM IST",
+      "status": "published",
+      "published_at": "17 Nov 2026, 12:49 PM IST",
+      "published_epoch": 1794899974.8611887,
+      "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794899709.6682198
+  "updated_epoch": 1794899974.8627214
 }
