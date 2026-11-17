@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Downloading MP4...",
-  "sub_detail": "Saving Video_050_TrainingUstad_Part_05_1116_210700.mp4 & pushing to Telegram/Frontend...",
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud 3D Studio",
+  "sub_detail": "Triggering GitHub Actions 3D Worker...",
   "status": "active",
-  "progress": 94,
-  "updated_at": "09:09:19 PM",
-  "epoch": 1794843559.6958284
+  "progress": 18,
+  "updated_at": "12:45:36 PM",
+  "epoch": 1794899736.8633933
 }
