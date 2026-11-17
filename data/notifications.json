@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794899702093",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "🏔️ LOC Border Patrol & Maa KaPyar — Part 4: Barfani Jung Aur Meera Ka Rang locked for 20 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "12:45 PM",
+    "date_str": "17 Nov 2026",
+    "timestamp": 1794899702.0932763
+  },
+  {
     "id": "notif_1794899675748",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
@@ -788,15 +798,5 @@
     "time_str": "04:59 AM",
     "date_str": "15 Nov 2026",
     "timestamp": 1794698957.0441139
-  },
-  {
-    "id": "notif_1794698926740",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Vardi Ki Shaan Aur Ustad Ki Jaan | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "04:58 AM",
-    "date_str": "15 Nov 2026",
-    "timestamp": 1794698926.7409494
   }
 ]
