@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794899675748",
+    "type": "success",
+    "title": "📸 Reel Posted on Instagram!",
+    "message": "Video_032_FaujiMasti_Part_04_1115_023057.mp4 is now LIVE on @ai_foji_lovelife!",
+    "status": "success",
+    "time_str": "12:44 PM",
+    "date_str": "17 Nov 2026",
+    "timestamp": 1794899675.748923
+  },
+  {
     "id": "notif_1794843583974",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "04:58 AM",
     "date_str": "15 Nov 2026",
     "timestamp": 1794698926.7409494
-  },
-  {
-    "id": "notif_1794698230860",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "04:47 AM",
-    "date_str": "15 Nov 2026",
-    "timestamp": 1794698230.8608258
   }
 ]
