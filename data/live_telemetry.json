@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (0.8 min)",
-  "sub_detail": "Gemini Veo rendering Video_063_ViralTrend_Part_01_1118_212823.mp4... (49s elapsed)",
-  "status": "active",
-  "progress": 77,
-  "updated_at": "09:30:36 PM",
-  "epoch": 1795017636.0916913
+  "step_num": 1,
+  "step_title": "Warning: Gemini Screen Error (Video Nahi Bani)",
+  "sub_detail": "Screen par yeh aaya: I'm having a hard time fulfilling your request. Can I help you with something else instead?",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "09:30:54 PM",
+  "epoch": 1795017654.6083136
 }
