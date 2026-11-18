@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (13.4 min)",
-  "sub_detail": "Gemini Veo rendering Video_054_FaujiMasti_Part_06_1118_164115.mp4... (803s elapsed)",
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud 3D Studio",
+  "sub_detail": "Triggering GitHub Actions 3D Worker...",
   "status": "active",
-  "progress": 92,
-  "updated_at": "04:55:59 PM",
-  "epoch": 1795001159.5147283
+  "progress": 18,
+  "updated_at": "05:12:39 PM",
+  "epoch": 1795002159.5762465
 }
