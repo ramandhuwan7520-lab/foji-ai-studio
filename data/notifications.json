@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795018878246",
+    "type": "warning",
+    "title": "⏱️ 15-Minute Timeout (Part Saved for Next Run)",
+    "message": "15-Minute Render Timeout (15.1 min) reached for Video_063_ViralTrend_Part_01_1118_213501.mp4. Stopping this attempt to start the next video — Part #1 will be built next run!",
+    "status": "warning",
+    "time_str": "09:51 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795018878.2460692
+  },
+  {
     "id": "notif_1795017961913",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
