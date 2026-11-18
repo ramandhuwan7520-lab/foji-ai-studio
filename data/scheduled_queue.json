@@ -160,6 +160,27 @@
       "scheduled_iso": "2026-11-21T12:30:00+05:30",
       "scheduled_for": "2026-11-21 12:30:00",
       "scheduled_full_badge": "21 Nov 2026 • 12:30 PM IST"
+    },
+    {
+      "id": "vid_Video_053_UnitRagda_Part_06_1118_105940.mp4",
+      "video_file": "Video_053_UnitRagda_Part_06_1118_105940.mp4",
+      "title": "🔥 Ustad Ka Ragda & Punishment — Part 6: Tyre Ka Tandav & Kandhon Ka Dum",
+      "track_id": "unit_ragda",
+      "part_number": 6,
+      "dialogue": "Ustad ji, ye tyre mere liye lohe ka chakkar nahi, balki meri zimmedariyon ka pahiya hai, jitna ye bhari hoga, mera vardi pehnne ka hausla utna hi mazboot hoga!",
+      "shayari": "कंधों पर ये टायर नहीं, कल का सुनहरा इतिहास है,\nफौजी के रगड़े में ही छिपा, वर्दी का असली अहसास है।",
+      "caption": "🎖️ Part 6: Tyre Ka Tandav & Kandhon Ka Dum | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye tyre mere liye lohe ka chakkar nahi, balki meri zimmedariyon ka pahiya hai, jitna ye bhari hoga, mera vardi pehnne ka hausla utna hi mazboot hoga!\"\n\n🔥 कंधों पर ये टायर नहीं, कल का सुनहरा इतिहास है,\nफौजी के रगड़े में ही छिपा, वर्दी का असली अहसास है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#IndianArmy #FaujiRagda #Agniveer #ArmyTraining #MakraFoji #FojiAIStudio",
+      "created_at": "18 Nov 2026, 11:04 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-21_18:30",
+      "scheduled_epoch": 1795266000.0,
+      "scheduled_display": "21 Nov 2026 at 06:30 PM IST",
+      "date_label": "21 Nov 2026",
+      "time_label": "06:30 PM",
+      "scheduled_iso": "2026-11-21T18:30:00+05:30",
+      "scheduled_for": "2026-11-21 18:30:00",
+      "scheduled_full_badge": "21 Nov 2026 • 06:30 PM IST"
     }
   ],
   "published_posts": [
@@ -1198,5 +1219,5 @@
       "ig_media_pk": "MANUAL_MARKED_POSTED"
     }
   ],
-  "updated_epoch": 1794928097.1892138
+  "updated_epoch": 1794980095.4294772
 }
