@@ -1,9 +1,8 @@
 {
-  "step_num": 1,
-  "step_title": "Warning: Gemini Screen Error (Video Nahi Bani)",
-  "sub_detail": "Screen par yeh aaya: Sorry, something went wrong. Please try your request again.",
-  "status": "error",
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Ready",
+  "status": "idle",
   "progress": 0,
-  "updated_at": "05:14:53 PM",
-  "epoch": 1795002293.4077907
+  "epoch": 1795002313.5985255
 }
