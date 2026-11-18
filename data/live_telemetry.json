@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (14.3 min)",
-  "sub_detail": "Gemini Veo rendering Video_063_ViralTrend_Part_01_1118_213501.mp4... (858s elapsed)",
-  "status": "active",
-  "progress": 92,
-  "updated_at": "09:50:31 PM",
-  "epoch": 1795018831.0094016
+  "step_title": "\u23f1\ufe0f 15-Min Timeout -> Moving to Next Video",
+  "sub_detail": "15-Minute Render Timeout (15.1 min) reached for Video_063_ViralTrend_Part_01_1118_213501.mp4. Stopping this attempt to start the next video \u2014 Part #1 will be built next run!",
+  "status": "warning",
+  "progress": 0,
+  "updated_at": "09:51:16 PM",
+  "epoch": 1795018876.8758667
 }
