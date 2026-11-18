@@ -612,9 +612,10 @@ def is_gemini_truly_signed_in(driver):
 
 def save_all_browser_cookies_via_cdp(driver, force_save=False):
     """
-    SURGICAL 5-TOKEN ROLLING REFRESHER:
-    Updates ONLY the 5 rotating tokens (`__Secure-1PSIDTS`, `__Secure-3PSIDTS`, `SIDCC`, `__Secure-1PSIDCC`, `__Secure-3PSIDCC`)
-    when `is_gemini_truly_signed_in(driver)` is True on Cloud, keeping base 51 cookies 100% locked!
+    IMMORTAL BI-DIRECTIONAL COOKIE & 5-TOKEN SAVER (LAPTOP + CLOUD):
+    - Saves rotated `__Secure-1PSIDTS`, `__Secure-3PSIDTS`, `SIDCC`, `__Secure-1PSIDCC`, `__Secure-3PSIDCC`
+      on BOTH Windows Laptop and Linux Cloud, and pushes to GitHub so stopping mid-way or running
+      multiple videos NEVER causes a stale token logout!
     """
     try:
         if not force_save and not is_gemini_truly_signed_in(driver):
@@ -622,20 +623,25 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
 
         driver.execute_cdp_cmd("Network.enable", {})
         live_cookies = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
+        if not live_cookies:
+            return 0
 
-        if os.name != "nt":
-            if not os.path.exists(COOKIE_FILE):
-                return 0
-            bundle = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
-            base_cookies = bundle.get("cookies", [])
-            rotating_names = {"__Secure-1PSIDTS", "__Secure-3PSIDTS", "SIDCC", "__Secure-1PSIDCC", "__Secure-3PSIDCC"}
+        rotating_names = {"__Secure-1PSIDTS", "__Secure-3PSIDTS", "SIDCC", "__Secure-1PSIDCC", "__Secure-3PSIDCC"}
+
+        if os.path.exists(COOKIE_FILE):
+            try:
+                bundle = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
+            except Exception:
+                bundle = {}
+        else:
+            bundle = {}
+
+        base_cookies = bundle.get("cookies", [])
+        if os.name != "nt" and len(base_cookies) >= 12:
             live_rot_map = {}
             for lc in live_cookies:
                 if lc.get("name") in rotating_names and "google" in lc.get("domain", "") and lc.get("value"):
                     live_rot_map[(lc["name"], lc["domain"])] = lc["value"]
-
-            if not live_rot_map:
-                return len(base_cookies)
 
             updated_any = False
             for bc in base_cookies:
@@ -645,14 +651,13 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                     bc["expires"] = float(int(time.time()) + 86400 * 180)
                     updated_any = True
 
-            if updated_any:
+            if updated_any or force_save:
                 bundle["cookies"] = base_cookies
                 bundle["saved_at"] = time.time()
                 with open(COOKIE_FILE, "w", encoding="utf-8") as f:
                     json.dump(bundle, f, indent=2)
-                # Cloud read-only cookie mode: do not overwrite GitHub cookie file from Linux worker
-                pass
-                print("🔐 [5-Token Guard] Updated rotating PSIDTS/SIDCC tokens on GitHub (Base 51 cookies untouched)!")
+                sync_file_to_github(COOKIE_FILE, "Sync rotated PSIDTS/SIDCC tokens from Cloud")
+                print("🔐 [5-Token Sync] Synced rotated PSIDTS/SIDCC tokens to GitHub!")
             return len(base_cookies)
 
         essential = []
@@ -676,26 +681,59 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                 if c.get("sameParty") is not None:
                     clean_c["sameParty"] = bool(c["sameParty"])
                 essential.append(clean_c)
+
         if len(essential) >= 12:
-            ua = driver.execute_script("return navigator.userAgent;") or DEFAULT_WIN_UA
+            ua = driver.execute_script("return navigator.userAgent;") or bundle.get("user_agent") or DEFAULT_WIN_UA
             local_store = driver.execute_script(
                 "let o={}; for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i); o[k]=localStorage.getItem(k);} return o;"
-            ) or {}
+            ) or bundle.get("local_storage") or {}
+            new_bundle = {
+                "user_agent": ua,
+                "cookies": essential,
+                "local_storage": local_store,
+                "saved_at": time.time()
+            }
             with open(COOKIE_FILE, "w", encoding="utf-8") as f:
-                json.dump({"user_agent": ua, "cookies": essential, "local_storage": local_store, "saved_at": time.time()}, f, indent=2)
+                json.dump(new_bundle, f, indent=2)
+            sync_file_to_github(COOKIE_FILE, "Sync fresh Google session cookies to GitHub")
             return len(essential)
     except Exception as e:
-        print(f"⚠️ Cookie token note: {e}")
+        print(f"⚠️ Cookie save note: {e}")
     return 0
+
+
+
+
 
 
 def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
     """
-    100% Pure Cookie + Fingerprint Login (NO password typing!).
-    Restores exact host-only & domain cookies across accounts.google.com and gemini.google.com.
-    NO TIME LIMIT on local login — waits as long as needed!
+    PERMANENT 3-LAYER LOGIN ENGINE:
+    1) Pulls latest rotated cookies from GitHub so Cloud & Laptop stay 100% in sync.
+    2) On Laptop (`os.name == "nt"`), checks if the persistent Chrome Profile is ALREADY signed in first
+       WITHOUT overwriting live SQLite cookies (fixes mid-way stop logout 100%!).
+    3) Injects cookies when needed and auto-heals any Password / 2FA challenge automatically!
     """
     driver.execute_cdp_cmd("Network.enable", {})
+
+    # 1. Pull newer rotated cookies from GitHub if available
+    try:
+        import foji_universe_director as _fud
+        rem_c = _fud._fetch_github_json_zero_cache(COOKIE_FILE)
+        if isinstance(rem_c, dict) and len(rem_c.get("cookies") or []) >= 12:
+            loc_ts = 0.0
+            if os.path.exists(COOKIE_FILE):
+                try:
+                    loc_ts = float(json.load(open(COOKIE_FILE, "r", encoding="utf-8")).get("saved_at", 0))
+                except Exception:
+                    pass
+            if float(rem_c.get("saved_at", 0)) > loc_ts:
+                with open(COOKIE_FILE, "w", encoding="utf-8") as cf:
+                    json.dump(rem_c, cf, indent=2)
+                print("📥 [Cookie Sync] Pulled latest rotated Google tokens from GitHub!")
+    except Exception:
+        pass
+
     bundle = _load_saved_session_bundle()
     cookies = bundle.get("cookies", [])
     saved_ua = bundle.get("user_agent") or DEFAULT_WIN_UA
@@ -714,8 +752,21 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
         except Exception:
             pass
 
+    # 2. ZERO-OVERWRITE NATIVE PROFILE CHECK ON WINDOWS LAPTOP:
+    #    If you stopped a video mid-way earlier, Chrome's native profile ALREADY has the newest rotated token!
+    #    Check it first before overwriting with file cookies!
+    if os.name == "nt" and not skip_cookie_inject:
+        print("🌐 Checking persistent Chrome Profile session first (Zero-Overwrite Mode)...")
+        driver.get(GEMINI_URL)
+        time.sleep(3.2)
+        if is_gemini_truly_signed_in(driver):
+            print("✅ Native Chrome Profile is ALREADY Signed-In! Syncing latest rotated tokens to GitHub...")
+            save_all_browser_cookies_via_cdp(driver, force_save=True)
+            return True
+
+    # 3. Inject saved cookies when on Cloud or if native profile needed restoration
     if cookies and not skip_cookie_inject:
-        print(f"🔐 Injecting {len(cookies)} pure Google cookies (with exact Host/Domain mapping)...")
+        print(f"🔐 Injecting {len(cookies)} Google cookies (with exact Host/Domain mapping)...")
         now_ts = time.time()
         for c in cookies:
             try:
@@ -739,10 +790,8 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
                     "httpOnly": http_only,
                     "expires": exp
                 }
-                # Critical: If cookie is NOT __Host- and NOT hostOnly, include domain!
                 if not name.startswith("__Host-") and not c.get("hostOnly", False):
                     cdp_cookie["domain"] = dom
-
                 if c.get("sameSite") in ("Strict", "Lax", "None"):
                     cdp_cookie["sameSite"] = c["sameSite"]
                 if c.get("priority") in ("Low", "Medium", "High"):
@@ -752,13 +801,10 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
             except Exception:
                 pass
 
-
-
     print("🌐 Opening Google Gemini (`https://gemini.google.com/app`)...")
     driver.get(GEMINI_URL)
-    time.sleep(2.2)
+    time.sleep(2.5)
 
-    # Restore localStorage keys if available
     if saved_ls and not skip_cookie_inject:
         try:
             driver.execute_script(
@@ -769,92 +815,35 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
             pass
 
     tick = 0
-    while True:
+    max_ticks = 45 if os.name != "nt" else 300
+    while tick < max_ticks:
         tick += 1
         install_file_dialog_blocker(driver)
 
         if is_gemini_truly_signed_in(driver):
-            print("✅ Google Gemini Signed-In Workspace is 100% Open & Verified via Cookies!")
+            print("✅ Google Gemini Signed-In Workspace is 100% Open & Verified!")
             try:
                 slot_k = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
                 _RUNTIME_FRESH_COOKIES_MEM[slot_k] = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
             except Exception:
                 pass
-            time.sleep(1.5)
-            # IMMORTAL COOKIE RENEWAL: Save rotated Google cookies on BOTH Laptop & Cloud so they NEVER expire!
-            cnt = save_all_browser_cookies_via_cdp(driver)
+            time.sleep(1.2)
+            cnt = save_all_browser_cookies_via_cdp(driver, force_save=True)
             if cnt:
                 print(f"💾 [Auto-Renewed] Synced {cnt} fresh Google cookies to GitHub so session NEVER expires!")
             return True
 
-        try:
-            curr_url = (driver.current_url or "").lower()
+        # Trigger automatic Email / Password / 2FA handler if Sign-In button or accounts.google.com is shown
+        if tick >= 2:
+            if _auto_handle_google_password_screen_if_shown(driver, 1):
+                time.sleep(2.5)
+                continue
 
-            # Check if an account chooser ('Choose an account') is on screen -> click it (No password needed if cookie is valid!)
-            if "accounts.google.com" in curr_url or "consent.google.com" in curr_url:
-                if _auto_handle_google_password_screen_if_shown(driver, 1):
-                    time.sleep(2.0)
-                    continue
-                state = driver.execute_script(
-                    """
-                    const passInput = document.querySelector('input[type="password"][name="Passwd"], input[type="password"]');
-                    if (passInput && passInput.offsetParent !== null) {
-                        return 'NEEDS_MANUAL_COOKIE_REFRESH';
-                    }
-                    const acc = document.querySelector('[data-identifier], [data-email]');
-                    if (acc && acc.offsetParent !== null) {
-                        acc.click();
-                        return 'CLICKED_ACCOUNT';
-                    }
-                    return 'ON_ACCOUNTS_PAGE';
-                    """
-                )
-                if state == "CLICKED_ACCOUNT":
-                    print("👤 Clicked account on Google chooser...")
-                    time.sleep(3.0)
-                    continue
+        time.sleep(2.0)
 
-                if state == "NEEDS_MANUAL_COOKIE_REFRESH":
-                    active_slot = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-                    if "_auto_handle_google_password_screen_if_shown" in globals():
-                        if _auto_handle_google_password_screen_if_shown(driver, active_slot):
-                            time.sleep(3.0)
-                            continue
-                    if os.name == "nt":
-                        if tick % 5 == 0:
-                            print(f"🔐 [Account #{active_slot}] Chrome window mein 1 baar Password daal kar Sign-In pura kar de bhai, bot khud cookies save kar lega...")
-                        time.sleep(2.0)
-                        continue
-                    elif tick >= 12:
-                        err = f"Google Account #{active_slot} asked for password on Cloud. Refresh cookies or set GEMINI_ACC{active_slot}_PASSWORD."
-                        report_step_problem_instantly(driver, "Gemini Cookie Expired", err)
-                        raise RuntimeError(err)
+    raise RuntimeError("Could not verify Gemini login within timeout.")
 
-            else:
-                # On gemini.google.com: if 'Sign in' button appears, click it once so cookies log in automatically
-                if tick == 3 or tick == 10:
-                    driver.execute_script(
-                        """
-                        const btns = Array.from(document.querySelectorAll('a, button, [role="button"]')).filter(el => {
-                            if (el.offsetParent === null) return false;
-                            const t = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
-                            return t === 'sign in' || t === 'sign in to gemini';
-                        });
-                        if (btns.length > 0) btns[0].click();
-                        """
-                    )
-        except RuntimeError:
-            raise
-        except Exception:
-            pass
 
-        # On Cloud headless: only stop if 90 seconds pass and it is STILL not signed in
-        if os.name != "nt" and tick >= 90:
-            err = "Gemini could not sign in using cookies on Cloud. Run `python gemini_bot.py --save-cookies` on laptop."
-            report_step_problem_instantly(driver, "Gemini Login Error", err)
-            raise RuntimeError(err)
-
-        time.sleep(1.0)
 
 
 def single_clean_click_xy(driver, x, y, label="Button"):
@@ -1584,6 +1573,11 @@ def export_fresh_gemini_cookies_from_local():
             print(f"\n🎉 SUCCESS! Exported {count} Pure Cookies for Account #{slot} -> {target_f} & Synced to Cloud!")
     finally:
         try:
+            # MID-WAY STOP GUARD: Always save rotated __Secure-1PSIDTS / SIDCC tokens BEFORE closing Chrome!
+            save_all_browser_cookies_via_cdp(driver)
+        except Exception:
+            pass
+        try:
             driver.quit()
         except Exception:
             pass
@@ -1748,6 +1742,11 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
                 idle_without_video_ticks = 0
 
             # Push live telemetry every 12 seconds so Frontend progress bar moves continuously!
+            if tick % 10 == 0:
+                try:
+                    save_all_browser_cookies_via_cdp(driver)
+                except Exception:
+                    pass
             if tick % 3 == 0:
                 prog = min(92, 74 + int(tick / 4))
                 update_3d_telemetry(
@@ -2250,33 +2249,225 @@ if __name__ == "__main__":
 
 
 def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
+    """
+    STRICT TARGET-EMAIL + PASSWORD + 2FA TOTP AUTO-LOGIN ENGINE:
+    1) Strictly selects `g_email` (`kathanexastories@gmail.com`) — if not in the chooser list,
+       clicks 'Use another account' (NEVER clicks an old/wrong account tile!).
+    2) Enters Email and waits for Password screen (no double-typing).
+    3) Enters Password and waits for 2FA / redirect (no double-typing).
+    4) If Google shows 'Tap Yes' prompt, immediately clicks 'Try another way' -> 'Google Authenticator'
+       (`[data-challengetype="6"]`) -> enters live 6-digit TOTP code + checks 'Don't ask again'!
+    """
     try:
+        import hmac
+        import struct
+        import hashlib
         from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.keys import Keys
+
+        g_email = (os.getenv("GOOGLE_EMAIL") or "").strip()
+        g_pwd = (os.getenv("GOOGLE_PASSWORD") or "").strip()
+        g_totp = (os.getenv("GOOGLE_2FA_SECRET") or "").strip()
+        if os.path.exists("data/google_auth_vault.json"):
+            try:
+                v_raw = json.load(open("data/google_auth_vault.json", "r", encoding="utf-8"))
+                g_email = base64.b64decode(v_raw.get("email", "").encode("utf-8")).decode("utf-8").strip() or g_email
+                g_pwd = base64.b64decode(v_raw.get("password", "").encode("utf-8")).decode("utf-8").strip() or g_pwd
+                g_totp = base64.b64decode(v_raw.get("totp_secret", "").encode("utf-8")).decode("utf-8").strip() or g_totp
+            except Exception:
+                pass
+
         curr_url = (driver.current_url or "").lower()
+
+        # 1. On gemini.google.com: click 'Sign in' button if visible
+        if "gemini.google.com" in curr_url and "accounts.google.com" not in curr_url:
+            clicked_signin = driver.execute_script("""
+                for (const el of document.querySelectorAll('a, button, [role="button"]')) {
+                    if (el.offsetParent === null) continue;
+                    const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
+                    const aria = (el.getAttribute('aria-label') || '').trim().toLowerCase();
+                    const href = (el.getAttribute('href') || '').toLowerCase();
+                    if (txt === 'sign in' || txt === 'साइन इन करें' || aria === 'sign in' || href.includes('servicelogin')) {
+                        el.click();
+                        return true;
+                    }
+                }
+                return false;
+            """)
+            if clicked_signin:
+                print("🔑 [Auto-Login] Clicked 'Sign in' button on Gemini -> Entering Google Auth...")
+                time.sleep(3.0)
+                return True
+            return False
+
         if "accounts.google.com" not in curr_url and "consent.google.com" not in curr_url:
             return False
 
-        pwd_inputs = [p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"][name="Passwd"], input[type="password"]') if p.is_displayed()]
-        if pwd_inputs:
-            return False
+        # 2. Check if 6-digit 2FA OTP input box (`totpPin` / `idvPin` / `tel`) is visible on screen
+        otp_inputs = [
+            el for el in driver.find_elements(
+                By.CSS_SELECTOR,
+                'input[name="totpPin"], input#totpPin, input[name="idvPin"], input#idvPin, input[type="tel"][autocomplete="one-time-code"], input[type="tel"]'
+            )
+            if el.is_displayed()
+        ]
+        if otp_inputs and g_totp:
+            # Make sure 'Don't ask again on this device' checkbox is ticked
+            try:
+                driver.execute_script("""
+                    for (const cb of document.querySelectorAll('input[type="checkbox"]')) {
+                        if (!cb.checked) cb.click();
+                    }
+                """)
+            except Exception:
+                pass
+            clean_sec = re.sub(r"[^A-Za-z2-7]", "", g_totp).upper()
+            pad = (8 - (len(clean_sec) % 8)) % 8
+            key_b = base64.b32decode(clean_sec + ("=" * pad), casefold=True)
+            dg = hmac.new(key_b, struct.pack(">Q", int(time.time()) // 30), hashlib.sha1).digest()
+            off = dg[-1] & 0x0F
+            code_str = f"{(struct.unpack('>I', dg[off:off+4])[0] & 0x7FFFFFFF) % 1000000:06d}"
+            print(f"🔐 [Auto-Login] Entering live 6-digit 2FA Authenticator OTP ({code_str})...")
+            otp_el = otp_inputs[0]
+            otp_el.click()
+            otp_el.clear()
+            otp_el.send_keys(code_str)
+            time.sleep(0.5)
+            otp_el.send_keys(Keys.ENTER)
+            for _ in range(12):
+                time.sleep(1.0)
+                if "gemini.google.com" in (driver.current_url or "").lower():
+                    break
+            return True
 
-        clicked_tile = driver.execute_script("""
-            const tiles = document.querySelectorAll('[data-identifier], [data-email]');
-            for (const t of tiles) {
-                if (t.offsetParent === null) continue;
-                const rowTxt = (t.innerText || t.textContent || '').toLowerCase();
-                if (!rowTxt.includes('signed out') && !rowTxt.includes('logged out')) {
-                    t.click();
+        # 3. Check if Password input (`input[type="password"]`) is visible on screen
+        pwd_inputs = [
+            p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"][name="Passwd"], input[type="password"]')
+            if p.is_displayed()
+        ]
+        if pwd_inputs and g_pwd:
+            # Verify if we are on the right account or if a wrong account was selected
+            wrong_acct = driver.execute_script("""
+                const target = (arguments[0] || '').toLowerCase();
+                if (!target) return false;
+                const bodyTxt = (document.body.innerText || '').toLowerCase();
+                const emailChip = document.querySelector('[data-email], [data-identifier]');
+                const chipVal = emailChip ? ((emailChip.getAttribute('data-email') || emailChip.getAttribute('data-identifier') || '').toLowerCase()) : '';
+                if (chipVal && chipVal !== target) {
+                    emailChip.click();
                     return true;
                 }
+                return false;
+            """, g_email)
+            if wrong_acct:
+                print(f"🔄 [Auto-Login] Switching account chip to '{g_email}'...")
+                time.sleep(2.5)
+                return True
+
+            print(f"🔐 [Auto-Login] Entering Google Password for '{g_email}'...")
+            pwd_el = pwd_inputs[0]
+            pwd_el.click()
+            pwd_el.clear()
+            pwd_el.send_keys(g_pwd)
+            time.sleep(0.4)
+            pwd_el.send_keys(Keys.ENTER)
+            # Wait up to 7 seconds for the password field to disappear so we NEVER type password twice!
+            for _ in range(14):
+                time.sleep(0.5)
+                still_pwd = [p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"]') if p.is_displayed()]
+                if not still_pwd:
+                    break
+            time.sleep(1.5)
+            return True
+
+        # 4. Check if Email input (`input[type="email"]`, `input#identifierId`) is visible on screen
+        email_inputs = [
+            e for e in driver.find_elements(By.CSS_SELECTOR, 'input[type="email"], input#identifierId, input[name="identifier"]')
+            if e.is_displayed()
+        ]
+        if email_inputs and g_email:
+            print(f"📧 [Auto-Login] Entering Google Email '{g_email}'...")
+            em_el = email_inputs[0]
+            em_el.click()
+            em_el.clear()
+            em_el.send_keys(g_email)
+            time.sleep(0.4)
+            em_el.send_keys(Keys.ENTER)
+            # Wait up to 6 seconds for password field to appear
+            for _ in range(12):
+                time.sleep(0.5)
+                has_pwd = [p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"]') if p.is_displayed()]
+                if has_pwd:
+                    break
+            time.sleep(1.0)
+            return True
+
+        # 5. Check Account Chooser screen: Strictly match `g_email` OR click 'Use another account'!
+        chooser_action = driver.execute_script("""
+            const targetEmail = (arguments[0] || '').toLowerCase().trim();
+            const tiles = document.querySelectorAll('[data-identifier], [data-email]');
+            if (tiles.length > 0) {
+                for (const t of tiles) {
+                    if (t.offsetParent === null) continue;
+                    const idVal = ((t.getAttribute('data-identifier') || t.getAttribute('data-email') || '')).toLowerCase().trim();
+                    if (targetEmail && idVal === targetEmail) {
+                        t.click();
+                        return 'clicked_target:' + idVal;
+                    }
+                }
+                // Target email is NOT in the list -> Click 'Use another account'!
+                for (const el of document.querySelectorAll('li, div[role="link"], div[role="button"], span')) {
+                    if (el.offsetParent === null) continue;
+                    const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
+                    if (txt === 'use another account' || txt === 'अन्य खाते का उपयोग करें' || txt.includes('use another account')) {
+                        const clickable = el.closest('li, div[role="link"], div[role="button"]') || el;
+                        clickable.click();
+                        return 'use_another_account';
+                    }
+                }
             }
-            return false;
-        """)
-        if clicked_tile:
-            print("👤 [Pure Cookie Mode] Clicked active signed-in Google Account tile...")
+            return '';
+        """, g_email)
+        if chooser_action:
+            print(f"👤 [Auto-Login] Account Chooser Action: {chooser_action}")
             time.sleep(2.5)
             return True
 
+        # 6. Check 2FA Challenge Selection / 'Tap Yes' Screen -> Select 'Google Authenticator' (`[data-challengetype="6"]`) or 'Try another way'
+        if g_totp:
+            switched_2fa = driver.execute_script("""
+                // First priority: Click Google Authenticator option directly (`data-challengetype="6"` or text match)
+                const authByAttr = document.querySelector('[data-challengetype="6"]');
+                if (authByAttr && authByAttr.offsetParent !== null) {
+                    authByAttr.click();
+                    return 'authenticator_challengetype_6';
+                }
+                for (const el of document.querySelectorAll('li, div[role="link"], div[role="button"], button')) {
+                    if (el.offsetParent === null) continue;
+                    const t = (el.innerText || el.textContent || '').trim().toLowerCase();
+                    if (t.includes('authenticator') || t.includes('ऑथेंटिकेटर')) {
+                        el.click();
+                        return 'authenticator_text';
+                    }
+                }
+                // Second priority: If on 'Tap Yes on your phone' screen, click 'Try another way'
+                for (const el of document.querySelectorAll('button, [role="button"], div[role="link"], span')) {
+                    if (el.offsetParent === null) continue;
+                    const t = (el.innerText || el.textContent || '').trim().toLowerCase();
+                    if (t === 'try another way' || t === 'अन्य तरीका आज़माएं' || t.includes('try another way')) {
+                        const btn = el.closest('button, [role="button"], div[role="link"]') || el;
+                        btn.click();
+                        return 'try_another_way';
+                    }
+                }
+                return '';
+            """)
+            if switched_2fa:
+                print(f"🔄 [Auto-Login] 2FA Navigation: {switched_2fa}")
+                time.sleep(2.8)
+                return True
+
+        # 7. Consent / Continue / Not Now / I Agree prompts
         clicked_prompt = driver.execute_script("""
             const words = ['not now', 'continue', 'i agree', 'agree', 'accept all', 'skip', 'confirm', 'done'];
             for (const b of document.querySelectorAll('button, [role="button"]')) {
@@ -2289,12 +2480,16 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
             return '';
         """)
         if clicked_prompt:
-            print(f"✅ [Pure Cookie Mode] Clicked '{clicked_prompt}' consent prompt!")
-            time.sleep(2.0)
+            print(f"✅ [Auto-Login] Clicked '{clicked_prompt}' prompt!")
+            time.sleep(2.5)
             return True
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"⚠️ Auto-login helper note: {e}")
     return False
+
+
+
+
 
 def inject_character_files_into_gemini(driver, *args, **kwargs):
     """
