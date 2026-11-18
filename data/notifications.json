@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1794980095865",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "🔥 Ustad Ka Ragda & Punishment — Part 6: Tyre Ka Tandav & Kandhon Ka Dum locked for 21 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "11:04 AM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1794980095.8651893
+  },
+  {
     "id": "notif_1794980071715",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
