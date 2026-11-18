@@ -1,5 +1,35 @@
 [
   {
+    "id": "notif_1795029680392_608",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "12:51 AM",
+    "date_str": "19 Nov 2026",
+    "timestamp": 1795029680.3926058
+  },
+  {
+    "id": "notif_1795029309884",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — Part 1: Fauji Jigra Aur Jaan Ki Yaad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:45 AM",
+    "date_str": "19 Nov 2026",
+    "timestamp": 1795029309.884466
+  },
+  {
+    "id": "notif_1795029245594",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — Part 1: Fauji Jigra Aur Jaan Ki Yaad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:44 AM",
+    "date_str": "19 Nov 2026",
+    "timestamp": 1795029245.5942676
+  },
+  {
     "id": "notif_1795027079732_259",
     "type": "stopped",
     "title": "Generation Stopped",
@@ -568,35 +598,5 @@
     "time_str": "05:32 PM",
     "date_str": "17 Nov 2026",
     "timestamp": 1794916966.3713076
-  },
-  {
-    "id": "notif_1794916931958",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🏔️ LOC Border Patrol & Maa KaPyar — Part 5: Barfani Raat Mein Dil Ki Dhadkan | Cast: Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...)",
-    "status": "info",
-    "time_str": "05:32 PM",
-    "date_str": "17 Nov 2026",
-    "timestamp": 1794916931.9588692
-  },
-  {
-    "id": "notif_1794900131513",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 5: Bada Khana Dance & Desi Jugalbandi (Video_052_FaujiMasti_Part_05_1117_124630.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "12:52 PM",
-    "date_str": "17 Nov 2026",
-    "timestamp": 1794900131.5135214
-  },
-  {
-    "id": "notif_1794900106530",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading Video_052_FaujiMasti_Part_05_1117_124630.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "12:51 PM",
-    "date_str": "17 Nov 2026",
-    "timestamp": 1794900106.5302348
   }
 ]
