@@ -468,8 +468,8 @@ STRICT VIRAL & QUALITY RULES (FOLLOW 100%):
 
     base_host = "https://generativelanguage.googleapis.com"
     default_chain = [
-        "gemini-2.5-flash", "gemini-2.0-flash", "gemini-3-flash-preview",
-        "gemini-flash-latest", "gemini-2.5-flash-lite", "gemini-1.5-flash", "gemini-2.5-pro"
+        "gemini-3-flash-preview", "gemini-flash-lite-latest", "gemma-4-26b-a4b-it",
+        "gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest", "gemini-1.5-flash"
     ]
     cached_best = []
     if os.path.exists("data/working_model_cache.json"):
@@ -511,7 +511,7 @@ STRICT VIRAL & QUALITY RULES (FOLLOW 100%):
                 if "gemini" in model_name.lower():
                     gen_cfg["responseMimeType"] = "application/json"
                 payload = {"contents": [{"parts": [{"text": system_prompt}]}], "generationConfig": gen_cfg}
-                r = requests.post(url, json=payload, timeout=12)
+                r = requests.post(url, json=payload, timeout=18)
                 if r.status_code == 200:
                     parts = r.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
                     cand_txt = "".join([p.get("text", "") for p in parts if "text" in p])

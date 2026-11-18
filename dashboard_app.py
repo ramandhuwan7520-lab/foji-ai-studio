@@ -2144,6 +2144,18 @@ def _background_master_scheduler_daemon():
          (`force_shift_video_file=vfile`) and domino-cascades all subsequent scheduled videos forward by 1 slot!
     """
     global _CACHED_UNIVERSE_TS
+    # Mark current 5-hour bucket as seen on boot so importing/restarting server doesn't surprise-launch local Chrome immediately
+    try:
+        _boot_ist = datetime.now(_fud.IST)
+        _boot_key = f"BATCH5H_{_boot_ist.strftime('%Y-%m-%d')}_B{_boot_ist.hour // 5}"
+        _cfg_b = _fud.get_schedule_config()
+        _t_keys = set(_cfg_b.get("last_triggered_keys", []))
+        if _boot_key not in _t_keys:
+            _t_keys.add(_boot_key)
+            _cfg_b["last_triggered_keys"] = list(_t_keys)[-60:]
+            _fud.save_schedule_config(_cfg_b)
+    except Exception:
+        pass
     time.sleep(8)
     try:
         _fud.pull_latest_cloud_state_for_frontend()

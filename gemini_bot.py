@@ -596,38 +596,74 @@ def dismiss_any_agree_or_consent_popup(driver):
 
 def is_gemini_truly_signed_in(driver):
     """
-    Verifies that Gemini is genuinely signed in on `gemini.google.com`:
-    1) Rejects `accounts.google.com` or pages with a visible 'Sign in' button.
-    2) Confirms live `SID` and `__Secure-1PSID` cookies exist in the browser.
-    3) Confirms the prompt box (`contenteditable` / `rich-textarea`) is ready!
+    100% STRICT GOOGLE ACCOUNT SIGN-IN VERIFIER (ZERO GUEST-MODE FALSE POSITIVES!):
+    1) Rejects `accounts.google.com` or any page with a 'Sign in' button / `ServiceLogin` link.
+    2) Requires POSITIVE PROOF of an active Google Account session in the DOM:
+       - Google Account Profile Avatar button (`[aria-label*="Google Account" i]`, `[aria-label*="Google खाता" i]`,
+         `a[href*="SignOutOptions"]`, `img[src*="googleusercontent.com"]`, `img.gb_P`, etc.)
+       - OR `@gmail.com` present in `window.WIZ_global_data` / page state!
+    3) Confirms the Gemini prompt editor (`rich-textarea` / `div[contenteditable="true"]`) is ready.
     """
     try:
         curr_url = (driver.current_url or "").lower()
         if "gemini.google.com" not in curr_url or "accounts.google.com" in curr_url:
             return False
 
-        driver.execute_cdp_cmd("Network.enable", {})
-        all_c = driver.execute_cdp_cmd("Network.getAllCookies", {}).get("cookies", [])
-        c_names = {c.get("name") for c in all_c if "google" in c.get("domain", "") and c.get("value")}
-        if "SID" not in c_names or "__Secure-1PSID" not in c_names:
-            return False
-
-        js_check = """
-        for (const el of document.querySelectorAll('a, button, [role="button"]')) {
-            if (el.offsetParent === null) continue;
+        js_strict_auth_check = """
+        // 1. Check if ANY 'Sign in' link or button exists on the page (even if inside header/shadow)
+        for (const el of document.querySelectorAll('a, button, [role="button"], span')) {
+            const href = (el.getAttribute && (el.getAttribute('href') || '')).toLowerCase();
+            const aria = (el.getAttribute && (el.getAttribute('aria-label') || '')).trim().toLowerCase();
             const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
-            const aria = (el.getAttribute('aria-label') || '').trim().toLowerCase();
-            const href = (el.getAttribute('href') || '').toLowerCase();
-            if (txt === 'sign in' || txt === 'साइन इन करें' || aria === 'sign in' || href.includes('servicelogin')) {
+            if (href.includes('servicelogin') || href.includes('accounts.google.com/signin')) {
+                return false;
+            }
+            if (el.offsetParent !== null && (txt === 'sign in' || txt === 'साइन इन करें' || aria === 'sign in')) {
                 return false;
             }
         }
+
+        // 2. Require POSITIVE PROOF of a signed-in Google Account Avatar / Profile button in the top bar
+        let hasAccountAvatar = false;
+        const avatarSelectors = [
+            '[aria-label*="Google Account:" i]',
+            '[aria-label*="Google Account" i]',
+            '[aria-label*="Google खाता" i]',
+            'a[href*="SignOutOptions"]',
+            'img[src*="googleusercontent.com/a/"]',
+            'img[src*="lh3.googleusercontent.com"]',
+            'img.gb_P',
+            'img.gb_Q',
+            '.gb_d[aria-label*="Google" i]'
+        ];
+        for (const sel of avatarSelectors) {
+            if (document.querySelector(sel)) {
+                hasAccountAvatar = true;
+                break;
+            }
+        }
+
+        // Also check WIZ_global_data / script tags for logged-in @gmail.com identifier
+        if (!hasAccountAvatar) {
+            const htmlStr = (document.documentElement.innerHTML || '');
+            if (htmlStr.includes('@gmail.com') && !htmlStr.includes('ServiceLogin')) {
+                hasAccountAvatar = true;
+            }
+        }
+
+        if (!hasAccountAvatar) {
+            return false;
+        }
+
+        // 3. Confirm the prompt box is rendered
         const ed = document.querySelector('div[contenteditable="true"], rich-textarea, textarea');
         return Boolean(ed);
         """
-        return bool(driver.execute_script(js_check))
+        return bool(driver.execute_script(js_strict_auth_check))
     except Exception:
         return False
+
+
 
 
 def save_all_browser_cookies_via_cdp(driver, force_save=False):
@@ -823,7 +859,7 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
 
     print("🌐 Opening Google Gemini (`https://gemini.google.com/app`)...")
     driver.get(GEMINI_URL)
-    time.sleep(2.5)
+    time.sleep(4.0)
 
     if saved_ls and not skip_cookie_inject:
         try:
@@ -2314,24 +2350,27 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
 
         curr_url = (driver.current_url or "").lower()
 
-        # 1. On gemini.google.com: click 'Sign in' button if visible
+        # 1. On gemini.google.com while Signed-Out (Guest Mode): click 'Sign in' OR navigate directly to Google ServiceLogin!
         if "gemini.google.com" in curr_url and "accounts.google.com" not in curr_url:
-            clicked_signin = driver.execute_script("""
-                for (const el of document.querySelectorAll('a, button, [role="button"]')) {
-                    if (el.offsetParent === null) continue;
-                    const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
-                    const aria = (el.getAttribute('aria-label') || '').trim().toLowerCase();
-                    const href = (el.getAttribute('href') || '').toLowerCase();
-                    if (txt === 'sign in' || txt === 'साइन इन करें' || aria === 'sign in' || href.includes('servicelogin')) {
-                        el.click();
-                        return true;
+            if not is_gemini_truly_signed_in(driver):
+                clicked_signin = driver.execute_script("""
+                    for (const el of document.querySelectorAll('a, button, [role="button"]')) {
+                        const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
+                        const aria = (el.getAttribute && (el.getAttribute('aria-label') || '')).trim().toLowerCase();
+                        const href = (el.getAttribute && (el.getAttribute('href') || '')).toLowerCase();
+                        if (txt === 'sign in' || txt === 'साइन इन करें' || aria === 'sign in' || href.includes('servicelogin')) {
+                            el.click();
+                            return true;
+                        }
                     }
-                }
-                return false;
-            """)
-            if clicked_signin:
-                print("🔑 [Auto-Login] Clicked 'Sign in' button on Gemini -> Entering Google Auth...")
-                time.sleep(3.0)
+                    return false;
+                """)
+                if clicked_signin:
+                    print("🔑 [Auto-Login] Clicked 'Sign in' button on Gemini -> Entering Google 2FA Auth...")
+                else:
+                    print("🔑 [Auto-Login] Gemini is in Guest Mode -> Redirecting to Google 2FA Sign-In...")
+                    driver.get("https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fgemini.google.com%2Fapp")
+                time.sleep(3.2)
                 return True
             return False
 
