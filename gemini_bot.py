@@ -1202,16 +1202,16 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     s9_x, s9_y = load_recorded_step_coords(9, 45.2, 46.0)
     s12_x, s12_y = load_recorded_step_coords(12, 82.3, 79.4)
 
-    print("⚡ [Step #1 & #2] Selecting '4 Hydrogen (Everyday help)' Mode...")
+    print("⚡ [Step #1 & #2] Selecting '3.1 Pro (Detailed search)' Mode...")
     opened_picker = wait_and_single_click_step(
         driver,
         "Step #1: Open Mode Picker",
         aria_list=["open mode picker", "mode picker", "model"],
-        txt_list=["4 hydrogen", "hydrogen", "4 argon", "argon", "3.5 flash lite", "flash-lite", "flash lite", "3.1 pro", "everyday help", "quick answers", "pro", "flash"],
+        txt_list=["3.1 pro", "detailed search", "4 hydrogen", "hydrogen", "4 argon", "argon", "3.5 flash lite", "flash-lite", "flash lite", "everyday help", "quick answers", "pro", "flash"],
         icon_list=["keyboard_arrow_down", "arrow_drop_down"],
         near_xpct=s1_x,
         near_ypct=s1_y,
-        verify_next_txt=["4 hydrogen", "hydrogen", "everyday help", "3.5 flash lite", "quick answers"],
+        verify_next_txt=["3.1 pro", "detailed search", "4 hydrogen", "hydrogen", "everyday help", "3.5 flash lite", "quick answers"],
         wait_timeout=5.0,
         verify_timeout=2.5,
         max_attempts=1,
@@ -1220,11 +1220,11 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     if opened_picker:
         picked_h2 = wait_and_single_click_step(
             driver,
-            "Step #2: Select '4 Hydrogen (Everyday help)'",
-            txt_list=["everyday help 4 hydrogen", "everday help 4 hydrogen", "4 hydrogen", "hydrogen", "everyday help"],
+            "Step #2: Select '3.1 Pro (Detailed search)'",
+            txt_list=["detailed search 3.1 pro", "3.1 pro detailed search", "3.1 pro", "detailed search"],
             near_xpct=s2_x,
             near_ypct=s2_y,
-            wait_timeout=3.5,
+            wait_timeout=4.0,
             verify_timeout=2.0,
             max_attempts=1,
             optional=True

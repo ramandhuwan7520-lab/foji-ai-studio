@@ -2,13 +2,13 @@ name: Foji 3D Cloud Studio Worker
 
 on:
   schedule:
-    - cron: '0 */5 * * *'
+    - cron: '30 18,23,4,9,14 * * *'
   workflow_dispatch:
     inputs:
       batch_count:
         description: 'Number of videos to generate'
         required: false
-        default: "3"
+        default: "1"
       track_id:
         description: 'Series Track ID'
         required: false
