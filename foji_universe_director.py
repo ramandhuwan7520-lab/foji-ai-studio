@@ -678,13 +678,13 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
             f"(Young Indian Army soldier in combat/training uniform without officer stars). Focus on the soldier and his Army unit/Ustad. "
         )
 
+    # Pure visual + lip-sync prompt for Gemini Veo (NO song names or music directives in prompt so Veo NEVER blocks generation!
+    # Genre-matched BGM & Funny/Emotional reactions are automatically mixed into the MP4 by FFmpeg right after download!)
     gemini_video_prompt = (
         f"{char_instruction}"
-        f"OPENING 2-SECOND HOOK: {opening_hook} "
-        f"SCENE & PHYSICAL ACTION: {visual_scene} (No floating text or paper letters!). "
-        f"LIP-SYNC SPOKEN HINDI/HARYANVI DIALOGUE (Authentic native Indian accent, powerful emotion & rhythm): \"{dialogue_line}\" "
-        f"BACKGROUND MUSIC & SONG DIRECTION: {bgm_cue}. Include subtle background musical vibe of: '{song_cue}'. "
-        f"CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive micro-expressions, rich dramatic lighting, vertical 9:16 portrait format."
+        f"SCENE & ACTION: {opening_hook} {visual_scene} "
+        f"LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"{dialogue_line}\" "
+        f"CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format."
     )
 
     follow_line = (

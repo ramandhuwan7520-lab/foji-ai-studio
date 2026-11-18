@@ -1793,7 +1793,12 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
 
             if dl_btn is not None or (len(new_vids) > 0 and not is_gen):
                 print("✅ [Stage 7/8] Video Ready on Screen! Clicking 'Download video'...")
-                update_3d_telemetry(7, "Stage 7: Video Rendered! Downloading MP4...", f"Saving {unique_fname} & pushing to Telegram/Frontend...", "active", 94)
+                update_3d_telemetry(7, "Stage 7: Video Rendered! Mixing Genre BGM & Saving...", f"Adding mood-matched BGM to {unique_fname} & syncing...", "active", 94)
+            try:
+                import bgm_auto_mixer as _bam
+                _bam.auto_mix_genre_bgm_into_video(output_video_path, pending_pkg)
+            except Exception as _bgm_e:
+                print(f"ℹ️ Auto-BGM mix note: {_bgm_e}")
                 push_app_notification("info", "📥 Step 7: Video Rendered! Downloading...", f"Downloading {unique_fname} from Gemini...", "info")
                 time.sleep(2.5)
                 vid_url = new_vids[-1] if (new_vids and new_vids[-1] != "DOM_VIDEO_ELEMENT_VISIBLE") else ""

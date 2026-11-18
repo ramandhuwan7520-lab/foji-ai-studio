@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#0f2942"/>
+      <stop offset="60%" stop-color="#071324"/>
+      <stop offset="100%" stop-color="#030712"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <linearGradient id="cyberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer Hexagon / Shield Cyber Base -->
+  <circle cx="256" cy="256" r="244" fill="url(#bgGlow)" stroke="url(#goldGrad)" stroke-width="10"/>
+  <circle cx="256" cy="256" r="222" fill="none" stroke="url(#cyberGrad)" stroke-width="3" stroke-dasharray="18 10" opacity="0.85"/>
+  <!-- Tricolor Tactical Arcs -->
+  <path d="M 76 190 A 195 195 0 0 1 436 190" fill="none" stroke="#ff9933" stroke-width="10" stroke-linecap="round"/>
+  <path d="M 64 256 A 195 195 0 0 0 448 256" fill="none" stroke="#138808" stroke-width="10" stroke-linecap="round"/>
+  <!-- Golden Tactical Shield & Wings -->
+  <polygon points="256,82 372,134 344,292 256,372 168,292 140,134" fill="#0b172a" stroke="url(#goldGrad)" stroke-width="8" stroke-linejoin="round"/>
+  <!-- Left & Right Golden Military Wings -->
+  <path d="M 135 175 L 58 145 L 82 195 L 48 188 L 88 232 L 145 232 Z" fill="url(#goldGrad)"/>
+  <path d="M 377 175 L 454 145 L 430 195 L 464 188 L 424 232 L 367 232 Z" fill="url(#goldGrad)"/>
+  <!-- Top 3D Star of Valor -->
+  <polygon points="256,102 267,126 293,129 273,147 278,173 256,160 234,173 239,147 219,129 245,126" fill="url(#goldGrad)"/>
+  <!-- Center 3D Cinema Play Prism inside Shield -->
+  <circle cx="256" cy="236" r="56" fill="#06101e" stroke="url(#cyberGrad)" stroke-width="5"/>
+  <polygon points="240,206 240,266 290,236" fill="url(#goldGrad)"/>
+  <!-- Studio Ribbon Banner -->
+  <rect x="86" y="388" width="340" height="54" rx="14" fill="#091526" stroke="url(#goldGrad)" stroke-width="4"/>
+  <text x="256" y="423" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3">FOJI AI STUDIO</text>
+  <text x="256" y="468" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="800" fill="#34d399" text-anchor="middle" letter-spacing="4">3D CINEMA ENGINE</text>
+</svg>
