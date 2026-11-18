@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795000277640",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 6: Subah Ki PT Aur Ghost Lag | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:41 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795000277.6408389
+  },
+  {
     "id": "notif_1794999795037",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
