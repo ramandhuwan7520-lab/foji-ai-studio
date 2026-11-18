@@ -162,6 +162,27 @@
       "scheduled_iso": "2026-11-21T18:30:00+05:30",
       "scheduled_for": "2026-11-21 18:30:00",
       "scheduled_full_badge": "21 Nov 2026 • 06:30 PM IST"
+    },
+    {
+      "id": "vid_Video_054_TrainingUstad_Part_06_1118_162701.mp4",
+      "video_file": "Video_054_TrainingUstad_Part_06_1118_162701.mp4",
+      "title": "⚔️ Agniveer Training Center & Drill — Part 6: Pithu Ka Bojh Aur Josh-e-Foji",
+      "track_id": "training_ustad",
+      "part_number": 6,
+      "dialogue": "Ustad ji, gaon mein toh khet ki bori utha kar maze mein ghumte the, par is pithu ne toh aaj bata diya ki vardi ki izzat ka wazan duniya ki sabse bhari cheez hai!",
+      "shayari": "Kandhon pe bojh hai, par dil mein desh ki shaan hai,\nYe pithu nahi mera, meri mitti ka imtihan hai.",
+      "caption": "🎖️ Part 6: Pithu Ka Bojh Aur Josh-e-Foji | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh khet ki bori utha kar maze mein ghumte the, par is pithu ne toh aaj bata diya ki vardi ki izzat ka wazan duniya ki sabse bhari cheez hai!\"\n\n🔥 Kandhon pe bojh hai, par dil mein desh ki shaan hai,\nYe pithu nahi mera, meri mitti ka imtihan hai.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#AgniveerLife #IndianArmyTraining #FojiMakra #ArmyStruggle #HaryanviFoji #DeshKiBhakti",
+      "created_at": "18 Nov 2026, 04:33 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-22_06:30",
+      "scheduled_epoch": 1795309200.0,
+      "scheduled_display": "22 Nov 2026 at 06:30 AM IST",
+      "date_label": "22 Nov 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-11-22T06:30:00+05:30",
+      "scheduled_for": "2026-11-22 06:30:00",
+      "scheduled_full_badge": "22 Nov 2026 • 06:30 AM IST"
     }
   ],
   "published_posts": [
@@ -1244,5 +1265,5 @@
       "ig_media_pk": "4032951118365701960"
     }
   ],
-  "updated_epoch": 1794985284.4745896
+  "updated_epoch": 1795000200.7542098
 }
