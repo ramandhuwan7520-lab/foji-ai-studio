@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (1.6 min)",
-  "sub_detail": "Gemini Veo rendering Video_054_FaujiMasti_Part_06_1118_164115.mp4... (93s elapsed)",
+  "step_title": "Stage 6: Rendering 3D Video (1.8 min)",
+  "sub_detail": "Gemini Veo rendering Video_054_FaujiMasti_Part_06_1118_164115.mp4... (106s elapsed)",
   "status": "active",
-  "progress": 79,
-  "updated_at": "04:44:09 PM",
-  "epoch": 1795000449.0748158
+  "progress": 80,
+  "updated_at": "04:44:22 PM",
+  "epoch": 1795000462.341538
 }
