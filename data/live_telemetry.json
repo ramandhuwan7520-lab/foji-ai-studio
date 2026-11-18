@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Stage 1: AI Episodic Script",
-  "sub_detail": "Generating fresh connected script & wardrobe...",
+  "step_num": 2,
+  "step_title": "Stage 2: Cookie Sign-In (Account #1)",
+  "sub_detail": "Logging into Gemini & preparing Makra Only (Solo Army Scene)...",
   "status": "active",
-  "progress": 12,
-  "updated_at": "05:13:19 PM",
-  "epoch": 1795002199.1318004
+  "progress": 25,
+  "updated_at": "05:13:20 PM",
+  "epoch": 1795002200.699654
 }
