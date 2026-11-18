@@ -772,6 +772,7 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
     """
     driver.execute_cdp_cmd("Network.enable", {})
 
+    update_3d_telemetry(2, "Step 2: Connecting 3D Studio", "Verifying Google session & 2FA authentication...", "active", 26)
     # 1. Pull newer rotated cookies from GitHub if available
     try:
         import foji_universe_director as _fud
@@ -1202,6 +1203,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     s9_x, s9_y = load_recorded_step_coords(9, 45.2, 46.0)
     s12_x, s12_y = load_recorded_step_coords(12, 82.3, 79.4)
 
+    update_3d_telemetry(3, "Step 3: Setting Up 9:16 Canvas", "Selecting 3.1 Pro (Detailed search) & 9:16 Portrait Video tool...", "active", 38)
     print("⚡ [Step #1 & #2] Selecting '3.1 Pro (Detailed search)' Mode...")
     opened_picker = wait_and_single_click_step(
         driver,
@@ -2294,7 +2296,7 @@ def wait_and_download_generated_video(driver, output_video_path=None, *args, **k
 
         if elapsed % 15 == 0:
             pct = min(92, 40 + int((elapsed / timeout_sec) * 52))
-            update_3d_telemetry(3, "🎬 Generating 3D Video in Gemini...", f"Rendering 9:16 vertical reel ({elapsed}s elapsed)...", "running", pct)
+            update_3d_telemetry(6, "Step 6: Rendering 3D Animation", f"Rendering 9:16 vertical reel ({elapsed}s / 900s max)...", "active", max(72, min(92, pct)))
             print(f"   ⏳ [Step #13] Still rendering video in Gemini ({elapsed}s / {timeout_sec}s)...")
 
         time.sleep(5.0)
