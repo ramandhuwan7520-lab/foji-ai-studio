@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795017505494",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Ustad Ka Ragda & Desi Jigra | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:28 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795017505.4946048
+  },
+  {
     "id": "notif_1795013559915_463",
     "type": "stopped",
     "title": "Generation Stopped",
