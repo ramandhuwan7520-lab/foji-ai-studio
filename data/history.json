@@ -1,5 +1,5 @@
 {
-  "generated_count": 34,
+  "generated_count": 35,
   "history": [
     {
       "track_id": "funny",
@@ -648,14 +648,33 @@
       "caption": "🎖️ Part 5: Barfani Raat Mein Dil Ki Dhadkan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.\"\n\n🔥 Sarhad ki ye thandi hawayein ab mujhe darr nahi dikhati, kyunki teri yaadon ki garmahat mere seene mein ek alag hi aag jagati.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiAI #IndianArmy #MakraAndMeera #SiachenDiaries #AgniveerLife #PixarStyleArmy",
       "created_at": "17 Nov 2026, 05:32 PM IST",
       "completed_at": "17 Nov 2026, 05:40 PM IST"
+    },
+    {
+      "video_id": "Video_053_UnitRagda_Part_06_1118_105940",
+      "video_file": "Video_053_UnitRagda_Part_06_1118_105940.mp4",
+      "track_id": "unit_ragda",
+      "track_name": "🔥 Ustad Ka Ragda & Punishment",
+      "part_number": 6,
+      "include_meera": false,
+      "meera_outfit": "N/A (Makra Solo Army Scene)",
+      "emotion_name": "🔥 Ustad Ka Ragda & Punishment — Part 6: Tyre Ka Tandav & Kandhon Ka Dum",
+      "scene_summary": "A high-octane 3D Pixar-style 9:16 vertical shot. The midday sun beats down on a rough, gravel-covered training track. Makra, drenched in sweat and wearing a mud-stained olive green training 'Dangri', is performing a grueling 'Tyre-Run'. He holds a massive, heavy truck tyre high above his head with trembling but locked arms. His face is a mask of pure determination, jaw clenched, with beads of sweat glistening on his forehead. In the background, Ustad stands like a statue in his crisp camouflage uniform, pointing his stick towards the finish line. Dust rises from the gravel as other recruits struggle behind Makra. The lighting is harsh and cinematic, highlighting the muscular tension in Makra's arms.",
+      "dialogue_line_1_hinglish": "Ustad ji, ye tyre mere liye lohe ka chakkar nahi, balki meri zimmedariyon ka pahiya hai, jitna ye bhari hoga, mera vardi pehnne ka hausla utna hi mazboot hoga!",
+      "shayari_hindi": "कंधों पर ये टायर नहीं, कल का सुनहरा इतिहास है,\nफौजी के रगड़े में ही छिपा, वर्दी का असली अहसास है।",
+      "gemini_video_prompt": "Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image (Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). EPISODE: 🔥 Ustad Ka Ragda & Punishment - Part 6: Tyre Ka Tandav & Kandhon Ka Dum. SCENE & ACTION: A high-octane 3D Pixar-style 9:16 vertical shot. The midday sun beats down on a rough, gravel-covered training track. Makra, drenched in sweat and wearing a mud-stained olive green training 'Dangri', is performing a grueling 'Tyre-Run'. He holds a massive, heavy truck tyre high above his head with trembling but locked arms. His face is a mask of pure determination, jaw clenched, with beads of sweat glistening on his forehead. In the background, Ustad stands like a statue in his crisp camouflage uniform, pointing his stick towards the finish line. Dust rises from the gravel as other recruits struggle behind Makra. The lighting is harsh and cinematic, highlighting the muscular tension in Makra's arms. LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"Ustad ji, ye tyre mere liye lohe ka chakkar nahi, balki meri zimmedariyon ka pahiya hai, jitna ye bhari hoga, mera vardi pehnne ka hausla utna hi mazboot hoga!\" CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format.",
+      "caption": "🎖️ Part 6: Tyre Ka Tandav & Kandhon Ka Dum | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye tyre mere liye lohe ka chakkar nahi, balki meri zimmedariyon ka pahiya hai, jitna ye bhari hoga, mera vardi pehnne ka hausla utna hi mazboot hoga!\"\n\n🔥 कंधों पर ये टायर नहीं, कल का सुनहरा इतिहास है,\nफौजी के रगड़े में ही छिपा, वर्दी का असली अहसास है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#IndianArmy #FaujiRagda #Agniveer #ArmyTraining #MakraFoji #FojiAIStudio",
+      "created_at": "18 Nov 2026, 10:59 AM IST",
+      "completed_at": "18 Nov 2026, 11:04 AM IST"
     }
   ],
   "recent_tracks": [
     "fauji_masti",
-    "border_duty"
+    "border_duty",
+    "unit_ragda"
   ],
   "failed_dialogues": [
     "Ustad ji, plate mein khana chahe jitna bhi kam ho, par dance floor pe humari energy dekh kar dushman ki bhi half-time hi bolti band ho jayegi!",
-    "Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai."
+    "Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.",
+    "Ustad ji, ye tyre mere liye lohe ka chakkar nahi, balki meri zimmedariyon ka pahiya hai, jitna ye bhari hoga, mera vardi pehnne ka hausla utna hi mazboot hoga!"
   ]
 }
