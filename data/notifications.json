@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795021471422",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: 2-Second Hook – Fauji vs Desi Life | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "10:34 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795021471.422298
+  },
+  {
     "id": "notif_1795018878246",
     "type": "warning",
     "title": "⏱️ 15-Minute Timeout (Part Saved for Next Run)",
