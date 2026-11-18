@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering Video_054_TrainingUstad_Part_06_1118_162701.mp4...",
   "status": "active",
-  "progress": 45,
-  "updated_at": "04:27:42 PM",
-  "epoch": 1794999462.8715317
+  "progress": 68,
+  "updated_at": "04:28:07 PM",
+  "epoch": 1794999487.365562
 }
