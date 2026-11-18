@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795002294913",
+    "type": "error",
+    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
+    "message": "Screen par yeh aaya: Sorry, something went wrong. Please try your request again.",
+    "status": "error",
+    "time_str": "05:14 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795002294.9138594
+  },
+  {
     "id": "notif_1795002256778",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
