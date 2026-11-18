@@ -1,6 +1,6 @@
 {
   "active_mode": "auto_rotate",
-  "selected_track_id": "fauji_masti",
+  "selected_track_id": "viral_trend",
   "last_rotated_index": 1,
   "custom_idea": "",
   "bgm_volume": 20,
@@ -13,5 +13,5 @@
   ],
   "night_batch_time": "02:30",
   "night_batch_count": 3,
-  "updated_epoch": 1795002189.6060243
+  "updated_epoch": 1795010946.6465075
 }
