@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795027079732_259",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "12:07 AM",
+    "date_str": "19 Nov 2026",
+    "timestamp": 1795027079.7326813
+  },
+  {
     "id": "notif_1795026741316",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -588,185 +598,5 @@
     "time_str": "12:51 PM",
     "date_str": "17 Nov 2026",
     "timestamp": 1794900106.5302348
-  },
-  {
-    "id": "notif_1794899835130",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 5: Bada Khana Dance & Desi Jugalbandi is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "12:47 PM",
-    "date_str": "17 Nov 2026",
-    "timestamp": 1794899835.1304722
-  },
-  {
-    "id": "notif_1794899792487",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 😂 Barrack Masti, Mess & Brotherhood — Part 5: Bada Khana Dance & Desi Jugalbandi | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:46 PM",
-    "date_str": "17 Nov 2026",
-    "timestamp": 1794899792.487765
-  },
-  {
-    "id": "notif_1794899709672",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 5: Rifle Dismantle Aur Ustad Ki Daant locked for 21 Nov 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "12:45 PM",
-    "date_str": "17 Nov 2026",
-    "timestamp": 1794899709.672155
-  },
-  {
-    "id": "notif_1794899675748",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "Video_032_FaujiMasti_Part_04_1115_023057.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "12:44 PM",
-    "date_str": "17 Nov 2026",
-    "timestamp": 1794899675.748923
-  },
-  {
-    "id": "notif_1794843583974",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 5: Rifle Dismantle Aur Ustad Ki Daant (Video_050_TrainingUstad_Part_05_1116_210700.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "09:09 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794843583.9747865
-  },
-  {
-    "id": "notif_1794843561697",
-    "type": "info",
-    "title": "📥 Step 7: Video Rendered! Downloading...",
-    "message": "Downloading Video_050_TrainingUstad_Part_05_1116_210700.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "09:09 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794843561.6974418
-  },
-  {
-    "id": "notif_1794843464298",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "⚔️ Agniveer Training Center & Drill — Part 5: Rifle Dismantle Aur Ustad Ki Daant is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:07 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794843464.2988188
-  },
-  {
-    "id": "notif_1794843423737",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Rifle Dismantle Aur Ustad Ki Daant | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:07 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794843423.7370784
-  },
-  {
-    "id": "notif_1794832300108",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "06:01 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794832300.1084232
-  },
-  {
-    "id": "notif_1794832267154",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: 20 KM Ka Pithu Aur Lohe Ka Junoon | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:01 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794832267.1542146
-  },
-  {
-    "id": "notif_1794813117097",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "12:41 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794813117.0972877
-  },
-  {
-    "id": "notif_1794813096438",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Night Navigation Aur Andhere Ki Jung | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:41 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794813096.4381516
-  },
-  {
-    "id": "notif_1794813065396",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "12:41 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794813065.3962865
-  },
-  {
-    "id": "notif_1794813044959",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: 20 KM Ka Pithu Aur Patthar Dil | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:40 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794813044.9590957
-  },
-  {
-    "id": "notif_1794813020317",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "12:40 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794813020.3173213
-  },
-  {
-    "id": "notif_1794812993119",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Shashtra Drill Aur Ustad Ki Teekhi Nazar | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:39 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794812993.119552
-  },
-  {
-    "id": "notif_1794810700329",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "12:01 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794810700.3293123
-  },
-  {
-    "id": "notif_1794810673699",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Raat Ka Paramedic March Aur Saans Ki Imtehan | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:01 PM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794810673.6995413
   }
 ]
