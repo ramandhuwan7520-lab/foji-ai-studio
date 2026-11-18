@@ -1,9 +1,8 @@
 {
-  "step_num": 2,
-  "step_title": "Stage 2: Cookie Sign-In (Account #1)",
-  "sub_detail": "Logging into Gemini & preparing Makra Only (Solo Army Scene)...",
-  "status": "active",
-  "progress": 25,
-  "updated_at": "09:31:52 PM",
-  "epoch": 1795017712.314456
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Ready",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1795017732.7522643
 }
