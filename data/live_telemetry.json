@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1795017732.7522643
+  "step_num": 3,
+  "step_title": "Stage 3: Create Video & 9:16 Portrait",
+  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
+  "status": "active",
+  "progress": 45,
+  "updated_at": "09:32:22 PM",
+  "epoch": 1795017742.2650406
 }
