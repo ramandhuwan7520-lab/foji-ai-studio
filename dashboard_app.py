@@ -169,7 +169,7 @@ def push_file_to_github_api(rel_path, commit_message, blocking=False):
                 headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
                 get_r = requests.get(api_url, headers=headers, timeout=8)
                 sha = get_r.json().get("sha") if get_r.status_code == 200 else None
-                body = {"message": commit_message, "content": content_b64, "branch": "main"}
+                body = {"message": (commit_message if "[skip render]" in str(commit_message).lower() else f"{commit_message} [skip render] [skip ci]"), "content": content_b64, "branch": "main"}
                 if sha:
                     body["sha"] = sha
                 put_r = requests.put(api_url, headers=headers, json=body, timeout=10)
@@ -2173,6 +2173,23 @@ def _background_master_scheduler_daemon():
                 _fud.save_scheduled_queue(q, sync_cloud=True)
                 _CACHED_UNIVERSE_TS = 0
 
+            # 2B. Every 5 Hours -> Generate 3 Reels One-by-One (`BATCH_COUNT = 3`)
+            now_ist = datetime.now(_fud.IST)
+            cfg = _fud.get_schedule_config()
+            if cfg.get("auto_pilot_enabled", True):
+                bucket_5h = now_ist.hour // 5
+                batch_5h_key = f"BATCH5H_{now_ist.strftime('%Y-%m-%d')}_B{bucket_5h}"
+                triggered_keys = set(cfg.get("last_triggered_keys", []))
+                # Trigger at minute >= 10 of each 5-hour window (00:10, 05:10, 10:10, 15:10, 20:10 IST) if not triggered yet
+                if now_ist.minute >= 10 and batch_5h_key not in triggered_keys:
+                    triggered_keys.add(batch_5h_key)
+                    cfg["last_triggered_keys"] = list(triggered_keys)[-60:]
+                    _fud.save_schedule_config(cfg)
+                    _execute_single_or_batch_generation(
+                        count=3,
+                        reason_label=f"5-Hour Auto-Batch (3 Viral Reels One-by-One)"
+                    )
+
             # 3. Check for Due Scheduled Posts (`time.time() >= due_epoch`)
             sched_list = list(q.get("scheduled_posts", []))
             pub_files = {
@@ -2730,6 +2747,190 @@ def pwa_service_worker():
     });
     """
     return Response(sw_js, mimetype="application/javascript")
+
+
+_IG_ANALYTICS_CACHE = None
+_IG_ANALYTICS_LAST_FETCH_TS = 0.0
+_IG_ANALYTICS_LOCK = threading.Lock()
+
+
+def _refresh_ig_live_analytics_worker():
+    """
+    Fetches live Views (Reach/Play Count), Likes, and Comments for all posted reels on `@ai_foji_lovelife`
+    using the authenticated Instagram session (`get_authenticated_ig_client`) and merges with `published_posts`.
+    Saves to `data/ig_live_analytics.json` so `/api/universe/ig_analytics` responds in <5ms every 30s!
+    """
+    global _IG_ANALYTICS_CACHE, _IG_ANALYTICS_LAST_FETCH_TS
+    if not _IG_ANALYTICS_LOCK.acquire(blocking=False):
+        return
+    try:
+        ig_user = os.getenv("INSTAGRAM_USERNAME", "ai_foji_lovelife").strip().lstrip("@")
+        q = _fud.get_scheduled_queue()
+        pub_posts = list(q.get("published_posts") or [])
+
+        prev_saved = {}
+        if os.path.exists("data/ig_live_analytics.json"):
+            try:
+                prev_saved = json.load(open("data/ig_live_analytics.json", "r", encoding="utf-8"))
+            except Exception:
+                prev_saved = {}
+
+        live_ig_reels = []
+        followers_count = int(prev_saved.get("followers_count", 0))
+        ig_sync_source = "Cached Studio Ledger"
+
+        try:
+            cl = get_authenticated_ig_client()
+            if cl:
+                uid = cl.user_id
+                if not uid:
+                    u_info = cl.user_info_by_username_v1(ig_user)
+                    uid = u_info.pk
+                    followers_count = int(getattr(u_info, "follower_count", 0) or followers_count)
+                else:
+                    try:
+                        u_info = cl.user_info_v1(uid)
+                        followers_count = int(getattr(u_info, "follower_count", 0) or followers_count)
+                    except Exception:
+                        pass
+
+                medias = cl.user_medias_v1(uid, amount=24)
+                for m in medias:
+                    code = getattr(m, "code", "") or ""
+                    pk = str(getattr(m, "pk", "") or "")
+                    views = int(getattr(m, "play_count", 0) or getattr(m, "view_count", 0) or 0)
+                    likes = int(getattr(m, "like_count", 0) or 0)
+                    comments = int(getattr(m, "comment_count", 0) or 0)
+                    cap = str(getattr(m, "caption_text", "") or "").strip()
+                    thumb = str(getattr(m, "thumbnail_url", "") or "")
+                    taken_dt = getattr(m, "taken_at", None)
+                    posted_str = taken_dt.astimezone(_fud.IST).strftime("%d %b %Y, %I:%M %p") if taken_dt else "Live on IG"
+                    first_line = cap.splitlines()[0][:68] if cap else f"Foji 3D Reel ({code})"
+                    er_pct = round(((likes + comments) / max(1, views)) * 100.0, 1) if views > 0 else 0.0
+                    live_ig_reels.append({
+                        "media_pk": pk,
+                        "code": code,
+                        "title": first_line,
+                        "caption": cap[:240],
+                        "views": views,
+                        "likes": likes,
+                        "comments": comments,
+                        "engagement_rate": er_pct,
+                        "permalink": f"https://www.instagram.com/reel/{code}/" if code else f"https://www.instagram.com/{ig_user}/",
+                        "thumbnail_url": thumb,
+                        "posted_at": posted_str
+                    })
+                if live_ig_reels:
+                    ig_sync_source = "Instagram Live API (@" + ig_user + ")"
+        except Exception as ig_e:
+            print(f"ℹ️ [IG Analytics Refresh] Note: {ig_e}")
+
+        # Merge/supplement with `published_posts` from Studio Vault if live_ig_reels is empty or partial
+        existing_pks = {r.get("media_pk") for r in live_ig_reels if r.get("media_pk")}
+        prev_by_file = {r.get("video_file"): r for r in (prev_saved.get("reels") or []) if r.get("video_file")}
+
+        for idx, p in enumerate(pub_posts):
+            mpk = str(p.get("ig_media_pk") or "")
+            vfile = p.get("video_file") or f"reel_{idx}.mp4"
+            if mpk and mpk in existing_pks:
+                continue
+            prev_r = prev_by_file.get(vfile, {})
+            views = int(p.get("views") or prev_r.get("views") or 0)
+            likes = int(p.get("likes") or prev_r.get("likes") or 0)
+            comments = int(p.get("comments") or prev_r.get("comments") or 0)
+            er_pct = round(((likes + comments) / max(1, views)) * 100.0, 1) if views > 0 else 0.0
+            live_ig_reels.append({
+                "media_pk": mpk or vfile,
+                "video_file": vfile,
+                "code": p.get("ig_code") or "",
+                "title": p.get("title") or vfile,
+                "caption": (p.get("caption") or "")[:240],
+                "views": views,
+                "likes": likes,
+                "comments": comments,
+                "engagement_rate": er_pct,
+                "permalink": p.get("permalink") or f"https://www.instagram.com/{ig_user}/",
+                "thumbnail_url": f"/api/universe/thumb_file/{vfile}",
+                "posted_at": p.get("published_at") or "Posted on IG"
+            })
+
+        total_views = sum(int(r.get("views", 0)) for r in live_ig_reels)
+        total_likes = sum(int(r.get("likes", 0)) for r in live_ig_reels)
+        total_comments = sum(int(r.get("comments", 0)) for r in live_ig_reels)
+        avg_er = round(((total_likes + total_comments) / max(1, total_views)) * 100.0, 1) if total_views > 0 else 0.0
+
+        payload = {
+            "ok": True,
+            "username": f"@{ig_user}",
+            "followers_count": followers_count,
+            "total_reels_posted": len(live_ig_reels),
+            "total_views_reach": total_views,
+            "total_likes": total_likes,
+            "total_comments": total_comments,
+            "avg_engagement_rate": avg_er,
+            "sync_source": ig_sync_source,
+            "updated_at_ist": datetime.now(_fud.IST).strftime("%I:%M:%S %p IST"),
+            "updated_epoch": time.time(),
+            "reels": live_ig_reels[:24]
+        }
+        _IG_ANALYTICS_CACHE = payload
+        _IG_ANALYTICS_LAST_FETCH_TS = time.time()
+        os.makedirs("data", exist_ok=True)
+        with open("data/ig_live_analytics.json", "w", encoding="utf-8") as af:
+            json.dump(payload, af, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"⚠️ IG Analytics worker note: {e}")
+    finally:
+        _IG_ANALYTICS_LOCK.release()
+
+
+@app.route("/api/universe/ig_analytics", methods=["GET"])
+def api_universe_ig_analytics():
+    from flask import jsonify, request
+    global _IG_ANALYTICS_CACHE, _IG_ANALYTICS_LAST_FETCH_TS
+    force_now = request.args.get("force") == "1"
+    now_t = time.time()
+
+    if _IG_ANALYTICS_CACHE is None and os.path.exists("data/ig_live_analytics.json"):
+        try:
+            _IG_ANALYTICS_CACHE = json.load(open("data/ig_live_analytics.json", "r", encoding="utf-8"))
+        except Exception:
+            pass
+
+    if force_now or _IG_ANALYTICS_CACHE is None or (now_t - _IG_ANALYTICS_LAST_FETCH_TS) >= 28.0:
+        threading.Thread(target=_refresh_ig_live_analytics_worker, daemon=True).start()
+
+    if _IG_ANALYTICS_CACHE:
+        return jsonify(_IG_ANALYTICS_CACHE)
+
+    q = _fud.get_scheduled_queue()
+    pub = q.get("published_posts") or []
+    return jsonify({
+        "ok": True,
+        "username": "@ai_foji_lovelife",
+        "followers_count": 0,
+        "total_reels_posted": len(pub),
+        "total_views_reach": 0,
+        "total_likes": 0,
+        "total_comments": 0,
+        "avg_engagement_rate": 0.0,
+        "sync_source": "Warming up Instagram Live Sync...",
+        "updated_at_ist": datetime.now(_fud.IST).strftime("%I:%M:%S %p IST"),
+        "reels": [
+            {
+                "video_file": p.get("video_file", ""),
+                "title": p.get("title") or p.get("video_file", "Foji Reel"),
+                "views": int(p.get("views", 0)),
+                "likes": int(p.get("likes", 0)),
+                "comments": int(p.get("comments", 0)),
+                "engagement_rate": 0.0,
+                "permalink": p.get("permalink") or "https://www.instagram.com/ai_foji_lovelife/",
+                "thumbnail_url": f"/api/universe/thumb_file/{p.get('video_file', '')}",
+                "posted_at": p.get("published_at", "Posted")
+            }
+            for p in pub[:24]
+        ]
+    })
 
 
 @app.after_request
@@ -3492,7 +3693,7 @@ html, body {
   <div class="fns-splash-progress-wrap">
     <div class="fns-splash-bar"><div class="fns-splash-fill"></div></div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-      <span style="font-size:0.71rem;color:#94a3b8;font-weight:700;" id="fns-splash-status-txt">Loading Makra & Meera 3D Universe...</span>
+      <span style="font-size:0.71rem;color:#94a3b8;font-weight:700;" id="fns-splash-status-txt">Loading Foji AI 3D Studio...</span>
       <button onclick="fnsHideSplashNow()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#cbd5e1;padding:3px 10px;border-radius:99px;font-size:0.68rem;font-weight:700;cursor:pointer;">Skip ⏭️</button>
     </div>
   </div>
@@ -3581,7 +3782,7 @@ html, body {
       <div class="fns-side-box">
         <div style="font-size:0.72rem;font-weight:800;color:#94a3b8;margin-bottom:8px;">QUICK COMMANDS</div>
         <button class="fns-tab-btn" id="fns-side-gen-btn" style="width:100%;margin-bottom:5px;justify-content:flex-start;color:#34d399;" onclick="fnsHandlePrimaryGenOrStopClick()">🚀 Generate Reel</button>
-        <button class="fns-tab-btn" style="width:100%;justify-content:flex-start;" onclick="fnsStartFullVideoGeneration(3)">🌙 Run 3-Reel Batch</button>
+        <button class="fns-tab-btn" style="width:100%;justify-content:flex-start;" onclick="fnsStartFullVideoGeneration(3)">🚀 Run 3-Reel Batch (5h Auto)</button>
       </div>
     </div>
 
@@ -3629,8 +3830,8 @@ html, body {
           <div class="fns-pipeline-card">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
               <div>
-                <div style="font-size:1.04rem;font-weight:900;color:#fff;" id="fns-foji-soldier-title">🪖 Commando Makra • Guard Duty</div>
-                <div style="font-size:0.78rem;color:#34d399;margin-top:2px;" id="fns-radar-subtitle">Standing guard at Step 1 — Tap "Generate Reel" to start</div>
+                <div style="font-size:1.04rem;font-weight:900;color:#fff;" id="fns-foji-soldier-title">🎬 3D Production Pipeline • Ready</div>
+                <div style="font-size:0.78rem;color:#34d399;margin-top:2px;" id="fns-radar-subtitle">Ready at Step 1 — Tap "Generate Reel" to start 3D production</div>
               </div>
               <a href="/api/universe/live_screenshot" target="_blank" class="fns-tab-btn" style="text-decoration:none;font-size:0.74rem;border-color:rgba(255,255,255,0.12);">📸 Live Screen ↗</a>
             </div>
@@ -3826,7 +4027,7 @@ html, body {
           <div class="fns-pipeline-card">
             <div style="font-size:0.92rem;font-weight:800;color:#38bdf8;margin-bottom:12px;">⚙️ Daily Schedule Times (IST)</div>
             <div style="margin-bottom:12px;">
-              <label style="font-size:0.74rem;color:#94a3b8;font-weight:700;">Night Auto-Batch (3 Reels):</label>
+              <label style="font-size:0.74rem;color:#94a3b8;font-weight:700;">Auto-Batch Cycle (Every 5 Hours • 3 Reels):</label>
               <input type="time" id="fns-cfg-night-time" value="02:30" style="width:100%;box-sizing:border-box;margin-top:5px;background:#081020;border:1px solid rgba(255,255,255,0.14);color:#34d399;padding:9px;border-radius:9px;font-weight:700;" />
             </div>
             <div style="margin-bottom:14px;">
@@ -3871,6 +4072,7 @@ html, body {
             <!-- SERIES MODE FILTER PILLS -->
             <div id="fns-wall-filter-pills" style="display:flex;gap:6px;flex-wrap:wrap;">
               <button class="fns-tab-btn active" onclick="fnsFilterAllReelsWall('all', this)">🎞️ All Modes</button>
+              <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('viral_trend', this)">🚀 Viral Trends</button>
               <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('love_meera', this)">❤️ Love Story</button>
               <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('unit_ragda', this)">🔥 Ragda</button>
               <button class="fns-tab-btn" onclick="fnsFilterAllReelsWall('training_ustad', this)">⚔️ Training</button>
@@ -3894,7 +4096,8 @@ html, body {
               <div style="font-size:0.75rem;color:#94a3b8;">Select any Series Mode below to see which Parts are Posted, Scheduled, or Pending next in line!</div>
             </div>
             <div id="fns-series-mode-tabs" style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button class="fns-tab-btn active" onclick="fnsSelectSeriesModeView('love_meera', this)">❤️ Pyar / Love Story</button>
+              <button class="fns-tab-btn" onclick="fnsSelectSeriesModeView('viral_trend', this)">🚀 Viral Trends</button>
+              <button class="fns-tab-btn active" onclick="fnsSelectSeriesModeView('love_meera', this)">❤️ Love & Nok-Jhok</button>
               <button class="fns-tab-btn" onclick="fnsSelectSeriesModeView('unit_ragda', this)">🔥 Ustad Ragda</button>
               <button class="fns-tab-btn" onclick="fnsSelectSeriesModeView('training_ustad', this)">⚔️ Training Drill</button>
               <button class="fns-tab-btn" onclick="fnsSelectSeriesModeView('fauji_masti', this)">😂 Barrack Masti</button>
@@ -3910,9 +4113,9 @@ html, body {
           <div class="fns-pipeline-card">
             <div style="font-size:0.88rem;font-weight:800;color:#34d399;margin-bottom:10px;">Lead 3D Characters</div>
             <img src="/api/universe/char_img/foji" style="width:100%;height:165px;object-fit:cover;object-position:center 8%;border-radius:10px;margin-bottom:6px;" />
-            <div style="font-size:0.78rem;font-weight:700;color:#fff;margin-bottom:12px;">🪖 Foji Makra</div>
+            <div style="font-size:0.78rem;font-weight:700;color:#fff;margin-bottom:12px;">🪖 Foji (Lead Soldier Asset)</div>
             <img src="/api/universe/char_img/fojan" style="width:100%;height:165px;object-fit:cover;object-position:center 8%;border-radius:10px;margin-bottom:6px;" />
-            <div style="font-size:0.78rem;font-weight:700;color:#fff;">🌸 Fojan Meera</div>
+            <div style="font-size:0.78rem;font-weight:700;color:#fff;">🌸 Fojan (Co-Star Asset)</div>
           </div>
           <div class="fns-pipeline-card">
             <div style="font-size:0.88rem;font-weight:800;color:#38bdf8;margin-bottom:10px;">Active Generation Track</div>
@@ -3995,7 +4198,7 @@ function fnsHideSplashNow() {
 }
 setTimeout(() => {
   const stTxt = document.getElementById('fns-splash-status-txt');
-  if (stTxt) stTxt.innerText = 'Commando Makra & Meera Ready • Opening Studio...';
+  if (stTxt) stTxt.innerText = 'Foji AI 3D Studio Ready • Opening Workspace...';
 }, 3400);
 setTimeout(fnsHideSplashNow, 2800);
 
@@ -4064,7 +4267,7 @@ const CLEAN_STAGE_NAMES = {
   1: { title: 'Step 1: Writing Story Script', sub: 'Creating original Hinglish dialogues & scene...' },
   2: { title: 'Step 2: Connecting 3D Studio', sub: 'Securing studio workspace...' },
   3: { title: 'Step 3: Setting Up 9:16 Canvas', sub: 'Configuring vertical HD reel frame...' },
-  4: { title: 'Step 4: Loading Characters', sub: 'Preparing Foji Makra & Fojan Meera...' },
+  4: { title: 'Step 4: Loading Characters', sub: 'Uploading 3D character reference assets...' },
   5: { title: 'Step 5: Directing Scene', sub: 'Applying camera angles & expressions...' },
   6: { title: 'Step 6: Rendering 3D Animation', sub: 'Generating 3D animation & lip-sync...' },
   7: { title: 'Step 7: Mastering HD Video', sub: 'Finalizing MP4 video & audio track...' },
@@ -4211,7 +4414,7 @@ function fnsHandlePrimaryGenOrStopClick() {
     fnsOpenModal(
       '🛑',
       'Stop Generation?',
-      'Stop current reel generation and return Commando Makra to Step 1?',
+      'Stop current reel generation and reset pipeline to Step 1?',
       true,
       [
         {
@@ -4248,12 +4451,19 @@ setInterval(() => {
   if (!_fnsPipelineIsRunning) return;
   const subTitle = document.getElementById('fns-radar-subtitle');
   const pctBadge = document.getElementById('fns-mission-pct-badge');
+  const walker = document.getElementById('fns-commando-walker');
+  const groundFill = document.getElementById('fns-combat-ground-fill');
   const elapsed = Math.max(1, Math.floor((Date.now() / 1000) - (_fnsPipelineStartEpoch || (Date.now() / 1000))));
   const stepNum = Math.max(1, _fnsLockedStepNum || 1);
   const cleanInfo = CLEAN_STAGE_NAMES[stepNum] || { title: `Step ${stepNum}`, sub: 'Processing...' };
-  const basePct = Math.min(96, Math.round((stepNum - 1) * 12.5 + Math.min(11, elapsed * 0.35)));
-  if (subTitle) subTitle.innerText = `${cleanInfo.sub} (${elapsed}s live)`;
-  if (pctBadge) pctBadge.innerText = `🔥 STEP ${stepNum}/8 • ${basePct}%`;
+  const microCreep = stepNum === 6 ? Math.min(11.0, (elapsed / 900.0) * 11.0) : Math.min(9.5, elapsed * 0.45);
+  const basePct = Math.min(97, Math.round(((stepNum - 1) * 12.5) + microCreep));
+  const liveWalkLeft = Math.min(84, (3 + ((stepNum - 1) * 11.5) + (microCreep * 0.75))).toFixed(1);
+  if (walker) walker.style.left = liveWalkLeft + '%';
+  if (groundFill) groundFill.style.width = Math.max(10, basePct) + '%';
+  const minsLeft = Math.max(0, Math.ceil((900 - elapsed) / 60));
+  if (subTitle) subTitle.innerText = `${cleanInfo.sub} • ${elapsed}s elapsed (Max 15m | ~${minsLeft}m timeout window)`;
+  if (pctBadge) pctBadge.innerText = `⚡ STEP ${stepNum}/8 • ${basePct}%`;
 }, 1000);
 
 function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFile) {
@@ -4280,7 +4490,7 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
   }
 
   let status = rawStatus;
-  if (status === 'active' && ageSeconds > 360 && nowSec >= _fnsPipelineLockUntil) status = 'idle';
+  if (status === 'active' && ageSeconds > 930 && nowSec >= _fnsPipelineLockUntil) status = 'idle';
   if (stepNum === 0 && status !== 'error' && nowSec >= _fnsPipelineLockUntil) status = 'idle';
 
   const isRunning = (status === 'active' && stepNum >= 1);
@@ -4304,8 +4514,8 @@ function fnsUpdateConnectedPipelineRoad(telemetry, notifications, latestVideoFil
     _fnsLastCompletedStep = 0;
     if (walker) walker.style.left = '3%';
     if (groundFill) groundFill.style.width = '6%';
-    if (soldierTitle) soldierTitle.innerText = '🪖 Commando Makra • Ready';
-    if (subTitle) subTitle.innerText = 'Tap "Generate Reel" to launch 3D studio';
+    if (soldierTitle) soldierTitle.innerText = '🎬 3D Production Pipeline • Ready';
+    if (subTitle) subTitle.innerText = 'Ready at Step 1 — Tap "Generate Reel" to launch 3D production';
     if (pctBadge) pctBadge.innerText = '🛡️ READY • STEP 1';
   } else if (status === 'active') {
     const walkPct = 3 + ((stepNum - 1) * 11.5);
@@ -4991,7 +5201,7 @@ async function fnsStartFullVideoGeneration(cnt=1) {
     epoch: Date.now() / 1000
   }, [], '');
 
-  fnsOpenModal('🚀', 'Starting 3D Studio...', 'Launching Commando Makra...', false, []);
+  fnsOpenModal('🚀', 'Starting 3D Studio...', 'Initializing 8-Step 3D Video Pipeline...', false, []);
   try {
     const r = await fetch('/api/universe/trigger_pipeline', {
       method: 'POST',
@@ -5066,6 +5276,184 @@ document.addEventListener('DOMContentLoaded', () => {
   fnsRefreshHub();
   setInterval(fnsRefreshHub, 3000);
 });
+</script>
+
+<!-- 📊 INSTAGRAM EDITS APP — LIVE REELS REACH, VIEWS, LIKES & COMMENTS (30S AUTO-REFRESH) -->
+<style>
+#fns-ig-edits-analytics-wrap {
+    max-width: 1380px; margin: 18px auto 32px auto; padding: 0 16px;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+}
+.fns-edits-shell {
+    background: linear-gradient(145deg, rgba(14, 22, 42, 0.95), rgba(7, 12, 24, 0.98));
+    border: 1px solid rgba(16, 185, 129, 0.28);
+    border-radius: 20px; padding: 20px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.fns-edits-header {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 12px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.fns-edits-title-grp { display: flex; align-items: center; gap: 12px; }
+.fns-edits-badge-live {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(16, 185, 129, 0.16); color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 999px;
+    padding: 5px 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.4px;
+}
+.fns-edits-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #10b981;
+    box-shadow: 0 0 10px #10b981; animation: fnsPulseDot 1.5s infinite;
+}
+@keyframes fnsPulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.25); } }
+.fns-edits-kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px; margin: 16px 0;
+}
+.fns-edits-kpi-card {
+    background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px;
+}
+.fns-edits-kpi-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; color: #94a3b8; font-weight: 600; }
+.fns-edits-kpi-val { font-size: 24px; font-weight: 800; color: #f8fafc; }
+.fns-edits-reels-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+    gap: 14px; margin-top: 14px;
+}
+.fns-edits-reel-card {
+    background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.fns-edits-reel-card:hover { transform: translateY(-2px); border-color: rgba(6, 182, 212, 0.45); }
+.fns-edits-reel-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.fns-edits-reel-title { font-size: 13px; font-weight: 700; color: #f1f5f9; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fns-edits-metrics-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+    background: rgba(4, 8, 18, 0.65); border-radius: 12px; padding: 10px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.fns-edits-m-box { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.fns-edits-m-num { font-size: 14px; font-weight: 800; color: #38bdf8; }
+.fns-edits-m-txt { font-size: 10px; color: #94a3b8; font-weight: 600; margin-top: 2px; }
+</style>
+
+<script>
+(function() {
+    function formatCompactNum(n) {
+        const num = Number(n || 0);
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        return String(num);
+    }
+
+    function ensureEditsAnalyticsSection() {
+        const shell = document.getElementById('foji-nextgen-studio-shell');
+        if (!shell || document.getElementById('fns-ig-edits-analytics-wrap')) return;
+        const wrap = document.createElement('div');
+        wrap.id = 'fns-ig-edits-analytics-wrap';
+        wrap.innerHTML = `
+            <div class="fns-edits-shell">
+                <div class="fns-edits-header">
+                    <div class="fns-edits-title-grp">
+                        <span style="font-size:24px;">📊</span>
+                        <div>
+                            <div style="font-size:17px; font-weight:800; color:#f8fafc;">Instagram Edits — Live Reels Reach & Insights</div>
+                            <div id="fns-edits-sub-sync" style="font-size:12px; color:#94a3b8;">@ai_foji_lovelife • Auto-Syncs Every 30 Seconds</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="fns-edits-badge-live"><span class="fns-edits-dot"></span> LIVE 30s SYNC</span>
+                        <button onclick="window.fnsRefreshIgEditsAnalytics(true)" style="background:rgba(6,182,212,0.18); color:#22d3ee; border:1px solid rgba(6,182,212,0.4); border-radius:10px; padding:6px 12px; font-size:12px; font-weight:700; cursor:pointer;">🔄 Refresh Now</button>
+                    </div>
+                </div>
+                <div class="fns-edits-kpi-grid">
+                    <div class="fns-edits-kpi-card">
+                        <span class="fns-edits-kpi-lbl">🎬 Posted Reels</span>
+                        <span id="fns-edits-kpi-reels" class="fns-edits-kpi-val">0</span>
+                    </div>
+                    <div class="fns-edits-kpi-card">
+                        <span class="fns-edits-kpi-lbl">👁️ Total Views (Reach)</span>
+                        <span id="fns-edits-kpi-views" class="fns-edits-kpi-val" style="color:#38bdf8;">0</span>
+                    </div>
+                    <div class="fns-edits-kpi-card">
+                        <span class="fns-edits-kpi-lbl">❤️ Total Likes</span>
+                        <span id="fns-edits-kpi-likes" class="fns-edits-kpi-val" style="color:#f43f5e;">0</span>
+                    </div>
+                    <div class="fns-edits-kpi-card">
+                        <span class="fns-edits-kpi-lbl">💬 Total Comments</span>
+                        <span id="fns-edits-kpi-comments" class="fns-edits-kpi-val" style="color:#f59e0b;">0</span>
+                    </div>
+                    <div class="fns-edits-kpi-card">
+                        <span class="fns-edits-kpi-lbl">⚡ Avg Engagement</span>
+                        <span id="fns-edits-kpi-er" class="fns-edits-kpi-val" style="color:#10b981;">0%</span>
+                    </div>
+                </div>
+                <div id="fns-edits-reels-list" class="fns-edits-reels-grid"></div>
+            </div>
+        `;
+        shell.appendChild(wrap);
+    }
+
+    window.fnsRefreshIgEditsAnalytics = async function(forceNow) {
+        try {
+            ensureEditsAnalyticsSection();
+            const url = '/api/universe/ig_analytics' + (forceNow ? '?force=1&t=' + Date.now() : '?t=' + Date.now());
+            const r = await fetch(url);
+            if (!r.ok) return;
+            const d = await r.json();
+            if (!d || !d.ok) return;
+
+            const elReels = document.getElementById('fns-edits-kpi-reels');
+            const elViews = document.getElementById('fns-edits-kpi-views');
+            const elLikes = document.getElementById('fns-edits-kpi-likes');
+            const elComms = document.getElementById('fns-edits-kpi-comments');
+            const elEr = document.getElementById('fns-edits-kpi-er');
+            const elSub = document.getElementById('fns-edits-sub-sync');
+            const elGrid = document.getElementById('fns-edits-reels-list');
+
+            if (elReels) elReels.textContent = d.total_reels_posted || 0;
+            if (elViews) elViews.textContent = formatCompactNum(d.total_views_reach || 0);
+            if (elLikes) elLikes.textContent = formatCompactNum(d.total_likes || 0);
+            if (elComms) elComms.textContent = formatCompactNum(d.total_comments || 0);
+            if (elEr) elEr.textContent = (d.avg_engagement_rate || 0) + '%';
+            if (elSub) elSub.textContent = `${d.username || '@ai_foji_lovelife'} • ${d.sync_source || 'Live'} • Updated: ${d.updated_at_ist || 'Just now'}`;
+
+            if (elGrid && Array.isArray(d.reels)) {
+                elGrid.innerHTML = d.reels.map((item, idx) => `
+                    <div class="fns-edits-reel-card">
+                        <div class="fns-edits-reel-top">
+                            <div class="fns-edits-reel-title" title="${(item.title || '').replace(/"/g, '&quot;')}">#${idx + 1} • ${item.title || item.video_file || 'Foji 3D Reel'}</div>
+                            <a href="${item.permalink || '#'}" target="_blank" style="font-size:11px; color:#34d399; text-decoration:none; font-weight:700; white-space:nowrap;">IG ↗</a>
+                        </div>
+                        <div style="font-size:11px; color:#64748b;">📅 ${item.posted_at || 'Live on Instagram'}</div>
+                        <div class="fns-edits-metrics-row">
+                            <div class="fns-edits-m-box">
+                                <span class="fns-edits-m-num" style="color:#38bdf8;">${formatCompactNum(item.views || 0)}</span>
+                                <span class="fns-edits-m-txt">👁️ Views</span>
+                            </div>
+                            <div class="fns-edits-m-box">
+                                <span class="fns-edits-m-num" style="color:#f43f5e;">${formatCompactNum(item.likes || 0)}</span>
+                                <span class="fns-edits-m-txt">❤️ Likes</span>
+                            </div>
+                            <div class="fns-edits-m-box">
+                                <span class="fns-edits-m-num" style="color:#f59e0b;">${formatCompactNum(item.comments || 0)}</span>
+                                <span class="fns-edits-m-txt">💬 Comments</span>
+                            </div>
+                            <div class="fns-edits-m-box">
+                                <span class="fns-edits-m-num" style="color:#10b981;">${item.engagement_rate || 0}%</span>
+                                <span class="fns-edits-m-txt">⚡ ER%</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        } catch (e) {}
+    };
+
+    setTimeout(() => { window.fnsRefreshIgEditsAnalytics(false); }, 1800);
+    setInterval(() => { window.fnsRefreshIgEditsAnalytics(false); }, 30000);
+})();
 </script>
 """
                 html_text = html_text.replace("</body>", widget_html + "\n</body>", 1)

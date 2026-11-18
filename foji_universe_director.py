@@ -39,68 +39,95 @@ _LOCAL_QUEUE_MODIFIED_TS = 0.0
 FOJI_UNIVERSE_TRACKS = {
     "love_meera": {
         "id": "love_meera",
-        "name": "❤️ Foji Makra & Fojan Meera Love Story",
-        "badge": "Romantic & Emotional Series",
-        "characters": ["Foji Makra (Young Haryanvi Agniveer Soldier)", "Fojan Meera (Devoted Village Love Interest)"],
+        "name": "❤️ Foji & Fojan Emotional Love & Nok-Jhok",
+        "badge": "Romantic & Desi Nok-Jhok Series",
+        "characters": ["Young Haryanvi Agniveer Soldier", "His Devoted Fojan (Jaan / Kuchu Puchu / Laado)"],
         "theme_brief": (
-            "Heart-touching long-distance romance and emotional separation between Indian Army Agniveer soldier Makra "
-            "and his beloved Meera. Include authentic fauji chutti moments, border letters, video call glitches, "
-            "railway station farewells, village waiting scenes, and deep love for both uniform (Tiranga) and soulmate."
+            "Heart-touching and cute relatable romance, teasing nok-jhok, emotional separation, and surprise homecoming "
+            "between a young Indian Army soldier and his beloved Fojan. Include authentic fauji chutti surprises, "
+            "late-night bunker video calls with cute nicknames ('Jaan', 'Kuchu Puchu', 'Bawli', 'Laado', 'Gulgule', 'Fauji Sahab'), "
+            "railway station platform hugs, karwa chauth/diwali waiting, and pride in the uniform. (STRICT BAN: NEVER include paper letters/chitthi!)."
         )
     },
     "training_ustad": {
         "id": "training_ustad",
-        "name": "⚔️ Agniveer Training Center & Drill",
+        "name": "⚔️ Agniveer Training Center & Drill Reality",
         "badge": "High-Energy Academy Series",
-        "characters": ["Foji Makra (Recruit)", "Strict Moustached Drill Ustad", "Unit Coursemates"],
+        "characters": ["Young Recruit", "Strict Moustached Haryanvi Drill Ustad", "Unit Coursemates"],
         "theme_brief": (
-            "Intense yet relatable Indian Army training academy life: 4 AM whistle parade, obstacle course, "
-            "firing range accuracy, chest-high mud crawl, rifle drill inspection, and the transformation of a "
-            "raw village boy into a steel-hearted soldier."
+            "Hard-hitting reality of Indian Army training academy life: 4 AM whistle sprint, obstacle course wall jump, "
+            "firing range bullseye, chest-high mud crawl under barbed wire, rifle drill inspection, and raw goosebump dialogues "
+            "that turn a village boy into a steel-hearted commando."
         )
     },
     "unit_ragda": {
         "id": "unit_ragda",
-        "name": "🔥 Ustad Ka Ragda & Punishment",
+        "name": "🔥 Ustad Ka Ragda & Fauji Attitude",
         "badge": "Viral Fauji Ragda Series",
-        "characters": ["Foji Makra", "Strict Drill Ustad", "Funny Unit Buddy"],
+        "characters": ["Young Soldier", "Strict Drill Ustad", "Funny Unit Brother"],
         "theme_brief": (
-            "Authentic Indian Army 'Ragda' (tough disciplinary physical punishment with brotherhood and humor): "
-            "frog jumps with full 20kg pithu bag, front-rolls in parade ground dust, pushups in rain because of "
-            "one unpolished boot or late fall-in, and Ustad's iconic Haryanvi/Hindi dialogues."
+            "Authentic Indian Army 'Ragda' (tough disciplinary physical punishment with Haryanvi swagger and brotherhood): "
+            "frog jumps with full 25kg pithu bag, elbows bleeding in parade ground gravel, pushups in pouring rain, "
+            "and Ustad's thunderous Haryanvi/Desi reality dialogues about Fauj discipline."
         )
     },
     "fauji_masti": {
         "id": "fauji_masti",
-        "name": "😂 Barrack Masti, Mess & Brotherhood",
+        "name": "😂 Barrack Masti, Mess & Fauji Yaari",
         "badge": "Desi Fauji Comedy Series",
-        "characters": ["Foji Makra", "Bihari & Punjabi Unit Brothers", "Mess Havildar"],
+        "characters": ["Young Soldier", "Desi Unit Brothers", "Strict Mess Havildar"],
         "theme_brief": (
-            "Hilarious and heartwarming barrack life: stealing extra gulab jamun from the army mess, "
-            "bada khana dance, funny haircut day, hiding phone during night roll-call, trunk inspection panic, "
-            "and unbreakable brotherhood among soldiers."
+            "Hilarious and viral barrack comedy: stealing hot gulab jamun from the army mess, zero-trim fauji haircut prank, "
+            "bada khana bhangra/haryanvi dance, hiding smartphone under pillow during Ustad's surprise night raid, "
+            "and unbreakable brotherhood."
         )
     },
     "border_duty": {
         "id": "border_duty",
-        "name": "🏔️ LOC Border Patrol & Maa KaPyar",
+        "name": "🏔️ LOC Border Reality, Maa Ka Pyar & Tiranga",
         "badge": "Goosebumps Patriotic Series",
-        "characters": ["Foji Makra (Snow/Border Post)", "Post Commander", "Meera / Maa in Village"],
+        "characters": ["Soldier at Snowy LOC Bunker", "Unit Buddy / Commander", "Maa on Call"],
         "theme_brief": (
-            "High-altitude snowy Siachen/Jammu LOC bunker duty at -25°C, night ambush patrol, drinking गरम chai "
-            "in a freezing bunker, protecting the Tricolor flag during a blizzard, and emotional memories of home."
+            "Goosebump-inducing reality of -25°C Siachen/Jammu LOC border duty: frozen eyelashes in blizzard, "
+            "warming hands over steel mug of garam chai with rifle strapped to chest, emotional call with Maa back in village, "
+            "and fearless Haryanvi/Fauji shayari protecting the Tiranga."
+        )
+    },
+    "viral_trend": {
+        "id": "viral_trend",
+        "name": "🚀 Trending Viral Fauji & Desi Reality Specials",
+        "badge": "Standalone Viral Trend Engine",
+        "characters": ["Indian Army Soldier", "Dynamic Co-Star (Ustad / Unit Buddy / Fojan / Villager)"],
+        "theme_brief": (
+            "Standalone, ultra-viral high-retention reels engineered around current Instagram/YouTube Shorts trends! "
+            "Not bound to slow story buildup — instant 2-second hook! Themes rotate across: Civilian vs Fauji Reality contrast, "
+            "Haryanvi Attitude & Shayari in Uniform, Cute 'Kuchu Puchu / Jaan' Video Call Comedy, Sudden Uniform Surprise in Village Market, "
+            "4 AM Ground Runner Motivation, and Spine-Chilling Border Warning to Enemies."
         )
     }
 }
 
-TRACK_ORDER = ["love_meera", "unit_ragda", "training_ustad", "fauji_masti", "border_duty"]
+TRACK_ORDER = ["viral_trend", "love_meera", "unit_ragda", "training_ustad", "fauji_masti", "border_duty"]
+
+DAILY_VIRAL_HASHTAGS = {
+    0: "#mondaymotivation #agniveerbharti #indianarmy #haryanvishayari #faujilife #armyreels #desifauji #viralreels",
+    1: "#ustadkaragda #faujattitude #indianarmy #armylover #haryanvistatus #agniveer #faujistatus #trendingreels",
+    2: "#fojifojan #faujilove #kuchupuchu #indianarmy #longdistancelove #faujiwife #romanticreels #explorepage",
+    3: "#locborder #siachenheroes #indianarmy #maakapyar #faujiduty #tiranga #armybrotherhood #goosebumps",
+    4: "#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
+    5: "#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+    6: "#faujihomecoming #surprisevisit #indianarmy #fojifojan #emotionalreunion #armylife #proudindian #viralvideos"
+}
 
 
 _GH_PUSH_LOCK = threading.Lock() if "threading" in globals() else __import__("threading").Lock()
 
 def push_json_to_github_instantly(rel_path, commit_msg, blocking=False):
-    """Non-blocking background GitHub state sync so UI actions respond in 0.005s and NEVER say Server Busy!"""
+    """Non-blocking background GitHub state sync with `[skip render] [skip ci]` so Render NEVER burns build minutes!"""
     import threading as _th
+    safe_msg = str(commit_msg or "Sync studio state").strip()
+    if "[skip render]" not in safe_msg.lower():
+        safe_msg = f"{safe_msg} [skip render] [skip ci]"
     def _bg_push():
         gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
         repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
@@ -117,7 +144,7 @@ def push_json_to_github_instantly(rel_path, commit_msg, blocking=False):
                     headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
                     r = requests.get(f"{url}?ref=main&t={int(time.time()*1000)}", headers=headers, timeout=8)
                     sha = r.json().get("sha") if r.status_code == 200 else None
-                    payload = {"message": commit_msg, "content": b64_content, "branch": "main"}
+                    payload = {"message": safe_msg, "content": b64_content, "branch": "main"}
                     if sha:
                         payload["sha"] = sha
                     put_r = requests.put(url, headers=headers, json=payload, timeout=12)
@@ -132,6 +159,8 @@ def push_json_to_github_instantly(rel_path, commit_msg, blocking=False):
         return _bg_push()
     _th.Thread(target=_bg_push, daemon=True).start()
     return True
+
+
 
 
 def _fetch_github_json_zero_cache(rel_path):
@@ -370,52 +399,78 @@ def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, us
     if not all_keys:
         raise RuntimeError("No API key found in .env! Please check your .env file.")
 
-    avoid_sample = " | ".join([d for d in used_dialogues[-20:] if d])
-    user_direction = f"\nDIRECTOR SPECIAL TWIST FOR PART #{ep_num}: {custom_idea}\n" if custom_idea.strip() else ""
-    unique_nonce = f"{int(time.time()*1000)}-part{ep_num}"
+    avoid_sample = " | ".join([d for d in used_dialogues[-22:] if d])
+    user_direction = f"\nDIRECTOR SPECIAL VIRAL CONCEPT: {custom_idea}\n" if custom_idea.strip() else ""
+    unique_nonce = f"{int(time.time()*1000)}-p{ep_num}"
 
-    # Pick a guaranteed different outfit for Meera based on episode number + history count
     dress_idx = (ep_num + len(used_dialogues)) % len(MEERA_WARDROBE_CATALOG)
     assigned_meera_dress = MEERA_WARDROBE_CATALOG[dress_idx]
 
-    # Decide default character requirement by track
-    solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti"}
-    default_needs_meera = (track_id not in solo_army_tracks)
+    solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti", "border_duty"}
+    if track_id == "viral_trend":
+        # Viral trend alternates dynamically between solo reality army trends & cute couple trends!
+        default_needs_meera = (ep_num % 2 == 0)
+    else:
+        default_needs_meera = (track_id not in solo_army_tracks)
 
-    system_prompt = f"""You are the Lead Showrunner & Scriptwriter for 'Foji AI Studio' (Seed: {unique_nonce}), a 3D Pixar-style Indian Army series starring:
-- Makra (Foji): Young, energetic Haryanvi Indian Army soldier (Agniveer).
-- Meera (Fojan): Makra's devoted village love interest (ONLY include Meera when the scene genuinely involves romance, home leave, railway farewell, letter/video call, or village memory. Do NOT force Meera into pure Army parade/ragda/barrack scenes!).
-- Ustad & Unit Brothers: Strict moustached drill instructor and funny coursemates.
+    weekday_idx = datetime.now(IST).weekday()
+    daily_tags = globals().get("DAILY_VIRAL_HASHTAGS", {}).get(
+        weekday_idx,
+        "#indianarmy #faujilife #haryanvishayari #agniveer #fojifojan #armyreels #viralreels"
+    )
 
-SERIES TRACK: {track['name']} ({track['badge']})
+    # Rotate fresh viral angles so the AI never repeats boring templates
+    viral_angles = [
+        "RAW REALITY OF FAUJ + GOOSEBUMP HARYANVI SHAYARI: Hard-hitting contrast between comfortable civilian life and a soldier's extreme sacrifice, ending with a thunderous Haryanvi shayari punchline.",
+        "CUTE 'KUCHU PUCHU / JAAN / BAWLI' NOK-JHOK & ROMANCE: Playful, ultra-relatable teasing or emotional reassurance on a bunker video call or sudden homecoming without ever sounding robotic.",
+        "HIGH-ADRENALINE USTAD RAGDA & DESI ATTITUDE: Mud, rain, heavy pithu sprint, and a legendary desi dialogue that gives every army aspirant goosebumps.",
+        "BROTHERHOOD & BARRACK COMEDY PUNCH: Fast-paced visual slapstick in the mess/barrack with a savage witty Haryanvi comeback.",
+        "EMOTIONAL MAA / HOME CALL AT FREEZING BORDER: Raw emotion in -25°C blizzard with soulful background folk song and patriotic pride."
+    ]
+    chosen_viral_angle = viral_angles[(ep_num + int(time.time() // 300)) % len(viral_angles)]
+
+    system_prompt = f"""You are India's #1 Viral Reels Showrunner, Haryanvi Shayar & 3D Cinema Director for 'Foji AI Studio' (Seed: {unique_nonce}).
+
+TRACK: {track['name']} ({track['badge']})
 TRACK BRIEF: {track['theme_brief']}
-CURRENT EPISODE PART TO WRITE: Part #{ep_num} (Continue the story forward from Part #{max(1, ep_num - 1)}!)
-DEFAULT INCLUDE MEERA IN THIS TRACK: {"YES (Both Makra & Meera)" if default_needs_meera else "NO (Only Foji Makra & Army Ustad/Brothers unless custom twist mentions Meera)"}
-IF MEERA APPEARS, HER MANDATORY NEW OUTFIT FOR THIS VIDEO: "{assigned_meera_dress}" (NEVER use her old dress!)
+VIRAL ANGLE FOR THIS REEL: {chosen_viral_angle}
+EPISODE / REEL NUMBER: {"Standalone Viral Trend Special #" + str(ep_num) if track_id == "viral_trend" else "Part #" + str(ep_num)}
+INCLUDE FOJAN (LOVE INTEREST) IN SCENE: {"YES (Soldier + His Fojan)" if default_needs_meera else "NO (Pure Army Scene: Soldier + Ustad / Unit Brothers)"}
+IF FOJAN APPEARS, HER MANDATORY NEW OUTFIT: "{assigned_meera_dress}"
 
-STORY CONTINUITY FROM PAST VIDEOS:
+PAST CONTEXT (Do NOT repeat):
 {continuity_context}
 {user_direction}
-MANDATORY RULES:
-1. Write 100% original, never-before-seen content for Part #{ep_num}. Move the plot forward to a new incident/location!
-2. NEVER repeat or paraphrase any of these past dialogues: [{avoid_sample}]
-3. If Meera is in the scene, explicitly describe her wearing "{assigned_meera_dress}" in `visual_scene_description`. If the scene is pure Army training/ragda/barrack comedy without Meera, set `"include_meera": false` and focus 100% on Foji Makra!
-4. Output ONLY a valid JSON object (no markdown fences) with these exact keys:
+STRICT VIRAL & QUALITY RULES (FOLLOW 100%):
+1. ZERO FORCED CHARACTER NAMES IN DIALOGUE: Do NOT keep saying 'Makra' or 'Meera' in dialogues!
+   - When talking to his beloved Fojan (or when she talks to him), use natural, viral affectionate pet-names like: "Jaan", "Meri Kuchu Puchu", "Bawli", "Laado", "Meri Fojan", "Gulgule", "Fauji Sahab", "Chhore".
+   - In pure Army/Border/Ragda scenes, use raw, authentic Fauji addressing: "Ustad Ji", "Sher", "Fauji", "Jawan", "Laadle".
+2. STRICT BAN ON LETTERS / CHITTHI: NEVER create scenes with paper letters (chitthi/patra), reading paper, or floating text! Use real physical action, facial expressions, live video calls, or face-to-face confrontation.
+3. HARYANVI SHAYARI + SONG + SCENE-MATCHED BGM:
+   - `dialogue_hinglish`: Must feel 100% real, punchy, emotional or hilarious (can be short & sharp 12 words or a powerful 28-word delivery with integrated Haryanvi shayari rhythm — NO filler or robotic words!).
+   - `shayari_hindi`: A badass, heart-touching 2-line Haryanvi / Desi Fauji Shayari (in clean Hinglish/Hindi script).
+   - `song_lyrics_cue`: 1 matching soulful Hindi/Punjabi/Haryanvi song line or vocal melody that plays in the background.
+   - `bgm_mood_direction`: Exact background music & sound effects cue matching the scene (e.g., 'Deep Haryanvi dhol & bass drop with roaring wind', 'Emotional pahadi flute & acoustic guitar crescendo', 'Cinematic military snare drums & brass').
+4. NEVER repeat any past dialogue from: [{avoid_sample}]
+5. Output ONLY a valid JSON object (no markdown fences) with these exact keys:
 {{
-  "episode_title": "Part {ep_num}: [Short Catchy Hinglish Title]",
+  "episode_title": "{"🔥 Viral Special: " if track_id == "viral_trend" else f"Part {ep_num}: "}[Catchy Viral Hinglish Hook Title]",
   "include_meera": {"true" if default_needs_meera else "false"},
   "meera_outfit": "{assigned_meera_dress}",
-  "visual_scene_description": "Detailed 3D Pixar-style 9:16 vertical scene description: camera movement, lighting, Indian Army uniform/environment details, exact outfits, character facial expressions and physical action.",
-  "dialogue_hinglish": "1 powerful, emotional or hilarious spoken Hinglish dialogue line (16 to 28 words) with authentic Haryanvi/Fauji soul.",
-  "shayari_hindi": "2-line original goosebump-inducing or witty Hindi shayari matching this exact scene.",
-  "hashtags": "6 viral Instagram hashtags"
+  "opening_hook_3s": "Explosive first 2-second visual and sound hook that stops the user from scrolling immediately.",
+  "visual_scene_description": "Ultra-detailed 3D Pixar-style 9:16 vertical scene: dynamic camera movement, cinematic lighting, authentic Indian Army uniform/gear (no officer stars on recruit/soldier shoulders), exact expressions and dramatic action.",
+  "dialogue_hinglish": "Spoken Hinglish/Haryanvi dialogue (powerful reality Fauji punch or cute Jaan/Kuchu Puchu banter + shayari delivery).",
+  "shayari_hindi": "2-line damdar Haryanvi / Fauji reality shayari.",
+  "song_lyrics_cue": "1 soulful matching background song verse / vocal melody.",
+  "bgm_mood_direction": "Exact background music instrument, beat, and ambient SFX matching the video mood.",
+  "hashtags": "{daily_tags}"
 }}"""
 
     base_host = "https://generativelanguage.googleapis.com"
-    error_log = []
-
-    # Load verified fast model chain first, then keep all fallback models in line!
-    default_chain = ["gemini-3-flash-preview", "gemini-flash-lite-latest", "gemma-4-26b-a4b-it", "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-flash-latest", "gemini-2.0-flash", "gemini-1.5-flash", "gemma-4-31b-it", "gemini-2.5-pro", "gemini-pro-latest", "gemini-3.1-pro-preview", "gemini-3.1-pro-preview-customtools", "gemini-3.1-flash-lite-preview", "gemini-3.1-flash-lite", "gemini-nano-banana-2.1", "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-omni-flash-preview", "gemini-omni-1.1-flash", "gemini-omni-1.2-flash", "gemini-3.5-transcribe", "gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-4-argon", "gemini-4-carbon", "gemini-4-hydrogen"]
+    default_chain = [
+        "gemini-2.5-flash", "gemini-2.0-flash", "gemini-3-flash-preview",
+        "gemini-flash-latest", "gemini-2.5-flash-lite", "gemini-1.5-flash", "gemini-2.5-pro"
+    ]
     cached_best = []
     if os.path.exists("data/working_model_cache.json"):
         try:
@@ -435,34 +490,34 @@ MANDATORY RULES:
                     r = requests.post(
                         oa_url,
                         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-                        json={"model": m_name, "messages": [{"role": "user", "content": system_prompt}], "temperature": 0.9},
-                        timeout=10
+                        json={"model": m_name, "messages": [{"role": "user", "content": system_prompt}], "temperature": 0.92},
+                        timeout=12
                     )
                     if r.status_code == 200:
                         parsed = _parse_ai_json(r.json()["choices"][0]["message"]["content"])
                         if parsed:
                             parsed.setdefault("include_meera", default_needs_meera)
                             parsed.setdefault("meera_outfit", assigned_meera_dress)
+                            parsed.setdefault("hashtags", daily_tags)
                             return parsed
-                except Exception as e:
-                    error_log.append(f"{m_name}: {e}")
+                except Exception:
+                    pass
             continue
 
         for model_name in ordered_models:
             try:
                 url = f"{base_host}/v1beta/models/{model_name}:generateContent?key={api_key}"
-                gen_cfg = {"temperature": 0.9}
+                gen_cfg = {"temperature": 0.92}
                 if "gemini" in model_name.lower():
                     gen_cfg["responseMimeType"] = "application/json"
                 payload = {"contents": [{"parts": [{"text": system_prompt}]}], "generationConfig": gen_cfg}
-                r = requests.post(url, json=payload, timeout=10)
+                r = requests.post(url, json=payload, timeout=12)
                 if r.status_code == 200:
                     parts = r.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
                     cand_txt = "".join([p.get("text", "") for p in parts if "text" in p])
                     parsed = _parse_ai_json(cand_txt)
                     if parsed:
-                        print(f"✅ [AI Scriptwriter] Generated in 2s using model: {model_name}")
-                        # Save this working model at #1 in cache so next run is instant!
+                        print(f"✅ [Viral AI Showrunner] Script & BGM composed using model: {model_name}")
                         try:
                             new_v = [model_name] + [x for x in ordered_models if x != model_name]
                             with open("data/working_model_cache.json", "w", encoding="utf-8") as wf:
@@ -471,39 +526,46 @@ MANDATORY RULES:
                             pass
                         parsed.setdefault("include_meera", default_needs_meera)
                         parsed.setdefault("meera_outfit", assigned_meera_dress)
+                        parsed.setdefault("hashtags", daily_tags)
                         return parsed
-                else:
-                    error_log.append(f"{model_name}: HTTP {r.status_code}")
-            except Exception as e:
-                error_log.append(f"{model_name}: {e}")
+            except Exception:
+                pass
 
-    # Backup Layer 2: Free Pollinations OpenAI Endpoint (Zero API Key Needed!)
     try:
         r_pol = requests.post(
             "https://text.pollinations.ai/openai",
             headers={"Content-Type": "application/json"},
             json={"model": "openai", "messages": [{"role": "user", "content": system_prompt}]},
-            timeout=10
+            timeout=12
         )
         if r_pol.status_code == 200:
             parsed = _parse_ai_json(r_pol.json()["choices"][0]["message"]["content"])
             if parsed:
                 parsed.setdefault("include_meera", default_needs_meera)
                 parsed.setdefault("meera_outfit", assigned_meera_dress)
+                parsed.setdefault("hashtags", daily_tags)
                 return parsed
     except Exception:
         pass
 
-    # Backup Layer 3: Instant Procedural Episode Generator (Guarantees 0% failure!)
     return {
-        "episode_title": f"Part {ep_num}: Fauji Dil & Farz",
+        "episode_title": f"Part {ep_num}: Fauji Jigra Aur Jaan Ki Yaad",
         "include_meera": default_needs_meera,
         "meera_outfit": assigned_meera_dress,
-        "visual_scene_description": f"3D Pixar-style 9:16 vertical cinematic scene for {track['name']}. Foji Makra in Indian Army uniform with expressive emotion and realistic lighting.",
-        "dialogue_hinglish": f"Tirange ki kasam, Part {ep_num} ki is kahani mein fauji ka har kadam desh aur apno ke naam hai!",
-        "shayari_hindi": "Vardi ki shaan mein har aansu moti ban jata hai, jab desh aur pyar dono dil mein bas jata hai.",
-        "hashtags": "#indianarmy #faujilife #agniveer #fojifojan #armyreels #desifauji"
+        "opening_hook_3s": "Sudden thunder flash over a snowy bunker as the young soldier locks his rifle bolt with intense eyes.",
+        "visual_scene_description": f"3D Pixar-style 9:16 vertical cinematic scene for {track['name']}. Authentic Indian Army combat uniform, dramatic lighting, emotional intensity.",
+        "dialogue_hinglish": (
+            "Oye meri kuchu puchu, tu fikar na kar jaan... jab tak tere fauji ke seene mein saans hai, na sarhad jhukegi aur na tera bharosa tootega!"
+            if default_needs_meera else
+            "Sun le laadle, Haryane ka khoon aur fauj ki vardi jab ek sath garm hove hain na, toh toofan bhi rasta badal leve hai!"
+        ),
+        "shayari_hindi": "Boli mein Haryanvi thaat aur seene mein Tirange ki aag rakhte hain, hum fauji hain sahab, maut ko bhijeb mein rakh kar ghoomte hain!",
+        "song_lyrics_cue": "Sandese aate hain, humein tadpate hain... soulful acoustic hum with Haryanvi folk flute",
+        "bgm_mood_direction": "Deep cinematic bass drop with emotional pahadi flute, marching boots rhythm, and winter wind SFX",
+        "hashtags": daily_tags
     }
+
+
 
 
 def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_idea="", is_preview=False):
@@ -529,10 +591,6 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     elif state.get("active_mode") == "locked_track" and state.get("selected_track_id") in FOJI_UNIVERSE_TRACKS:
         chosen_key = state["selected_track_id"]
     else:
-        # ⚖️ SMART EQUAL-PART BALANCER:
-        # Always inspect all tracks and pick the track with the LOWEST completed_part!
-        # If any track failed earlier or is behind (e.g. Part 2 while another is Part 6),
-        # it strictly builds the lagging tracks first until ALL tracks have equal parts!
         min_completed = min(int(tracker.get(t_key, {}).get("completed_part", 0)) for t_key in TRACK_ORDER)
         lagging_tracks = [
             t_key for t_key in TRACK_ORDER
@@ -547,7 +605,7 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     past_eps, used_dialogues = _load_past_episodes_for_track(chosen_key)
     ep_num = int(tracker.get(chosen_key, {}).get("next_part", 1))
 
-    if past_eps:
+    if past_eps and chosen_key != "viral_trend":
         recent_summaries = []
         for idx, pe in enumerate(past_eps[-4:], start=max(1, len(past_eps) - 3)):
             p_num = pe.get("part_number", idx)
@@ -557,10 +615,10 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
             )
         continuity_context = "PREVIOUSLY COMPLETED EPISODES IN THIS TRACK:\n" + "\n".join(recent_summaries)
     else:
-        continuity_context = "This is Part #1 (Series Premiere of this track). Establish an unforgettable opening hook!"
+        continuity_context = "Standalone High-Retention Viral Reel — hook the audience in the first 2 seconds with maximum emotional or comedic impact!"
 
     idea_to_use = custom_idea.strip() or state.get("custom_idea", "").strip()
-    print(f"🧠 [Live AI Showrunner] Writing Connected Script for {track['name']} (Part #{ep_num})...")
+    print(f"🧠 [Live AI Showrunner] Composing Viral Script, Haryanvi Shayari & BGM for {track['name']} (#{ep_num})...")
     ai_story = _call_pure_gemini_api_writer(chosen_key, track, ep_num, continuity_context, used_dialogues, idea_to_use)
 
     if not is_preview and state.get("custom_idea"):
@@ -568,30 +626,41 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
         save_director_state(state)
 
     ep_title = ai_story.get("episode_title", f"Part {ep_num}: {track['name']}").strip()
-    if f"Part {ep_num}" not in ep_title and f"Part #{ep_num}" not in ep_title:
+    if chosen_key != "viral_trend" and f"Part {ep_num}" not in ep_title and f"Part #{ep_num}" not in ep_title:
         ep_title = f"Part {ep_num}: {ep_title}"
 
+    opening_hook = ai_story.get("opening_hook_3s", "Fast cinematic zoom on soldier's intense eyes with dramatic bass drop.").strip()
     visual_scene = ai_story.get("visual_scene_description", "").strip()
     dialogue_line = ai_story.get("dialogue_hinglish", "").strip()
     shayari = ai_story.get("shayari_hindi", "").strip()
-    hashtags = ai_story.get("hashtags", "#indianarmy #faujilife #agniveer #fojifojan #armyreels #desifauji").strip()
+    song_cue = ai_story.get("song_lyrics_cue", "Soulful Haryanvi / Patriotic acoustic background melody").strip()
+    bgm_cue = ai_story.get("bgm_mood_direction", "Cinematic bass, dhol beat & emotional flute").strip()
 
-    # Smart Character Cast Decision: Should Meera be uploaded in this video or ONLY Foji Makra?
-    solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti"}
+    weekday_idx = datetime.now(IST).weekday()
+    default_daily_tags = globals().get("DAILY_VIRAL_HASHTAGS", {}).get(
+        weekday_idx,
+        "#indianarmy #faujilife #haryanvishayari #agniveer #fojifojan #armyreels #viralreels"
+    )
+    hashtags = (ai_story.get("hashtags") or default_daily_tags).strip()
+    if "#indianarmy" not in hashtags.lower():
+        hashtags = f"{hashtags} {default_daily_tags}".strip()
+
+    solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti", "border_duty"}
     raw_inc = ai_story.get("include_meera", chosen_key not in solo_army_tracks)
     if isinstance(raw_inc, str):
         include_meera = raw_inc.strip().lower() in ("true", "yes", "1")
     else:
         include_meera = bool(raw_inc)
-    # If Meera's name is explicitly in the dialogue/scene, include her; if it's a pure solo track without her name, keep solo Makra!
-    if chosen_key in solo_army_tracks and "meera" not in (visual_scene + " " + dialogue_line).lower():
+
+    combined_low = (visual_scene + " " + dialogue_line).lower()
+    if chosen_key in solo_army_tracks and not any(w in combined_low for w in ["meera", "fojan", "kuchu puchu", "laado", "girlfriend", "wife"]):
         include_meera = False
 
     dress_idx = (ep_num + len(used_dialogues)) % len(MEERA_WARDROBE_CATALOG)
     meera_outfit = ai_story.get("meera_outfit") or MEERA_WARDROBE_CATALOG[dress_idx]
 
-    # SMART YOUTUBE-READY NAMING: Video_023_LoveMeera_Part_06_1111_1930.mp4
-    existing_cnt = len(get_scheduled_queue().get("published_posts", [])) + len(get_scheduled_queue().get("unapproved_videos", [])) + 1
+    q_now = get_scheduled_queue()
+    existing_cnt = len(q_now.get("published_posts", [])) + len(q_now.get("scheduled_posts", [])) + len(q_now.get("unapproved_videos", [])) + 1
     clean_track_slug = "".join(w.capitalize() for w in chosen_key.split("_"))
     ts_slug = datetime.now(IST).strftime("%m%d_%H%M%S")
     unique_vid_id = f"Video_{existing_cnt + 20:03d}_{clean_track_slug}_Part_{ep_num:02d}_{ts_slug}"
@@ -600,29 +669,36 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     if include_meera:
         char_instruction = (
             f"Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images "
-            f"(Image 1: Indian Army soldier Makra; Image 2: Fojan Meera). "
-            f"IMPORTANT WARDROBE CHANGE FOR MEERA: Keep Meera's exact facial features from Image 2, but DO NOT use the dress from the reference image! "
-            f"In this episode, Meera MUST wear a brand-new outfit: {meera_outfit}. "
+            f"(Image 1: Young Indian Army soldier in military uniform without officer stars; Image 2: His Fojan love interest). "
+            f"IMPORTANT WARDROBE FOR FOJAN: Keep her exact facial identity from Image 2, wearing a fresh outfit: {meera_outfit}. "
         )
     else:
         char_instruction = (
             f"Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image "
-            f"(Indian Army soldier Makra in military uniform/training gear). Focus on Foji Makra and his Army unit/ustad (Meera is NOT in this scene). "
+            f"(Young Indian Army soldier in combat/training uniform without officer stars). Focus on the soldier and his Army unit/Ustad. "
         )
 
     gemini_video_prompt = (
         f"{char_instruction}"
-        f"EPISODE: {track['name']} - {ep_title}. "
-        f"SCENE & ACTION: {visual_scene} "
-        f"LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"{dialogue_line}\" "
-        f"CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format."
+        f"OPENING 2-SECOND HOOK: {opening_hook} "
+        f"SCENE & PHYSICAL ACTION: {visual_scene} (No floating text or paper letters!). "
+        f"LIP-SYNC SPOKEN HINDI/HARYANVI DIALOGUE (Authentic native Indian accent, powerful emotion & rhythm): \"{dialogue_line}\" "
+        f"BACKGROUND MUSIC & SONG DIRECTION: {bgm_cue}. Include subtle background musical vibe of: '{song_cue}'. "
+        f"CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive micro-expressions, rich dramatic lighting, vertical 9:16 portrait format."
+    )
+
+    follow_line = (
+        "🇮🇳 Follow @ai_foji_lovelife for Daily Viral Fauji Reels!"
+        if chosen_key == "viral_trend"
+        else f"🇮🇳 Follow @ai_foji_lovelife for Part #{ep_num + 1}!"
     )
 
     caption = (
         f"🎖️ {ep_title} | {track['name']}\n\n"
         f"🗣️ \"{dialogue_line}\"\n\n"
         f"🔥 {shayari}\n\n"
-        f"🇮🇳 Follow @ai_foji_lovelife for Part #{ep_num + 1}!\n\n"
+        f"🎵 Vibe: {song_cue}\n\n"
+        f"{follow_line}\n\n"
         f"{hashtags}"
     )
 
@@ -633,15 +709,20 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
         "track_name": track["name"],
         "part_number": ep_num,
         "include_meera": include_meera,
-        "meera_outfit": meera_outfit if include_meera else "N/A (Makra Solo Army Scene)",
+        "meera_outfit": meera_outfit if include_meera else "N/A (Solo Army Reality Scene)",
         "emotion_name": f"{track['name']} — {ep_title}",
+        "opening_hook_3s": opening_hook,
         "scene_summary": visual_scene,
         "dialogue_line_1_hinglish": dialogue_line,
         "shayari_hindi": shayari,
+        "song_lyrics_cue": song_cue,
+        "bgm_mood_direction": bgm_cue,
         "gemini_video_prompt": gemini_video_prompt,
         "caption": caption,
         "created_at": datetime.now(IST).strftime("%d %b %Y, %I:%M %p IST")
     }
+
+
 
 
 def get_schedule_config():

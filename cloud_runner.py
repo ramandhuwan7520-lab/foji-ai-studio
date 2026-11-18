@@ -66,7 +66,7 @@ import foji_universe_director as fud
 import gemini_bot
 
 if __name__ == "__main__":
-    cnt_str = (os.getenv("BATCH_COUNT", "1") or "1").strip()
+    cnt_str = (os.getenv("BATCH_COUNT", "3") or "3").strip()
     cnt = max(1, min(5, int(cnt_str) if cnt_str.isdigit() else 1))
     tid = (os.getenv("FORCE_TRACK_ID", "") or "").strip() or None
     idea = (os.getenv("CUSTOM_IDEA", "") or "").strip()

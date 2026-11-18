@@ -82,6 +82,11 @@ def send_telegram_photo(photo_path, caption=""):
 
 
 def sync_file_to_github(rel_path, commit_msg):
+    """
+    ZERO-RENDER-BUILD GITHUB SYNC:
+    Appends `[skip render] [skip ci]` to every automated runtime commit message so Render NEVER
+    wastes your 500 free monthly build pipeline minutes on telemetry, cookies, or video uploads!
+    """
     gh_pat = (
         os.getenv("GITHUB_PAT")
         or os.getenv("GH_TOKEN")
@@ -93,6 +98,9 @@ def sync_file_to_github(rel_path, commit_msg):
     full_p = os.path.abspath(rel_path)
     if not os.path.exists(full_p):
         return
+    safe_msg = str(commit_msg or "Sync studio file").strip()
+    if "[skip render]" not in safe_msg.lower():
+        safe_msg = f"{safe_msg} [skip render] [skip ci]"
     if gh_pat:
         try:
             with open(full_p, "rb") as f:
@@ -101,7 +109,7 @@ def sync_file_to_github(rel_path, commit_msg):
             headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
             r = requests.get(url, headers=headers, timeout=12)
             sha = r.json().get("sha") if r.status_code == 200 else None
-            payload = {"message": commit_msg, "content": b64, "branch": "main"}
+            payload = {"message": safe_msg, "content": b64, "branch": "main"}
             if sha:
                 payload["sha"] = sha
             put_r = requests.put(url, headers=headers, json=payload, timeout=45)
@@ -109,14 +117,15 @@ def sync_file_to_github(rel_path, commit_msg):
                 return
         except Exception:
             pass
-    # Fallback on Cloud Runner if API token is not set: use local git CLI
     if os.name != "nt":
         try:
             subprocess.run(["git", "add", "-f", rel_clean], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            subprocess.run(["git", "commit", "-m", commit_msg], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(["git", "commit", "-m", safe_msg], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(["git", "push", "origin", "HEAD:main", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except Exception:
             pass
+
+
 
 
 def push_app_notification(notif_type, title, message, status="info"):
@@ -146,9 +155,14 @@ def push_app_notification(notif_type, title, message, status="info"):
     sync_file_to_github(n_path, f"Log: {title[:30]}")
 
 
+_LAST_TELEMETRY_GH_SYNC_TS = 0.0
+_LAST_TELEMETRY_STEP = -1
+
 def update_3d_telemetry(step_num, step_title, sub_detail="", status="active", progress=10):
+    global _LAST_TELEMETRY_GH_SYNC_TS, _LAST_TELEMETRY_STEP
     os.makedirs("data", exist_ok=True)
     t_path = "data/live_telemetry.json"
+    now_t = time.time()
     payload = {
         "step_num": step_num,
         "step_title": step_title,
@@ -156,14 +170,20 @@ def update_3d_telemetry(step_num, step_title, sub_detail="", status="active", pr
         "status": status,
         "progress": progress,
         "updated_at": datetime.now(IST).strftime("%I:%M:%S %p"),
-        "epoch": time.time()
+        "epoch": now_t
     }
     try:
         with open(t_path, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
-        sync_file_to_github(t_path, f"Telemetry step {step_num}")
+        # Only push to GitHub on step changes, completion/error, or every 45s (always with [skip render])
+        if step_num != _LAST_TELEMETRY_STEP or status in ("completed", "error", "warning") or (now_t - _LAST_TELEMETRY_GH_SYNC_TS) >= 45.0:
+            _LAST_TELEMETRY_STEP = step_num
+            _LAST_TELEMETRY_GH_SYNC_TS = now_t
+            sync_file_to_github(t_path, f"Telemetry step {step_num} [skip render] [skip ci]")
     except Exception:
         pass
+
+
 
 
 def _get_live_telegram_creds():
@@ -1262,7 +1282,8 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
             )
             time.sleep(0.8)
 
-    print("📸 [Step #8, #9 & #10] Clicking 'Upload & tools' (+) -> 'Upload files' -> Injecting Foji & Fojan...")
+    update_3d_telemetry(4, "Step 4: Loading Characters", "Uploading 3D character reference images into Gemini...", "active", 50)
+    print("📸 [Step #8, #9 & #10] Clicking 'Upload & tools' (+) -> 'Upload files' -> Injecting character assets...")
     install_file_dialog_blocker(driver)
     wait_and_single_click_step(
         driver,
@@ -1292,6 +1313,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
 
     inject_character_files_into_gemini(driver, foji_img, fojan_img)
 
+    update_3d_telemetry(5, "Step 5: Directing Scene", "Injecting viral script, Haryanvi shayari & BGM cues...", "active", 62)
     print("✉️ [Step #11] Filling fresh AI Script into 'Enter a prompt for Gemini'...")
     if not fill_gemini_prompt_box_and_verify(driver, fresh_prompt):
         report_step_problem_instantly(driver, "Step #11: Fill Prompt Box", "Could not fill script into Gemini prompt box.")
@@ -1616,7 +1638,7 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
         new_id = int(history_data.get("generated_count", 0)) + 1
         pending_pkg = _fud.build_real_foji_universe_package(video_id=new_id, is_preview=False)
 
-    rotate_track_and_script_in_history(pending_pkg)
+    # Do not pre-record in history before Stage 8 completion so 15-min timeouts NEVER skip a Part!
     video_num = pending_pkg.get("video_id", f"{int(time.time())}")
     include_meera = pending_pkg.get("include_meera", True)
     meera_outfit = pending_pkg.get("meera_outfit", "Fresh Haryanvi Suit")
@@ -1714,9 +1736,22 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             screen_reply = (st.get("screen_reply_text") or "").strip()
 
             print(
-                f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s) - NO TIMEOUT] "
+                f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s / 900s Max)] "
                 f"Generating: {is_gen} | Video Detected: {len(new_vids)} | Download Btn: {bool(dl_btn)}"
             )
+
+            # ⏱️ STRICT 15-MINUTE (900 SECONDS) RENDER TIMEOUT:
+            # If 15 minutes pass while rendering without completing or raising an error,
+            # abort this video cleanly so the next video in the batch starts, and keep this Part uncompleted for next run!
+            if elapsed_sec >= 900 and dl_btn is None and len(new_vids) == 0:
+                t_msg = (
+                    f"15-Minute Render Timeout ({elapsed_mins} min) reached for {unique_fname}. "
+                    f"Stopping this attempt to start the next video — Part #{pending_pkg.get('part_number', 1)} will be built next run!"
+                )
+                print(f"⏱️ [15-Min Timeout] {t_msg}")
+                update_3d_telemetry(6, "⏱️ 15-Min Timeout -> Moving to Next Video", t_msg, "warning", 0)
+                push_app_notification("warning", "⏱️ 15-Minute Timeout (Part Saved for Next Run)", t_msg, "warning")
+                raise TimeoutError(t_msg)
 
             if dl_btn is not None or (len(new_vids) > 0 and not is_gen):
                 print("✅ [Stage 7/8] Video Ready on Screen! Clicking 'Download video'...")
@@ -2147,7 +2182,7 @@ def wait_and_download_generated_video(driver, output_video_path=None, *args, **k
         output_video_path = f"output/generated_foji_{int(time.time())}.mp4"
     os.makedirs(os.path.dirname(os.path.abspath(output_video_path)), exist_ok=True)
 
-    timeout_sec = 420
+    timeout_sec = 900
     start_t = time.time()
     print(f"⏳ [Step #13] Waiting for Gemini to generate video -> {output_video_path} (up to {timeout_sec}s)...")
 
