@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
+  "step_num": 4,
+  "step_title": "Step 4: Loading Characters",
+  "sub_detail": "Uploading 3D character reference images into Gemini...",
   "status": "active",
-  "progress": 45,
-  "updated_at": "09:32:22 PM",
-  "epoch": 1795017742.2650406
+  "progress": 50,
+  "updated_at": "09:32:36 PM",
+  "epoch": 1795017756.7883494
 }
