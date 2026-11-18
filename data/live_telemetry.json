@@ -1,9 +1,9 @@
 {
-  "step_num": 4,
-  "step_title": "Step 4: Loading Characters",
-  "sub_detail": "Uploading 3D character reference images into Gemini...",
+  "step_num": 5,
+  "step_title": "Step 5: Directing Scene",
+  "sub_detail": "Injecting viral script, Haryanvi shayari & BGM cues...",
   "status": "active",
-  "progress": 50,
-  "updated_at": "09:32:36 PM",
-  "epoch": 1795017756.7883494
+  "progress": 62,
+  "updated_at": "09:32:43 PM",
+  "epoch": 1795017763.373678
 }
