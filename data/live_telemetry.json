@@ -1,9 +1,9 @@
 {
-  "step_num": 5,
-  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
-  "sub_detail": "Gemini Veo is rendering Video_054_FaujiMasti_Part_06_1118_164115.mp4...",
+  "step_num": 6,
+  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
+  "sub_detail": "Rendering Video_054_FaujiMasti_Part_06_1118_164115.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
-  "progress": 68,
-  "updated_at": "04:42:24 PM",
-  "epoch": 1795000344.0168755
+  "progress": 75,
+  "updated_at": "04:42:34 PM",
+  "epoch": 1795000354.4997127
 }
