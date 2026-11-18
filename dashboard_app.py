@@ -2881,6 +2881,33 @@ def _get_readonly_ig_client_no_login():
         return None
 
 
+_GLOBAL_READONLY_IG_CLIENT = None
+_LAST_USER_INFO_FETCH_TS = 0.0
+
+
+def _get_readonly_ig_client_no_login():
+    """
+    Loads `data/ig_session.json` ONCE into a persistent read-only Client object
+    WITHOUT calling `login_by_sessionid()` or `account_info()`.
+    100% immune to login-handshake rate limits!
+    """
+    global _GLOBAL_READONLY_IG_CLIENT
+    if _GLOBAL_READONLY_IG_CLIENT is not None:
+        return _GLOBAL_READONLY_IG_CLIENT
+    if not os.path.exists("data/ig_session.json"):
+        return None
+    try:
+        from instagrapi import Client
+        cl = Client()
+        cl.delay_range = [1, 2]
+        cl.load_settings("data/ig_session.json")
+        _GLOBAL_READONLY_IG_CLIENT = cl
+        return cl
+    except Exception as e:
+        print(f"ℹ️ [IG Session Loader] Note: {e}")
+        return None
+
+
 def _refresh_ig_live_analytics_worker():
     """
     BULLETPROOF FULL-PAGINATION INSTAGRAM LIVE ANALYTICS ENGINE (ALL 50+ REELS):
@@ -3114,6 +3141,8 @@ def _refresh_ig_live_analytics_worker():
         print(f"⚠️ IG Analytics worker note: {e}")
     finally:
         _IG_ANALYTICS_LOCK.release()
+
+
 
 
 
