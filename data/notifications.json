@@ -1,5 +1,105 @@
 [
   {
+    "id": "notif_1795013559915_463",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "08:22 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795013559.9159503
+  },
+  {
+    "id": "notif_1795012742053",
+    "type": "error",
+    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
+    "message": "Screen par yeh aaya: Sorry, something went wrong. Please try your request again.",
+    "status": "error",
+    "time_str": "08:09 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012742.0535922
+  },
+  {
+    "id": "notif_1795012702335",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — Part 1: Fauji Jigra Aur Jaan Ki Yaad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "08:08 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012702.3350623
+  },
+  {
+    "id": "notif_1795012646325",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — Part 1: Fauji Jigra Aur Jaan Ki Yaad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "08:07 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012646.3255522
+  },
+  {
+    "id": "notif_1795012578637",
+    "type": "error",
+    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
+    "message": "Screen par yeh aaya: I seem to be encountering an error. Can I try something else for you?",
+    "status": "error",
+    "time_str": "08:06 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012578.637188
+  },
+  {
+    "id": "notif_1795012474274",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Shehar Ki AC vs Fauji Ki Barf is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "08:04 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012474.2746336
+  },
+  {
+    "id": "notif_1795012418830",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Shehar Ki AC vs Fauji Ki Barf | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "08:03 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012418.83093
+  },
+  {
+    "id": "notif_1795012367853",
+    "type": "error",
+    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
+    "message": "Screen par yeh aaya: I seem to be encountering an error. Can I try something else for you?",
+    "status": "error",
+    "time_str": "08:02 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012367.853867
+  },
+  {
+    "id": "notif_1795012247770",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Maa, Minus 25 Degree Aur Tera Laadla is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "08:00 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012247.7706935
+  },
+  {
+    "id": "notif_1795012180553",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Maa, Minus 25 Degree Aur Tera Laadla | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "07:59 PM",
+    "date_str": "18 Nov 2026",
+    "timestamp": 1795012180.5532222
+  },
+  {
     "id": "notif_1795006897786",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
@@ -498,145 +598,5 @@
     "time_str": "12:01 PM",
     "date_str": "16 Nov 2026",
     "timestamp": 1794810673.6995413
-  },
-  {
-    "id": "notif_1794789094567",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "06:01 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794789094.5672753
-  },
-  {
-    "id": "notif_1794789056654",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Raat Ki Daud Aur Jazbe Ki Hod | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:00 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794789056.654422
-  },
-  {
-    "id": "notif_1794788098564",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "05:44 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794788098.5645819
-  },
-  {
-    "id": "notif_1794788078437",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Barish, Barood Aur Ba-Kamaal Discipline | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "05:44 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794788078.4376967
-  },
-  {
-    "id": "notif_1794788052965",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "05:44 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794788052.9657187
-  },
-  {
-    "id": "notif_1794788032396",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Shashtra Drill Aur Chamakti Vardi | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "05:43 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794788032.3968816
-  },
-  {
-    "id": "notif_1794788008113",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "05:43 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794788008.1139362
-  },
-  {
-    "id": "notif_1794787980847",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Raat Ka Route March Aur Pithu Ka Bhar | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "05:43 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794787980.8471794
-  },
-  {
-    "id": "notif_1794786026015",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "05:10 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794786026.0152247
-  },
-  {
-    "id": "notif_1794786005304",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Raat Ka Pehra Aur Jungle Survival | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "05:10 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794786005.3046484
-  },
-  {
-    "id": "notif_1794785984514",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "05:09 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794785984.514922
-  },
-  {
-    "id": "notif_1794785963406",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Rifle Dismantle Aur Blindfold Chakravyuh | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "05:09 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794785963.4063542
-  },
-  {
-    "id": "notif_1794785942526",
-    "type": "error",
-    "title": "Warning: Gemini Cookie Expired",
-    "message": "Google Account #1 asked for password on Cloud. Refresh cookies or set GEMINI_ACC1_PASSWORD.",
-    "status": "error",
-    "time_str": "05:09 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794785942.5265152
-  },
-  {
-    "id": "notif_1794785903986",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: ⚔️ Agniveer Training Center & Drill — Part 5: Rifle Dismantle Aur Ustad Ka Inspection | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "05:08 AM",
-    "date_str": "16 Nov 2026",
-    "timestamp": 1794785903.9867945
   }
 ]
