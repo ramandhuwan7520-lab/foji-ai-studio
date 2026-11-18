@@ -1107,7 +1107,8 @@ def start_telegram_callback_listener():
 
 
 if not os.environ.get("IS_CLOUD_WORKER"):
-    start_telegram_callback_listener()
+    if __name__ == '__main__' or 'gunicorn' in sys.argv[0].lower() or 'flask' in sys.argv[0].lower() or os.getenv('RENDER') == 'true':
+        start_telegram_callback_listener()
 
 
 def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
@@ -2193,7 +2194,7 @@ def _background_master_scheduler_daemon():
                 batch_5h_key = f"BATCH5H_{now_ist.strftime('%Y-%m-%d')}_B{bucket_5h}"
                 triggered_keys = set(cfg.get("last_triggered_keys", []))
                 # Trigger strictly at 12:00 AM IST (00:00) and every 5 hours from there (00:00, 05:00, 10:00, 15:00, 20:00 IST)
-                if now_ist.hour in (0, 5, 10, 15, 20) and batch_5h_key not in triggered_keys:
+                if False and now_ist.hour in (0, 5, 10, 15, 20) and batch_5h_key not in triggered_keys:
                     triggered_keys.add(batch_5h_key)
                     cfg["last_triggered_keys"] = list(triggered_keys)[-60:]
                     _fud.save_schedule_config(cfg)
@@ -2274,7 +2275,8 @@ def _background_master_scheduler_daemon():
 
 
 if not os.environ.get("IS_CLOUD_WORKER"):
-    threading.Thread(target=_background_master_scheduler_daemon, daemon=True).start()
+    if __name__ == '__main__' or 'gunicorn' in sys.argv[0].lower() or 'flask' in sys.argv[0].lower() or os.getenv('RENDER') == 'true':
+        threading.Thread(target=_background_master_scheduler_daemon, daemon=True).start()
 
 
 def _start_render_anti_sleep_keepalive():
@@ -2295,7 +2297,8 @@ def _start_render_anti_sleep_keepalive():
 
 
 if os.environ.get("RENDER") or os.name != "nt":
-    _start_render_anti_sleep_keepalive()
+    if __name__ == '__main__' or 'gunicorn' in sys.argv[0].lower() or 'flask' in sys.argv[0].lower() or os.getenv('RENDER') == 'true':
+        _start_render_anti_sleep_keepalive()
 
 
 @app.route("/api/universe/status", methods=["GET"])
@@ -2809,12 +2812,21 @@ _LAST_IG_WEB_FETCH_OK_TS = 0.0
 
 def _extract_ig_cookies_without_login():
     """
-    Reads `sessionid`, `csrftoken`, `ds_user_id` directly from `data/ig_session.json` or `.env`
-    WITHOUT calling `cl.login_by_sessionid()` — 100% immune to `i.instagram.com` HTTP 429 login throttling!
+    Loads full Web Cookie Jar (`csrftoken`, `mid`, `ig_did`, `datr`, `sessionid`, `ds_user_id`)
+    from `data/ig_web_cookies.json`, `data/ig_session.json`, and `.env` WITHOUT any login handshake!
     """
     cookies = {}
+    if os.path.exists("data/ig_web_cookies.json"):
+        try:
+            wc = json.load(open("data/ig_web_cookies.json", "r", encoding="utf-8"))
+            if isinstance(wc, dict):
+                for k, v in wc.items():
+                    if v:
+                        cookies[str(k)] = str(v)
+        except Exception:
+            pass
     raw_sid = (os.getenv("INSTAGRAM_SESSIONID") or "").strip()
-    if raw_sid:
+    if raw_sid and not cookies.get("sessionid"):
         cookies["sessionid"] = urllib.parse.unquote(raw_sid).strip("\"'")
     if os.path.exists("data/ig_session.json"):
         try:
@@ -2822,8 +2834,8 @@ def _extract_ig_cookies_without_login():
             c_dict = s_data.get("cookies") or {}
             if isinstance(c_dict, dict):
                 for k, v in c_dict.items():
-                    if v:
-                        cookies[k] = str(v)
+                    if v and not cookies.get(k):
+                        cookies[k] = urllib.parse.unquote(str(v)).strip("\"'")
             auth_data = s_data.get("authorization_data") or {}
             if auth_data.get("sessionid") and not cookies.get("sessionid"):
                 cookies["sessionid"] = urllib.parse.unquote(str(auth_data["sessionid"])).strip("\"'")
@@ -2831,21 +2843,25 @@ def _extract_ig_cookies_without_login():
                 cookies["ds_user_id"] = str(auth_data["ds_user_id"])
         except Exception:
             pass
-    if cookies.get("sessionid") and not cookies.get("ds_user_id"):
-        part_uid = cookies["sessionid"].split(":")[0]
-        if part_uid.isdigit():
-            cookies["ds_user_id"] = part_uid
+    if cookies.get("sessionid"):
+        cookies["sessionid"] = urllib.parse.unquote(cookies["sessionid"]).strip("\"'")
+        if not cookies.get("ds_user_id"):
+            part_uid = cookies["sessionid"].split(":")[0]
+            if part_uid.isdigit():
+                cookies["ds_user_id"] = part_uid
     return cookies
+
+
 
 
 def _refresh_ig_live_analytics_worker():
     """
-    PERMANENT 60-SECOND ZERO-LOGIN LIVE INSTAGRAM ANALYTICS ENGINE:
-    - NEVER calls `get_authenticated_ig_client()` or `cl.login_by_sessionid()` (which caused HTTP 429)!
-    - Tier 1: Loads saved Bearer token & device settings directly from `data/ig_session.json` via
-      `cl.load_settings()` (0 login calls!) and queries `clips/user/` for live reel play_count, like_count, comment_count!
-    - Tier 2: Uses `curl.exe` with Chrome HTTP/2 fingerprint to read live follower_count & web_profile_info
-      without triggering Instagram's mobile `/users/{uid}/info/` rate limit!
+    SAFE 60-SECOND FULL-PAGINATION INSTAGRAM LIVE ANALYTICS ENGINE (SUPPORTS 50 to 150+ REELS!):
+    - Zero mobile login handshakes (`login_by_sessionid` is NEVER called!).
+    - Channel 1: Public Profile Embed (`https://www.instagram.com/{ig_user}/embed/`) -> 100% anonymous, zero-cookie
+      check for real live Followers count and total Profile Media count!
+    - Channel 2: Web API (`www.instagram.com/api/v1/users/web_profile_info/` + multi-page `www.instagram.com/api/v1/clips/user/`
+      with `max_id` pagination loop up to 8 pages / 120+ reels) using saved Web Cookies (`data/ig_web_cookies.json`).
     """
     global _IG_ANALYTICS_CACHE, _IG_ANALYTICS_LAST_FETCH_TS, _LAST_IG_WEB_FETCH_OK_TS
     if not _IG_ANALYTICS_LOCK.acquire(blocking=False):
@@ -2862,36 +2878,156 @@ def _refresh_ig_live_analytics_worker():
             if (r.get("code") or r.get("media_pk") or r.get("video_file"))
         }
 
-        followers_count = int(prev_saved.get("followers_count", 42))
+        followers_count = int(prev_saved.get("followers_count", 0))
         following_count = int(prev_saved.get("following_count", 0))
+        profile_total_posts = int(prev_saved.get("profile_total_posts", 0))
         live_reels_map = {}
         fetched_live_ok = False
-        sync_source_lbl = f"Instagram Live 60s Sync (@{ig_user})"
+        sync_source_lbl = f"Instagram Live Multi-Page Sync (@{ig_user})"
         uid = "22494488394"
 
-        # TIER 1: Zero-Login Saved Bearer Token Request to `clips/user/` (Never touches `/users/{uid}/info/` or `login_by_sessionid`!)
-        if os.path.exists("data/ig_session.json"):
-            try:
-                from instagrapi import Client
-                cl = Client()
-                cl.delay_range = [0, 1]
-                cl.load_settings("data/ig_session.json")
-                s_raw = json.load(open("data/ig_session.json", "r", encoding="utf-8"))
-                uid = str((s_raw.get("authorization_data") or {}).get("ds_user_id") or uid)
+        curl_bin = "curl.exe" if os.name == "nt" else "curl"
 
-                clips_res = cl.private_request(
-                    "clips/user/",
-                    data={"target_user_id": uid, "page_size": "35", "include_feed_video": "true"},
-                    with_signature=False
+        # CHANNEL 1: 100% Anonymous Public Embed Page (`/{ig_user}/embed/`) -> Never requires cookies, 0% account risk!
+        try:
+            emb_cmd = [
+                curl_bin, "-s", "-L", "--max-time", "12",
+                "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+                "-H", "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                f"https://www.instagram.com/{ig_user}/embed/"
+            ]
+            emb_res = subprocess.run(emb_cmd, capture_output=True, text=True, encoding="utf-8", errors="ignore")
+            emb_html = emb_res.stdout or ""
+            if emb_html:
+                # Extract follower count & total media count from public embed JSON
+                m_fol = re.search(r'\"edge_followed_by\":\s*\{\s*\"count\":\s*(\d+)', emb_html) or re.search(r'"edge_followed_by":\s*\{\s*"count":\s*(\d+)', emb_html)
+                if m_fol:
+                    fc_val = int(m_fol.group(1))
+                    if fc_val > 0:
+                        followers_count = fc_val
+                        fetched_live_ok = True
+                m_cnt = re.search(r'\"edge_owner_to_timeline_media\":\s*\{\s*\"count\":\s*(\d+)', emb_html) or re.search(r'"edge_owner_to_timeline_media":\s*\{\s*"count":\s*(\d+)', emb_html)
+                if m_cnt:
+                    profile_total_posts = max(profile_total_posts, int(m_cnt.group(1)))
+                    fetched_live_ok = True
+        except Exception as e_emb:
+            print(f"ℹ️ [IG Public Embed] Note: {e_emb}")
+
+        # CHANNEL 2: Web API (`web_profile_info` + Multi-Page `clips/user/` Cursor Pagination)
+        ig_cookies = _extract_ig_cookies_without_login()
+        uid = ig_cookies.get("ds_user_id") or uid
+        session_req = requests.Session()
+        session_req.headers.update({
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+            "Accept": "*/*",
+            "Accept-Language": "en-US,en;q=0.9",
+            "X-IG-App-ID": "936619743392459",
+            "X-ASBD-ID": "129477",
+            "X-Requested-With": "XMLHttpRequest",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            "Referer": f"https://www.instagram.com/{ig_user}/reels/"
+        })
+        for ck, cv in ig_cookies.items():
+            if cv:
+                session_req.cookies.set(ck, cv, domain=".instagram.com")
+
+        if not session_req.cookies.get("csrftoken"):
+            try:
+                session_req.get(f"https://www.instagram.com/{ig_user}/", timeout=10)
+            except Exception:
+                pass
+        csrf_tok = session_req.cookies.get("csrftoken") or ig_cookies.get("csrftoken") or "foji_csrf"
+        session_req.headers["X-CSRFToken"] = csrf_tok
+
+        # 2A. Web Profile Info
+        try:
+            r_wp = session_req.get(
+                f"https://www.instagram.com/api/v1/users/web_profile_info/?username={ig_user}",
+                timeout=12
+            )
+            if r_wp.status_code == 200 and "application/json" in (r_wp.headers.get("Content-Type") or ""):
+                u_node = (r_wp.json().get("data") or {}).get("user") or {}
+                if u_node:
+                    uid = str(u_node.get("id") or uid)
+                    fc = int((u_node.get("edge_followed_by") or {}).get("count") or 0)
+                    flc = int((u_node.get("edge_follow") or {}).get("count") or 0)
+                    tot_m = int((u_node.get("edge_owner_to_timeline_media") or {}).get("count") or 0)
+                    if fc > 0:
+                        followers_count = fc
+                        fetched_live_ok = True
+                    if flc > 0:
+                        following_count = flc
+                    if tot_m > 0:
+                        profile_total_posts = max(profile_total_posts, tot_m)
+
+                    edges = (
+                        ((u_node.get("edge_owner_to_timeline_media") or {}).get("edges") or [])
+                        + ((u_node.get("edge_felix_video_timeline") or {}).get("edges") or [])
+                    )
+                    for ed in edges:
+                        nd = ed.get("node") or {}
+                        code = nd.get("shortcode") or ""
+                        if not code:
+                            continue
+                        old_item = prev_reels_by_code.get(code) or {}
+                        views = max(int(nd.get("video_view_count") or nd.get("play_count") or 0), int(old_item.get("views", 0)))
+                        likes = max(int((nd.get("edge_media_preview_like") or nd.get("edge_liked_by") or {}).get("count") or 0), int(old_item.get("likes", 0)))
+                        comments = max(int((nd.get("edge_media_to_comment") or {}).get("count") or 0), int(old_item.get("comments", 0)))
+                        cap_edges = (nd.get("edge_media_to_caption") or {}).get("edges") or []
+                        cap = (cap_edges[0].get("node", {}).get("text", "") if cap_edges else old_item.get("caption", "")).strip()
+                        ts_val = nd.get("taken_at_timestamp")
+                        posted_str = (
+                            datetime.fromtimestamp(int(ts_val), _fud.IST).strftime("%d %b %Y, %I:%M %p")
+                            if ts_val else (old_item.get("posted_at") or "Live on IG")
+                        )
+                        first_line = cap.splitlines()[0][:68] if cap else (old_item.get("title") or f"Foji 3D Reel ({code})")
+                        er_pct = round(((likes + comments) / max(1, views)) * 100.0, 1) if views > 0 else 0.0
+                        live_reels_map[code] = {
+                            "media_pk": str(nd.get("id") or old_item.get("media_pk") or ""),
+                            "code": code,
+                            "title": first_line,
+                            "caption": cap[:240],
+                            "views": views,
+                            "likes": likes,
+                            "comments": comments,
+                            "engagement_rate": er_pct,
+                            "permalink": f"https://www.instagram.com/reel/{code}/",
+                            "thumbnail_url": nd.get("display_url") or old_item.get("thumbnail_url", ""),
+                            "posted_at": posted_str,
+                            "taken_ts": int(ts_val or old_item.get("taken_ts") or 0),
+                            "hour_ist": datetime.fromtimestamp(int(ts_val), _fud.IST).hour if ts_val else 18
+                        }
+        except Exception as e_wp:
+            print(f"ℹ️ [IG Web Profile] Note: {e_wp}")
+
+        # 2B. Multi-Page Cursor Pagination on `www.instagram.com/api/v1/clips/user/` (Fetches ALL 50+ Reels!)
+        try:
+            max_id_cursor = None
+            for page_idx in range(1, 9):
+                post_data = {"target_user_id": str(uid), "page_size": "18", "include_feed_video": "true"}
+                if max_id_cursor:
+                    post_data["max_id"] = str(max_id_cursor)
+                r_cl = session_req.post(
+                    "https://www.instagram.com/api/v1/clips/user/",
+                    headers={"Content-Type": "application/x-www-form-urlencoded"},
+                    data=post_data,
+                    timeout=12
                 )
-                c_items = (clips_res or {}).get("items") or []
+                if r_cl.status_code != 200 or "application/json" not in (r_cl.headers.get("Content-Type") or ""):
+                    break
+                cl_json = r_cl.json()
+                c_items = cl_json.get("items") or []
+                if not c_items:
+                    break
                 for it in c_items:
                     m = it.get("media") or it
                     code = m.get("code") or ""
                     pk = str(m.get("pk") or m.get("id") or "")
                     if not code:
                         continue
-                    old_item = prev_reels_by_code.get(code) or prev_reels_by_code.get(pk) or {}
+                    old_item = live_reels_map.get(code) or prev_reels_by_code.get(code) or prev_reels_by_code.get(pk) or {}
                     views = max(
                         int(m.get("play_count") or m.get("view_count") or m.get("ig_play_count") or 0),
                         int(old_item.get("views", 0))
@@ -2900,12 +3036,11 @@ def _refresh_ig_live_analytics_worker():
                     comments = max(int(m.get("comment_count") or 0), int(old_item.get("comments", 0)))
                     cap_obj = m.get("caption")
                     cap = (cap_obj.get("text", "") if isinstance(cap_obj, dict) else str(cap_obj or old_item.get("caption", ""))).strip()
-                    ts_val = m.get("taken_at")
+                    ts_val = m.get("taken_at") or old_item.get("taken_ts") or 0
                     posted_str = (
                         datetime.fromtimestamp(int(ts_val), _fud.IST).strftime("%d %b %Y, %I:%M %p")
                         if ts_val else (old_item.get("posted_at") or "Live on IG")
                     )
-                    hour_ist = datetime.fromtimestamp(int(ts_val), _fud.IST).hour if ts_val else 18
                     first_line = cap.splitlines()[0][:68] if cap else (old_item.get("title") or f"Foji 3D Reel ({code})")
                     er_pct = round(((likes + comments) / max(1, views)) * 100.0, 1) if views > 0 else 0.0
                     live_reels_map[code] = {
@@ -2920,85 +3055,36 @@ def _refresh_ig_live_analytics_worker():
                         "permalink": f"https://www.instagram.com/reel/{code}/",
                         "thumbnail_url": old_item.get("thumbnail_url", ""),
                         "posted_at": posted_str,
-                        "hour_ist": hour_ist
-                    }
-                    fetched_live_ok = True
-            except Exception as e_t1:
-                print(f"ℹ️ [IG Tier-1 Clips Sync] Note: {e_t1}")
-
-        # TIER 2: Native `curl` Web Profile Info & Meta Parser for Live Follower Count (Immune to Python requests TLS block!)
-        try:
-            curl_bin = "curl.exe" if os.name == "nt" else "curl"
-            ig_cookies = _extract_ig_cookies_without_login()
-            cookie_hdr = "; ".join(f"{k}={v}" for k, v in ig_cookies.items() if v)
-            c_cmd = [
-                curl_bin, "-s", "-L", "--max-time", "10",
-                "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
-                "-H", "X-IG-App-ID: 936619743392459",
-                "-H", "Accept: */*",
-                "-H", f"Referer: https://www.instagram.com/{ig_user}/"
-            ]
-            if cookie_hdr:
-                c_cmd.extend(["-H", f"Cookie: {cookie_hdr}"])
-            c_cmd.append(f"https://www.instagram.com/api/v1/users/web_profile_info/?username={ig_user}")
-            c_res = subprocess.run(c_cmd, capture_output=True, text=True)
-            if c_res.stdout and '"edge_followed_by"' in c_res.stdout:
-                wp_json = json.loads(c_res.stdout)
-                u_node = (wp_json.get("data") or {}).get("user") or {}
-                fc = int((u_node.get("edge_followed_by") or {}).get("count") or 0)
-                if fc > 0:
-                    followers_count = fc
-                    fetched_live_ok = True
-                edges = (
-                    ((u_node.get("edge_owner_to_timeline_media") or {}).get("edges") or [])
-                    + ((u_node.get("edge_felix_video_timeline") or {}).get("edges") or [])
-                )
-                for ed in edges:
-                    nd = ed.get("node") or {}
-                    code = nd.get("shortcode") or ""
-                    if not code:
-                        continue
-                    old_item = live_reels_map.get(code) or prev_reels_by_code.get(code) or {}
-                    views = max(int(nd.get("video_view_count") or nd.get("play_count") or 0), int(old_item.get("views", 0)))
-                    likes = max(int((nd.get("edge_media_preview_like") or nd.get("edge_liked_by") or {}).get("count") or 0), int(old_item.get("likes", 0)))
-                    comments = max(int((nd.get("edge_media_to_comment") or {}).get("count") or 0), int(old_item.get("comments", 0)))
-                    cap_edges = (nd.get("edge_media_to_caption") or {}).get("edges") or []
-                    cap = (cap_edges[0].get("node", {}).get("text", "") if cap_edges else old_item.get("caption", "")).strip()
-                    ts_val = nd.get("taken_at_timestamp")
-                    posted_str = (
-                        datetime.fromtimestamp(int(ts_val), _fud.IST).strftime("%d %b %Y, %I:%M %p")
-                        if ts_val else (old_item.get("posted_at") or "Live on IG")
-                    )
-                    first_line = cap.splitlines()[0][:68] if cap else (old_item.get("title") or f"Foji 3D Reel ({code})")
-                    er_pct = round(((likes + comments) / max(1, views)) * 100.0, 1) if views > 0 else 0.0
-                    live_reels_map[code] = {
-                        "media_pk": str(nd.get("id") or old_item.get("media_pk") or ""),
-                        "code": code,
-                        "title": first_line,
-                        "caption": cap[:240],
-                        "views": views,
-                        "likes": likes,
-                        "comments": comments,
-                        "engagement_rate": er_pct,
-                        "permalink": f"https://www.instagram.com/reel/{code}/",
-                        "thumbnail_url": nd.get("display_url") or old_item.get("thumbnail_url", ""),
-                        "posted_at": posted_str,
+                        "taken_ts": int(ts_val or 0),
                         "hour_ist": datetime.fromtimestamp(int(ts_val), _fud.IST).hour if ts_val else 18
                     }
-        except Exception as e_t2:
-            print(f"ℹ️ [IG Tier-2 Curl Sync] Note: {e_t2}")
+                    fetched_live_ok = True
 
+                paging_info = cl_json.get("paging_info") or {}
+                if not paging_info.get("more_available") or not paging_info.get("max_id"):
+                    break
+                max_id_cursor = paging_info.get("max_id")
+                time.sleep(0.35)
+        except Exception as e_pg:
+            print(f"ℹ️ [IG Clips Pagination] Note: {e_pg}")
+
+        # Merge with previously known reels so not a single reel is ever lost
         for old_r in (prev_saved.get("reels") or []):
             c_key = old_r.get("code") or old_r.get("media_pk") or old_r.get("video_file")
             if c_key and c_key not in live_reels_map:
                 live_reels_map[c_key] = old_r
 
-        final_reels = list(live_reels_map.values())
+        final_reels = sorted(
+            list(live_reels_map.values()),
+            key=lambda x: int(x.get("taken_ts") or 0),
+            reverse=True
+        )
+
         total_views = max(sum(int(r.get("views", 0)) for r in final_reels), int(prev_saved.get("total_views_reach", 0)))
         total_likes = max(sum(int(r.get("likes", 0)) for r in final_reels), int(prev_saved.get("total_likes", 0)))
         total_comments = max(sum(int(r.get("comments", 0)) for r in final_reels), int(prev_saved.get("total_comments", 0)))
-        total_reels_cnt = max(len(final_reels), int(prev_saved.get("total_reels_posted", 0)))
-        avg_views_per_reel = int(round(total_views / max(1, total_reels_cnt)))
+        total_reels_cnt = max(len(final_reels), profile_total_posts, int(prev_saved.get("total_reels_posted", 0)))
+        avg_views_per_reel = int(round(total_views / max(1, len(final_reels) or total_reels_cnt)))
         avg_er = round(((total_likes + total_comments) / max(1, total_views)) * 100.0, 1) if total_views > 0 else 0.0
 
         payload = {
@@ -3007,6 +3093,7 @@ def _refresh_ig_live_analytics_worker():
             "followers_count": followers_count,
             "following_count": following_count,
             "total_reels_posted": total_reels_cnt,
+            "profile_total_posts": profile_total_posts,
             "total_views_reach": total_views,
             "avg_views_per_reel": avg_views_per_reel,
             "total_likes": total_likes,
@@ -3016,7 +3103,7 @@ def _refresh_ig_live_analytics_worker():
             "sync_source": sync_source_lbl,
             "updated_at_ist": datetime.now(_fud.IST).strftime("%I:%M:%S %p IST"),
             "updated_epoch": time.time(),
-            "reels": final_reels[:35]
+            "reels": final_reels[:150]
         }
         _IG_ANALYTICS_CACHE = payload
         _IG_ANALYTICS_LAST_FETCH_TS = time.time()
@@ -3025,11 +3112,13 @@ def _refresh_ig_live_analytics_worker():
             json.dump(payload, af, indent=2, ensure_ascii=False)
         if fetched_live_ok and (time.time() - _LAST_IG_WEB_FETCH_OK_TS) > 120:
             _LAST_IG_WEB_FETCH_OK_TS = time.time()
-            _fud.push_json_to_github_instantly("data/ig_live_analytics.json", "Sync 60s zero-login IG analytics [skip render] [skip ci]")
+            _fud.push_json_to_github_instantly("data/ig_live_analytics.json", "Sync full 50+ reels live IG analytics [skip render] [skip ci]")
     except Exception as e:
         print(f"⚠️ IG Analytics worker note: {e}")
     finally:
         _IG_ANALYTICS_LOCK.release()
+
+
 
 
 
