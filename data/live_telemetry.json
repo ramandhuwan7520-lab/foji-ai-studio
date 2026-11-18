@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1795002313.5985255
+  "step_num": 2,
+  "step_title": "Step 2: Connecting 3D Studio (1/3)",
+  "sub_detail": "Opening Chrome & Gemini...",
+  "status": "active",
+  "progress": 28,
+  "updated_at": "07:39:16 PM",
+  "epoch": 1795010956.5759623
 }
