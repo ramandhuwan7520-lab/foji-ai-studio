@@ -6407,9 +6407,11 @@ def _inject_foji_executive_pro_ui_v2(response):
   // 1. Welcome Holographic Boot Intro Logic
   
 // FOJI_SW_CACHE_BUST_V5: Automatically purge old PWA caches so Render updates appear instantly!
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && localStorage.getItem('foji_sw_reset_v6') !== 'done') {
   navigator.serviceWorker.getRegistrations().then(regs => {
-    regs.forEach(r => r.update().catch(() => {}));
+    Promise.all(regs.map(r => r.unregister())).finally(() => {
+      try { localStorage.setItem('foji_sw_reset_v6', 'done'); } catch(e) {}
+    });
   }).catch(() => {});
 }
 if ('caches' in window && localStorage.getItem('foji_ui_ver') !== 'v5_pro') {
@@ -6434,18 +6436,18 @@ if ('caches' in window && localStorage.getItem('foji_ui_ver') !== 'v5_pro') {
       setTimeout(window.fojiCloseIntro, 2100);
     }
   };
-  if (sessionStorage.getItem('foji_intro_seen') === '1') {
-    const el = document.getElementById('foji-cinematic-intro');
-    if (el) el.style.display = 'none';
-  } else {
-    setTimeout(window.fojiCloseIntro, 2150);
-  }
+  // Show sleek 2.0s Holographic Welcome Intro on fresh load (click anywhere to skip instantly)
+  setTimeout(window.fojiCloseIntro, 2000);
 
-  // Move Executive Pro Hub Dock cleanly near the top (right after header/walker if present)
+  // Pin Executive Pro Hub Dock right at the TOP (after header/topbar if present, else top of body)
   const dock = document.getElementById('foji-pro-hub-dock');
-  const mainAnchor = document.querySelector('main, .container, .dashboard-container');
-  if (dock && mainAnchor && mainAnchor.parentNode) {
-    mainAnchor.parentNode.insertBefore(dock, mainAnchor);
+  if (dock) {
+    const topHdr = document.querySelector('header, .topbar, .navbar, .studio-header, .app-header');
+    if (topHdr && topHdr.parentNode) {
+      topHdr.parentNode.insertBefore(dock, topHdr.nextSibling);
+    } else {
+      document.body.insertBefore(dock, document.body.firstChild);
+    }
   }
 
   // 2. Load & Control 5 Daily Sessions + Editable Posting Slots
