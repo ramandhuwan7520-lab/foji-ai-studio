@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795115809036",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: 4 AM Desi Ragda vs City Sleep | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:46 AM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795115809.0368774
+  },
+  {
     "id": "notif_1795099566675",
     "type": "warning",
     "title": "⏱️ 15-Minute Timeout (Part Saved for Next Run)",
