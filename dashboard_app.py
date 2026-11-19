@@ -5986,5 +5986,525 @@ def _handle_5xx_as_json(e):
     return str(e), 500
 
 
+
+
+# =========================================================================
+# 🚀 FOJI AI STUDIO PRO — OFFICIAL TRI-PLATFORM + 5-SESSION CONTROL ROUTES
+# =========================================================================
+@app.route("/auth/callback", methods=["GET"])
+def meta_oauth_callback():
+    from flask import request, redirect
+    code = (request.args.get("code") or "").strip()
+    err = (request.args.get("error_description") or request.args.get("error") or "").strip()
+    if err:
+        return f"<h2>Meta Auth Notice: {err}</h2><p><a href='/'>Return to Foji AI Studio</a></p>", 200
+    if code:
+        try:
+            import tri_platform_api as _tpa
+            cfg = _tpa.load_tri_config()
+            if cfg.get("meta_app_id") and cfg.get("meta_app_secret"):
+                redir = request.url_root.rstrip("/") + "/auth/callback"
+                rt = requests.get(
+                    "https://graph.facebook.com/v22.0/oauth/access_token",
+                    params={
+                        "client_id": cfg["meta_app_id"],
+                        "client_secret": cfg["meta_app_secret"],
+                        "redirect_uri": redir,
+                        "code": code
+                    },
+                    timeout=15
+                )
+                if rt.status_code == 200 and rt.json().get("access_token"):
+                    _tpa.save_tri_config({"ig_access_token": rt.json()["access_token"]})
+        except Exception as _cb_e:
+            print(f"ℹ️ Meta OAuth callback note: {_cb_e}")
+    return redirect("/?meta_connected=1")
+
+
+@app.route("/api/studio_sessions_config", methods=["GET", "POST"])
+def api_studio_sessions_config():
+    from flask import request, jsonify
+    cfg_p = "data/studio_sessions_config.json"
+    today_str = datetime.now(_fud.IST).strftime("%Y-%m-%d")
+    if os.path.exists(cfg_p):
+        cfg = json.load(open(cfg_p, "r", encoding="utf-8"))
+    else:
+        cfg = {
+            "master_auto_enabled": True,
+            "videos_per_session": 3,
+            "gap_minutes_between_videos": 2,
+            "posting_slots_ist": ["06:30", "12:30", "18:30"],
+            "auto_post_platforms": {"instagram": True, "facebook": True, "youtube": True},
+            "sessions": [
+                {"id": "S1", "label": "Midnight Session", "time_ist": "00:19", "display": "12:19 AM", "enabled": True, "skip_date": ""},
+                {"id": "S2", "label": "Morning Session",  "time_ist": "06:19", "display": "06:19 AM", "enabled": True, "skip_date": ""},
+                {"id": "S3", "label": "Midday Session",   "time_ist": "11:19", "display": "11:19 AM", "enabled": True, "skip_date": ""},
+                {"id": "S4", "label": "Evening Session",  "time_ist": "16:19", "display": "04:19 PM", "enabled": True, "skip_date": ""},
+                {"id": "S5", "label": "Night Session",    "time_ist": "21:19", "display": "09:19 PM", "enabled": True, "skip_date": ""}
+            ]
+        }
+
+    if request.method == "POST":
+        body = request.get_json(silent=True) or {}
+        if "master_auto_enabled" in body:
+            cfg["master_auto_enabled"] = bool(body["master_auto_enabled"])
+        if "toggle_session_id" in body:
+            sid = body["toggle_session_id"]
+            for s in cfg.get("sessions", []):
+                if s.get("id") == sid:
+                    s["enabled"] = not bool(s.get("enabled", True))
+        if "skip_session_id" in body:
+            sid = body["skip_session_id"]
+            for s in cfg.get("sessions", []):
+                if s.get("id") == sid:
+                    s["skip_date"] = "" if s.get("skip_date") == today_str else today_str
+        if "posting_slots_ist" in body and isinstance(body["posting_slots_ist"], list):
+            clean_slots = [str(x).strip() for x in body["posting_slots_ist"] if re.match(r"^\d{2}:\d{2}$", str(x).strip())]
+            if clean_slots:
+                cfg["posting_slots_ist"] = clean_slots[:6]
+                # Sync into schedule_config.json WITHOUT modifying existing scheduled_posts!
+                try:
+                    sc = _fud.get_schedule_config()
+                    sc["posting_times_ist"] = clean_slots[:6]
+                    _fud.save_schedule_config(sc)
+                except Exception:
+                    pass
+        if "auto_post_platforms" in body and isinstance(body["auto_post_platforms"], dict):
+            cfg["auto_post_platforms"] = body["auto_post_platforms"]
+
+        cfg["updated_at_ist"] = datetime.now(_fud.IST).strftime("%d %b %Y, %I:%M %p IST")
+        with open(cfg_p, "w", encoding="utf-8") as f_out:
+            json.dump(cfg, f_out, indent=2, ensure_ascii=False)
+        try:
+            _fud.push_json_to_github_instantly(cfg_p, "Update 5-session & posting slots config [skip render] [skip ci]")
+        except Exception:
+            pass
+
+    cfg["today_ist"] = today_str
+    return jsonify({"ok": True, "config": cfg})
+
+
+@app.route("/api/tri_platform_insights", methods=["GET"])
+def api_tri_platform_insights():
+    from flask import jsonify
+    import tri_platform_api as _tpa
+    return jsonify(_tpa.get_unified_tri_platform_summary())
+
+
+@app.route("/api/tri_platform_config", methods=["GET", "POST"])
+def api_tri_platform_config():
+    from flask import request, jsonify
+    import tri_platform_api as _tpa
+    if request.method == "POST":
+        body = request.get_json(silent=True) or {}
+        saved = _tpa.save_tri_config(body)
+        summary = _tpa.get_unified_tri_platform_summary()
+        return jsonify({"ok": True, "saved_keys": [k for k, v in saved.items() if v], "summary": summary})
+    cfg = _tpa.load_tri_config()
+    masked = {
+        k: (v[:6] + "••••" + v[-4:] if len(str(v)) > 14 and ("token" in k or "secret" in k or "key" in k) else v)
+        for k, v in cfg.items()
+    }
+    return jsonify({"ok": True, "config": masked})
+
+
+
+@app.after_request
+def _inject_foji_executive_pro_ui_v2(response):
+    try:
+        from flask import request
+        if request.path in ("/", "/index.html") and "text/html" in (response.content_type or ""):
+            html_t = response.get_data(as_text=True)
+            if "FOJI_EXECUTIVE_PRO_UI_V2" not in html_t and "</body>" in html_t:
+                pro_addon = """
+<!-- FOJI_EXECUTIVE_PRO_UI_V2 -->
+<style>
+  /* Executive Dark Obsidian 3D Glassmorphic Upgrade (Preserves Foji Walker & Core Layout) */
+  :root {
+    --foji-gold: #f59e0b;
+    --foji-cyan: #06b6d4;
+    --foji-violet: #8b5cf6;
+  }
+  body {
+    background: radial-gradient(circle at 12% 10%, rgba(14, 165, 233, 0.14), transparent 36%),
+                radial-gradient(circle at 88% 15%, rgba(139, 92, 246, 0.14), transparent 38%),
+                radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.09), transparent 42%),
+                #040814 !important;
+    background-attachment: fixed !important;
+  }
+  .card, .panel, [class*="card"], [class*="glass"] {
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+  }
+  .card:hover {
+    border-color: rgba(245, 158, 11, 0.42) !important;
+    box-shadow: 0 12px 34px -10px rgba(6, 182, 212, 0.22) !important;
+  }
+
+  /* Unique Holographic 3D Welcome Boot Screen */
+  #foji-cinematic-intro {
+    position: fixed; inset: 0; z-index: 999999;
+    background: radial-gradient(circle at center, #0c1b36 0%, #030712 72%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden; cursor: pointer;
+    transition: opacity 0.65s ease, transform 0.75s cubic-bezier(.16,1,.3,1);
+  }
+  #foji-cinematic-intro.intro-exit {
+    opacity: 0; transform: translateY(-28px) scale(1.04); pointer-events: none;
+  }
+  .foji-radar-ring {
+    position: absolute; width: 320px; height: 320px; border-radius: 50%;
+    border: 1.5px solid rgba(6, 182, 212, 0.35);
+    box-shadow: 0 0 60px rgba(6, 182, 212, 0.18), inset 0 0 40px rgba(245, 158, 11, 0.12);
+    animation: fojiRadarSpin 4.5s linear infinite;
+  }
+  .foji-radar-ring::after {
+    content: ""; position: absolute; inset: -14px; border-radius: 50%;
+    border: 2px dashed rgba(245, 158, 11, 0.45);
+    animation: fojiRadarSpinReverse 7s linear infinite;
+  }
+  .foji-intro-crest {
+    width: 122px; height: 122px; border-radius: 50%; z-index: 2;
+    box-shadow: 0 0 45px rgba(245, 158, 11, 0.55), 0 0 90px rgba(139, 92, 246, 0.35);
+    animation: fojiCrestPop 0.9s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  .foji-intro-title {
+    margin-top: 22px; z-index: 2; font-family: system-ui, -apple-system, sans-serif;
+    font-size: clamp(22px, 4.5vw, 36px); font-weight: 900; letter-spacing: 4px;
+    background: linear-gradient(90deg, #fde047, #ffffff, #38bdf8, #a78bfa);
+    background-size: 220% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: fojiShimmer 2.6s linear infinite;
+  }
+  .foji-intro-sub {
+    margin-top: 8px; z-index: 2; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: #94a3b8; font-weight: 700;
+  }
+  .foji-intro-bar {
+    margin-top: 22px; width: min(260px, 72vw); height: 4px; border-radius: 99px;
+    background: rgba(255,255,255,0.08); overflow: hidden; z-index: 2;
+  }
+  .foji-intro-bar-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6);
+    animation: fojiLoadFill 1.85s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  @keyframes fojiRadarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes fojiRadarSpinReverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+  @keyframes fojiCrestPop { 0% { opacity: 0; transform: scale(0.55) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes fojiShimmer { 0% { background-position: 0% center; } 100% { background-position: 220% center; } }
+  @keyframes fojiLoadFill { 0% { width: 0%; } 100% { width: 100%; } }
+
+  /* Executive Pro Control Hub (5-Sessions + Tri-Platform Official API + Posting Slots) */
+  #foji-pro-hub-dock {
+    max-width: 1320px; margin: 18px auto 26px auto; padding: 0 14px;
+    font-family: system-ui, -apple-system, sans-serif; color: #f8fafc;
+  }
+  .fpro-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px;
+  }
+  .fpro-card {
+    background: linear-gradient(155deg, rgba(13, 23, 44, 0.88), rgba(7, 13, 28, 0.94));
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 18px; padding: 18px; position: relative; overflow: hidden;
+    box-shadow: 0 14px 36px -16px rgba(0, 0, 0, 0.75);
+  }
+  .fpro-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, #f59e0b, #06b6d4, #8b5cf6, transparent);
+    opacity: 0.85;
+  }
+  .fpro-hdr { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .fpro-title { font-size: 14px; font-weight: 800; letter-spacing: 0.6px; display: flex; align-items: center; gap: 8px; }
+  .fpro-pill {
+    font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.14); cursor: pointer; background: rgba(15,23,42,0.75); color: #e2e8f0;
+  }
+  .fpro-pill.on { background: rgba(16,185,129,0.2); border-color: #10b981; color: #34d399; }
+  .fpro-pill.off { background: rgba(239,68,68,0.16); border-color: #ef4444; color: #fca5a5; }
+  .fpro-sess-list { display: flex; flex-direction: column; gap: 8px; }
+  .fpro-sess-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 12px; padding: 8px 11px; font-size: 12px;
+  }
+  .fpro-btn {
+    border: none; border-radius: 10px; padding: 6px 11px; font-size: 11px; font-weight: 800;
+    cursor: pointer; transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .fpro-btn:active { transform: scale(0.96); }
+  .fpro-btn-gold { background: linear-gradient(135deg, #f59e0b, #eab308); color: #090d16; }
+  .fpro-btn-cyan { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #ffffff; }
+  .fpro-btn-ghost { background: rgba(148,163,184,0.14); color: #cbd5e1; border: 1px solid rgba(148,163,184,0.2); }
+  .fpro-plat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  .fpro-plat-box {
+    background: rgba(15, 23, 42, 0.72); border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 13px; padding: 10px; text-align: center;
+  }
+  .fpro-plat-val { font-size: 17px; font-weight: 900; margin-top: 4px; color: #fde047; }
+  .fpro-plat-sub { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+  .fpro-slot-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  .fpro-time-inp {
+    background: #0b1326; border: 1px solid rgba(56, 189, 248, 0.35); color: #fff;
+    border-radius: 10px; padding: 7px 10px; font-size: 13px; font-weight: 700; width: 108px;
+  }
+  #fpro-api-modal {
+    position: fixed; inset: 0; z-index: 999990; background: rgba(2, 6, 23, 0.82);
+    backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 16px;
+  }
+  .fpro-modal-box {
+    width: 100%; max-width: 520px; background: #0a1224; border: 1px solid rgba(245,158,11,0.45);
+    border-radius: 20px; padding: 22px; color: #f8fafc; box-shadow: 0 24px 60px rgba(0,0,0,0.8);
+    max-height: 90vh; overflow-y: auto;
+  }
+  .fpro-inp {
+    width: 100%; box-sizing: border-box; background: #050a16; border: 1px solid rgba(148,163,184,0.28);
+    color: #fff; border-radius: 10px; padding: 9px 12px; font-size: 12px; margin: 5px 0 11px 0;
+  }
+  @media (max-width: 640px) {
+    .fpro-plat-grid { grid-template-columns: 1fr; }
+    .fpro-sess-row { flex-wrap: wrap; }
+  }
+</style>
+
+<!-- Unique 3D Holographic Welcome Screen -->
+<div id="foji-cinematic-intro" onclick="window.fojiCloseIntro()">
+  <div class="foji-radar-ring"></div>
+  <img src="/emblem-logo.png" class="foji-intro-crest" alt="Foji AI Studio Pro" onerror="this.style.display='none'"/>
+  <div class="foji-intro-title">FOJI AI STUDIO PRO</div>
+  <div class="foji-intro-sub">3D VEO ENGINE • IG • YOUTUBE • FACEBOOK</div>
+  <div class="foji-intro-bar"><div class="foji-intro-bar-fill"></div></div>
+</div>
+
+<!-- Executive Pro Hub: 5-Session Controller + Editable Posting Slots + Official Tri-Platform Insights -->
+<div id="foji-pro-hub-dock">
+  <div class="fpro-grid">
+    <!-- Card 1: 5 Daily Auto-Sessions Control -->
+    <div class="fpro-card">
+      <div class="fpro-hdr">
+        <div class="fpro-title">⚡ 5-Session Auto-Render Engine <span style="font-size:10px;color:#38bdf8;">(3 Reels/Slot)</span></div>
+        <button id="fpro-master-toggle" class="fpro-pill on" onclick="window.fproToggleMaster()">AUTO: ON</button>
+      </div>
+      <div id="fpro-sessions-box" class="fpro-sess-list">Loading 5 sessions...</div>
+    </div>
+
+    <!-- Card 2: Tri-Platform Official Insights (IG + YT + FB) -->
+    <div class="fpro-card">
+      <div class="fpro-hdr">
+        <div class="fpro-title">🌐 Official Tri-Platform Live Insights</div>
+        <div style="display:flex;gap:6px;">
+          <button class="fpro-btn fpro-btn-gold" onclick="window.fproOpenApiModal()">⚙️ Connect APIs</button>
+          <button class="fpro-btn fpro-btn-ghost" onclick="window.fojiReplayIntro()" title="Show Welcome Animation">✨</button>
+        </div>
+      </div>
+      <div class="fpro-plat-grid">
+        <div class="fpro-plat-box">
+          <div style="font-size:11px;font-weight:800;color:#f472b6;">📸 Instagram</div>
+          <div id="fpro-ig-views" class="fpro-plat-val">--</div>
+          <div id="fpro-ig-meta" class="fpro-plat-sub">Loading...</div>
+        </div>
+        <div class="fpro-plat-box">
+          <div style="font-size:11px;font-weight:800;color:#ef4444;">▶️ YouTube Shorts</div>
+          <div id="fpro-yt-views" class="fpro-plat-val">--</div>
+          <div id="fpro-yt-meta" class="fpro-plat-sub">Connect API</div>
+        </div>
+        <div class="fpro-plat-box">
+          <div style="font-size:11px;font-weight:800;color:#38bdf8;">📘 Facebook Reels</div>
+          <div id="fpro-fb-views" class="fpro-plat-val">--</div>
+          <div id="fpro-fb-meta" class="fpro-plat-sub">Connect API</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;border-top:1px solid rgba(148,163,184,0.14);padding-top:10px;">
+        <div style="font-size:11px;font-weight:800;color:#cbd5e1;">⏰ Daily Auto-Posting Slots (IST) — Existing Queue Safe</div>
+        <div class="fpro-slot-row">
+          <input id="fpro-slot-1" type="time" class="fpro-time-inp" value="06:30"/>
+          <input id="fpro-slot-2" type="time" class="fpro-time-inp" value="12:30"/>
+          <input id="fpro-slot-3" type="time" class="fpro-time-inp" value="18:30"/>
+          <button class="fpro-btn fpro-btn-cyan" onclick="window.fproSavePostingSlots()">💾 Save Times</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Official Tri-Platform API Connect Modal -->
+<div id="fpro-api-modal">
+  <div class="fpro-modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div style="font-size:16px;font-weight:900;color:#fde047;">🔐 Official IG + FB + YouTube API Setup</div>
+      <button class="fpro-btn fpro-btn-ghost" onclick="document.getElementById('fpro-api-modal').style.display='none'">✕</button>
+    </div>
+    <label style="font-size:11px;color:#94a3b8;font-weight:700;">Meta App ID</label>
+    <input id="inp-meta-app-id" class="fpro-inp" placeholder="e.g. 123456789012345"/>
+    <label style="font-size:11px;color:#94a3b8;font-weight:700;">Meta App Secret</label>
+    <input id="inp-meta-app-secret" class="fpro-inp" type="password" placeholder="Paste Meta App Secret"/>
+    <label style="font-size:11px;color:#f472b6;font-weight:700;">Instagram Official Access Token (from Meta Portal)</label>
+    <input id="inp-ig-token" class="fpro-inp" type="password" placeholder="Paste IG Access Token (IGAA... or EAA...)"/>
+    <label style="font-size:11px;color:#f472b6;font-weight:700;">Instagram Account ID (optional — auto-detected if blank)</label>
+    <input id="inp-ig-id" class="fpro-inp" placeholder="e.g. 17841400000000000"/>
+    <label style="font-size:11px;color:#38bdf8;font-weight:700;">Facebook Page ID & Page Access Token (optional)</label>
+    <input id="inp-fb-id" class="fpro-inp" placeholder="Facebook Page ID"/>
+    <input id="inp-fb-token" class="fpro-inp" type="password" placeholder="Facebook Page Access Token"/>
+    <label style="font-size:11px;color:#ef4444;font-weight:700;">YouTube Channel ID & Data API v3 Key (optional)</label>
+    <input id="inp-yt-cid" class="fpro-inp" placeholder="UCxxxxxxxxxxxxxx"/>
+    <input id="inp-yt-key" class="fpro-inp" type="password" placeholder="AIzaSy..."/>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
+      <button class="fpro-btn fpro-btn-ghost" onclick="document.getElementById('fpro-api-modal').style.display='none'">Cancel</button>
+      <button class="fpro-btn fpro-btn-gold" onclick="window.fproSaveApis()">✅ Verify & Save Official APIs</button>
+    </div>
+    <div id="fpro-api-status" style="margin-top:10px;font-size:12px;color:#34d399;"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // 1. Welcome Holographic Boot Intro Logic
+  window.fojiCloseIntro = function(){
+    const el = document.getElementById('foji-cinematic-intro');
+    if (el) {
+      el.classList.add('intro-exit');
+      setTimeout(() => { el.style.display = 'none'; }, 700);
+    }
+    try { sessionStorage.setItem('foji_intro_seen', '1'); } catch(e){}
+  };
+  window.fojiReplayIntro = function(){
+    const el = document.getElementById('foji-cinematic-intro');
+    if (el) {
+      el.style.display = 'flex';
+      el.classList.remove('intro-exit');
+      setTimeout(window.fojiCloseIntro, 2100);
+    }
+  };
+  if (sessionStorage.getItem('foji_intro_seen') === '1') {
+    const el = document.getElementById('foji-cinematic-intro');
+    if (el) el.style.display = 'none';
+  } else {
+    setTimeout(window.fojiCloseIntro, 2150);
+  }
+
+  // Move Executive Pro Hub Dock cleanly near the top (right after header/walker if present)
+  const dock = document.getElementById('foji-pro-hub-dock');
+  const mainAnchor = document.querySelector('main, .container, .dashboard-container');
+  if (dock && mainAnchor && mainAnchor.parentNode) {
+    mainAnchor.parentNode.insertBefore(dock, mainAnchor);
+  }
+
+  // 2. Load & Control 5 Daily Sessions + Editable Posting Slots
+  let _fproCfg = null;
+  function renderSessions(cfg) {
+    _fproCfg = cfg;
+    const mBtn = document.getElementById('fpro-master-toggle');
+    if (mBtn) {
+      mBtn.textContent = cfg.master_auto_enabled ? 'AUTO: ON' : 'AUTO: PAUSED';
+      mBtn.className = 'fpro-pill ' + (cfg.master_auto_enabled ? 'on' : 'off');
+    }
+    const slots = cfg.posting_slots_ist || ['06:30','12:30','18:30'];
+    if (slots[0]) document.getElementById('fpro-slot-1').value = slots[0];
+    if (slots[1]) document.getElementById('fpro-slot-2').value = slots[1];
+    if (slots[2]) document.getElementById('fpro-slot-3').value = slots[2];
+
+    const box = document.getElementById('fpro-sessions-box');
+    if (!box) return;
+    const today = cfg.today_ist || '';
+    box.innerHTML = (cfg.sessions || []).map(s => {
+      const skipped = (s.skip_date && s.skip_date === today);
+      const isOn = s.enabled && !skipped;
+      return `<div class="fpro-sess-row">
+        <div>
+          <strong style="color:${isOn ? '#fde047' : '#64748b'};">${s.display} IST</strong>
+          <span style="color:#94a3b8;margin-left:6px;">${s.label}</span>
+          ${skipped ? '<span style="color:#fb923c;font-size:10px;margin-left:6px;">(Skipped Today)</span>' : ''}
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="fpro-btn ${skipped ? 'fpro-btn-gold' : 'fpro-btn-ghost'}" onclick="window.fproSessionAct({skip_session_id:'${s.id}'})">${skipped ? 'Undo Skip' : 'Skip Today'}</button>
+          <button class="fpro-btn ${s.enabled ? 'fpro-btn-cyan' : 'fpro-btn-ghost'}" onclick="window.fproSessionAct({toggle_session_id:'${s.id}'})">${s.enabled ? 'ON' : 'OFF'}</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  async function loadSessions() {
+    try {
+      const r = await fetch('/api/studio_sessions_config');
+      const d = await r.json();
+      if (d && d.ok) renderSessions(d.config);
+    } catch(e){}
+  }
+  window.fproSessionAct = async function(payload) {
+    const r = await fetch('/api/studio_sessions_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const d = await r.json();
+    if (d && d.ok) renderSessions(d.config);
+  };
+  window.fproToggleMaster = function() {
+    if (!_fproCfg) return;
+    window.fproSessionAct({master_auto_enabled: !_fproCfg.master_auto_enabled});
+  };
+  window.fproSavePostingSlots = async function() {
+    const s1 = document.getElementById('fpro-slot-1').value;
+    const s2 = document.getElementById('fpro-slot-2').value;
+    const s3 = document.getElementById('fpro-slot-3').value;
+    await window.fproSessionAct({posting_slots_ist: [s1, s2, s3]});
+    alert('✅ Posting times updated (' + s1 + ', ' + s2 + ', ' + s3 + ' IST)! Existing 7 scheduled reels untouched.');
+  };
+
+  // 3. Load Tri-Platform Official Insights
+  async function loadTriInsights() {
+    try {
+      const r = await fetch('/api/tri_platform_insights');
+      const d = await r.json();
+      if (!d || !d.ok) return;
+      const ig = d.instagram || {};
+      const yt = d.youtube || {};
+      const fb = d.facebook || {};
+      document.getElementById('fpro-ig-views').textContent = Number(ig.total_views || 0).toLocaleString() + ' Views';
+      document.getElementById('fpro-ig-meta').textContent = `${ig.followers || 0} Followers • ${ig.media_count || 0} Reels`;
+      document.getElementById('fpro-yt-views').textContent = yt.connected ? (Number(yt.total_views || 0).toLocaleString() + ' Views') : 'Setup';
+      document.getElementById('fpro-yt-meta').textContent = yt.connected ? `${yt.subscribers || 0} Subs • ${yt.video_count || 0} Shorts` : 'Click Connect APIs';
+      document.getElementById('fpro-fb-views').textContent = fb.connected ? (Number(fb.total_views || 0).toLocaleString() + ' Views') : 'Setup';
+      document.getElementById('fpro-fb-meta').textContent = fb.connected ? `${fb.followers || 0} Followers • ${fb.media_count || 0} Reels` : 'Click Connect APIs';
+    } catch(e){}
+  }
+
+  window.fproOpenApiModal = function() {
+    document.getElementById('fpro-api-modal').style.display = 'flex';
+  };
+  window.fproSaveApis = async function() {
+    const st = document.getElementById('fpro-api-status');
+    st.textContent = '⏳ Verifying & saving official API keys...';
+    const payload = {
+      meta_app_id: document.getElementById('inp-meta-app-id').value,
+      meta_app_secret: document.getElementById('inp-meta-app-secret').value,
+      ig_access_token: document.getElementById('inp-ig-token').value,
+      ig_account_id: document.getElementById('inp-ig-id').value,
+      fb_page_id: document.getElementById('inp-fb-id').value,
+      fb_page_token: document.getElementById('inp-fb-token').value,
+      yt_channel_id: document.getElementById('inp-yt-cid').value,
+      yt_api_key: document.getElementById('inp-yt-key').value
+    };
+    const r = await fetch('/api/tri_platform_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const d = await r.json();
+    if (d && d.ok) {
+      st.textContent = '✅ Official APIs Saved & Synced!';
+      loadTriInsights();
+      setTimeout(() => { document.getElementById('fpro-api-modal').style.display = 'none'; }, 1000);
+    } else {
+      st.textContent = '⚠️ Error saving keys.';
+    }
+  };
+
+  loadSessions();
+  loadTriInsights();
+  setInterval(loadTriInsights, 60000);
+})();
+</script>
+"""
+                html_t = html_t.replace("</body>", pro_addon + "\n</body>", 1)
+                response.set_data(html_t)
+    except Exception:
+        pass
+    return response
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 7860)), debug=False)

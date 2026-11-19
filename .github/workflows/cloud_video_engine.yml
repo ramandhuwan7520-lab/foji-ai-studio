@@ -2,7 +2,12 @@ name: Foji 3D Cloud Studio Worker
 
 on:
   schedule:
-    - cron: '30 18,23,4,9,14 * * *'
+    # Exact 5 Daily IST Sessions: 12:19 AM, 06:19 AM, 11:19 AM, 04:19 PM, 09:19 PM IST
+    - cron: '49 18 * * *'
+    - cron: '49 0 * * *'
+    - cron: '49 5 * * *'
+    - cron: '49 10 * * *'
+    - cron: '49 15 * * *'
   workflow_dispatch:
     inputs:
       batch_count:

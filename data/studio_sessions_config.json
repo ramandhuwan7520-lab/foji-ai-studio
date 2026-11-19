@@ -1,0 +1,58 @@
+{
+  "master_auto_enabled": true,
+  "videos_per_session": 3,
+  "gap_minutes_between_videos": 2,
+  "posting_slots_ist": [
+    "06:30",
+    "12:30",
+    "18:30"
+  ],
+  "auto_post_platforms": {
+    "instagram": true,
+    "facebook": true,
+    "youtube": true
+  },
+  "sessions": [
+    {
+      "id": "S1",
+      "label": "Midnight Session",
+      "time_ist": "00:19",
+      "display": "12:19 AM",
+      "enabled": true,
+      "skip_date": ""
+    },
+    {
+      "id": "S2",
+      "label": "Morning Session",
+      "time_ist": "06:19",
+      "display": "06:19 AM",
+      "enabled": true,
+      "skip_date": ""
+    },
+    {
+      "id": "S3",
+      "label": "Midday Session",
+      "time_ist": "11:19",
+      "display": "11:19 AM",
+      "enabled": true,
+      "skip_date": ""
+    },
+    {
+      "id": "S4",
+      "label": "Evening Session",
+      "time_ist": "16:19",
+      "display": "04:19 PM",
+      "enabled": true,
+      "skip_date": ""
+    },
+    {
+      "id": "S5",
+      "label": "Night Session",
+      "time_ist": "21:19",
+      "display": "09:19 PM",
+      "enabled": true,
+      "skip_date": ""
+    }
+  ],
+  "updated_at_ist": "19 Nov 2026, 10:07 PM IST"
+}

@@ -1223,7 +1223,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         picked_h2 = wait_and_single_click_step(
             driver,
             "Step #2: Select '3.1 Pro (Detailed search)'",
-            txt_list=["3.1 pro", "gemini 3.1 pro", "2.5 pro", "pro"],
+            txt_list=["auto adapts to your needs", "auto", "3.1 pro", "pro"],
             near_xpct=s2_x,
             near_ypct=s2_y,
             wait_timeout=4.0,
@@ -1263,7 +1263,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     )
     time.sleep(0.6)
 
-    wait_and_single_click_step(
+    _cv_ok = wait_and_single_click_step(
         driver,
         "Step #4: Create video (STRICT VIDEO ONLY)",
         aria_list=["create video"],
@@ -1276,7 +1276,13 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         max_attempts=2,
         optional=False
     )
-    time.sleep(1.0)
+    if not _cv_ok:
+        _lim_msg = "Daily Gemini Video Limit Reached (Create video option select nahi ho raha) — Next session mein try hoga!"
+        print(f"🚫 [Daily Limit Guard] {_lim_msg}")
+        update_3d_telemetry(4, "🚫 Daily Limit Reached", _lim_msg, "warning", 0)
+        push_app_notification("warning", "🚫 Daily Video Limit Full", _lim_msg, "warning")
+        raise RuntimeError(_lim_msg)
+    time.sleep(0.45)
 
     wait_and_single_click_step(
         driver,
@@ -1284,11 +1290,40 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         txt_list=["try it", "got it", "agree", "i agree", "accept", "continue"],
         near_xpct=s5_x,
         near_ypct=s5_y,
-        wait_timeout=2.5,
-        verify_timeout=1.5,
+        wait_timeout=0.4,
+        verify_timeout=0.3,
         max_attempts=1,
         optional=True
     )
+    # CALIBRATED_FORMAT_PORTRAIT_LOCK (Recorded Live Steps #6 -> #9: Format->Video & Landscape->Portrait 9:16)
+    update_3d_telemetry(4, '🎬 Step 4: Setting 9:16 Portrait Video Format...', 'Selecting Format -> Video & Aspect Ratio -> Portrait (9:16)...', 'active', 48)
+    _fmt_clicked = wait_and_single_click_step(
+        driver, 'Step #6: Format Menu', txt_list=['format'], aria_list=['format'],
+        near_xpct=71.46, near_ypct=87.60, wait_timeout=1.6, verify_timeout=0.8, max_attempts=1, optional=True
+    )
+    if _fmt_clicked:
+        time.sleep(0.25)
+        wait_and_single_click_step(
+            driver, 'Step #7: Select Video Format', txt_list=['video'], aria_list=['video'],
+            near_xpct=69.12, near_ypct=75.67, wait_timeout=1.8, verify_timeout=0.8, max_attempts=1, optional=True
+        )
+        time.sleep(0.25)
+    _ar_clicked = wait_and_single_click_step(
+        driver, 'Step #8: Aspect Ratio (Landscape -> Portrait)',
+        aria_list=['aspect ratio, landscape (16:9)', 'aspect ratio', 'landscape'],
+        txt_list=['landscape', '16:9'],
+        near_xpct=51.46, near_ypct=87.13, wait_timeout=2.0, verify_timeout=0.8, max_attempts=1, optional=True
+    )
+    if _ar_clicked:
+        time.sleep(0.25)
+        wait_and_single_click_step(
+            driver, 'Step #9: Portrait (9:16)',
+            txt_list=['portrait (9:16)', 'portrait', '9:16'],
+            aria_list=['portrait (9:16)', 'portrait'],
+            near_xpct=49.49, near_ypct=79.28, wait_timeout=2.0, verify_timeout=0.8, max_attempts=1, optional=True
+        )
+        time.sleep(0.25)
+
     dismiss_any_agree_or_consent_popup(driver)
     time.sleep(0.8)
 
