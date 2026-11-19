@@ -1223,7 +1223,7 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         picked_h2 = wait_and_single_click_step(
             driver,
             "Step #2: Select '3.1 Pro (Detailed search)'",
-            txt_list=["detailed search 3.1 pro", "3.1 pro detailed search", "3.1 pro", "detailed search"],
+            txt_list=["3.1 pro", "gemini 3.1 pro", "2.5 pro", "pro"],
             near_xpct=s2_x,
             near_ypct=s2_y,
             wait_timeout=4.0,
@@ -1777,6 +1777,31 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
                 f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s / 900s Max)] "
                 f"Generating: {is_gen} | Video Detected: {len(new_vids)} | Download Btn: {bool(dl_btn)}"
             )
+
+            # 🚨 FAST EARLY EXIT FOR GEMINI POLICY REFUSAL / TEXT-ONLY REPLY (NO MORE 15-MIN BLIND WAIT!):
+            low_rep = screen_reply.lower()
+            refusal_phrases = (
+                "encountering an error", "something went wrong", "can't generate", "cannot generate",
+                "unable to generate", "unable to create", "can't create video", "cannot create video",
+                "reached your limit", "video generation limit", "try again later", "against our",
+                "couldn't generate", "not able to generate", "doesn't support video"
+            )
+            if any(rp in low_rep for rp in refusal_phrases) and dl_btn is None and len(new_vids) == 0:
+                err_txt = f"Gemini refused/errored early ({elapsed_sec}s): {screen_reply[:200]}"
+                print(f"❌ [Stage 6 Early Error] {err_txt}")
+                save_live_debug_screenshot(driver, "gemini_refusal")
+                update_3d_telemetry(6, "⚠️ Gemini Video Refused/Error", err_txt, "error", 0)
+                push_app_notification("error", "⚠️ Gemini Video Error", err_txt, "error")
+                raise RuntimeError(err_txt)
+
+            # If Gemini stopped generating (`is_gen == False`) after 95s and replied with plain text (no video), abort early!
+            if elapsed_sec >= 95 and (not is_gen) and dl_btn is None and len(new_vids) == 0 and len(screen_reply) > 25:
+                no_vid_msg = f"Gemini replied with text instead of video ({elapsed_sec}s): {screen_reply[:180]}"
+                print(f"⚠️ [Stage 6 Text-Only Reply] {no_vid_msg}")
+                save_live_debug_screenshot(driver, "gemini_text_only")
+                update_3d_telemetry(6, "⚠️ Text Reply Instead of Video", no_vid_msg, "warning", 0)
+                push_app_notification("warning", "⚠️ Gemini Returned Text (No Video)", no_vid_msg, "warning")
+                raise RuntimeError(no_vid_msg)
 
             # ⏱️ STRICT 15-MINUTE (900 SECONDS) RENDER TIMEOUT:
             # If 15 minutes pass while rendering without completing or raising an error,

@@ -1975,21 +1975,21 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
     vname = os.path.basename(str(video_file))
     now_t = time.time()
 
-    # 🛡️ TRIPLE-LAYER ANTI-DUPLICATE LOCK (RAM + Local Queue + GitHub Cloud Queue)
+    # 🛡️ 4-LAYER ATOMIC ZERO-DUPLICATE LOCK (24h RAM + Local + Cloud Claimed + Pre-Upload Blocking Push)
     with _GLOBAL_IG_UPLOAD_MUTEX:
         last_pub_ts = _RECENTLY_PUBLISHED_guard.get(vname, 0)
-        if (now_t - last_pub_ts) < 900:
-            raise RuntimeError(f"Duplicate Guard: {vname} is already uploading or was just posted!")
+        if not allow_repost and (now_t - last_pub_ts) < 86400:
+            raise RuntimeError(f"Duplicate Guard (24h): {vname} was already claimed or posted today!")
 
         if not allow_repost:
-            # Always pull latest cloud queue before checking so server restarts NEVER re-post an already published reel!
             try:
                 rem_q = _fud._fetch_github_json_zero_cache("data/scheduled_queue.json")
                 if isinstance(rem_q, dict):
                     rem_pub = (rem_q.get("published_posts") or []) + (rem_q.get("published_history") or [])
-                    if any(p.get("video_file") == vname for p in rem_pub):
+                    rem_claimed = set(rem_q.get("upload_claimed_files") or [])
+                    if vname in rem_claimed or any(p.get("video_file") == vname for p in rem_pub):
                         _fud.mark_video_as_published_in_vault(vname, custom_caption, media_pk="ALREADY_LIVE")
-                        raise RuntimeError(f"Duplicate Guard: {vname} is ALREADY published on Instagram (Verified from Cloud)!")
+                        raise RuntimeError(f"Duplicate Guard: {vname} is ALREADY claimed/published on Cloud!")
             except RuntimeError:
                 raise
             except Exception:
@@ -1997,8 +1997,23 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
 
             q_chk = _fud.get_scheduled_queue()
             loc_pub = (q_chk.get("published_posts") or []) + (q_chk.get("published_history") or [])
-            if any(p.get("video_file") == vname for p in loc_pub):
-                raise RuntimeError(f"Duplicate Guard: {vname} is ALREADY published on Instagram!")
+            loc_claimed = set(q_chk.get("upload_claimed_files") or [])
+            if vname in loc_claimed or any(p.get("video_file") == vname for p in loc_pub):
+                raise RuntimeError(f"Duplicate Guard: {vname} is ALREADY claimed/published locally!")
+
+            # ATOMIC PRE-UPLOAD CLAIM: Remove from scheduled_posts & push to GitHub (BLOCKING) BEFORE calling Instagram!
+            # Even if instagrapi throws a post-upload error or Render restarts 10 min later, this reel can NEVER double-post!
+            q_chk["scheduled_posts"] = [p for p in (q_chk.get("scheduled_posts") or []) if p.get("video_file") != vname]
+            claimed_lst = list(q_chk.get("upload_claimed_files") or [])
+            if vname not in claimed_lst:
+                claimed_lst.append(vname)
+            q_chk["upload_claimed_files"] = claimed_lst
+            _fud.save_scheduled_queue(q_chk, sync_cloud=False)
+            _fud.push_json_to_github_instantly(
+                "data/scheduled_queue.json",
+                f"Atomic pre-upload claim {vname} [skip render] [skip ci]",
+                blocking=True
+            )
 
         _RECENTLY_PUBLISHED_guard[vname] = now_t
 

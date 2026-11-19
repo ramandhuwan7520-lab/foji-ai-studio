@@ -41,68 +41,67 @@ FOJI_UNIVERSE_TRACKS = {
         "id": "love_meera",
         "name": "❤️ Foji & Fojan Emotional Love & Nok-Jhok",
         "badge": "Romantic & Desi Nok-Jhok Series",
-        "characters": ["Young Haryanvi Agniveer Soldier", "His Devoted Fojan (Jaan / Kuchu Puchu / Laado)"],
+        "characters": ["Young Haryanvi Cadet in Olive-Green Uniform", "His Devoted Partner (Jaan / Kuchu Puchu / Laado)"],
         "theme_brief": (
-            "Heart-touching and cute relatable romance, teasing nok-jhok, emotional separation, and surprise homecoming "
-            "between a young Indian Army soldier and his beloved Fojan. Include authentic fauji chutti surprises, "
-            "late-night bunker video calls with cute nicknames ('Jaan', 'Kuchu Puchu', 'Bawli', 'Laado', 'Gulgule', 'Fauji Sahab'), "
-            "railway station platform hugs, karwa chauth/diwali waiting, and pride in the uniform. (STRICT BAN: NEVER include paper letters/chitthi!)."
+            "Heart-touching and cute relatable romance, playful teasing nok-jhok, emotional farewell, and joyful homecoming "
+            "between a young uniformed cadet and his beloved partner. Include surprise holiday visits, warm evening video calls "
+            "with cute nicknames ('Jaan', 'Kuchu Puchu', 'Bawli', 'Laado', 'Gulgule', 'Fauji Sahab'), railway station platform hugs, "
+            "and festive waiting. (STRICT BAN: No paper letters/chitthi, no weapons)."
         )
     },
     "training_ustad": {
         "id": "training_ustad",
-        "name": "⚔️ Agniveer Training Center & Drill Reality",
+        "name": "⚔️ Academy Training & Morning Drill Reality",
         "badge": "High-Energy Academy Series",
-        "characters": ["Young Recruit", "Strict Moustached Haryanvi Drill Ustad", "Unit Coursemates"],
+        "characters": ["Young Cadet", "Strict Moustached Haryanvi Drill Coach (Ustad)", "Academy Batchmates"],
         "theme_brief": (
-            "Hard-hitting reality of Indian Army training academy life: 4 AM whistle sprint, obstacle course wall jump, "
-            "firing range bullseye, chest-high mud crawl under barbed wire, rifle drill inspection, and raw goosebump dialogues "
-            "that turn a village boy into a steel-hearted commando."
+            "Inspiring athletic academy training life: 4 AM morning whistle sprint, obstacle wall climb, parade march rhythm, "
+            "heavy backpack jog on dusty track, pushups in morning mist, and motivating Haryanvi coaching dialogues."
         )
     },
     "unit_ragda": {
         "id": "unit_ragda",
-        "name": "🔥 Ustad Ka Ragda & Fauji Attitude",
-        "badge": "Viral Fauji Ragda Series",
-        "characters": ["Young Soldier", "Strict Drill Ustad", "Funny Unit Brother"],
+        "name": "🔥 Ustad Ka Ragda & Desi Attitude",
+        "badge": "Viral Fitness & Discipline Series",
+        "characters": ["Young Cadet", "Strict Drill Coach (Ustad)", "Funny Batchmate"],
         "theme_brief": (
-            "Authentic Indian Army 'Ragda' (tough disciplinary physical punishment with Haryanvi swagger and brotherhood): "
-            "frog jumps with full 25kg pithu bag, elbows bleeding in parade ground gravel, pushups in pouring rain, "
-            "and Ustad's thunderous Haryanvi/Desi reality dialogues about Fauj discipline."
+            "Energetic academy fitness challenge ('Ragda' with Haryanvi swagger and brotherhood): frog jumps with backpack, "
+            "plank challenge on sunny parade ground, pushups in light rain, sweat and determination, and Coach Ustad's witty "
+            "motivational Haryanvi dialogues. (NO injury, NO blood, NO violence)."
         )
     },
     "fauji_masti": {
         "id": "fauji_masti",
-        "name": "😂 Barrack Masti, Mess & Fauji Yaari",
-        "badge": "Desi Fauji Comedy Series",
-        "characters": ["Young Soldier", "Desi Unit Brothers", "Strict Mess Havildar"],
+        "name": "😂 Hostel Masti, Mess & Brotherhood",
+        "badge": "Desi Comedy Series",
+        "characters": ["Young Cadet", "Desi Academy Friends", "Strict Mess Cook"],
         "theme_brief": (
-            "Hilarious and viral barrack comedy: stealing hot gulab jamun from the army mess, zero-trim fauji haircut prank, "
-            "bada khana bhangra/haryanvi dance, hiding smartphone under pillow during Ustad's surprise night raid, "
-            "and unbreakable brotherhood."
+            "Hilarious hostel and dining-hall comedy: sneaking an extra hot gulab jamun or laddu from the dining mess, "
+            "funny morning alarm prank, celebratory Haryanvi dance after weekend inspection, hiding snacks under the pillow "
+            "when Coach Ustad walks past, and unbreakable friendship."
         )
     },
     "border_duty": {
         "id": "border_duty",
-        "name": "🏔️ LOC Border Reality, Maa Ka Pyar & Tiranga",
+        "name": "🏔️ Snowy Mountain Post, Maa Ka Pyar & Tiranga",
         "badge": "Goosebumps Patriotic Series",
-        "characters": ["Soldier at Snowy LOC Bunker", "Unit Buddy / Commander", "Maa on Call"],
+        "characters": ["Cadet at Snowy Mountain Outpost", "Batchmate", "Mother on Phone Call"],
         "theme_brief": (
-            "Goosebump-inducing reality of -25°C Siachen/Jammu LOC border duty: frozen eyelashes in blizzard, "
-            "warming hands over steel mug of garam chai with rifle strapped to chest, emotional call with Maa back in village, "
-            "and fearless Haryanvi/Fauji shayari protecting the Tiranga."
+            "Emotional scenic life at a snowy Himalayan mountain outpost: snowfall on olive-green winter jacket, warming hands "
+            "around a steaming steel mug of masala chai, emotional phone call with Maa back in the village, proud salute to the "
+            "Indian Tricolor flag fluttering in the sunrise wind. (NO weapons, NO war, NO conflict)."
         )
     },
     "viral_trend": {
         "id": "viral_trend",
         "name": "🚀 Trending Viral Fauji & Desi Reality Specials",
         "badge": "Standalone Viral Trend Engine",
-        "characters": ["Indian Army Soldier", "Dynamic Co-Star (Ustad / Unit Buddy / Fojan / Villager)"],
+        "characters": ["Young Uniformed Cadet", "Dynamic Co-Star (Coach Ustad / Friend / Partner / Villager)"],
         "theme_brief": (
-            "Standalone, ultra-viral high-retention reels engineered around current Instagram/YouTube Shorts trends! "
-            "Not bound to slow story buildup — instant 2-second hook! Themes rotate across: Civilian vs Fauji Reality contrast, "
-            "Haryanvi Attitude & Shayari in Uniform, Cute 'Kuchu Puchu / Jaan' Video Call Comedy, Sudden Uniform Surprise in Village Market, "
-            "4 AM Ground Runner Motivation, and Spine-Chilling Border Warning to Enemies."
+            "Standalone, ultra-viral high-retention 8-second reels! Instant 1-second hook! Rotate across: "
+            "City Comfort vs Early-Morning Cadet Fitness contrast, Haryanvi Attitude & Shayari on parade ground, "
+            "Cute 'Kuchu Puchu / Jaan' Video Call Comedy, Proud Uniform Visit in Village Market, and 4 AM Running Motivation. "
+            "(STRICT BAN: No weapons, no war/enemies, no blood, no paper letters)."
         )
     }
 }
@@ -394,6 +393,54 @@ MEERA_WARDROBE_CATALOG = [
 ]
 
 
+def _sanitize_veo_safe_prompt(text):
+    """
+    Strips trademarked studio names ('Pixar', 'Disney') and Veo safety-trigger military/weapon/violence words
+    so Google Veo NEVER rejects the video with 'I seem to be encountering an error'!
+    """
+    if not text:
+        return ""
+    replacements = [
+        (r"\b3d\s+pixar[- ]style\b", "stylized 3D animated"),
+        (r"\bpixar[- ]style\b", "stylized 3D animated"),
+        (r"\b3d\s+pixar\s+cgi\b", "high-detail 3D stylized CGI"),
+        (r"\bpixar\b", "stylized 3D animated"),
+        (r"\bdisney\b", "feature-film 3D"),
+        (r"\bindian\s+army\s+soldier\b", "young uniformed cadet"),
+        (r"\barmy\s+soldier\b", "young uniformed cadet"),
+        (r"\bindian\s+army\b", "uniformed academy"),
+        (r"\bcombat\s+uniform\b", "olive-green field uniform"),
+        (r"\bcombat\b", "outdoor training"),
+        (r"\brifle\s+bolt\b", "jacket zipper"),
+        (r"\brifle\b", "steel tea mug"),
+        (r"\bgun\b", "whistle"),
+        (r"\bweapon\b", "backpack"),
+        (r"\bbleeding\b", "sweating"),
+        (r"\bblood\b", "sweat"),
+        (r"\bkhoon\b", "junoon"),
+        (r"\bbarood\b", "josh"),
+        (r"\bmaut\b", "mushkil"),
+        (r"\bdushman\b", "mushkil"),
+        (r"\benemies\b", "challenges"),
+        (r"\benemy\b", "challenge"),
+        (r"\bbarbed\s+wire\b", "training hurdles"),
+        (r"\bfiring\s+range\b", "athletic track"),
+        (r"\bshooting\b", "sprinting"),
+        (r"\bloc\s+bunker\b", "snowy mountain watchtower"),
+        (r"\bbunker\b", "mountain cabin"),
+        (r"\bloc\b", "high mountain"),
+        (r"\bwar\b", "marathon"),
+        (r"\bpunishment\b", "fitness drill"),
+        (r"\bexplosion\b", "sunburst"),
+        (r"\bblast\b", "cheer"),
+    ]
+    cleaned = str(text)
+    for pat, rep in replacements:
+        cleaned = re.sub(pat, rep, cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip()
+    return cleaned
+
+
 def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, used_dialogues, custom_idea=""):
     all_keys = _get_all_live_gemini_api_keys()
     if not all_keys:
@@ -408,7 +455,6 @@ def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, us
 
     solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti", "border_duty"}
     if track_id == "viral_trend":
-        # Viral trend alternates dynamically between solo reality army trends & cute couple trends!
         default_needs_meera = (ep_num % 2 == 0)
     else:
         default_needs_meera = (track_id not in solo_army_tracks)
@@ -419,50 +465,44 @@ def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, us
         "#indianarmy #faujilife #haryanvishayari #agniveer #fojifojan #armyreels #viralreels"
     )
 
-    # Rotate fresh viral angles so the AI never repeats boring templates
     viral_angles = [
-        "RAW REALITY OF FAUJ + GOOSEBUMP HARYANVI SHAYARI: Hard-hitting contrast between comfortable civilian life and a soldier's extreme sacrifice, ending with a thunderous Haryanvi shayari punchline.",
-        "CUTE 'KUCHU PUCHU / JAAN / BAWLI' NOK-JHOK & ROMANCE: Playful, ultra-relatable teasing or emotional reassurance on a bunker video call or sudden homecoming without ever sounding robotic.",
-        "HIGH-ADRENALINE USTAD RAGDA & DESI ATTITUDE: Mud, rain, heavy pithu sprint, and a legendary desi dialogue that gives every army aspirant goosebumps.",
-        "BROTHERHOOD & BARRACK COMEDY PUNCH: Fast-paced visual slapstick in the mess/barrack with a savage witty Haryanvi comeback.",
-        "EMOTIONAL MAA / HOME CALL AT FREEZING BORDER: Raw emotion in -25°C blizzard with soulful background folk song and patriotic pride."
+        "MORNING FITNESS MOTIVATION & HARYANVI SWAG: Sharp, funny or inspiring contrast between sleepy civilian morning and energetic 4 AM cadet life.",
+        "CUTE 'KUCHU PUCHU / JAAN / BAWLI' NOK-JHOK: Playful, ultra-relatable teasing or warm smile on a video call or surprise visit.",
+        "HIGH-ENERGY COACH USTAD DRILL & BROTHERHOOD: Energetic pushups or sprint on a sunny ground with a witty Haryanvi comeback.",
+        "DINING MESS COMEDY PUNCH: Fast visual comedy with hot gulab jamun / laddu / chai in the hostel mess and a funny reaction.",
+        "EMOTIONAL SNOWY MOUNTAIN CHAI & MAA CALL: Warm steaming chai mug in snowfall with soulful pride and love for home."
     ]
     chosen_viral_angle = viral_angles[(ep_num + int(time.time() // 300)) % len(viral_angles)]
 
-    system_prompt = f"""You are India's #1 Viral Reels Showrunner, Haryanvi Shayar & 3D Cinema Director for 'Foji AI Studio' (Seed: {unique_nonce}).
+    system_prompt = f"""You are India's #1 Viral 8-Second 3D Animated Reel Writer & Haryanvi Shayar (Seed: {unique_nonce}).
 
 TRACK: {track['name']} ({track['badge']})
 TRACK BRIEF: {track['theme_brief']}
-VIRAL ANGLE FOR THIS REEL: {chosen_viral_angle}
-EPISODE / REEL NUMBER: {"Standalone Viral Trend Special #" + str(ep_num) if track_id == "viral_trend" else "Part #" + str(ep_num)}
-INCLUDE FOJAN (LOVE INTEREST) IN SCENE: {"YES (Soldier + His Fojan)" if default_needs_meera else "NO (Pure Army Scene: Soldier + Ustad / Unit Brothers)"}
-IF FOJAN APPEARS, HER MANDATORY NEW OUTFIT: "{assigned_meera_dress}"
+VIRAL ANGLE: {chosen_viral_angle}
+EPISODE / REEL NUMBER: {"Standalone Viral Special #" + str(ep_num) if track_id == "viral_trend" else "Part #" + str(ep_num)}
+INCLUDE FEMALE PARTNER IN SCENE: {"YES (Young Cadet + His Partner)" if default_needs_meera else "NO (Young Cadet + Coach Ustad / Hostel Friends)"}
+IF FEMALE PARTNER APPEARS, HER OUTFIT: "{assigned_meera_dress}"
 
 PAST CONTEXT (Do NOT repeat):
 {continuity_context}
 {user_direction}
-STRICT VIRAL & QUALITY RULES (FOLLOW 100%):
-1. ZERO FORCED CHARACTER NAMES IN DIALOGUE: Do NOT keep saying 'Makra' or 'Meera' in dialogues!
-   - When talking to his beloved Fojan (or when she talks to him), use natural, viral affectionate pet-names like: "Jaan", "Meri Kuchu Puchu", "Bawli", "Laado", "Meri Fojan", "Gulgule", "Fauji Sahab", "Chhore".
-   - In pure Army/Border/Ragda scenes, use raw, authentic Fauji addressing: "Ustad Ji", "Sher", "Fauji", "Jawan", "Laadle".
-2. STRICT BAN ON LETTERS / CHITTHI: NEVER create scenes with paper letters (chitthi/patra), reading paper, or floating text! Use real physical action, facial expressions, live video calls, or face-to-face confrontation.
-3. HARYANVI SHAYARI + SONG + SCENE-MATCHED BGM:
-   - `dialogue_hinglish`: Must feel 100% real, punchy, emotional or hilarious (can be short & sharp 12 words or a powerful 28-word delivery with integrated Haryanvi shayari rhythm — NO filler or robotic words!).
-   - `shayari_hindi`: A badass, heart-touching 2-line Haryanvi / Desi Fauji Shayari (in clean Hinglish/Hindi script).
-   - `song_lyrics_cue`: 1 matching soulful Hindi/Punjabi/Haryanvi song line or vocal melody that plays in the background.
-   - `bgm_mood_direction`: Exact background music & sound effects cue matching the scene (e.g., 'Deep Haryanvi dhol & bass drop with roaring wind', 'Emotional pahadi flute & acoustic guitar crescendo', 'Cinematic military snare drums & brass').
-4. NEVER repeat any past dialogue from: [{avoid_sample}]
-5. Output ONLY a valid JSON object (no markdown fences) with these exact keys:
+CRITICAL VEO VIDEO SAFETY & 8-SECOND TIMING RULES (MUST FOLLOW 100%):
+1. ZERO TRADEMARKS OR VIOLENCE: NEVER use words like 'Pixar', 'Disney', 'gun', 'rifle', 'weapon', 'blood', 'bleeding', 'combat', 'war', 'enemies', 'LOC', 'bunker', 'firing', 'punishment', or 'death'. Describe safe, lively, family-friendly 3D cartoon scenes (fitness drills, hostel mess comedy, snowy mountain chai, cute video calls, village homecoming).
+2. SHORT 8-SECOND DIALOGUE (10 TO 17 WORDS MAX!): Because the video clip is 8 seconds long, `dialogue_hinglish` MUST be punchy, expressive, and strictly 10 to 17 words so the character finishes speaking cleanly!
+3. CRISP VISUAL SCENE (35 TO 50 WORDS MAX!): Describe one clear location, bright expressive faces, and lively physical motion. No paper letters/chitthi, no on-screen text.
+4. NATURAL PET-NAMES: Never spam 'Makra'/'Meera'. Use natural words like 'Jaan', 'Kuchu Puchu', 'Laado', 'Bawli', 'Fauji Sahab', 'Ustad Ji', 'Sher', 'Laadle'.
+5. NEVER repeat past dialogues: [{avoid_sample}]
+6. Output ONLY a valid JSON object (no markdown fences):
 {{
-  "episode_title": "{"🔥 Viral Special: " if track_id == "viral_trend" else f"Part {ep_num}: "}[Catchy Viral Hinglish Hook Title]",
+  "episode_title": "{"🔥 Viral Special: " if track_id == "viral_trend" else f"Part {ep_num}: "}[Catchy Hinglish Title]",
   "include_meera": {"true" if default_needs_meera else "false"},
   "meera_outfit": "{assigned_meera_dress}",
-  "opening_hook_3s": "Explosive first 2-second visual and sound hook that stops the user from scrolling immediately.",
-  "visual_scene_description": "Ultra-detailed 3D Pixar-style 9:16 vertical scene: dynamic camera movement, cinematic lighting, authentic Indian Army uniform/gear (no officer stars on recruit/soldier shoulders), exact expressions and dramatic action.",
-  "dialogue_hinglish": "Spoken Hinglish/Haryanvi dialogue (powerful reality Fauji punch or cute Jaan/Kuchu Puchu banter + shayari delivery).",
-  "shayari_hindi": "2-line damdar Haryanvi / Fauji reality shayari.",
-  "song_lyrics_cue": "1 soulful matching background song verse / vocal melody.",
-  "bgm_mood_direction": "Exact background music instrument, beat, and ambient SFX matching the video mood.",
+  "opening_hook_3s": "Short 10-word visual action hook.",
+  "visual_scene_description": "Crisp 35-50 word family-friendly 3D animated 9:16 vertical scene description with vivid lighting and facial expression.",
+  "dialogue_hinglish": "Punchy 10-17 word spoken Hinglish/Haryanvi dialogue that fits cleanly inside 8 seconds.",
+  "shayari_hindi": "2-line heart-touching Haryanvi / Fauji shayari for Instagram caption.",
+  "song_lyrics_cue": "1 soulful background mood cue for caption.",
+  "bgm_mood_direction": "Exact BGM mood (funny / emotional / ragda / patriotic).",
   "hashtags": "{daily_tags}"
 }}"""
 
@@ -491,7 +531,7 @@ STRICT VIRAL & QUALITY RULES (FOLLOW 100%):
                         oa_url,
                         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
                         json={"model": m_name, "messages": [{"role": "user", "content": system_prompt}], "temperature": 0.92},
-                        timeout=12
+                        timeout=16
                     )
                     if r.status_code == 200:
                         parsed = _parse_ai_json(r.json()["choices"][0]["message"]["content"])
@@ -517,13 +557,7 @@ STRICT VIRAL & QUALITY RULES (FOLLOW 100%):
                     cand_txt = "".join([p.get("text", "") for p in parts if "text" in p])
                     parsed = _parse_ai_json(cand_txt)
                     if parsed:
-                        print(f"✅ [Viral AI Showrunner] Script & BGM composed using model: {model_name}")
-                        try:
-                            new_v = [model_name] + [x for x in ordered_models if x != model_name]
-                            with open("data/working_model_cache.json", "w", encoding="utf-8") as wf:
-                                json.dump({"verified_models": new_v[:4], "full_chain": new_v, "updated_at": time.time()}, wf)
-                        except Exception:
-                            pass
+                        print(f"✅ [Viral AI Showrunner] Veo-Safe Script composed using model: {model_name}")
                         parsed.setdefault("include_meera", default_needs_meera)
                         parsed.setdefault("meera_outfit", assigned_meera_dress)
                         parsed.setdefault("hashtags", daily_tags)
@@ -531,39 +565,24 @@ STRICT VIRAL & QUALITY RULES (FOLLOW 100%):
             except Exception:
                 pass
 
-    try:
-        r_pol = requests.post(
-            "https://text.pollinations.ai/openai",
-            headers={"Content-Type": "application/json"},
-            json={"model": "openai", "messages": [{"role": "user", "content": system_prompt}]},
-            timeout=12
-        )
-        if r_pol.status_code == 200:
-            parsed = _parse_ai_json(r_pol.json()["choices"][0]["message"]["content"])
-            if parsed:
-                parsed.setdefault("include_meera", default_needs_meera)
-                parsed.setdefault("meera_outfit", assigned_meera_dress)
-                parsed.setdefault("hashtags", daily_tags)
-                return parsed
-    except Exception:
-        pass
-
     return {
-        "episode_title": f"Part {ep_num}: Fauji Jigra Aur Jaan Ki Yaad",
+        "episode_title": f"Part {ep_num}: Subah Ki Chai Aur Fauji Swag",
         "include_meera": default_needs_meera,
         "meera_outfit": assigned_meera_dress,
-        "opening_hook_3s": "Sudden thunder flash over a snowy bunker as the young soldier locks his rifle bolt with intense eyes.",
-        "visual_scene_description": f"3D Pixar-style 9:16 vertical cinematic scene for {track['name']}. Authentic Indian Army combat uniform, dramatic lighting, emotional intensity.",
+        "opening_hook_3s": "Close-up of the smiling cadet lifting a steaming steel cup of masala chai in golden sunrise light.",
+        "visual_scene_description": "Stylized 3D animated vertical scene on a sunny mountain courtyard. The cheerful young man in an olive-green uniform laughs warmly with expressive eyes while holding a steaming steel mug of tea.",
         "dialogue_hinglish": (
-            "Oye meri kuchu puchu, tu fikar na kar jaan... jab tak tere fauji ke seene mein saans hai, na sarhad jhukegi aur na tera bharosa tootega!"
+            "Oye meri kuchu puchu, tu bas muskurati reh jaan, tere fauji ki har subah tere naam hai!"
             if default_needs_meera else
-            "Sun le laadle, Haryane ka khoon aur fauj ki vardi jab ek sath garm hove hain na, toh toofan bhi rasta badal leve hai!"
+            "Ustad ji, subah char baje ki daud aur garam chai, asli maza toh isi zindagi mein hai!"
         ),
-        "shayari_hindi": "Boli mein Haryanvi thaat aur seene mein Tirange ki aag rakhte hain, hum fauji hain sahab, maut ko bhijeb mein rakh kar ghoomte hain!",
-        "song_lyrics_cue": "Sandese aate hain, humein tadpate hain... soulful acoustic hum with Haryanvi folk flute",
-        "bgm_mood_direction": "Deep cinematic bass drop with emotional pahadi flute, marching boots rhythm, and winter wind SFX",
+        "shayari_hindi": "Vardi ka junoon aur dil mein apno ka pyaar, isi se banta hai har fauji ka sansaar!",
+        "song_lyrics_cue": "Warm acoustic morning folk melody",
+        "bgm_mood_direction": "emotional" if default_needs_meera else "patriotic",
         "hashtags": daily_tags
     }
+
+
 
 
 
@@ -666,25 +685,30 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     unique_vid_id = f"Video_{existing_cnt + 20:03d}_{clean_track_slug}_Part_{ep_num:02d}_{ts_slug}"
     unique_mp4_name = f"{unique_vid_id}.mp4"
 
+    safe_hook = _sanitize_veo_safe_prompt(opening_hook)
+    safe_scene = _sanitize_veo_safe_prompt(visual_scene)
+    safe_diag = _sanitize_veo_safe_prompt(dialogue_line)
+    # Keep dialogue crisp so it fits comfortably inside an 8-second Veo clip
+    diag_words = safe_diag.split()
+    if len(diag_words) > 22:
+        safe_diag = " ".join(diag_words[:22]).rstrip(",;:") + "!"
+
     if include_meera:
         char_instruction = (
-            f"Create a high-definition 9:16 vertical 3D Pixar-style animated video using the two uploaded character reference images "
-            f"(Image 1: Young Indian Army soldier in military uniform without officer stars; Image 2: His Fojan love interest). "
-            f"IMPORTANT WARDROBE FOR FOJAN: Keep her exact facial identity from Image 2, wearing a fresh outfit: {meera_outfit}. "
+            f"Generate a 9:16 vertical stylized 3D animated video featuring the two characters from the uploaded reference images "
+            f"(the young man in plain olive-green uniform without shoulder stars, and the young woman wearing {meera_outfit}). "
         )
     else:
         char_instruction = (
-            f"Create a high-definition 9:16 vertical 3D Pixar-style animated video using the uploaded character reference image "
-            f"(Young Indian Army soldier in combat/training uniform without officer stars). Focus on the soldier and his Army unit/Ustad. "
+            f"Generate a 9:16 vertical stylized 3D animated video featuring the cheerful young man in plain olive-green uniform "
+            f"from the uploaded reference image alongside his friendly coach or hostel friends. "
         )
 
-    # Pure visual + lip-sync prompt for Gemini Veo (NO song names or music directives in prompt so Veo NEVER blocks generation!
-    # Genre-matched BGM & Funny/Emotional reactions are automatically mixed into the MP4 by FFmpeg right after download!)
-    gemini_video_prompt = (
+    gemini_video_prompt = _sanitize_veo_safe_prompt(
         f"{char_instruction}"
-        f"SCENE & ACTION: {opening_hook} {visual_scene} "
-        f"LIP-SYNC SPOKEN HINDI/HINGLISH DIALOGUE (Clear native Indian accent with deep emotion): \"{dialogue_line}\" "
-        f"CINEMATOGRAPHY: Ultra-detailed 3D Pixar CGI, expressive facial animation, rich cinematic lighting, vertical 9:16 portrait format."
+        f"Scene: {safe_hook} {safe_scene} "
+        f"Spoken Hindi dialogue with natural lip-sync and warm Indian accent: \"{safe_diag}\" "
+        f"Style: High-detail 3D animated feature film lighting, smooth expressive acting, clean 9:16 portrait framing, no on-screen text."
     )
 
     follow_line = (
@@ -1267,7 +1291,12 @@ def approve_and_schedule_video_item(video_file=None, custom_caption="", source_l
     q["scheduled_posts"].append(target_item)
     q["scheduled_posts"].sort(key=lambda x: float(x.get("scheduled_epoch", 0)))
 
-    save_scheduled_queue(q, sync_cloud=True)
+    claimed = list(q.get("upload_claimed_files") or [])
+    if vname not in claimed:
+        claimed.append(vname)
+    q["upload_claimed_files"] = claimed
+    save_scheduled_queue(q, sync_cloud=False)
+    push_json_to_github_instantly(SCHEDULED_QUEUE_FILE, f"Published & Locked {vname} [skip render] [skip ci]", blocking=True)
 
     # Non-blocking notification
     def _bg_sched_notif():
