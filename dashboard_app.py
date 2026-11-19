@@ -6150,8 +6150,11 @@ def api_tri_platform_config():
 
 
 
-@app.after_request
-def _inject_foji_executive_pro_ui_v2(response):
+def _inject_foji_executive_pro_ui_v3(response):
+    """
+    Registered at index 0 of app.after_request_funcs[None] so Flask's LIFO execution
+    ALWAYS runs this VERY LAST — AFTER `_inject_foji_universe_command_hub` injects `#foji-nextgen-studio-shell`!
+    """
     try:
         from flask import request
         if request.path in ("/", "/index.html") and "text/html" in (response.content_type or ""):
@@ -6160,151 +6163,216 @@ def _inject_foji_executive_pro_ui_v2(response):
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             html_t = response.get_data(as_text=True)
-            if "FOJI_EXECUTIVE_PRO_UI_V2" not in html_t and "</body>" in html_t:
+            if "FOJI_EXECUTIVE_PRO_UI_V3" not in html_t and "</body>" in html_t:
                 pro_addon = """
-<!-- FOJI_EXECUTIVE_PRO_UI_V2 -->
-<style>
-  /* Executive Dark Obsidian 3D Glassmorphic Upgrade (Preserves Foji Walker & Core Layout) */
-  :root {
-    --foji-gold: #f59e0b;
-    --foji-cyan: #06b6d4;
-    --foji-violet: #8b5cf6;
-  }
-  body {
-    background: radial-gradient(circle at 12% 10%, rgba(14, 165, 233, 0.14), transparent 36%),
-                radial-gradient(circle at 88% 15%, rgba(139, 92, 246, 0.14), transparent 38%),
-                radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.09), transparent 42%),
-                #040814 !important;
-    background-attachment: fixed !important;
-  }
-  .card, .panel, [class*="card"], [class*="glass"] {
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s ease, border-color 0.25s ease !important;
-  }
-  .card:hover {
-    border-color: rgba(245, 158, 11, 0.42) !important;
-    box-shadow: 0 12px 34px -10px rgba(6, 182, 212, 0.22) !important;
+<!-- FOJI_EXECUTIVE_PRO_UI_V3 -->
+<style id="foji-pro-v3-styles">
+  /* Disable legacy splash so our Unique 3D Holographic Welcome Screen takes center stage */
+  #fns-app-splash {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
-  /* Unique Holographic 3D Welcome Boot Screen */
+  /* Executive Obsidian Glassmorphic Upgrade on Active Shell (Preserves 8-Step Foji Walker 100%) */
+  #foji-nextgen-studio-shell {
+    background:
+      radial-gradient(circle at 12% 8%, rgba(6, 182, 212, 0.14), transparent 34%),
+      radial-gradient(circle at 88% 12%, rgba(139, 92, 246, 0.14), transparent 36%),
+      radial-gradient(circle at 50% 92%, rgba(245, 158, 11, 0.10), transparent 40%),
+      #030712 !important;
+  }
+
+  /* Unique 3D Holographic Radar + Scanner Sweep Welcome Screen */
   #foji-cinematic-intro {
-    position: fixed; inset: 0; z-index: 999999;
-    background: radial-gradient(circle at center, #0c1b36 0%, #030712 72%);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    overflow: hidden; cursor: pointer;
-    transition: opacity 0.65s ease, transform 0.75s cubic-bezier(.16,1,.3,1);
+    display: flex !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483647 !important;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(14, 34, 68, 0.96) 0%, #030712 72%),
+      repeating-linear-gradient(0deg, rgba(56,189,248,0.03) 0px, rgba(56,189,248,0.03) 1px, transparent 1px, transparent 36px),
+      repeating-linear-gradient(90deg, rgba(245,158,11,0.03) 0px, rgba(245,158,11,0.03) 1px, transparent 1px, transparent 36px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.65s ease, transform 0.7s cubic-bezier(.16,1,.3,1);
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
   #foji-cinematic-intro.intro-exit {
-    opacity: 0; transform: translateY(-28px) scale(1.04); pointer-events: none;
+    opacity: 0 !important;
+    transform: scale(1.05) translateY(-18px);
+    pointer-events: none !important;
   }
-  .foji-radar-ring {
-    position: absolute; width: 320px; height: 320px; border-radius: 50%;
-    border: 1.5px solid rgba(6, 182, 212, 0.35);
-    box-shadow: 0 0 60px rgba(6, 182, 212, 0.18), inset 0 0 40px rgba(245, 158, 11, 0.12);
-    animation: fojiRadarSpin 4.5s linear infinite;
+  #foji-cinematic-intro.intro-done {
+    display: none !important;
   }
-  .foji-radar-ring::after {
-    content: ""; position: absolute; inset: -14px; border-radius: 50%;
-    border: 2px dashed rgba(245, 158, 11, 0.45);
-    animation: fojiRadarSpinReverse 7s linear infinite;
+  .fpro-holo-orbit-1 {
+    position: absolute;
+    width: min(340px, 78vw);
+    height: min(340px, 78vw);
+    border-radius: 50%;
+    border: 1.5px solid rgba(6, 182, 212, 0.42);
+    box-shadow: 0 0 70px rgba(6, 182, 212, 0.22), inset 0 0 40px rgba(245, 158, 11, 0.14);
+    animation: fproSpin 5s linear infinite;
   }
-  .foji-intro-crest {
-    width: 122px; height: 122px; border-radius: 50%; z-index: 2;
-    box-shadow: 0 0 45px rgba(245, 158, 11, 0.55), 0 0 90px rgba(139, 92, 246, 0.35);
-    animation: fojiCrestPop 0.9s cubic-bezier(.16,1,.3,1) forwards;
+  .fpro-holo-orbit-2 {
+    position: absolute;
+    width: min(265px, 62vw);
+    height: min(265px, 62vw);
+    border-radius: 50%;
+    border: 2px dashed rgba(245, 158, 11, 0.52);
+    animation: fproSpinRev 8s linear infinite;
   }
-  .foji-intro-title {
-    margin-top: 22px; z-index: 2; font-family: system-ui, -apple-system, sans-serif;
-    font-size: clamp(22px, 4.5vw, 36px); font-weight: 900; letter-spacing: 4px;
-    background: linear-gradient(90deg, #fde047, #ffffff, #38bdf8, #a78bfa);
-    background-size: 220% auto;
+  .fpro-holo-sweep {
+    position: absolute;
+    left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, #38bdf8, #fde047, #a78bfa, transparent);
+    box-shadow: 0 0 22px #38bdf8;
+    animation: fproSweep 2.1s ease-in-out infinite;
+    opacity: 0.75;
+  }
+  .fpro-intro-crest {
+    width: 118px; height: 118px; border-radius: 50%; z-index: 3;
+    border: 2px solid rgba(253, 224, 71, 0.75);
+    box-shadow: 0 0 45px rgba(245, 158, 11, 0.6), 0 0 90px rgba(139, 92, 246, 0.35);
+    animation: fproPop 0.85s cubic-bezier(.16,1,.3,1) forwards;
+    object-fit: cover;
+    background: #0a1428;
+  }
+  .fpro-intro-title {
+    margin-top: 22px; z-index: 3;
+    font-size: clamp(22px, 4.6vw, 38px);
+    font-weight: 900; letter-spacing: 4px; text-align: center;
+    background: linear-gradient(90deg, #fde047, #ffffff, #38bdf8, #c084fc, #fde047);
+    background-size: 240% auto;
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    animation: fojiShimmer 2.6s linear infinite;
+    animation: fproShimmer 2.4s linear infinite;
   }
-  .foji-intro-sub {
-    margin-top: 8px; z-index: 2; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
-    color: #94a3b8; font-weight: 700;
+  .fpro-intro-badges {
+    margin-top: 10px; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
   }
-  .foji-intro-bar {
-    margin-top: 22px; width: min(260px, 72vw); height: 4px; border-radius: 99px;
-    background: rgba(255,255,255,0.08); overflow: hidden; z-index: 2;
+  .fpro-intro-chip {
+    font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(56, 189, 248, 0.35); color: #e2e8f0;
   }
-  .foji-intro-bar-fill {
+  .fpro-intro-bar {
+    margin-top: 22px; width: min(270px, 72vw); height: 4px; border-radius: 99px;
+    background: rgba(255,255,255,0.1); overflow: hidden; z-index: 3;
+  }
+  .fpro-intro-bar-fill {
     height: 100%; width: 0%;
     background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6);
-    animation: fojiLoadFill 1.85s cubic-bezier(.22,1,.36,1) forwards;
+    animation: fproFill 1.95s cubic-bezier(.22,1,.36,1) forwards;
   }
-  @keyframes fojiRadarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  @keyframes fojiRadarSpinReverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-  @keyframes fojiCrestPop { 0% { opacity: 0; transform: scale(0.55) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
-  @keyframes fojiShimmer { 0% { background-position: 0% center; } 100% { background-position: 220% center; } }
-  @keyframes fojiLoadFill { 0% { width: 0%; } 100% { width: 100%; } }
+  @keyframes fproSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes fproSpinRev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+  @keyframes fproSweep { 0% { top: 15%; } 50% { top: 82%; } 100% { top: 15%; } }
+  @keyframes fproPop { 0% { opacity: 0; transform: scale(0.55) translateY(18px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes fproShimmer { 0% { background-position: 0% center; } 100% { background-position: 240% center; } }
+  @keyframes fproFill { 0% { width: 0%; } 100% { width: 100%; } }
 
-  /* Executive Pro Control Hub (5-Sessions + Tri-Platform Official API + Posting Slots) */
+  /* Executive Pro Hub Dock (Mounted directly inside #foji-nextgen-studio-shell) */
   #foji-pro-hub-dock {
-    max-width: 1320px; margin: 18px auto 26px auto; padding: 0 14px;
-    font-family: system-ui, -apple-system, sans-serif; color: #f8fafc;
+    width: 100%;
+    max-width: 1380px;
+    margin: 14px auto 18px auto;
+    padding: 0 14px;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    color: #f8fafc;
+    position: relative;
+    z-index: 25;
   }
+  .fpro-ribbon {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    background: linear-gradient(90deg, rgba(15,23,42,0.92), rgba(23,37,84,0.78), rgba(15,23,42,0.92));
+    border: 1px solid rgba(245, 158, 11, 0.38);
+    border-radius: 16px; padding: 10px 16px; margin-bottom: 12px;
+    box-shadow: 0 10px 30px -12px rgba(6, 182, 212, 0.35);
+    backdrop-filter: blur(16px);
+  }
+  .fpro-ribbon-brand {
+    display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 900; letter-spacing: 0.8px;
+  }
+  .fpro-live-dot {
+    width: 9px; height: 9px; border-radius: 50%; background: #10b981;
+    box-shadow: 0 0 12px #10b981; animation: fproPulse 1.6s infinite;
+  }
+  @keyframes fproPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(1.3); } }
   .fpro-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 14px;
   }
   .fpro-card {
-    background: linear-gradient(155deg, rgba(13, 23, 44, 0.88), rgba(7, 13, 28, 0.94));
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    border-radius: 18px; padding: 18px; position: relative; overflow: hidden;
-    box-shadow: 0 14px 36px -16px rgba(0, 0, 0, 0.75);
+    background: linear-gradient(155deg, rgba(11, 20, 40, 0.90), rgba(5, 10, 24, 0.96));
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 18px; padding: 16px; position: relative; overflow: hidden;
+    box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(18px);
+    transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  }
+  .fpro-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(245, 158, 11, 0.48);
+    box-shadow: 0 18px 42px -14px rgba(6, 182, 212, 0.28);
   }
   .fpro-card::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     background: linear-gradient(90deg, transparent, #f59e0b, #06b6d4, #8b5cf6, transparent);
-    opacity: 0.85;
   }
-  .fpro-hdr { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .fpro-title { font-size: 14px; font-weight: 800; letter-spacing: 0.6px; display: flex; align-items: center; gap: 8px; }
+  .fpro-hdr { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .fpro-title { font-size: 13.5px; font-weight: 800; letter-spacing: 0.4px; color: #f8fafc; }
   .fpro-pill {
-    font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.14); cursor: pointer; background: rgba(15,23,42,0.75); color: #e2e8f0;
+    font-size: 11px; font-weight: 800; padding: 5px 11px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.16); cursor: pointer; background: rgba(15,23,42,0.8); color: #e2e8f0;
   }
-  .fpro-pill.on { background: rgba(16,185,129,0.2); border-color: #10b981; color: #34d399; }
-  .fpro-pill.off { background: rgba(239,68,68,0.16); border-color: #ef4444; color: #fca5a5; }
-  .fpro-sess-list { display: flex; flex-direction: column; gap: 8px; }
+  .fpro-pill.on { background: rgba(16,185,129,0.22); border-color: #10b981; color: #34d399; }
+  .fpro-pill.off { background: rgba(239,68,68,0.18); border-color: #ef4444; color: #fca5a5; }
+  .fpro-sess-list { display: flex; flex-direction: column; gap: 7px; }
   .fpro-sess-row {
     display: flex; align-items: center; justify-content: space-between; gap: 8px;
-    background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(148, 163, 184, 0.14);
+    background: rgba(15, 23, 42, 0.72); border: 1px solid rgba(148, 163, 184, 0.16);
     border-radius: 12px; padding: 8px 11px; font-size: 12px;
   }
   .fpro-btn {
     border: none; border-radius: 10px; padding: 6px 11px; font-size: 11px; font-weight: 800;
-    cursor: pointer; transition: transform 0.15s ease, opacity 0.15s ease;
+    cursor: pointer; transition: transform 0.14s ease, filter 0.14s ease;
   }
+  .fpro-btn:hover { filter: brightness(1.08); }
   .fpro-btn:active { transform: scale(0.96); }
-  .fpro-btn-gold { background: linear-gradient(135deg, #f59e0b, #eab308); color: #090d16; }
+  .fpro-btn-gold { background: linear-gradient(135deg, #f59e0b, #fde047); color: #090d16; }
   .fpro-btn-cyan { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #ffffff; }
-  .fpro-btn-ghost { background: rgba(148,163,184,0.14); color: #cbd5e1; border: 1px solid rgba(148,163,184,0.2); }
-  .fpro-plat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  .fpro-btn-ghost { background: rgba(148,163,184,0.15); color: #e2e8f0; border: 1px solid rgba(148,163,184,0.25); }
+  .fpro-plat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
   .fpro-plat-box {
-    background: rgba(15, 23, 42, 0.72); border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 13px; padding: 10px; text-align: center;
+    background: rgba(15, 23, 42, 0.78); border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 13px; padding: 10px 8px; text-align: center;
   }
-  .fpro-plat-val { font-size: 17px; font-weight: 900; margin-top: 4px; color: #fde047; }
+  .fpro-plat-val { font-size: 16px; font-weight: 900; margin-top: 4px; color: #fde047; }
   .fpro-plat-sub { font-size: 10px; color: #94a3b8; margin-top: 2px; }
   .fpro-slot-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
   .fpro-time-inp {
-    background: #0b1326; border: 1px solid rgba(56, 189, 248, 0.35); color: #fff;
-    border-radius: 10px; padding: 7px 10px; font-size: 13px; font-weight: 700; width: 108px;
+    background: #070f20; border: 1px solid rgba(56, 189, 248, 0.42); color: #fff;
+    border-radius: 10px; padding: 6px 9px; font-size: 12.5px; font-weight: 700; width: 104px;
   }
   #fpro-api-modal {
-    position: fixed; inset: 0; z-index: 999990; background: rgba(2, 6, 23, 0.82);
-    backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 16px;
+    display: none;
+    position: fixed !important; inset: 0 !important; z-index: 2147483646 !important;
+    background: rgba(2, 6, 23, 0.86); backdrop-filter: blur(10px);
+    align-items: center; justify-content: center; padding: 16px;
   }
+  #fpro-api-modal.fpro-modal-open { display: flex !important; }
   .fpro-modal-box {
-    width: 100%; max-width: 520px; background: #0a1224; border: 1px solid rgba(245,158,11,0.45);
-    border-radius: 20px; padding: 22px; color: #f8fafc; box-shadow: 0 24px 60px rgba(0,0,0,0.8);
+    width: 100%; max-width: 520px; background: #0a1224; border: 1px solid rgba(245,158,11,0.52);
+    border-radius: 20px; padding: 22px; color: #f8fafc; box-shadow: 0 24px 70px rgba(0,0,0,0.88);
     max-height: 90vh; overflow-y: auto;
   }
   .fpro-inp {
-    width: 100%; box-sizing: border-box; background: #050a16; border: 1px solid rgba(148,163,184,0.28);
+    width: 100%; box-sizing: border-box; background: #040814; border: 1px solid rgba(148,163,184,0.3);
     color: #fff; border-radius: 10px; padding: 9px 12px; font-size: 12px; margin: 5px 0 11px 0;
   }
   @media (max-width: 640px) {
@@ -6315,16 +6383,36 @@ def _inject_foji_executive_pro_ui_v2(response):
 
 <!-- Unique 3D Holographic Welcome Screen -->
 <div id="foji-cinematic-intro" onclick="window.fojiCloseIntro()">
-  <div class="foji-radar-ring"></div>
-  <img src="/emblem-logo.png" class="foji-intro-crest" alt="Foji AI Studio Pro" onerror="this.style.display='none'"/>
-  <div class="foji-intro-title">FOJI AI STUDIO PRO</div>
-  <div class="foji-intro-sub">3D VEO ENGINE • IG • YOUTUBE • FACEBOOK</div>
-  <div class="foji-intro-bar"><div class="foji-intro-bar-fill"></div></div>
+  <div class="fpro-holo-sweep"></div>
+  <div class="fpro-holo-orbit-1"></div>
+  <div class="fpro-holo-orbit-2"></div>
+  <img src="/emblem-logo.png" class="fpro-intro-crest" alt="Foji AI Studio Pro" onerror="this.style.display='none'"/>
+  <div class="fpro-intro-title">FOJI AI STUDIO PRO</div>
+  <div class="fpro-intro-badges">
+    <span class="fpro-intro-chip">🎬 12-Step Veo Engine</span>
+    <span class="fpro-intro-chip">📸 IG Official API</span>
+    <span class="fpro-intro-chip">▶️ YT Shorts</span>
+    <span class="fpro-intro-chip">📘 FB Reels</span>
+  </div>
+  <div class="fpro-intro-bar"><div class="fpro-intro-bar-fill"></div></div>
 </div>
 
-<!-- Executive Pro Hub: 5-Session Controller + Editable Posting Slots + Official Tri-Platform Insights -->
+<!-- Executive Pro Hub Dock -->
 <div id="foji-pro-hub-dock">
-  <div class="fpro-grid">
+  <div class="fpro-ribbon">
+    <div class="fpro-ribbon-brand">
+      <span class="fpro-live-dot"></span>
+      <span style="color:#fde047;">FOJI AI STUDIO PRO</span>
+      <span style="font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.4);color:#38bdf8;">v3 EXECUTIVE</span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <button class="fpro-btn fpro-btn-gold" onclick="window.fproOpenApiModal()">⚙️ Connect IG / YT / FB APIs</button>
+      <button class="fpro-btn fpro-btn-ghost" onclick="window.fojiReplayIntro()">✨ Replay Intro</button>
+      <button id="fpro-collapse-btn" class="fpro-btn fpro-btn-ghost" onclick="window.fproToggleDockBody()">▲ Compact</button>
+    </div>
+  </div>
+
+  <div id="fpro-dock-body" class="fpro-grid">
     <!-- Card 1: 5 Daily Auto-Sessions Control -->
     <div class="fpro-card">
       <div class="fpro-hdr">
@@ -6334,14 +6422,11 @@ def _inject_foji_executive_pro_ui_v2(response):
       <div id="fpro-sessions-box" class="fpro-sess-list">Loading 5 sessions...</div>
     </div>
 
-    <!-- Card 2: Tri-Platform Official Insights (IG + YT + FB) -->
+    <!-- Card 2: Official Tri-Platform Insights + Editable Posting Slots -->
     <div class="fpro-card">
       <div class="fpro-hdr">
         <div class="fpro-title">🌐 Official Tri-Platform Live Insights</div>
-        <div style="display:flex;gap:6px;">
-          <button class="fpro-btn fpro-btn-gold" onclick="window.fproOpenApiModal()">⚙️ Connect APIs</button>
-          <button class="fpro-btn fpro-btn-ghost" onclick="window.fojiReplayIntro()" title="Show Welcome Animation">✨</button>
-        </div>
+        <span style="font-size:10px;color:#34d399;font-weight:800;">0% BAN RISK</span>
       </div>
       <div class="fpro-plat-grid">
         <div class="fpro-plat-box">
@@ -6360,7 +6445,7 @@ def _inject_foji_executive_pro_ui_v2(response):
           <div id="fpro-fb-meta" class="fpro-plat-sub">Connect API</div>
         </div>
       </div>
-      <div style="margin-top:12px;border-top:1px solid rgba(148,163,184,0.14);padding-top:10px;">
+      <div style="margin-top:12px;border-top:1px solid rgba(148,163,184,0.16);padding-top:10px;">
         <div style="font-size:11px;font-weight:800;color:#cbd5e1;">⏰ Daily Auto-Posting Slots (IST) — Existing Queue Safe</div>
         <div class="fpro-slot-row">
           <input id="fpro-slot-1" type="time" class="fpro-time-inp" value="06:30"/>
@@ -6378,16 +6463,16 @@ def _inject_foji_executive_pro_ui_v2(response):
   <div class="fpro-modal-box">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
       <div style="font-size:16px;font-weight:900;color:#fde047;">🔐 Official IG + FB + YouTube API Setup</div>
-      <button class="fpro-btn fpro-btn-ghost" onclick="document.getElementById('fpro-api-modal').style.display='none'">✕</button>
+      <button class="fpro-btn fpro-btn-ghost" onclick="window.fproCloseApiModal()">✕</button>
     </div>
     <label style="font-size:11px;color:#94a3b8;font-weight:700;">Meta App ID</label>
-    <input id="inp-meta-app-id" class="fpro-inp" placeholder="e.g. 123456789012345"/>
+    <input id="inp-meta-app-id" class="fpro-inp" placeholder="App Settings -> Basic -> App ID"/>
     <label style="font-size:11px;color:#94a3b8;font-weight:700;">Meta App Secret</label>
-    <input id="inp-meta-app-secret" class="fpro-inp" type="password" placeholder="Paste Meta App Secret"/>
-    <label style="font-size:11px;color:#f472b6;font-weight:700;">Instagram Official Access Token (from Meta Portal)</label>
+    <input id="inp-meta-app-secret" class="fpro-inp" type="password" placeholder="App Settings -> Basic -> App Secret"/>
+    <label style="font-size:11px;color:#f472b6;font-weight:700;">Instagram Official Access Token</label>
     <input id="inp-ig-token" class="fpro-inp" type="password" placeholder="Paste IG Access Token (IGAA... or EAA...)"/>
-    <label style="font-size:11px;color:#f472b6;font-weight:700;">Instagram Account ID (optional — auto-detected if blank)</label>
-    <input id="inp-ig-id" class="fpro-inp" placeholder="e.g. 17841400000000000"/>
+    <label style="font-size:11px;color:#f472b6;font-weight:700;">Instagram Account ID (optional — auto-detected)</label>
+    <input id="inp-ig-id" class="fpro-inp" placeholder="Leave blank for auto-detect"/>
     <label style="font-size:11px;color:#38bdf8;font-weight:700;">Facebook Page ID & Page Access Token (optional)</label>
     <input id="inp-fb-id" class="fpro-inp" placeholder="Facebook Page ID"/>
     <input id="inp-fb-token" class="fpro-inp" type="password" placeholder="Facebook Page Access Token"/>
@@ -6395,62 +6480,68 @@ def _inject_foji_executive_pro_ui_v2(response):
     <input id="inp-yt-cid" class="fpro-inp" placeholder="UCxxxxxxxxxxxxxx"/>
     <input id="inp-yt-key" class="fpro-inp" type="password" placeholder="AIzaSy..."/>
     <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
-      <button class="fpro-btn fpro-btn-ghost" onclick="document.getElementById('fpro-api-modal').style.display='none'">Cancel</button>
+      <button class="fpro-btn fpro-btn-ghost" onclick="window.fproCloseApiModal()">Cancel</button>
       <button class="fpro-btn fpro-btn-gold" onclick="window.fproSaveApis()">✅ Verify & Save Official APIs</button>
     </div>
     <div id="fpro-api-status" style="margin-top:10px;font-size:12px;color:#34d399;"></div>
   </div>
 </div>
 
-<script>
+<script id="foji-pro-v3-script">
 (function(){
-  // 1. Welcome Holographic Boot Intro Logic
-  
-// FOJI_SW_CACHE_BUST_V5: Automatically purge old PWA caches so Render updates appear instantly!
-if ('serviceWorker' in navigator && localStorage.getItem('foji_sw_reset_v6') !== 'done') {
-  navigator.serviceWorker.getRegistrations().then(regs => {
-    Promise.all(regs.map(r => r.unregister())).finally(() => {
-      try { localStorage.setItem('foji_sw_reset_v6', 'done'); } catch(e) {}
-    });
-  }).catch(() => {});
-}
-if ('caches' in window && localStorage.getItem('foji_ui_ver') !== 'v5_pro') {
-  caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).finally(() => {
-    try { localStorage.setItem('foji_ui_ver', 'v5_pro'); } catch(e) {}
-  });
-}
+  // 1. Mount Pro Hub, Welcome Screen & Modal DIRECTLY INSIDE `#foji-nextgen-studio-shell`
+  //    so NO shell CSS or fixed overlay can EVER hide them!
+  function mountProInsideShell() {
+    const shell = document.getElementById('foji-nextgen-studio-shell');
+    const dock = document.getElementById('foji-pro-hub-dock');
+    const modal = document.getElementById('fpro-api-modal');
+    if (shell && dock) {
+      // Place dock right after top bar inside `#foji-nextgen-studio-shell`
+      const firstChild = shell.firstElementChild;
+      if (firstChild && firstChild.nextSibling) {
+        shell.insertBefore(dock, firstChild.nextSibling);
+      } else {
+        shell.prepend(dock);
+      }
+    }
+    if (shell && modal) {
+      shell.appendChild(modal);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountProInsideShell);
+  } else {
+    mountProInsideShell();
+  }
 
+  // 2. Holographic Welcome Intro Logic
   window.fojiCloseIntro = function(){
     const el = document.getElementById('foji-cinematic-intro');
     if (el) {
       el.classList.add('intro-exit');
-      setTimeout(() => { el.style.display = 'none'; }, 700);
+      setTimeout(() => { el.classList.add('intro-done'); }, 680);
     }
-    try { sessionStorage.setItem('foji_intro_seen', '1'); } catch(e){}
   };
   window.fojiReplayIntro = function(){
     const el = document.getElementById('foji-cinematic-intro');
     if (el) {
-      el.style.display = 'flex';
-      el.classList.remove('intro-exit');
+      el.classList.remove('intro-done', 'intro-exit');
       setTimeout(window.fojiCloseIntro, 2100);
     }
   };
-  // Show sleek 2.0s Holographic Welcome Intro on fresh load (click anywhere to skip instantly)
-  setTimeout(window.fojiCloseIntro, 2000);
+  setTimeout(window.fojiCloseIntro, 2100);
 
-  // Pin Executive Pro Hub Dock right at the TOP (after header/topbar if present, else top of body)
-  const dock = document.getElementById('foji-pro-hub-dock');
-  if (dock) {
-    const topHdr = document.querySelector('header, .topbar, .navbar, .studio-header, .app-header');
-    if (topHdr && topHdr.parentNode) {
-      topHdr.parentNode.insertBefore(dock, topHdr.nextSibling);
-    } else {
-      document.body.insertBefore(dock, document.body.firstChild);
-    }
-  }
+  // 3. Compact Toggle for Mobile
+  window.fproToggleDockBody = function(){
+    const b = document.getElementById('fpro-dock-body');
+    const btn = document.getElementById('fpro-collapse-btn');
+    if (!b) return;
+    const hide = b.style.display !== 'none';
+    b.style.display = hide ? 'none' : 'grid';
+    if (btn) btn.textContent = hide ? '▼ Expand Pro Hub' : '▲ Compact';
+  };
 
-  // 2. Load & Control 5 Daily Sessions + Editable Posting Slots
+  // 4. 5-Session Controller + Editable Posting Slots
   let _fproCfg = null;
   function renderSessions(cfg) {
     _fproCfg = cfg;
@@ -6505,10 +6596,10 @@ if ('caches' in window && localStorage.getItem('foji_ui_ver') !== 'v5_pro') {
     const s2 = document.getElementById('fpro-slot-2').value;
     const s3 = document.getElementById('fpro-slot-3').value;
     await window.fproSessionAct({posting_slots_ist: [s1, s2, s3]});
-    alert('✅ Posting times updated (' + s1 + ', ' + s2 + ', ' + s3 + ' IST)! Existing 7 scheduled reels untouched.');
+    alert('✅ Posting slots saved (' + s1 + ', ' + s2 + ', ' + s3 + ' IST)! Existing scheduled reels untouched.');
   };
 
-  // 3. Load Tri-Platform Official Insights
+  // 5. Official Tri-Platform Insights + API Modal
   async function loadTriInsights() {
     try {
       const r = await fetch('/api/tri_platform_insights');
@@ -6527,7 +6618,12 @@ if ('caches' in window && localStorage.getItem('foji_ui_ver') !== 'v5_pro') {
   }
 
   window.fproOpenApiModal = function() {
-    document.getElementById('fpro-api-modal').style.display = 'flex';
+    const m = document.getElementById('fpro-api-modal');
+    if (m) m.classList.add('fpro-modal-open');
+  };
+  window.fproCloseApiModal = function() {
+    const m = document.getElementById('fpro-api-modal');
+    if (m) m.classList.remove('fpro-modal-open');
   };
   window.fproSaveApis = async function() {
     const st = document.getElementById('fpro-api-status');
@@ -6547,7 +6643,7 @@ if ('caches' in window && localStorage.getItem('foji_ui_ver') !== 'v5_pro') {
     if (d && d.ok) {
       st.textContent = '✅ Official APIs Saved & Synced!';
       loadTriInsights();
-      setTimeout(() => { document.getElementById('fpro-api-modal').style.display = 'none'; }, 1000);
+      setTimeout(window.fproCloseApiModal, 1000);
     } else {
       st.textContent = '⚠️ Error saving keys.';
     }
@@ -6564,6 +6660,9 @@ if ('caches' in window && localStorage.getItem('foji_ui_ver') !== 'v5_pro') {
     except Exception:
         pass
     return response
+
+app.after_request_funcs.setdefault(None, []).insert(0, _inject_foji_executive_pro_ui_v3)
+
 
 
 if __name__ == "__main__":
