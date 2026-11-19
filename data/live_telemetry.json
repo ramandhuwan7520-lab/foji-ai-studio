@@ -1,9 +1,9 @@
 {
-  "step_num": 5,
-  "step_title": "Step 5: Directing Scene",
-  "sub_detail": "Injecting viral script, Haryanvi shayari & BGM cues...",
+  "step_num": 6,
+  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
+  "sub_detail": "Rendering Video_063_ViralTrend_Part_01_1119_193247.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
-  "progress": 62,
-  "updated_at": "07:33:38 PM",
-  "epoch": 1795097018.7956212
+  "progress": 75,
+  "updated_at": "07:33:55 PM",
+  "epoch": 1795097035.2169487
 }
