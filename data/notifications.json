@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795063231411",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: 4AM Sher vs City Wale | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "10:10 AM",
+    "date_str": "19 Nov 2026",
+    "timestamp": 1795063231.4119937
+  },
+  {
     "id": "notif_1795051588103",
     "type": "success",
     "title": "📸 Reel Posted on Instagram!",
