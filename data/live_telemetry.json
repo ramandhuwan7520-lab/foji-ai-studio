@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "Stage 7: Video Rendered! Mixing Genre BGM & Saving...",
-  "sub_detail": "Adding mood-matched BGM to Video_063_ViralTrend_Part_01_1119_061145.mp4 & syncing...",
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud 3D Studio",
+  "sub_detail": "Triggering GitHub Actions 3D Worker...",
   "status": "active",
-  "progress": 94,
-  "updated_at": "06:56:11 AM",
-  "epoch": 1795051571.624732
+  "progress": 18,
+  "updated_at": "10:09:56 AM",
+  "epoch": 1795063196.6756291
 }
