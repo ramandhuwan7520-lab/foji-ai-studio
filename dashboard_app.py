@@ -2048,6 +2048,46 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
     if not os.path.exists(vpath):
         raise FileNotFoundError(f"Video file {vname} not found!")
 
+    # FOJI_OFFICIAL_TRI_PUBLISH_HOOK: Prefer 100% Official Meta Graph API if token saved + Auto Cross-Post to FB & YT!
+    try:
+        import tri_platform_api as _tpa
+        _tcfg = _tpa.load_tri_config()
+        _repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+        _pub_mp4_url = f"https://raw.githubusercontent.com/{_repo}/main/output/raw_videos/{vname}"
+        _sess_cfg = json.load(open("data/studio_sessions_config.json", "r", encoding="utf-8")) if os.path.exists("data/studio_sessions_config.json") else {}
+        _plats = _sess_cfg.get("auto_post_platforms") or {"instagram": True, "facebook": True, "youtube": True}
+
+        # Auto Cross-Post to Facebook Reels & YouTube Shorts in background if connected
+        def _cross_post_fb_yt():
+            if _plats.get("facebook") and _tcfg.get("fb_page_id") and _tcfg.get("fb_page_token"):
+                r_fb = _tpa.publish_reel_official_facebook(_pub_mp4_url, custom_caption or "Foji 3D Story 🇮🇳")
+                print(f"📘 [Official FB Reels] Result: {r_fb}")
+            if _plats.get("youtube") and os.path.exists(_tcfg.get("yt_token_path", "data/youtube_token.json")):
+                _yt_title = (custom_caption or vname).splitlines()[0][:85]
+                r_yt = _tpa.publish_short_official_youtube(vpath, _yt_title, custom_caption or "")
+                print(f"▶️ [Official YouTube Shorts] Result: {r_yt}")
+
+        if _tcfg.get("ig_access_token") and _tcfg.get("ig_account_id"):
+            print(f"🌐 [Official Meta Graph API] Publishing '{vname}' directly to Instagram Reels (0% Ban Risk)...")
+            _ig_res = _tpa.publish_reel_official_instagram(_pub_mp4_url, custom_caption or "Foji 3D Reel 🇮🇳 #indianarmy")
+            if _ig_res.get("ok"):
+                _fud.mark_video_as_published_in_vault(vname, custom_caption, media_pk=_ig_res.get("media_id", "OFFICIAL_LIVE"))
+                threading.Thread(target=_cross_post_fb_yt, daemon=True).start()
+                return {
+                    "ok": True,
+                    "media_pk": _ig_res.get("media_id", "OFFICIAL_LIVE"),
+                    "permalink": _ig_res.get("permalink", "https://www.instagram.com/ai_foji_lovelife/"),
+                    "via": "official_meta_graph_api"
+                }
+            else:
+                print(f"ℹ️ [Official IG API fallback note]: {_ig_res.get('error')} -> falling back to backup session...")
+        else:
+            # Still cross-post to FB/YT if configured when IG uses backup session
+            if (_tcfg.get("fb_page_id") and _tcfg.get("fb_page_token")) or os.path.exists(_tcfg.get("yt_token_path", "data/youtube_token.json")):
+                threading.Thread(target=_cross_post_fb_yt, daemon=True).start()
+    except Exception as _tri_e:
+        print(f"ℹ️ [Tri-Platform Hook] Note: {_tri_e}")
+
     if not custom_caption:
         for it in _fud.build_master_all_reels_vault():
             if it.get("video_file") == vname and it.get("caption"):
@@ -3210,6 +3250,7 @@ def api_universe_ig_analytics():
 def _inject_foji_universe_command_hub(response):
     try:
         if response.content_type and "text/html" in response.content_type and response.status_code == 200:
+            response.direct_passthrough = False
             html_text = response.get_data(as_text=True)
             if "</body>" in html_text and "id=\"foji-nextgen-studio-shell\"" not in html_text:
                 widget_html = """
@@ -6114,6 +6155,10 @@ def _inject_foji_executive_pro_ui_v2(response):
     try:
         from flask import request
         if request.path in ("/", "/index.html") and "text/html" in (response.content_type or ""):
+            response.direct_passthrough = False
+            response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
             html_t = response.get_data(as_text=True)
             if "FOJI_EXECUTIVE_PRO_UI_V2" not in html_t and "</body>" in html_t:
                 pro_addon = """
@@ -6360,6 +6405,19 @@ def _inject_foji_executive_pro_ui_v2(response):
 <script>
 (function(){
   // 1. Welcome Holographic Boot Intro Logic
+  
+// FOJI_SW_CACHE_BUST_V5: Automatically purge old PWA caches so Render updates appear instantly!
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(r => r.update().catch(() => {}));
+  }).catch(() => {});
+}
+if ('caches' in window && localStorage.getItem('foji_ui_ver') !== 'v5_pro') {
+  caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).finally(() => {
+    try { localStorage.setItem('foji_ui_ver', 'v5_pro'); } catch(e) {}
+  });
+}
+
   window.fojiCloseIntro = function(){
     const el = document.getElementById('foji-cinematic-intro');
     if (el) {

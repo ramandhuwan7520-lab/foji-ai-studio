@@ -1809,7 +1809,7 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             screen_reply = (st.get("screen_reply_text") or "").strip()
 
             print(
-                f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s / 900s Max)] "
+                f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s / 360s Max)] "
                 f"Generating: {is_gen} | Video Detected: {len(new_vids)} | Download Btn: {bool(dl_btn)}"
             )
 
@@ -1841,14 +1841,14 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             # ⏱️ STRICT 15-MINUTE (900 SECONDS) RENDER TIMEOUT:
             # If 15 minutes pass while rendering without completing or raising an error,
             # abort this video cleanly so the next video in the batch starts, and keep this Part uncompleted for next run!
-            if elapsed_sec >= 900 and dl_btn is None and len(new_vids) == 0:
+            if elapsed_sec >= 360 and dl_btn is None and len(new_vids) == 0:
                 t_msg = (
-                    f"15-Minute Render Timeout ({elapsed_mins} min) reached for {unique_fname}. "
+                    f"6-Minute Smart Render Timeout ({elapsed_mins} min) reached for {unique_fname}. "
                     f"Stopping this attempt to start the next video — Part #{pending_pkg.get('part_number', 1)} will be built next run!"
                 )
                 print(f"⏱️ [15-Min Timeout] {t_msg}")
                 update_3d_telemetry(6, "⏱️ 15-Min Timeout -> Moving to Next Video", t_msg, "warning", 0)
-                push_app_notification("warning", "⏱️ 15-Minute Timeout (Part Saved for Next Run)", t_msg, "warning")
+                push_app_notification("warning", "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)", t_msg, "warning")
                 raise TimeoutError(t_msg)
 
             if dl_btn is not None or (len(new_vids) > 0 and not is_gen):

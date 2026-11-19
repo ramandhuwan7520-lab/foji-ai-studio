@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: write
-    timeout-minutes: 45
+    timeout-minutes: 20
 
     steps:
       - name: Checkout Repository
@@ -40,13 +40,22 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: 5-Second Smart Minute-Saver Gate
+        id: session_gate
+        run: |
+          OUT=$(python3 check_session_gate.py)
+          echo "$OUT" >> $GITHUB_OUTPUT
+          echo "Gate Result: $OUT"
+
       - name: Set up Python 3.11 (Cached & Fast)
+        if: steps.session_gate.outputs.SHOULD_RUN == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
 
       - name: Fast Verify Pre-Installed Chrome & Xvfb (Takes 5 Seconds instead of 1 Hour!)
+        if: steps.session_gate.outputs.SHOULD_RUN == 'true'
         run: |
           if ! command -v xvfb-run &> /dev/null; then
             sudo apt-get update -o Acquire::Retries=2 && sudo apt-get install -y --no-install-recommends xvfb ffmpeg
@@ -55,12 +64,14 @@ jobs:
           ffmpeg -version | head -n 1
 
       - name: Install Python Dependencies
+        if: steps.session_gate.outputs.SHOULD_RUN == 'true'
         run: |
           pip install --upgrade pip -q
           if [ -f requirements.txt ]; then pip install -r requirements.txt -q; fi
           pip install requests selenium python-dotenv instagrapi imageio-ffmpeg flask -q
 
       - name: Run 13-Step Gemini 3D Video Pipeline Inside Virtual Display
+        if: steps.session_gate.outputs.SHOULD_RUN == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
