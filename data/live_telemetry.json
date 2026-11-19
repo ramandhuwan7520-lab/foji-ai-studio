@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1795027079.7294097
+  "step_num": 7,
+  "step_title": "Stage 7: Video Rendered! Mixing Genre BGM & Saving...",
+  "sub_detail": "Adding mood-matched BGM to Video_063_ViralTrend_Part_01_1119_061145.mp4 & syncing...",
+  "status": "active",
+  "progress": 94,
+  "updated_at": "06:52:45 AM",
+  "epoch": 1795051365.516029
 }
