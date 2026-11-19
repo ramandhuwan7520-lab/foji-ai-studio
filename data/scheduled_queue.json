@@ -2,25 +2,6 @@
   "unapproved_videos": [],
   "scheduled_posts": [
     {
-      "id": "vid_Video_032_TrainingUstad_Part_04_1114_215449.mp4",
-      "video_file": "Video_032_TrainingUstad_Part_04_1114_215449.mp4",
-      "title": "⚔️ Agniveer Training Center & Drill — Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai",
-      "track_id": "training_ustad",
-      "part_number": 4,
-      "dialogue": "Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!",
-      "shayari": "हाथों में छाले हैं और पैरों में थकान भारी है,\nपर ये फौजी अब रुकने वाला नहीं, क्योंकि वतन की तैयारी है।",
-      "caption": "🎖️ Part 4: Rasse Ki Chadhai Aur Jazbe Ki Ladai | ⚔️ Agniveer Training Center & Drill\n\n🗣️ \"Ustad ji, gaon mein toh neem ke pedon pe chhoron ke saath chhalangein marte the, par yahan is rasse pe chadhte huye samajh aaya ki vardi ka bojh kandhon se nahi, kaleje ke dum se uthaya jata hai!\"\n\n🔥 हाथों में छाले हैं और पैरों में थकान भारी है,\nपर ये फौजी अब रुकने वाला नहीं, क्योंकि वतन की तैयारी है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#FojiMakra #IndianArmy #AgniveerTraining #RopeClimb #ArmyMotivation #PixarAnimation",
-      "status": "scheduled",
-      "scheduled_epoch": 1795093200.0,
-      "scheduled_slot_key": "2026-11-19_18:30",
-      "scheduled_iso": "2026-11-19T18:30:00+05:30",
-      "scheduled_for": "2026-11-19 18:30:00",
-      "date_label": "19 Nov 2026",
-      "time_label": "06:30 PM",
-      "scheduled_display": "19 Nov 2026 at 06:30 PM IST",
-      "scheduled_full_badge": "19 Nov 2026 • 06:30 PM IST"
-    },
-    {
       "id": "vid_Video_042_BorderDuty_Part_03_1113_104845.mp4",
       "video_file": "Video_042_BorderDuty_Part_03_1113_104845.mp4",
       "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 3: Barfani Raat Aur Tirange Ki Aan",
@@ -148,28 +129,6 @@
     }
   ],
   "published_posts": [
-    {
-      "id": "vid_raw_video_1109_055706_p4.mp4",
-      "video_file": "raw_video_1109_055706_p4.mp4",
-      "title": "Foji 3D Reel (raw_video_1109_055706_p4.mp4)",
-      "track_id": "love_meera",
-      "part_number": 1,
-      "dialogue": "Fresh 3D Foji Episode Ready",
-      "shayari": "",
-      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
-      "status": "published",
-      "scheduled_epoch": 1795050000.0,
-      "scheduled_slot_key": "2026-11-19_06:30",
-      "scheduled_iso": "2026-11-19T06:30:00+05:30",
-      "scheduled_for": "2026-11-19 06:30:00",
-      "date_label": "19 Nov 2026",
-      "time_label": "06:30 AM",
-      "scheduled_display": "19 Nov 2026 at 06:30 AM IST",
-      "scheduled_full_badge": "19 Nov 2026 • 06:30 AM IST",
-      "published_at": "19 Nov 2026, 06:30 AM IST",
-      "published_epoch": 1795056513.464344,
-      "ig_media_pk": "LIVE_19NOV_0630"
-    },
     {
       "id": "vid_raw_video_1110_023120_p1.mp4",
       "video_file": "raw_video_1110_023120_p1.mp4",
@@ -317,6 +276,28 @@
       "published_epoch": 1794795298.2845695,
       "ig_media_pk": "4031357389984933324",
       "cloud_purged": true
+    },
+    {
+      "id": "vid_raw_video_1109_055706_p4.mp4",
+      "video_file": "raw_video_1109_055706_p4.mp4",
+      "title": "Foji 3D Reel (raw_video_1109_055706_p4.mp4)",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "status": "published",
+      "scheduled_epoch": 1795050000.0,
+      "scheduled_slot_key": "2026-11-19_06:30",
+      "scheduled_iso": "2026-11-19T06:30:00+05:30",
+      "scheduled_for": "2026-11-19 06:30:00",
+      "date_label": "19 Nov 2026",
+      "time_label": "06:30 AM",
+      "scheduled_display": "19 Nov 2026 at 06:30 AM IST",
+      "scheduled_full_badge": "19 Nov 2026 • 06:30 AM IST",
+      "published_at": "19 Nov 2026, 06:30 AM IST",
+      "published_epoch": 1795056513.464344,
+      "ig_media_pk": "LIVE_19NOV_0630"
     },
     {
       "id": "vid_raw_video_1110_023138_p1.mp4",
@@ -881,6 +862,28 @@
       "cloud_purged": true
     },
     {
+      "id": "vid_raw_video_1109_055706_p4.mp4",
+      "video_file": "raw_video_1109_055706_p4.mp4",
+      "title": "Foji 3D Reel (raw_video_1109_055706_p4.mp4)",
+      "track_id": "love_meera",
+      "part_number": 1,
+      "dialogue": "Fresh 3D Foji Episode Ready",
+      "shayari": "",
+      "caption": "🎖️ Foji Life 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife",
+      "status": "published",
+      "scheduled_epoch": 1795050000.0,
+      "scheduled_slot_key": "2026-11-19_06:30",
+      "scheduled_iso": "2026-11-19T06:30:00+05:30",
+      "scheduled_for": "2026-11-19 06:30:00",
+      "date_label": "19 Nov 2026",
+      "time_label": "06:30 AM",
+      "scheduled_display": "19 Nov 2026 at 06:30 AM IST",
+      "scheduled_full_badge": "19 Nov 2026 • 06:30 AM IST",
+      "published_at": "19 Nov 2026, 06:30 AM IST",
+      "published_epoch": 1795056513.464344,
+      "ig_media_pk": "LIVE_19NOV_0630"
+    },
+    {
       "id": "vid_raw_video_1110_023138_p1.mp4",
       "video_file": "raw_video_1110_023138_p1.mp4",
       "title": "Foji 3D Reel (raw_video_1110_023138_p1.mp4)",
@@ -1293,7 +1296,7 @@
       "ig_media_pk": "4033132416216439787"
     }
   ],
-  "updated_epoch": 1795006897.4356241,
+  "updated_epoch": 1795093206.9836874,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
@@ -1329,6 +1332,7 @@
     "raw_video_10.mp4",
     "Video_031_FaujiMasti_Part_03_1113_015153.mp4",
     "raw_video_1110_083746_p4.mp4",
-    "Video_050_UnitRagda_Part_05_1111_192711.mp4"
+    "Video_050_UnitRagda_Part_05_1111_192711.mp4",
+    "Video_032_TrainingUstad_Part_04_1114_215449.mp4"
   ]
 }
