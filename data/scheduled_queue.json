@@ -13,14 +13,14 @@
       "created_at": "13 Nov 2026, 10:51 AM IST",
       "status": "scheduled",
       "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-20_12:30",
-      "scheduled_epoch": 1795158000.0,
-      "scheduled_display": "20 Nov 2026 at 12:30 PM IST",
-      "date_label": "20 Nov 2026",
-      "time_label": "12:30 PM",
-      "scheduled_iso": "2026-11-20T12:30:00+05:30",
-      "scheduled_for": "2026-11-20 12:30:00",
-      "scheduled_full_badge": "20 Nov 2026 • 12:30 PM IST"
+      "scheduled_slot_key": "2026-11-21_06:30",
+      "scheduled_epoch": 1795222800.0,
+      "scheduled_display": "21 Nov 2026 at 06:30 AM IST",
+      "date_label": "21 Nov 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-11-21T06:30:00+05:30",
+      "scheduled_for": "2026-11-21 06:30:00",
+      "scheduled_full_badge": "21 Nov 2026 • 06:30 AM IST"
     },
     {
       "id": "vid_Video_032_BorderDuty_Part_04_1115_044337.mp4",
@@ -34,14 +34,14 @@
       "created_at": "15 Nov 2026, 04:45 AM IST",
       "status": "scheduled",
       "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-20_18:30",
-      "scheduled_epoch": 1795179600.0,
-      "scheduled_display": "20 Nov 2026 at 06:30 PM IST",
-      "date_label": "20 Nov 2026",
-      "time_label": "06:30 PM",
-      "scheduled_iso": "2026-11-20T18:30:00+05:30",
-      "scheduled_for": "2026-11-20 18:30:00",
-      "scheduled_full_badge": "20 Nov 2026 • 06:30 PM IST"
+      "scheduled_slot_key": "2026-11-21_12:30",
+      "scheduled_epoch": 1795244400.0,
+      "scheduled_display": "21 Nov 2026 at 12:30 PM IST",
+      "date_label": "21 Nov 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-11-21T12:30:00+05:30",
+      "scheduled_for": "2026-11-21 12:30:00",
+      "scheduled_full_badge": "21 Nov 2026 • 12:30 PM IST"
     },
     {
       "id": "vid_Video_050_TrainingUstad_Part_05_1116_210700.mp4",
@@ -55,14 +55,14 @@
       "created_at": "16 Nov 2026, 09:09 PM IST",
       "status": "scheduled",
       "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-21_06:30",
-      "scheduled_epoch": 1795222800.0,
-      "scheduled_display": "21 Nov 2026 at 06:30 AM IST",
+      "scheduled_slot_key": "2026-11-21_18:30",
+      "scheduled_epoch": 1795266000.0,
+      "scheduled_display": "21 Nov 2026 at 06:30 PM IST",
       "date_label": "21 Nov 2026",
-      "time_label": "06:30 AM",
-      "scheduled_iso": "2026-11-21T06:30:00+05:30",
-      "scheduled_for": "2026-11-21 06:30:00",
-      "scheduled_full_badge": "21 Nov 2026 • 06:30 AM IST"
+      "time_label": "06:30 PM",
+      "scheduled_iso": "2026-11-21T18:30:00+05:30",
+      "scheduled_for": "2026-11-21 18:30:00",
+      "scheduled_full_badge": "21 Nov 2026 • 06:30 PM IST"
     },
     {
       "id": "vid_Video_053_BorderDuty_Part_05_1117_173209.mp4",
@@ -76,14 +76,14 @@
       "created_at": "17 Nov 2026, 05:40 PM IST",
       "status": "scheduled",
       "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-21_12:30",
-      "scheduled_epoch": 1795244400.0,
-      "scheduled_display": "21 Nov 2026 at 12:30 PM IST",
-      "date_label": "21 Nov 2026",
-      "time_label": "12:30 PM",
-      "scheduled_iso": "2026-11-21T12:30:00+05:30",
-      "scheduled_for": "2026-11-21 12:30:00",
-      "scheduled_full_badge": "21 Nov 2026 • 12:30 PM IST"
+      "scheduled_slot_key": "2026-11-22_06:30",
+      "scheduled_epoch": 1795309200.0,
+      "scheduled_display": "22 Nov 2026 at 06:30 AM IST",
+      "date_label": "22 Nov 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-11-22T06:30:00+05:30",
+      "scheduled_for": "2026-11-22 06:30:00",
+      "scheduled_full_badge": "22 Nov 2026 • 06:30 AM IST"
     },
     {
       "id": "vid_Video_053_UnitRagda_Part_06_1118_105940.mp4",
@@ -97,14 +97,14 @@
       "created_at": "18 Nov 2026, 11:04 AM IST",
       "status": "scheduled",
       "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-21_18:30",
-      "scheduled_epoch": 1795266000.0,
-      "scheduled_display": "21 Nov 2026 at 06:30 PM IST",
-      "date_label": "21 Nov 2026",
-      "time_label": "06:30 PM",
-      "scheduled_iso": "2026-11-21T18:30:00+05:30",
-      "scheduled_for": "2026-11-21 18:30:00",
-      "scheduled_full_badge": "21 Nov 2026 • 06:30 PM IST"
+      "scheduled_slot_key": "2026-11-22_12:30",
+      "scheduled_epoch": 1795330800.0,
+      "scheduled_display": "22 Nov 2026 at 12:30 PM IST",
+      "date_label": "22 Nov 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-11-22T12:30:00+05:30",
+      "scheduled_for": "2026-11-22 12:30:00",
+      "scheduled_full_badge": "22 Nov 2026 • 12:30 PM IST"
     },
     {
       "id": "vid_Video_054_TrainingUstad_Part_06_1118_162701.mp4",
@@ -118,14 +118,14 @@
       "created_at": "18 Nov 2026, 04:33 PM IST",
       "status": "scheduled",
       "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-22_06:30",
-      "scheduled_epoch": 1795309200.0,
-      "scheduled_display": "22 Nov 2026 at 06:30 AM IST",
+      "scheduled_slot_key": "2026-11-22_18:30",
+      "scheduled_epoch": 1795352400.0,
+      "scheduled_display": "22 Nov 2026 at 06:30 PM IST",
       "date_label": "22 Nov 2026",
-      "time_label": "06:30 AM",
-      "scheduled_iso": "2026-11-22T06:30:00+05:30",
-      "scheduled_for": "2026-11-22 06:30:00",
-      "scheduled_full_badge": "22 Nov 2026 • 06:30 AM IST"
+      "time_label": "06:30 PM",
+      "scheduled_iso": "2026-11-22T18:30:00+05:30",
+      "scheduled_for": "2026-11-22 18:30:00",
+      "scheduled_full_badge": "22 Nov 2026 • 06:30 PM IST"
     }
   ],
   "published_posts": [
@@ -1326,7 +1326,7 @@
       "ig_media_pk": "4033857126600421952"
     }
   ],
-  "updated_epoch": 1795093288.4727302,
+  "updated_epoch": 1795187518.3279817,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
