@@ -6150,10 +6150,15 @@ def api_tri_platform_config():
 
 
 
-def _inject_foji_executive_pro_ui_v3(response):
+def _inject_foji_unified_pro_v4(response):
     """
-    Registered at index 0 of app.after_request_funcs[None] so Flask's LIFO execution
-    ALWAYS runs this VERY LAST — AFTER `_inject_foji_universe_command_hub` injects `#foji-nextgen-studio-shell`!
+    UNIFIED FOJI AI STUDIO PRO v4:
+    - Executes VERY LAST (index 0 in Flask's LIFO after_request queue).
+    - Transforms `#foji-nextgen-studio-shell` into ONE cohesive Obsidian 3D Glassmorphic Studio
+      (NO redundant stacked boxes — 8-Step Foji Commando Walker & all 7 tabs stay 100% live!).
+    - Adds compact Executive Ribbon + Slide-Over 5-Session Drawer + Official API Modal.
+    - Adds Clickable IG / YouTube / Facebook Cards + Dedicated Full-Screen Platform Deep-Dive Pages
+      with Reel-Wise Breakdown, Growth vs Downfall Momentum, Trend Chart & Best-Hour Insights!
     """
     try:
         from flask import request
@@ -6163,506 +6168,815 @@ def _inject_foji_executive_pro_ui_v3(response):
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             html_t = response.get_data(as_text=True)
-            if "FOJI_EXECUTIVE_PRO_UI_V3" not in html_t and "</body>" in html_t:
-                pro_addon = """
-<!-- FOJI_EXECUTIVE_PRO_UI_V3 -->
-<style id="foji-pro-v3-styles">
-  /* Disable legacy splash so our Unique 3D Holographic Welcome Screen takes center stage */
+            if "FOJI_UNIFIED_PRO_V4" not in html_t and "</body>" in html_t:
+                v4_addon = """
+<!-- FOJI_UNIFIED_PRO_V4 -->
+<style id="foji-unified-v4-css">
+  /* 1. Replace legacy splash cleanly with our Next-Gen Holographic Welcome Screen */
   #fns-app-splash {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+    display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
   }
 
-  /* Executive Obsidian Glassmorphic Upgrade on Active Shell (Preserves 8-Step Foji Walker 100%) */
+  /* 2. Unified Executive Dark Obsidian + Neon Gold/Cyan/Violet Upgrade across entire Studio Shell */
   #foji-nextgen-studio-shell {
     background:
-      radial-gradient(circle at 12% 8%, rgba(6, 182, 212, 0.14), transparent 34%),
-      radial-gradient(circle at 88% 12%, rgba(139, 92, 246, 0.14), transparent 36%),
-      radial-gradient(circle at 50% 92%, rgba(245, 158, 11, 0.10), transparent 40%),
-      #030712 !important;
+      radial-gradient(ellipse at 10% 4%, rgba(6, 182, 212, 0.16), transparent 36%),
+      radial-gradient(ellipse at 92% 8%, rgba(139, 92, 246, 0.16), transparent 38%),
+      radial-gradient(ellipse at 50% 96%, rgba(245, 158, 11, 0.11), transparent 44%),
+      #030612 !important;
+    min-height: 100vh !important;
+  }
+  #foji-nextgen-studio-shell [class*="card"],
+  #foji-nextgen-studio-shell .fns-panel-card,
+  #foji-nextgen-studio-shell .fns-edits-kpi-card {
+    background: linear-gradient(155deg, rgba(12, 22, 44, 0.84), rgba(6, 11, 26, 0.92)) !important;
+    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    transition: transform 0.24s cubic-bezier(.22,1,.36,1), border-color 0.24s ease, box-shadow 0.24s ease !important;
+  }
+  #foji-nextgen-studio-shell [class*="card"]:hover,
+  #foji-nextgen-studio-shell .fns-edits-kpi-card:hover {
+    border-color: rgba(245, 158, 11, 0.45) !important;
+    box-shadow: 0 14px 36px -14px rgba(6, 182, 212, 0.30) !important;
   }
 
-  /* Unique 3D Holographic Radar + Scanner Sweep Welcome Screen */
-  #foji-cinematic-intro {
-    display: flex !important;
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 2147483647 !important;
+  /* 3. Unique 3D Holographic Command Boot Intro */
+  #foji-v4-intro {
+    display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important;
     background:
-      radial-gradient(circle at 50% 45%, rgba(14, 34, 68, 0.96) 0%, #030712 72%),
-      repeating-linear-gradient(0deg, rgba(56,189,248,0.03) 0px, rgba(56,189,248,0.03) 1px, transparent 1px, transparent 36px),
-      repeating-linear-gradient(90deg, rgba(245,158,11,0.03) 0px, rgba(245,158,11,0.03) 1px, transparent 1px, transparent 36px);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    cursor: pointer;
-    transition: opacity 0.65s ease, transform 0.7s cubic-bezier(.16,1,.3,1);
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      radial-gradient(circle at 50% 42%, rgba(16, 40, 82, 0.96) 0%, #02050f 70%),
+      repeating-linear-gradient(0deg, rgba(56,189,248,0.035) 0px, rgba(56,189,248,0.035) 1px, transparent 1px, transparent 34px),
+      repeating-linear-gradient(90deg, rgba(245,158,11,0.03) 0px, rgba(245,158,11,0.03) 1px, transparent 1px, transparent 34px);
+    flex-direction: column; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;
+    transition: opacity 0.6s ease, transform 0.65s cubic-bezier(.16,1,.3,1);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
-  #foji-cinematic-intro.intro-exit {
-    opacity: 0 !important;
-    transform: scale(1.05) translateY(-18px);
-    pointer-events: none !important;
+  #foji-v4-intro.v4-exit { opacity: 0 !important; transform: scale(1.06); pointer-events: none !important; }
+  #foji-v4-intro.v4-done { display: none !important; }
+  .v4-ring-a {
+    position: absolute; width: min(350px, 82vw); height: min(350px, 82vw); border-radius: 50%;
+    border: 1.5px solid rgba(6,182,212,0.45); box-shadow: 0 0 80px rgba(6,182,212,0.22);
+    animation: v4Spin 5.5s linear infinite;
   }
-  #foji-cinematic-intro.intro-done {
-    display: none !important;
+  .v4-ring-b {
+    position: absolute; width: min(260px, 62vw); height: min(260px, 62vw); border-radius: 50%;
+    border: 2px dashed rgba(245,158,11,0.55); animation: v4SpinRev 8s linear infinite;
   }
-  .fpro-holo-orbit-1 {
-    position: absolute;
-    width: min(340px, 78vw);
-    height: min(340px, 78vw);
-    border-radius: 50%;
-    border: 1.5px solid rgba(6, 182, 212, 0.42);
-    box-shadow: 0 0 70px rgba(6, 182, 212, 0.22), inset 0 0 40px rgba(245, 158, 11, 0.14);
-    animation: fproSpin 5s linear infinite;
+  .v4-ring-c {
+    position: absolute; width: min(195px, 46vw); height: min(195px, 46vw); border-radius: 50%;
+    border: 1px solid rgba(167,139,250,0.45); animation: v4Spin 3.5s linear infinite;
   }
-  .fpro-holo-orbit-2 {
-    position: absolute;
-    width: min(265px, 62vw);
-    height: min(265px, 62vw);
-    border-radius: 50%;
-    border: 2px dashed rgba(245, 158, 11, 0.52);
-    animation: fproSpinRev 8s linear infinite;
-  }
-  .fpro-holo-sweep {
-    position: absolute;
-    left: 0; right: 0; height: 2px;
+  .v4-laser {
+    position: absolute; left: 0; right: 0; height: 2px;
     background: linear-gradient(90deg, transparent, #38bdf8, #fde047, #a78bfa, transparent);
-    box-shadow: 0 0 22px #38bdf8;
-    animation: fproSweep 2.1s ease-in-out infinite;
-    opacity: 0.75;
+    box-shadow: 0 0 24px #38bdf8; animation: v4Scan 2s ease-in-out infinite;
   }
-  .fpro-intro-crest {
-    width: 118px; height: 118px; border-radius: 50%; z-index: 3;
-    border: 2px solid rgba(253, 224, 71, 0.75);
-    box-shadow: 0 0 45px rgba(245, 158, 11, 0.6), 0 0 90px rgba(139, 92, 246, 0.35);
-    animation: fproPop 0.85s cubic-bezier(.16,1,.3,1) forwards;
-    object-fit: cover;
-    background: #0a1428;
+  .v4-crest {
+    width: 112px; height: 112px; border-radius: 50%; z-index: 3; object-fit: cover; background: #071024;
+    border: 2.5px solid #fde047; box-shadow: 0 0 45px rgba(245,158,11,0.65), 0 0 90px rgba(139,92,246,0.4);
+    animation: v4Pop 0.8s cubic-bezier(.16,1,.3,1) forwards;
   }
-  .fpro-intro-title {
-    margin-top: 22px; z-index: 3;
-    font-size: clamp(22px, 4.6vw, 38px);
-    font-weight: 900; letter-spacing: 4px; text-align: center;
-    background: linear-gradient(90deg, #fde047, #ffffff, #38bdf8, #c084fc, #fde047);
-    background-size: 240% auto;
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    animation: fproShimmer 2.4s linear infinite;
+  .v4-title {
+    margin-top: 20px; z-index: 3; font-size: clamp(22px, 4.8vw, 38px); font-weight: 900; letter-spacing: 4px;
+    background: linear-gradient(90deg, #fde047, #ffffff, #38bdf8, #c084fc, #fde047); background-size: 240% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: v4Shim 2.3s linear infinite;
   }
-  .fpro-intro-badges {
-    margin-top: 10px; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  .v4-sub {
+    margin-top: 8px; z-index: 3; font-size: 11px; letter-spacing: 2.6px; text-transform: uppercase;
+    color: #94a3b8; font-weight: 800; text-align: center; padding: 0 14px;
   }
-  .fpro-intro-chip {
-    font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 999px;
-    background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(56, 189, 248, 0.35); color: #e2e8f0;
-  }
-  .fpro-intro-bar {
-    margin-top: 22px; width: min(270px, 72vw); height: 4px; border-radius: 99px;
+  .v4-prog {
+    margin-top: 20px; width: min(260px, 72vw); height: 4px; border-radius: 99px;
     background: rgba(255,255,255,0.1); overflow: hidden; z-index: 3;
   }
-  .fpro-intro-bar-fill {
-    height: 100%; width: 0%;
-    background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6);
-    animation: fproFill 1.95s cubic-bezier(.22,1,.36,1) forwards;
+  .v4-prog-fill {
+    height: 100%; width: 0%; background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6);
+    animation: v4Fill 1.85s cubic-bezier(.22,1,.36,1) forwards;
   }
-  @keyframes fproSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  @keyframes fproSpinRev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-  @keyframes fproSweep { 0% { top: 15%; } 50% { top: 82%; } 100% { top: 15%; } }
-  @keyframes fproPop { 0% { opacity: 0; transform: scale(0.55) translateY(18px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
-  @keyframes fproShimmer { 0% { background-position: 0% center; } 100% { background-position: 240% center; } }
-  @keyframes fproFill { 0% { width: 0%; } 100% { width: 100%; } }
+  @keyframes v4Spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  @keyframes v4SpinRev { from { transform: rotate(360deg); } to { transform: rotate(0); } }
+  @keyframes v4Scan { 0%,100% { top: 14%; } 50% { top: 84%; } }
+  @keyframes v4Pop { 0% { opacity:0; transform: scale(0.5); } 100% { opacity:1; transform: scale(1); } }
+  @keyframes v4Shim { 0% { background-position: 0% center; } 100% { background-position: 240% center; } }
+  @keyframes v4Fill { 0% { width: 0%; } 100% { width: 100%; } }
 
-  /* Executive Pro Hub Dock (Mounted directly inside #foji-nextgen-studio-shell) */
-  #foji-pro-hub-dock {
-    width: 100%;
-    max-width: 1380px;
-    margin: 14px auto 18px auto;
-    padding: 0 14px;
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    color: #f8fafc;
-    position: relative;
-    z-index: 25;
+  /* 4. Compact Single-Line Executive Command Strip (Zero Bloat!) */
+  #v4-exec-strip {
+    max-width: 1380px; margin: 10px auto 12px auto; padding: 0 14px; box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
-  .fpro-ribbon {
+  .v4-strip-inner {
     display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-    background: linear-gradient(90deg, rgba(15,23,42,0.92), rgba(23,37,84,0.78), rgba(15,23,42,0.92));
-    border: 1px solid rgba(245, 158, 11, 0.38);
-    border-radius: 16px; padding: 10px 16px; margin-bottom: 12px;
-    box-shadow: 0 10px 30px -12px rgba(6, 182, 212, 0.35);
-    backdrop-filter: blur(16px);
+    background: linear-gradient(90deg, rgba(10,18,38,0.92), rgba(20,33,72,0.82), rgba(10,18,38,0.92));
+    border: 1px solid rgba(245,158,11,0.34); border-radius: 15px; padding: 9px 14px;
+    box-shadow: 0 12px 32px -14px rgba(6,182,212,0.32); backdrop-filter: blur(18px);
   }
-  .fpro-ribbon-brand {
-    display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 900; letter-spacing: 0.8px;
+  .v4-pill-btn {
+    border: 1px solid rgba(148,163,184,0.24); background: rgba(15,23,42,0.78); color: #e2e8f0;
+    border-radius: 10px; padding: 6px 11px; font-size: 11.5px; font-weight: 800; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px; transition: all 0.18s ease;
   }
-  .fpro-live-dot {
-    width: 9px; height: 9px; border-radius: 50%; background: #10b981;
-    box-shadow: 0 0 12px #10b981; animation: fproPulse 1.6s infinite;
+  .v4-pill-btn:hover { transform: translateY(-1px); border-color: #38bdf8; color: #fff; }
+  .v4-pill-gold {
+    background: linear-gradient(135deg, #f59e0b, #fde047); color: #090d16; border: none;
   }
-  @keyframes fproPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(1.3); } }
-  .fpro-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 14px;
+  .v4-pill-gold:hover { color: #090d16; filter: brightness(1.06); }
+  .v4-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 12px #10b981; animation: v4Pulse 1.5s infinite; }
+  @keyframes v4Pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.45;transform:scale(1.35);} }
+
+  /* 5. Clickable Multi-Platform Launch Cards (Inside Insights Hub) */
+  #v4-tri-launch-grid {
+    max-width: 1380px; margin: 12px auto 14px auto; padding: 0 14px; box-sizing: border-box;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
-  .fpro-card {
-    background: linear-gradient(155deg, rgba(11, 20, 40, 0.90), rgba(5, 10, 24, 0.96));
-    border: 1px solid rgba(148, 163, 184, 0.22);
-    border-radius: 18px; padding: 16px; position: relative; overflow: hidden;
-    box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(18px);
-    transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  .v4-plat-card {
+    position: relative; overflow: hidden; cursor: pointer;
+    background: linear-gradient(150deg, rgba(13,23,46,0.92), rgba(6,11,24,0.96));
+    border: 1px solid rgba(148,163,184,0.2); border-radius: 18px; padding: 15px 16px;
+    transition: transform 0.22s cubic-bezier(.22,1,.36,1), border-color 0.22s ease, box-shadow 0.22s ease;
   }
-  .fpro-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(245, 158, 11, 0.48);
-    box-shadow: 0 18px 42px -14px rgba(6, 182, 212, 0.28);
+  .v4-plat-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -14px rgba(6,182,212,0.35); }
+  .v4-plat-card.ig { border-top: 2.5px solid #ec4899; }
+  .v4-plat-card.yt { border-top: 2.5px solid #ef4444; }
+  .v4-plat-card.fb { border-top: 2.5px solid #38bdf8; }
+  .v4-plat-top { display: flex; justify-content: space-between; align-items: center; }
+  .v4-plat-name { font-size: 13px; font-weight: 900; color: #f8fafc; display: flex; align-items: center; gap: 7px; }
+  .v4-plat-open {
+    font-size: 10.5px; font-weight: 800; padding: 4px 9px; border-radius: 999px;
+    background: rgba(255,255,255,0.08); color: #fde047; border: 1px solid rgba(253,224,71,0.28);
   }
-  .fpro-card::before {
-    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, #f59e0b, #06b6d4, #8b5cf6, transparent);
+  .v4-plat-big { font-size: 24px; font-weight: 900; margin-top: 8px; color: #ffffff; letter-spacing: -0.5px; }
+  .v4-plat-sub { font-size: 11.5px; color: #94a3b8; margin-top: 3px; display: flex; justify-content: space-between; gap: 6px; }
+
+  /* 6. DEDICATED FULL-SCREEN PLATFORM DEEP-DIVE ANALYTICS PAGE */
+  #v4-deep-page {
+    display: none; position: fixed !important; inset: 0 !important; z-index: 2147483640 !important;
+    background: radial-gradient(circle at 12% 8%, rgba(6,182,212,0.14), transparent 38%),
+                radial-gradient(circle at 88% 12%, rgba(139,92,246,0.14), transparent 38%),
+                #030712;
+    overflow-y: auto; padding: 18px 16px 48px 16px; box-sizing: border-box; color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    animation: v4SlideUp 0.28s cubic-bezier(.16,1,.3,1);
   }
-  .fpro-hdr { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; }
-  .fpro-title { font-size: 13.5px; font-weight: 800; letter-spacing: 0.4px; color: #f8fafc; }
-  .fpro-pill {
-    font-size: 11px; font-weight: 800; padding: 5px 11px; border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.16); cursor: pointer; background: rgba(15,23,42,0.8); color: #e2e8f0;
+  #v4-deep-page.open { display: block !important; }
+  @keyframes v4SlideUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+  .v4-deep-wrap { max-width: 1280px; margin: 0 auto; }
+  .v4-deep-topbar {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    padding-bottom: 14px; border-bottom: 1px solid rgba(148,163,184,0.18); margin-bottom: 18px;
   }
-  .fpro-pill.on { background: rgba(16,185,129,0.22); border-color: #10b981; color: #34d399; }
-  .fpro-pill.off { background: rgba(239,68,68,0.18); border-color: #ef4444; color: #fca5a5; }
-  .fpro-sess-list { display: flex; flex-direction: column; gap: 7px; }
-  .fpro-sess-row {
-    display: flex; align-items: center; justify-content: space-between; gap: 8px;
-    background: rgba(15, 23, 42, 0.72); border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 12px; padding: 8px 11px; font-size: 12px;
+  .v4-deep-kpis {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 12px; margin-bottom: 18px;
   }
-  .fpro-btn {
-    border: none; border-radius: 10px; padding: 6px 11px; font-size: 11px; font-weight: 800;
-    cursor: pointer; transition: transform 0.14s ease, filter 0.14s ease;
+  .v4-dkpi {
+    background: linear-gradient(155deg, rgba(13,24,48,0.9), rgba(7,12,28,0.95));
+    border: 1px solid rgba(148,163,184,0.18); border-radius: 16px; padding: 14px;
   }
-  .fpro-btn:hover { filter: brightness(1.08); }
-  .fpro-btn:active { transform: scale(0.96); }
-  .fpro-btn-gold { background: linear-gradient(135deg, #f59e0b, #fde047); color: #090d16; }
-  .fpro-btn-cyan { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #ffffff; }
-  .fpro-btn-ghost { background: rgba(148,163,184,0.15); color: #e2e8f0; border: 1px solid rgba(148,163,184,0.25); }
-  .fpro-plat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
-  .fpro-plat-box {
-    background: rgba(15, 23, 42, 0.78); border: 1px solid rgba(148, 163, 184, 0.18);
-    border-radius: 13px; padding: 10px 8px; text-align: center;
+  .v4-dkpi-lbl { font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+  .v4-dkpi-val { font-size: 24px; font-weight: 900; margin-top: 6px; color: #fff; }
+  .v4-dkpi-sub { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+  .v4-badge-up { color: #34d399; background: rgba(16,185,129,0.16); border: 1px solid rgba(16,185,129,0.4); padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+  .v4-badge-down { color: #fb7185; background: rgba(244,63,94,0.16); border: 1px solid rgba(244,63,94,0.4); padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+  .v4-badge-viral { color: #fde047; background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.5); padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+  .v4-chart-card {
+    background: rgba(10,18,38,0.9); border: 1px solid rgba(148,163,184,0.18); border-radius: 18px;
+    padding: 16px; margin-bottom: 18px;
   }
-  .fpro-plat-val { font-size: 16px; font-weight: 900; margin-top: 4px; color: #fde047; }
-  .fpro-plat-sub { font-size: 10px; color: #94a3b8; margin-top: 2px; }
-  .fpro-slot-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
-  .fpro-time-inp {
-    background: #070f20; border: 1px solid rgba(56, 189, 248, 0.42); color: #fff;
-    border-radius: 10px; padding: 6px 9px; font-size: 12.5px; font-weight: 700; width: 104px;
+  .v4-filter-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .v4-reel-row {
+    display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center;
+    background: rgba(12,21,42,0.82); border: 1px solid rgba(148,163,184,0.15); border-radius: 14px;
+    padding: 10px 12px; margin-bottom: 8px; transition: border-color 0.2s ease;
   }
-  #fpro-api-modal {
-    display: none;
-    position: fixed !important; inset: 0 !important; z-index: 2147483646 !important;
-    background: rgba(2, 6, 23, 0.86); backdrop-filter: blur(10px);
+  .v4-reel-row:hover { border-color: rgba(56,189,248,0.45); }
+  .v4-reel-thumb { width: 56px; height: 74px; border-radius: 10px; object-fit: cover; background: #0f172a; }
+  .v4-bar-track { height: 5px; border-radius: 99px; background: rgba(255,255,255,0.08); margin-top: 6px; overflow: hidden; }
+  .v4-bar-fill { height: 100%; border-radius: 99px; }
+
+  /* 7. Slide-Over 5-Session Drawer & Official API Modal */
+  .v4-modal-bg {
+    display: none; position: fixed !important; inset: 0 !important; z-index: 2147483645 !important;
+    background: rgba(2,6,23,0.84); backdrop-filter: blur(10px);
     align-items: center; justify-content: center; padding: 16px;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
-  #fpro-api-modal.fpro-modal-open { display: flex !important; }
-  .fpro-modal-box {
-    width: 100%; max-width: 520px; background: #0a1224; border: 1px solid rgba(245,158,11,0.52);
-    border-radius: 20px; padding: 22px; color: #f8fafc; box-shadow: 0 24px 70px rgba(0,0,0,0.88);
-    max-height: 90vh; overflow-y: auto;
+  .v4-modal-bg.open { display: flex !important; }
+  .v4-modal-card {
+    width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto;
+    background: #081022; border: 1px solid rgba(245,158,11,0.48); border-radius: 20px; padding: 20px; color: #f8fafc;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.9);
   }
-  .fpro-inp {
-    width: 100%; box-sizing: border-box; background: #040814; border: 1px solid rgba(148,163,184,0.3);
+  .v4-inp {
+    width: 100%; box-sizing: border-box; background: #030712; border: 1px solid rgba(148,163,184,0.28);
     color: #fff; border-radius: 10px; padding: 9px 12px; font-size: 12px; margin: 5px 0 11px 0;
   }
+  .v4-sess-item {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    background: rgba(15,23,42,0.75); border: 1px solid rgba(148,163,184,0.16); border-radius: 12px; padding: 9px 12px; margin-bottom: 8px; font-size: 12.5px;
+  }
+  .v4-time-inp {
+    background: #040918; border: 1px solid rgba(56,189,248,0.42); color: #fff; border-radius: 10px; padding: 7px 10px; font-weight: 800; width: 108px;
+  }
   @media (max-width: 640px) {
-    .fpro-plat-grid { grid-template-columns: 1fr; }
-    .fpro-sess-row { flex-wrap: wrap; }
+    .v4-reel-row { grid-template-columns: 46px 1fr; }
+    .v4-reel-metrics { grid-column: 1 / -1; display: flex; justify-content: space-between; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); }
   }
 </style>
 
-<!-- Unique 3D Holographic Welcome Screen -->
-<div id="foji-cinematic-intro" onclick="window.fojiCloseIntro()">
-  <div class="fpro-holo-sweep"></div>
-  <div class="fpro-holo-orbit-1"></div>
-  <div class="fpro-holo-orbit-2"></div>
-  <img src="/emblem-logo.png" class="fpro-intro-crest" alt="Foji AI Studio Pro" onerror="this.style.display='none'"/>
-  <div class="fpro-intro-title">FOJI AI STUDIO PRO</div>
-  <div class="fpro-intro-badges">
-    <span class="fpro-intro-chip">🎬 12-Step Veo Engine</span>
-    <span class="fpro-intro-chip">📸 IG Official API</span>
-    <span class="fpro-intro-chip">▶️ YT Shorts</span>
-    <span class="fpro-intro-chip">📘 FB Reels</span>
-  </div>
-  <div class="fpro-intro-bar"><div class="fpro-intro-bar-fill"></div></div>
+<!-- 3D HOLOGRAPHIC WELCOME BOOT SCREEN -->
+<div id="foji-v4-intro" onclick="window.v4CloseIntro()">
+  <div class="v4-laser"></div>
+  <div class="v4-ring-a"></div>
+  <div class="v4-ring-b"></div>
+  <div class="v4-ring-c"></div>
+  <img src="/emblem-logo.png" class="v4-crest" alt="Foji AI Studio Pro" onerror="this.style.display='none'"/>
+  <div class="v4-title">FOJI AI STUDIO PRO</div>
+  <div class="v4-sub">UNIFIED 3D CINEMA ENGINE • INSTAGRAM • YOUTUBE • FACEBOOK</div>
+  <div class="v4-prog"><div class="v4-prog-fill"></div></div>
 </div>
 
-<!-- Executive Pro Hub Dock -->
-<div id="foji-pro-hub-dock">
-  <div class="fpro-ribbon">
-    <div class="fpro-ribbon-brand">
-      <span class="fpro-live-dot"></span>
-      <span style="color:#fde047;">FOJI AI STUDIO PRO</span>
-      <span style="font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.4);color:#38bdf8;">v3 EXECUTIVE</span>
+<!-- COMPACT SINGLE-LINE EXECUTIVE COMMAND STRIP -->
+<div id="v4-exec-strip">
+  <div class="v4-strip-inner">
+    <div style="display:flex;align-items:center;gap:9px;font-weight:900;font-size:13px;">
+      <span class="v4-dot"></span>
+      <span style="color:#fde047;letter-spacing:0.6px;">FOJI AI STUDIO PRO</span>
+      <span style="font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(6,182,212,0.16);border:1px solid rgba(6,182,212,0.4);color:#38bdf8;">v4 UNIFIED</span>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-      <button class="fpro-btn fpro-btn-gold" onclick="window.fproOpenApiModal()">⚙️ Connect IG / YT / FB APIs</button>
-      <button class="fpro-btn fpro-btn-ghost" onclick="window.fojiReplayIntro()">✨ Replay Intro</button>
-      <button id="fpro-collapse-btn" class="fpro-btn fpro-btn-ghost" onclick="window.fproToggleDockBody()">▲ Compact</button>
-    </div>
-  </div>
-
-  <div id="fpro-dock-body" class="fpro-grid">
-    <!-- Card 1: 5 Daily Auto-Sessions Control -->
-    <div class="fpro-card">
-      <div class="fpro-hdr">
-        <div class="fpro-title">⚡ 5-Session Auto-Render Engine <span style="font-size:10px;color:#38bdf8;">(3 Reels/Slot)</span></div>
-        <button id="fpro-master-toggle" class="fpro-pill on" onclick="window.fproToggleMaster()">AUTO: ON</button>
-      </div>
-      <div id="fpro-sessions-box" class="fpro-sess-list">Loading 5 sessions...</div>
-    </div>
-
-    <!-- Card 2: Official Tri-Platform Insights + Editable Posting Slots -->
-    <div class="fpro-card">
-      <div class="fpro-hdr">
-        <div class="fpro-title">🌐 Official Tri-Platform Live Insights</div>
-        <span style="font-size:10px;color:#34d399;font-weight:800;">0% BAN RISK</span>
-      </div>
-      <div class="fpro-plat-grid">
-        <div class="fpro-plat-box">
-          <div style="font-size:11px;font-weight:800;color:#f472b6;">📸 Instagram</div>
-          <div id="fpro-ig-views" class="fpro-plat-val">--</div>
-          <div id="fpro-ig-meta" class="fpro-plat-sub">Loading...</div>
-        </div>
-        <div class="fpro-plat-box">
-          <div style="font-size:11px;font-weight:800;color:#ef4444;">▶️ YouTube Shorts</div>
-          <div id="fpro-yt-views" class="fpro-plat-val">--</div>
-          <div id="fpro-yt-meta" class="fpro-plat-sub">Connect API</div>
-        </div>
-        <div class="fpro-plat-box">
-          <div style="font-size:11px;font-weight:800;color:#38bdf8;">📘 Facebook Reels</div>
-          <div id="fpro-fb-views" class="fpro-plat-val">--</div>
-          <div id="fpro-fb-meta" class="fpro-plat-sub">Connect API</div>
-        </div>
-      </div>
-      <div style="margin-top:12px;border-top:1px solid rgba(148,163,184,0.16);padding-top:10px;">
-        <div style="font-size:11px;font-weight:800;color:#cbd5e1;">⏰ Daily Auto-Posting Slots (IST) — Existing Queue Safe</div>
-        <div class="fpro-slot-row">
-          <input id="fpro-slot-1" type="time" class="fpro-time-inp" value="06:30"/>
-          <input id="fpro-slot-2" type="time" class="fpro-time-inp" value="12:30"/>
-          <input id="fpro-slot-3" type="time" class="fpro-time-inp" value="18:30"/>
-          <button class="fpro-btn fpro-btn-cyan" onclick="window.fproSavePostingSlots()">💾 Save Times</button>
-        </div>
-      </div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;">
+      <button class="v4-pill-btn" onclick="window.v4OpenSessionsDrawer()">⚡ 5-Sessions & Slots</button>
+      <button class="v4-pill-btn" onclick="window.v4OpenDeepPage('instagram')">📊 Deep Insights</button>
+      <button class="v4-pill-btn v4-pill-gold" onclick="window.v4OpenApiModal()">⚙️ Connect APIs</button>
+      <button class="v4-pill-btn" onclick="window.v4ReplayIntro()" title="Replay Welcome Animation">✨</button>
     </div>
   </div>
 </div>
 
-<!-- Official Tri-Platform API Connect Modal -->
-<div id="fpro-api-modal">
-  <div class="fpro-modal-box">
+<!-- CLICKABLE TRI-PLATFORM CARDS (EACH OPENS ITS OWN DEDICATED FULL-SCREEN ANALYTICS PAGE) -->
+<div id="v4-tri-launch-grid">
+  <div class="v4-plat-card ig" onclick="window.v4OpenDeepPage('instagram')">
+    <div class="v4-plat-top">
+      <div class="v4-plat-name">📸 Instagram Reels</div>
+      <span class="v4-plat-open">Open Analytics →</span>
+    </div>
+    <div id="v4-card-ig-views" class="v4-plat-big">--</div>
+    <div id="v4-card-ig-sub" class="v4-plat-sub"><span>Loading live reach...</span><span style="color:#34d399;">Tap for Growth/Dip</span></div>
+  </div>
+
+  <div class="v4-plat-card yt" onclick="window.v4OpenDeepPage('youtube')">
+    <div class="v4-plat-top">
+      <div class="v4-plat-name">▶️ YouTube Shorts</div>
+      <span class="v4-plat-open">Open Analytics →</span>
+    </div>
+    <div id="v4-card-yt-views" class="v4-plat-big">Connect</div>
+    <div id="v4-card-yt-sub" class="v4-plat-sub"><span>Official YouTube Data API v3</span><span style="color:#fbbf24;">Tap to Open</span></div>
+  </div>
+
+  <div class="v4-plat-card fb" onclick="window.v4OpenDeepPage('facebook')">
+    <div class="v4-plat-top">
+      <div class="v4-plat-name">📘 Facebook Reels</div>
+      <span class="v4-plat-open">Open Analytics →</span>
+    </div>
+    <div id="v4-card-fb-views" class="v4-plat-big">Connect</div>
+    <div id="v4-card-fb-sub" class="v4-plat-sub"><span>Official Meta Graph API</span><span style="color:#38bdf8;">Tap to Open</span></div>
+  </div>
+</div>
+
+<!-- DEDICATED FULL-SCREEN PLATFORM DEEP-DIVE ANALYTICS PAGE -->
+<div id="v4-deep-page">
+  <div class="v4-deep-wrap">
+    <div class="v4-deep-topbar">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <button class="v4-pill-btn" onclick="window.v4CloseDeepPage()">← Back to Studio</button>
+        <div>
+          <div id="v4-deep-title" style="font-size:20px;font-weight:900;color:#fde047;">📸 Instagram Deep Analytics</div>
+          <div id="v4-deep-subtitle" style="font-size:11.5px;color:#94a3b8;">Reel-by-reel Growth, Downfall, Trend & Viral Analysis</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="v4-pill-btn" onclick="window.v4OpenDeepPage('instagram')">📸 Instagram</button>
+        <button class="v4-pill-btn" onclick="window.v4OpenDeepPage('youtube')">▶️ YouTube</button>
+        <button class="v4-pill-btn" onclick="window.v4OpenDeepPage('facebook')">📘 Facebook</button>
+        <button class="v4-pill-btn v4-pill-gold" onclick="window.v4OpenApiModal()">⚙️ API Setup</button>
+      </div>
+    </div>
+
+    <div id="v4-deep-content">Loading deep platform analytics...</div>
+  </div>
+</div>
+
+<!-- 5-SESSION & EDITABLE POSTING SLOTS DRAWER MODAL -->
+<div id="v4-sessions-modal" class="v4-modal-bg" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="v4-modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div style="font-size:16px;font-weight:900;color:#fde047;">⚡ 5-Session Auto-Render & Posting Slots</div>
+      <button class="v4-pill-btn" onclick="document.getElementById('v4-sessions-modal').classList.remove('open')">✕</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:10px 12px;border-radius:12px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);">
+      <div>
+        <div style="font-size:13px;font-weight:800;">Master Auto-Render Engine</div>
+        <div style="font-size:11px;color:#94a3b8;">3 Videos/Session • 2 Min Gap • Zero Skipped Parts</div>
+      </div>
+      <button id="v4-master-btn" class="v4-pill-btn v4-pill-gold" onclick="window.v4ToggleMaster()">AUTO: ON</button>
+    </div>
+    <div id="v4-sessions-list">Loading sessions...</div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(148,163,184,0.18);">
+      <div style="font-size:12px;font-weight:800;color:#38bdf8;margin-bottom:8px;">⏰ Daily Auto-Posting Slots (IST) — Existing Queue Safe</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <input id="v4-slot-1" type="time" class="v4-time-inp" value="06:30"/>
+        <input id="v4-slot-2" type="time" class="v4-time-inp" value="12:30"/>
+        <input id="v4-slot-3" type="time" class="v4-time-inp" value="18:30"/>
+        <button class="v4-pill-btn v4-pill-gold" onclick="window.v4SaveSlots()">💾 Save Times</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OFFICIAL TRI-PLATFORM API SETUP MODAL -->
+<div id="v4-api-modal" class="v4-modal-bg" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="v4-modal-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <div style="font-size:16px;font-weight:900;color:#fde047;">🔐 Official IG + FB + YouTube API Setup</div>
-      <button class="fpro-btn fpro-btn-ghost" onclick="window.fproCloseApiModal()">✕</button>
+      <div style="font-size:16px;font-weight:900;color:#fde047;">🔐 Official IG + YouTube + Facebook API Hub</div>
+      <button class="v4-pill-btn" onclick="document.getElementById('v4-api-modal').classList.remove('open')">✕</button>
     </div>
     <label style="font-size:11px;color:#94a3b8;font-weight:700;">Meta App ID</label>
-    <input id="inp-meta-app-id" class="fpro-inp" placeholder="App Settings -> Basic -> App ID"/>
+    <input id="v4-meta-app-id" class="v4-inp" placeholder="Meta App Settings -> Basic -> App ID"/>
     <label style="font-size:11px;color:#94a3b8;font-weight:700;">Meta App Secret</label>
-    <input id="inp-meta-app-secret" class="fpro-inp" type="password" placeholder="App Settings -> Basic -> App Secret"/>
+    <input id="v4-meta-app-secret" class="v4-inp" type="password" placeholder="Meta App Settings -> Basic -> App Secret"/>
     <label style="font-size:11px;color:#f472b6;font-weight:700;">Instagram Official Access Token</label>
-    <input id="inp-ig-token" class="fpro-inp" type="password" placeholder="Paste IG Access Token (IGAA... or EAA...)"/>
+    <input id="v4-ig-token" class="v4-inp" type="password" placeholder="Paste IG Access Token (IGAA... or EAA...)"/>
     <label style="font-size:11px;color:#f472b6;font-weight:700;">Instagram Account ID (optional — auto-detected)</label>
-    <input id="inp-ig-id" class="fpro-inp" placeholder="Leave blank for auto-detect"/>
-    <label style="font-size:11px;color:#38bdf8;font-weight:700;">Facebook Page ID & Page Access Token (optional)</label>
-    <input id="inp-fb-id" class="fpro-inp" placeholder="Facebook Page ID"/>
-    <input id="inp-fb-token" class="fpro-inp" type="password" placeholder="Facebook Page Access Token"/>
-    <label style="font-size:11px;color:#ef4444;font-weight:700;">YouTube Channel ID & Data API v3 Key (optional)</label>
-    <input id="inp-yt-cid" class="fpro-inp" placeholder="UCxxxxxxxxxxxxxx"/>
-    <input id="inp-yt-key" class="fpro-inp" type="password" placeholder="AIzaSy..."/>
-    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;">
-      <button class="fpro-btn fpro-btn-ghost" onclick="window.fproCloseApiModal()">Cancel</button>
-      <button class="fpro-btn fpro-btn-gold" onclick="window.fproSaveApis()">✅ Verify & Save Official APIs</button>
+    <input id="v4-ig-id" class="v4-inp" placeholder="Auto-detected if blank"/>
+    <label style="font-size:11px;color:#38bdf8;font-weight:700;">Facebook Page ID & Page Access Token</label>
+    <input id="v4-fb-id" class="v4-inp" placeholder="Facebook Page ID"/>
+    <input id="v4-fb-token" class="v4-inp" type="password" placeholder="Facebook Page Access Token"/>
+    <label style="font-size:11px;color:#ef4444;font-weight:700;">YouTube Channel ID & Data API v3 Key</label>
+    <input id="v4-yt-cid" class="v4-inp" placeholder="UCxxxxxxxxxxxxxx"/>
+    <input id="v4-yt-key" class="v4-inp" type="password" placeholder="AIzaSy..."/>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px;">
+      <button class="v4-pill-btn" onclick="document.getElementById('v4-api-modal').classList.remove('open')">Cancel</button>
+      <button class="v4-pill-btn v4-pill-gold" onclick="window.v4SaveApis()">✅ Verify & Save Official APIs</button>
     </div>
-    <div id="fpro-api-status" style="margin-top:10px;font-size:12px;color:#34d399;"></div>
+    <div id="v4-api-msg" style="margin-top:10px;font-size:12px;color:#34d399;"></div>
   </div>
 </div>
 
-<script id="foji-pro-v3-script">
+<script id="foji-unified-v4-js">
 (function(){
-  // 1. Mount Pro Hub, Welcome Screen & Modal DIRECTLY INSIDE `#foji-nextgen-studio-shell`
-  //    so NO shell CSS or fixed overlay can EVER hide them!
-  function mountProInsideShell() {
+  // Mount sleek strip, tri-platform cards & modals cleanly INSIDE `#foji-nextgen-studio-shell`
+  function mountUnifiedV4() {
     const shell = document.getElementById('foji-nextgen-studio-shell');
-    const dock = document.getElementById('foji-pro-hub-dock');
-    const modal = document.getElementById('fpro-api-modal');
-    if (shell && dock) {
-      // Place dock right after top bar inside `#foji-nextgen-studio-shell`
-      const firstChild = shell.firstElementChild;
-      if (firstChild && firstChild.nextSibling) {
-        shell.insertBefore(dock, firstChild.nextSibling);
-      } else {
-        shell.prepend(dock);
-      }
-    }
-    if (shell && modal) {
-      shell.appendChild(modal);
-    }
+    if (!shell) return;
+    const strip = document.getElementById('v4-exec-strip');
+    const tri = document.getElementById('v4-tri-launch-grid');
+    const deep = document.getElementById('v4-deep-page');
+    const smod = document.getElementById('v4-sessions-modal');
+    const amod = document.getElementById('v4-api-modal');
+    const first = shell.firstElementChild;
+    if (strip) shell.insertBefore(strip, first ? first.nextSibling : null);
+    if (tri && strip) shell.insertBefore(tri, strip.nextSibling);
+    if (deep) shell.appendChild(deep);
+    if (smod) shell.appendChild(smod);
+    if (amod) shell.appendChild(amod);
+
+    // Rename Tab 7 label to reflect Tri-Platform Hub
+    const t7 = document.getElementById('fns-btn-tab7');
+    if (t7) t7.innerHTML = '📊 Insights Hub';
   }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', mountProInsideShell);
-  } else {
-    mountProInsideShell();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountUnifiedV4);
+  else mountUnifiedV4();
 
-  // 2. Holographic Welcome Intro Logic
-  window.fojiCloseIntro = function(){
-    const el = document.getElementById('foji-cinematic-intro');
-    if (el) {
-      el.classList.add('intro-exit');
-      setTimeout(() => { el.classList.add('intro-done'); }, 680);
-    }
+  // Intro Logic
+  window.v4CloseIntro = function(){
+    const el = document.getElementById('foji-v4-intro');
+    if (el) { el.classList.add('v4-exit'); setTimeout(() => el.classList.add('v4-done'), 620); }
   };
-  window.fojiReplayIntro = function(){
-    const el = document.getElementById('foji-cinematic-intro');
-    if (el) {
-      el.classList.remove('intro-done', 'intro-exit');
-      setTimeout(window.fojiCloseIntro, 2100);
-    }
+  window.v4ReplayIntro = function(){
+    const el = document.getElementById('foji-v4-intro');
+    if (el) { el.classList.remove('v4-done','v4-exit'); setTimeout(window.v4CloseIntro, 2000); }
   };
-  setTimeout(window.fojiCloseIntro, 2100);
+  setTimeout(window.v4CloseIntro, 2000);
 
-  // 3. Compact Toggle for Mobile
-  window.fproToggleDockBody = function(){
-    const b = document.getElementById('fpro-dock-body');
-    const btn = document.getElementById('fpro-collapse-btn');
-    if (!b) return;
-    const hide = b.style.display !== 'none';
-    b.style.display = hide ? 'none' : 'grid';
-    if (btn) btn.textContent = hide ? '▼ Expand Pro Hub' : '▲ Compact';
-  };
+  // Modals
+  window.v4OpenSessionsDrawer = function(){ document.getElementById('v4-sessions-modal').classList.add('open'); loadSessions(); };
+  window.v4OpenApiModal = function(){ document.getElementById('v4-api-modal').classList.add('open'); };
 
-  // 4. 5-Session Controller + Editable Posting Slots
-  let _fproCfg = null;
+  // 5-Sessions Controller
+  let _v4Cfg = null;
   function renderSessions(cfg) {
-    _fproCfg = cfg;
-    const mBtn = document.getElementById('fpro-master-toggle');
-    if (mBtn) {
-      mBtn.textContent = cfg.master_auto_enabled ? 'AUTO: ON' : 'AUTO: PAUSED';
-      mBtn.className = 'fpro-pill ' + (cfg.master_auto_enabled ? 'on' : 'off');
-    }
+    _v4Cfg = cfg;
+    const mb = document.getElementById('v4-master-btn');
+    if (mb) mb.textContent = cfg.master_auto_enabled ? 'AUTO: ON' : 'AUTO: PAUSED';
     const slots = cfg.posting_slots_ist || ['06:30','12:30','18:30'];
-    if (slots[0]) document.getElementById('fpro-slot-1').value = slots[0];
-    if (slots[1]) document.getElementById('fpro-slot-2').value = slots[1];
-    if (slots[2]) document.getElementById('fpro-slot-3').value = slots[2];
-
-    const box = document.getElementById('fpro-sessions-box');
-    if (!box) return;
+    if (slots[0]) document.getElementById('v4-slot-1').value = slots[0];
+    if (slots[1]) document.getElementById('v4-slot-2').value = slots[1];
+    if (slots[2]) document.getElementById('v4-slot-3').value = slots[2];
     const today = cfg.today_ist || '';
+    const box = document.getElementById('v4-sessions-list');
+    if (!box) return;
     box.innerHTML = (cfg.sessions || []).map(s => {
-      const skipped = (s.skip_date && s.skip_date === today);
-      const isOn = s.enabled && !skipped;
-      return `<div class="fpro-sess-row">
+      const skipped = s.skip_date && s.skip_date === today;
+      return `<div class="v4-sess-item">
         <div>
-          <strong style="color:${isOn ? '#fde047' : '#64748b'};">${s.display} IST</strong>
+          <strong style="color:${(s.enabled && !skipped)?'#fde047':'#64748b'};">${s.display} IST</strong>
           <span style="color:#94a3b8;margin-left:6px;">${s.label}</span>
-          ${skipped ? '<span style="color:#fb923c;font-size:10px;margin-left:6px;">(Skipped Today)</span>' : ''}
+          ${skipped ? '<span style="color:#fb923c;font-size:10px;margin-left:5px;">(Skipped Today)</span>' : ''}
         </div>
         <div style="display:flex;gap:6px;">
-          <button class="fpro-btn ${skipped ? 'fpro-btn-gold' : 'fpro-btn-ghost'}" onclick="window.fproSessionAct({skip_session_id:'${s.id}'})">${skipped ? 'Undo Skip' : 'Skip Today'}</button>
-          <button class="fpro-btn ${s.enabled ? 'fpro-btn-cyan' : 'fpro-btn-ghost'}" onclick="window.fproSessionAct({toggle_session_id:'${s.id}'})">${s.enabled ? 'ON' : 'OFF'}</button>
+          <button class="v4-pill-btn" onclick="window.v4SessAct({skip_session_id:'${s.id}'})">${skipped ? 'Undo Skip' : 'Skip Today'}</button>
+          <button class="v4-pill-btn ${s.enabled ? 'v4-pill-gold' : ''}" onclick="window.v4SessAct({toggle_session_id:'${s.id}'})">${s.enabled ? 'ON' : 'OFF'}</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  async function loadSessions() {
+    try { const d = await (await fetch('/api/studio_sessions_config')).json(); if (d && d.ok) renderSessions(d.config); } catch(e){}
+  }
+  window.v4SessAct = async function(payload) {
+    const d = await (await fetch('/api/studio_sessions_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})).json();
+    if (d && d.ok) renderSessions(d.config);
+  };
+  window.v4ToggleMaster = function(){ if (_v4Cfg) window.v4SessAct({master_auto_enabled: !_v4Cfg.master_auto_enabled}); };
+  window.v4SaveSlots = async function(){
+    const s = [document.getElementById('v4-slot-1').value, document.getElementById('v4-slot-2').value, document.getElementById('v4-slot-3').value];
+    await window.v4SessAct({posting_slots_ist: s});
+    alert('✅ Posting times updated (' + s.join(', ') + ' IST)! Existing queue untouched.');
+  };
+
+  // Tri-Platform Launch Cards Live Sync
+  async function loadTriSummary() {
+    try {
+      const d = await (await fetch('/api/tri_platform_insights')).json();
+      if (!d || !d.ok) return;
+      const ig = d.instagram || {}, yt = d.youtube || {}, fb = d.facebook || {};
+      document.getElementById('v4-card-ig-views').textContent = Number(ig.total_views || 0).toLocaleString() + ' Views';
+      document.getElementById('v4-card-ig-sub').innerHTML = `<span>${ig.followers || 0} Followers • ${ig.media_count || 0} Reels</span><span style="color:#34d399;font-weight:800;">Growth & Dip →</span>`;
+      document.getElementById('v4-card-yt-views').textContent = yt.connected ? (Number(yt.total_views || 0).toLocaleString() + ' Views') : 'Ready to Connect';
+      document.getElementById('v4-card-yt-sub').innerHTML = `<span>${yt.connected ? ((yt.subscribers||0)+' Subs • '+(yt.video_count||0)+' Shorts') : 'YouTube Data API v3'}</span><span style="color:#fbbf24;font-weight:800;">Deep Dive →</span>`;
+      document.getElementById('v4-card-fb-views').textContent = fb.connected ? (Number(fb.total_views || 0).toLocaleString() + ' Views') : 'Ready to Connect';
+      document.getElementById('v4-card-fb-sub').innerHTML = `<span>${fb.connected ? ((fb.followers||0)+' Followers • '+(fb.media_count||0)+' Reels') : 'Meta Facebook Reels API'}</span><span style="color:#38bdf8;font-weight:800;">Deep Dive →</span>`;
+    } catch(e){}
+  }
+
+  // DEDICATED FULL-SCREEN PLATFORM DEEP-DIVE ANALYTICS PAGE ENGINE
+  let _deepData = null;
+  let _deepFilter = 'all';
+  let _deepSearch = '';
+
+  window.v4CloseDeepPage = function() {
+    document.getElementById('v4-deep-page').classList.remove('open');
+  };
+
+  function buildTrendSvg(reels, avgViews) {
+    if (!reels || reels.length === 0) return '<div style="padding:26px;text-align:center;color:#94a3b8;">No reels yet for trend graph.</div>';
+    const chron = [...reels].reverse().slice(-30);
+    const W = 900, H = 220, padL = 44, padR = 16, padT = 18, padB = 28;
+    const maxV = Math.max(100, ...chron.map(r => r.views || 0), avgViews * 1.2);
+    const pts = chron.map((r, i) => {
+      const x = padL + (chron.length === 1 ? (W - padL - padR)/2 : (i / (chron.length - 1)) * (W - padL - padR));
+      const y = padT + (1 - (r.views || 0) / maxV) * (H - padT - padB);
+      return {x: x.toFixed(1), y: y.toFixed(1), r};
+    });
+    const avgY = (padT + (1 - avgViews / maxV) * (H - padT - padB)).toFixed(1);
+    const poly = pts.map(p => `${p.x},${p.y}`).join(' ');
+    const area = `${pts[0].x},${H-padB} ${poly} ${pts[pts.length-1].x},${H-padB}`;
+    const dots = pts.map(p => {
+      const col = p.r.status === 'viral' ? '#fde047' : (p.r.status === 'growing' ? '#34d399' : '#fb7185');
+      return `<circle cx="${p.x}" cy="${p.y}" r="4.2" fill="${col}" stroke="#030712" stroke-width="1.5"><title>${(p.r.title||'').replace(/"/g,'')} | ${p.r.views.toLocaleString()} views (${p.r.delta_pct >= 0 ? '+' : ''}${p.r.delta_pct}% vs avg)</title></circle>`;
+    }).join('');
+
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;">
+      <defs>
+        <linearGradient id="v4AreaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.42"/>
+          <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.02"/>
+        </linearGradient>
+      </defs>
+      <line x1="${padL}" y1="${avgY}" x2="${W-padR}" y2="${avgY}" stroke="#f59e0b" stroke-dasharray="6,5" stroke-width="1.4" opacity="0.85"/>
+      <text x="${padL+6}" y="${Math.max(14, avgY-6)}" fill="#fde047" font-size="11" font-weight="700">Account Average: ${avgViews.toLocaleString()} views</text>
+      <polygon points="${area}" fill="url(#v4AreaGrad)"/>
+      <polyline points="${poly}" fill="none" stroke="#38bdf8" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+      ${dots}
+      <text x="${padL}" y="${H-8}" fill="#94a3b8" font-size="10">Oldest (${chron.length} Reels Trend)</text>
+      <text x="${W-padR-72}" y="${H-8}" fill="#94a3b8" font-size="10">Latest Reel →</text>
+    </svg>`;
+  }
+
+  window.v4SetDeepFilter = function(f) { _deepFilter = f; renderDeepReelsList(); };
+  window.v4SetDeepSearch = function(q) { _deepSearch = (q || '').toLowerCase(); renderDeepReelsList(); };
+
+  function renderDeepReelsList() {
+    const host = document.getElementById('v4-deep-reels-box');
+    if (!host || !_deepData) return;
+    const avg = (_deepData.kpis || {}).avg_views || 1;
+    const maxV = Math.max(1, ...(_deepData.reels || []).map(r => r.views || 0));
+    const filtered = (_deepData.reels || []).filter(r => {
+      if (_deepFilter !== 'all' && r.status !== _deepFilter) return false;
+      if (_deepSearch && !(r.title || '').toLowerCase().includes(_deepSearch)) return false;
+      return true;
+    });
+    if (!filtered.length) {
+      host.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8;">No reels match this filter.</div>';
+      return;
+    }
+    host.innerHTML = filtered.map(r => {
+      const bCls = r.status === 'viral' ? 'v4-badge-viral' : (r.status === 'growing' ? 'v4-badge-up' : 'v4-badge-down');
+      const bTxt = r.status === 'viral' ? `🚀 Viral +${r.delta_pct}%` : (r.status === 'growing' ? `📈 +${r.delta_pct}%` : `📉 Dip ${r.delta_pct}%`);
+      const barCol = r.status === 'viral' ? 'linear-gradient(90deg,#f59e0b,#fde047)' : (r.status === 'growing' ? 'linear-gradient(90deg,#10b981,#38bdf8)' : 'linear-gradient(90deg,#f43f5e,#fb7185)');
+      const pctW = Math.max(4, Math.min(100, Math.round((r.views / maxV) * 100)));
+      return `<div class="v4-reel-row">
+        <img class="v4-reel-thumb" src="${r.thumbnail_url || '/emblem-logo.png'}" onerror="this.src='/emblem-logo.png'"/>
+        <div style="min-width:0;">
+          <div style="font-size:13px;font-weight:800;color:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.title}</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <span>🕒 ${r.posted_at || 'Published'}</span>
+            <span class="${bCls}">${bTxt}</span>
+            ${r.permalink ? `<a href="${r.permalink}" target="_blank" style="color:#38bdf8;text-decoration:none;font-weight:700;">Open Reel ↗</a>` : ''}
+          </div>
+          <div class="v4-bar-track"><div class="v4-bar-fill" style="width:${pctW}%;background:${barCol};"></div></div>
+        </div>
+        <div class="v4-reel-metrics" style="text-align:right;white-space:nowrap;">
+          <div style="font-size:16px;font-weight:900;color:#38bdf8;">${Number(r.views||0).toLocaleString()} <span style="font-size:10px;color:#94a3b8;">views</span></div>
+          <div style="font-size:11px;color:#cbd5e1;margin-top:2px;">❤️ ${r.likes} • 💬 ${r.comments} • ⚡ ${r.er}% ER</div>
         </div>
       </div>`;
     }).join('');
   }
 
-  async function loadSessions() {
-    try {
-      const r = await fetch('/api/studio_sessions_config');
-      const d = await r.json();
-      if (d && d.ok) renderSessions(d.config);
-    } catch(e){}
-  }
-  window.fproSessionAct = async function(payload) {
-    const r = await fetch('/api/studio_sessions_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-    const d = await r.json();
-    if (d && d.ok) renderSessions(d.config);
-  };
-  window.fproToggleMaster = function() {
-    if (!_fproCfg) return;
-    window.fproSessionAct({master_auto_enabled: !_fproCfg.master_auto_enabled});
-  };
-  window.fproSavePostingSlots = async function() {
-    const s1 = document.getElementById('fpro-slot-1').value;
-    const s2 = document.getElementById('fpro-slot-2').value;
-    const s3 = document.getElementById('fpro-slot-3').value;
-    await window.fproSessionAct({posting_slots_ist: [s1, s2, s3]});
-    alert('✅ Posting slots saved (' + s1 + ', ' + s2 + ', ' + s3 + ' IST)! Existing scheduled reels untouched.');
-  };
+  window.v4OpenDeepPage = async function(plat) {
+    const page = document.getElementById('v4-deep-page');
+    const body = document.getElementById('v4-deep-content');
+    const labels = {instagram: '📸 Instagram Reels Deep Analytics', youtube: '▶️ YouTube Shorts Deep Analytics', facebook: '📘 Facebook Reels Deep Analytics'};
+    document.getElementById('v4-deep-title').textContent = labels[plat] || 'Platform Deep Analytics';
+    page.classList.add('open');
+    body.innerHTML = '<div style="padding:40px;text-align:center;color:#38bdf8;font-weight:800;">⚡ Analyzing reel-wise growth, downfall & trends...</div>';
 
-  // 5. Official Tri-Platform Insights + API Modal
-  async function loadTriInsights() {
     try {
-      const r = await fetch('/api/tri_platform_insights');
-      const d = await r.json();
-      if (!d || !d.ok) return;
-      const ig = d.instagram || {};
-      const yt = d.youtube || {};
-      const fb = d.facebook || {};
-      document.getElementById('fpro-ig-views').textContent = Number(ig.total_views || 0).toLocaleString() + ' Views';
-      document.getElementById('fpro-ig-meta').textContent = `${ig.followers || 0} Followers • ${ig.media_count || 0} Reels`;
-      document.getElementById('fpro-yt-views').textContent = yt.connected ? (Number(yt.total_views || 0).toLocaleString() + ' Views') : 'Setup';
-      document.getElementById('fpro-yt-meta').textContent = yt.connected ? `${yt.subscribers || 0} Subs • ${yt.video_count || 0} Shorts` : 'Click Connect APIs';
-      document.getElementById('fpro-fb-views').textContent = fb.connected ? (Number(fb.total_views || 0).toLocaleString() + ' Views') : 'Setup';
-      document.getElementById('fpro-fb-meta').textContent = fb.connected ? `${fb.followers || 0} Followers • ${fb.media_count || 0} Reels` : 'Click Connect APIs';
-    } catch(e){}
-  }
+      const d = await (await fetch('/api/platform_deep_analytics/' + plat)).json();
+      _deepData = d;
+      _deepFilter = 'all';
+      _deepSearch = '';
+      const k = d.kpis || {};
+      const m = d.meta || {};
+      document.getElementById('v4-deep-subtitle').textContent = `${m.username || plat} • Source: ${m.source || 'API'} • ${m.followers || 0} Audience`;
 
-  window.fproOpenApiModal = function() {
-    const m = document.getElementById('fpro-api-modal');
-    if (m) m.classList.add('fpro-modal-open');
-  };
-  window.fproCloseApiModal = function() {
-    const m = document.getElementById('fpro-api-modal');
-    if (m) m.classList.remove('fpro-modal-open');
-  };
-  window.fproSaveApis = async function() {
-    const st = document.getElementById('fpro-api-status');
-    st.textContent = '⏳ Verifying & saving official API keys...';
-    const payload = {
-      meta_app_id: document.getElementById('inp-meta-app-id').value,
-      meta_app_secret: document.getElementById('inp-meta-app-secret').value,
-      ig_access_token: document.getElementById('inp-ig-token').value,
-      ig_account_id: document.getElementById('inp-ig-id').value,
-      fb_page_id: document.getElementById('inp-fb-id').value,
-      fb_page_token: document.getElementById('inp-fb-token').value,
-      yt_channel_id: document.getElementById('inp-yt-cid').value,
-      yt_api_key: document.getElementById('inp-yt-key').value
-    };
-    const r = await fetch('/api/tri_platform_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-    const d = await r.json();
-    if (d && d.ok) {
-      st.textContent = '✅ Official APIs Saved & Synced!';
-      loadTriInsights();
-      setTimeout(window.fproCloseApiModal, 1000);
-    } else {
-      st.textContent = '⚠️ Error saving keys.';
+      if (!m.connected && (!d.reels || d.reels.length === 0)) {
+        body.innerHTML = `<div class="v4-chart-card" style="text-align:center;padding:38px 20px;">
+          <div style="font-size:22px;font-weight:900;color:#fde047;margin-bottom:8px;">Connect ${plat.toUpperCase()} Official API</div>
+          <div style="font-size:13px;color:#94a3b8;max-width:520px;margin:0 auto 18px auto;">
+            Connect your official ${plat.toUpperCase()} credentials once to unlock live reel-wise views, growth/downfall momentum tracking, trend charts, and simultaneous 1-click auto-posting!
+          </div>
+          <button class="v4-pill-btn v4-pill-gold" style="padding:10px 18px;font-size:13px;" onclick="window.v4OpenApiModal()">⚙️ Connect ${plat.toUpperCase()} API Now</button>
+        </div>`;
+        return;
+      }
+
+      const momUp = (k.momentum_pct || 0) >= 0;
+      const momHtml = `<span class="${momUp ? 'v4-badge-up' : 'v4-badge-down'}">${momUp ? '📈 Growth +' : '📉 Downfall '}${k.momentum_pct}%</span>`;
+      const bestHrTxt = (k.best_hour_ist !== null && k.best_hour_ist !== undefined) ? `${String(k.best_hour_ist).padStart(2,'0')}:00 IST (Avg ${Number(k.best_hour_avg||0).toLocaleString()})` : 'Need more data';
+
+      body.innerHTML = `
+        <div class="v4-deep-kpis">
+          <div class="v4-dkpi">
+            <div class="v4-dkpi-lbl">👁️ Total Reach / Views</div>
+            <div class="v4-dkpi-val" style="color:#38bdf8;">${Number(k.total_views||0).toLocaleString()}</div>
+            <div class="v4-dkpi-sub">Avg ${Number(k.avg_views||0).toLocaleString()} / Reel • ${k.total_reels||0} Total</div>
+          </div>
+          <div class="v4-dkpi">
+            <div class="v4-dkpi-lbl">⚡ Recent Momentum (Last 5 vs Prev 5)</div>
+            <div class="v4-dkpi-val">${momHtml}</div>
+            <div class="v4-dkpi-sub">Last 5 Avg: ${Number(k.recent_5_avg||0).toLocaleString()} vs Prev: ${Number(k.prev_5_avg||0).toLocaleString()}</div>
+          </div>
+          <div class="v4-dkpi">
+            <div class="v4-dkpi-lbl">🚀 Viral / 📈 Grow / 📉 Dip Split</div>
+            <div class="v4-dkpi-val" style="font-size:19px;">
+              <span style="color:#fde047;">${k.viral_count||0}</span> /
+              <span style="color:#34d399;">${k.growing_count||0}</span> /
+              <span style="color:#fb7185;">${k.downfall_count||0}</span>
+            </div>
+            <div class="v4-dkpi-sub">❤️ ${Number(k.total_likes||0).toLocaleString()} Likes • ⚡ ${k.avg_er||0}% Avg ER</div>
+          </div>
+          <div class="v4-dkpi">
+            <div class="v4-dkpi-lbl">⏰ Winning Posting Hour</div>
+            <div class="v4-dkpi-val" style="font-size:18px;color:#fde047;">${bestHrTxt}</div>
+            <div class="v4-dkpi-sub">Top Reel: ${d.top_reel ? Number(d.top_reel.views||0).toLocaleString() + ' views' : '--'}</div>
+          </div>
+        </div>
+
+        <div class="v4-chart-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+            <div style="font-size:14px;font-weight:900;color:#f8fafc;">📈 Chronological Views Trend & Growth/Downfall Curve</div>
+            <div style="font-size:11px;color:#94a3b8;">🟡 Viral (+35%+) &nbsp; 🟢 Above Avg &nbsp; 🔴 Downfall (Below Avg)</div>
+          </div>
+          ${buildTrendSvg(d.reels || [], k.avg_views || 0)}
+        </div>
+
+        <div class="v4-chart-card">
+          <div class="v4-filter-bar">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="v4-pill-btn v4-pill-gold" onclick="window.v4SetDeepFilter('all')">All (${(d.reels||[]).length})</button>
+              <button class="v4-pill-btn" onclick="window.v4SetDeepFilter('viral')">🚀 Viral (${k.viral_count||0})</button>
+              <button class="v4-pill-btn" onclick="window.v4SetDeepFilter('growing')">📈 Growing (${k.growing_count||0})</button>
+              <button class="v4-pill-btn" onclick="window.v4SetDeepFilter('downfall')">📉 Downfall (${k.downfall_count||0})</button>
+            </div>
+            <input class="v4-inp" style="width:240px;margin:0;" placeholder="🔍 Search reel title..." oninput="window.v4SetDeepSearch(this.value)"/>
+          </div>
+          <div id="v4-deep-reels-box"></div>
+        </div>
+      `;
+      renderDeepReelsList();
+    } catch(e) {
+      body.innerHTML = '<div style="padding:30px;color:#fb7185;">Could not load analytics: ' + e + '</div>';
     }
   };
 
-  loadSessions();
-  loadTriInsights();
-  setInterval(loadTriInsights, 60000);
+  window.v4SaveApis = async function() {
+    const msg = document.getElementById('v4-api-msg');
+    msg.textContent = '⏳ Verifying & saving official API keys...';
+    const payload = {
+      meta_app_id: document.getElementById('v4-meta-app-id').value,
+      meta_app_secret: document.getElementById('v4-meta-app-secret').value,
+      ig_access_token: document.getElementById('v4-ig-token').value,
+      ig_account_id: document.getElementById('v4-ig-id').value,
+      fb_page_id: document.getElementById('v4-fb-id').value,
+      fb_page_token: document.getElementById('v4-fb-token').value,
+      yt_channel_id: document.getElementById('v4-yt-cid').value,
+      yt_api_key: document.getElementById('v4-yt-key').value
+    };
+    const d = await (await fetch('/api/tri_platform_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})).json();
+    if (d && d.ok) {
+      msg.textContent = '✅ Official APIs Saved & Synced!';
+      loadTriSummary();
+      setTimeout(() => document.getElementById('v4-api-modal').classList.remove('open'), 950);
+    } else {
+      msg.textContent = '⚠️ Error saving keys.';
+    }
+  };
+
+  loadTriSummary();
+  setInterval(loadTriSummary, 60000);
 })();
 </script>
 """
-                html_t = html_t.replace("</body>", pro_addon + "\n</body>", 1)
+                html_t = html_t.replace("</body>", v4_addon + "\n</body>", 1)
                 response.set_data(html_t)
     except Exception:
         pass
     return response
 
-app.after_request_funcs.setdefault(None, []).insert(0, _inject_foji_executive_pro_ui_v3)
+app.after_request_funcs.setdefault(None, []).insert(0, _inject_foji_unified_pro_v4)
 
+
+
+
+
+
+
+@app.route("/api/platform_deep_analytics/<platform>", methods=["GET"])
+def api_platform_deep_analytics(platform):
+    from flask import jsonify
+    plat = (platform or "instagram").strip().lower()
+    import tri_platform_api as _tpa
+    summary = _tpa.get_unified_tri_platform_summary()
+
+    reels = []
+    meta = {"connected": False, "username": "", "followers": 0, "source": "Not Connected"}
+
+    if plat == "instagram":
+        ig_live = summary.get("instagram") or {}
+        if os.path.exists("data/ig_live_analytics.json"):
+            try:
+                loc = json.load(open("data/ig_live_analytics.json", "r", encoding="utf-8"))
+                reels = list(loc.get("reels") or [])
+                meta["username"] = loc.get("username", "@ai_foji_lovelife")
+                meta["followers"] = int(loc.get("followers_count") or 0)
+                meta["source"] = ig_live.get("source") or loc.get("sync_source") or "Live Sync"
+                meta["connected"] = True
+            except Exception:
+                pass
+        if ig_live.get("connected") and ig_live.get("reels"):
+            reels = ig_live["reels"]
+            meta["username"] = ig_live.get("username", meta["username"])
+            meta["followers"] = int(ig_live.get("followers") or meta["followers"])
+            meta["source"] = "Official Meta Graph API"
+            meta["connected"] = True
+    elif plat == "youtube":
+        yt = summary.get("youtube") or {}
+        meta = {
+            "connected": bool(yt.get("connected")),
+            "username": yt.get("channel_name") or "YouTube Shorts Channel",
+            "followers": int(yt.get("subscribers") or 0),
+            "source": yt.get("source", "Not Connected"),
+            "total_views_override": int(yt.get("total_views") or 0),
+            "media_count_override": int(yt.get("video_count") or 0)
+        }
+        reels = list(yt.get("reels") or [])
+    elif plat == "facebook":
+        fb = summary.get("facebook") or {}
+        meta = {
+            "connected": bool(fb.get("connected")),
+            "username": fb.get("page_name") or "Facebook Reels Page",
+            "followers": int(fb.get("followers") or 0),
+            "source": fb.get("source", "Not Connected"),
+            "total_views_override": int(fb.get("total_views") or 0),
+            "media_count_override": int(fb.get("media_count") or 0)
+        }
+        reels = list(fb.get("reels") or [])
+
+    # Normalize & compute Growth vs Downfall Analytics
+    norm_reels = []
+    for idx, r in enumerate(reels):
+        v = int(r.get("views") or 0)
+        lk = int(r.get("likes") or 0)
+        cm = int(r.get("comments") or 0)
+        er = float(r.get("engagement_rate") if r.get("engagement_rate") is not None else (round(((lk + cm) / max(1, v)) * 100, 2) if v > 0 else 0.0))
+        norm_reels.append({
+            "rank_idx": idx + 1,
+            "title": (r.get("title") or r.get("caption") or f"Reel #{idx+1}").splitlines()[0][:85],
+            "views": v,
+            "likes": lk,
+            "comments": cm,
+            "er": er,
+            "posted_at": r.get("posted_at") or r.get("timestamp") or "",
+            "hour_ist": r.get("hour_ist"),
+            "permalink": r.get("permalink") or "",
+            "thumbnail_url": r.get("thumbnail_url") or ""
+        })
+
+    tot_views = sum(x["views"] for x in norm_reels) or int(meta.get("total_views_override") or 0)
+    tot_likes = sum(x["likes"] for x in norm_reels)
+    tot_comments = sum(x["comments"] for x in norm_reels)
+    cnt = len(norm_reels)
+    avg_views = round(tot_views / cnt) if cnt else 0
+    avg_er = round(sum(x["er"] for x in norm_reels) / cnt, 2) if cnt else 0.0
+
+    # Classify each reel: Viral (+35%+), Growing (+1% to +34%), Downfall (<0%)
+    viral_cnt = 0
+    grow_cnt = 0
+    dip_cnt = 0
+    for x in norm_reels:
+        delta_pct = round(((x["views"] - avg_views) / max(1, avg_views)) * 100, 1) if avg_views > 0 else 0.0
+        x["delta_pct"] = delta_pct
+        if delta_pct >= 35:
+            x["status"] = "viral"
+            viral_cnt += 1
+        elif delta_pct >= 0:
+            x["status"] = "growing"
+            grow_cnt += 1
+        else:
+            x["status"] = "downfall"
+            dip_cnt += 1
+
+    # Recent Momentum (Last 5 reels vs Previous 5 reels)
+    recent_5 = norm_reels[:5]
+    prev_5 = norm_reels[5:10]
+    rec_avg = round(sum(x["views"] for x in recent_5) / len(recent_5)) if recent_5 else 0
+    prv_avg = round(sum(x["views"] for x in prev_5) / len(prev_5)) if prev_5 else rec_avg
+    momentum_pct = round(((rec_avg - prv_avg) / max(1, prv_avg)) * 100, 1) if prv_avg > 0 else 0.0
+
+    # Best Posting Hour Detector
+    hour_buckets = {}
+    for x in norm_reels:
+        h = x.get("hour_ist")
+        if h is not None:
+            hour_buckets.setdefault(int(h), []).append(x["views"])
+    best_hour = None
+    best_hour_avg = 0
+    for h, vals in hour_buckets.items():
+        ha = round(sum(vals) / len(vals))
+        if ha > best_hour_avg:
+            best_hour_avg = ha
+            best_hour = h
+
+    top_reel = max(norm_reels, key=lambda z: z["views"]) if norm_reels else None
+    low_reel = min(norm_reels, key=lambda z: z["views"]) if norm_reels else None
+
+    return jsonify({
+        "ok": True,
+        "platform": plat,
+        "meta": meta,
+        "kpis": {
+            "total_views": tot_views,
+            "avg_views": avg_views,
+            "total_likes": tot_likes,
+            "total_comments": tot_comments,
+            "avg_er": avg_er,
+            "total_reels": cnt or int(meta.get("media_count_override") or 0),
+            "viral_count": viral_cnt,
+            "growing_count": grow_cnt,
+            "downfall_count": dip_cnt,
+            "recent_5_avg": rec_avg,
+            "prev_5_avg": prv_avg,
+            "momentum_pct": momentum_pct,
+            "best_hour_ist": best_hour,
+            "best_hour_avg": best_hour_avg
+        },
+        "top_reel": top_reel,
+        "low_reel": low_reel,
+        "reels": norm_reels
+    })
 
 
 if __name__ == "__main__":

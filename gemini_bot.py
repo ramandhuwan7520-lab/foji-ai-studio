@@ -1327,38 +1327,13 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     dismiss_any_agree_or_consent_popup(driver)
     time.sleep(0.8)
 
-    print("📱 [Step #6 & #7] Setting Aspect Ratio to 'Portrait (9:16)'...")
-    already_portrait = driver.execute_script(
-        "return Boolean(document.querySelector('[aria-label*=Portrait i]'));"
-    )
-    if not already_portrait:
-        opened_ratio = wait_and_single_click_step(
-            driver,
-            "Step #6: Aspect Ratio (Landscape 16:9)",
-            aria_list=["aspect ratio, landscape (16:9)", "aspect ratio"],
-            txt_list=["landscape", "16:9"],
-            icon_list=["crop_16_9"],
-            near_xpct=s6_x,
-            near_ypct=s6_y,
-            verify_next_txt=["portrait (9:16)", "portrait"],
-            verify_next_icon=["crop_9_16"]
-        )
-        if opened_ratio:
-            wait_and_single_click_step(
-                driver,
-                "Step #7: Select Portrait (9:16)",
-                txt_list=["portrait (9:16)", "portrait", "9:16"],
-                icon_list=["crop_9_16"],
-                near_xpct=s7_x,
-                near_ypct=s7_y,
-                exclude_words=["landscape", "16:9"]
-            )
-            time.sleep(0.8)
-
     update_3d_telemetry(4, "Step 4: Loading Characters", "Uploading 3D character reference images into Gemini...", "active", 50)
-    print("📸 [Step #8, #9 & #10] Clicking 'Upload & tools' (+) -> 'Upload files' -> Injecting character assets...")
-    install_file_dialog_blocker(driver)
-    wait_and_single_click_step(
+    print("📸 [Step #10] Attaching character reference(s) directly into Gemini Prompt Box (Zero Tools Reset)...")
+    if not paste_character_images_directly_into_prompt(driver, foji_img, fojan_img):
+        print("   ↩️ Direct paste preview not detected -> using fallback Upload & tools menu...")
+        print("📸 [Step #8, #9 & #10] Clicking 'Upload & tools' (+) -> 'Upload files' -> Injecting character assets...")
+        install_file_dialog_blocker(driver)
+        wait_and_single_click_step(
         driver,
         "Step #8: Upload & tools (+)",
         aria_list=["upload & tools"],
@@ -1368,11 +1343,11 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         verify_next_txt=["upload files"],
         verify_next_aria=["upload files"],
         verify_next_icon=["attach_file"]
-    )
+        )
 
-    install_file_dialog_blocker(driver)
-    js_verify_file_input = "return document.querySelectorAll('input[type=file]').length > 0;"
-    wait_and_single_click_step(
+        install_file_dialog_blocker(driver)
+        js_verify_file_input = "return document.querySelectorAll('input[type=file]').length > 0;"
+        wait_and_single_click_step(
         driver,
         "Step #9: Upload files",
         aria_list=["upload files. documents, data, code files", "upload files"],
@@ -1382,9 +1357,9 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         near_ypct=s9_y,
         exclude_words=["drive", "video", "music", "image"],
         custom_verify_js=js_verify_file_input
-    )
+        )
 
-    inject_character_files_into_gemini(driver, foji_img, fojan_img)
+        inject_character_files_into_gemini(driver, foji_img, fojan_img)
 
     update_3d_telemetry(5, "Step 5: Directing Scene", "Injecting viral script, Haryanvi shayari & BGM cues...", "active", 62)
     print("✉️ [Step #11] Filling fresh AI Script into 'Enter a prompt for Gemini'...")
@@ -1809,7 +1784,7 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             screen_reply = (st.get("screen_reply_text") or "").strip()
 
             print(
-                f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s / 360s Max)] "
+                f"⏳ [Gemini {elapsed_mins} min ({elapsed_sec}s / Adaptive 720s Max)] "
                 f"Generating: {is_gen} | Video Detected: {len(new_vids)} | Download Btn: {bool(dl_btn)}"
             )
 
@@ -1841,7 +1816,9 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             # ⏱️ STRICT 15-MINUTE (900 SECONDS) RENDER TIMEOUT:
             # If 15 minutes pass while rendering without completing or raising an error,
             # abort this video cleanly so the next video in the batch starts, and keep this Part uncompleted for next run!
-            if elapsed_sec >= 360 and dl_btn is None and len(new_vids) == 0:
+            # SMART ADAPTIVE RENDER WATCHER: Never kill an active Veo render! Wait up to 720s while is_generating=True;
+            # exit early at 180s ONLY if Gemini stopped generating (is_generating=False) with 0 video.
+            if ((not is_gen and elapsed_sec >= 180) or elapsed_sec >= 720) and dl_btn is None and len(new_vids) == 0:
                 t_msg = (
                     f"6-Minute Smart Render Timeout ({elapsed_mins} min) reached for {unique_fname}. "
                     f"Stopping this attempt to start the next video — Part #{pending_pkg.get('part_number', 1)} will be built next run!"
@@ -2630,6 +2607,62 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
 
 
 
+
+
+
+def paste_character_images_directly_into_prompt(driver, foji_img, fojan_img=None):
+    """
+    Pastes 3D character reference image(s) directly into Gemini's prompt box via a synthetic
+    ClipboardEvent('paste') with DataTransfer (works headless on Linux & Windows without
+    re-opening 'Upload & tools (+)' — so 'Create video' & 'Portrait 9:16' NEVER reset!).
+    """
+    import base64 as _b64
+    import mimetypes as _mt
+    imgs = [p for p in [foji_img, fojan_img] if p and os.path.exists(p)]
+    if not imgs:
+        return True
+
+    js_paste = """
+    const filesData = arguments[0];
+    const box = document.querySelector('[aria-label*="Enter a prompt" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"], textarea');
+    if (!box) return {ok: false, reason: 'no_prompt_box'};
+    box.focus();
+    box.click();
+    const dt = new DataTransfer();
+    for (const item of filesData) {
+        const bin = atob(item.b64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const file = new File([bytes], item.name, {type: item.mime});
+        dt.items.add(file);
+    }
+    const ev = new ClipboardEvent('paste', {bubbles: true, cancelable: true, clipboardData: dt});
+    box.dispatchEvent(ev);
+    return {ok: true, count: filesData.length};
+    """
+    payload = []
+    for p in imgs:
+        mime = _mt.guess_type(p)[0] or "image/jpeg"
+        with open(p, "rb") as imf:
+            payload.append({
+                "name": os.path.basename(p),
+                "mime": mime,
+                "b64": _b64.b64encode(imf.read()).decode("utf-8")
+            })
+    try:
+        res = driver.execute_script(js_paste, payload)
+        if isinstance(res, dict) and res.get("ok"):
+            time.sleep(2.4)
+            # Verify Gemini rendered an uploaded image thumbnail / attachment preview
+            attached = driver.execute_script(
+                "return document.querySelectorAll('img[src^=\"blob:\"], img[src^=\"data:image\"], [aria-label*=\"Remove\" i], [class*=\"preview\" i] img, [class*=\"thumb\" i] img').length > 0;"
+            )
+            if attached:
+                print(f"   🖼️ [Direct Prompt Paste] Attached {len(imgs)} character image(s) cleanly without touching Tools menu!")
+                return True
+    except Exception as _pe:
+        print(f"   ℹ️ [Direct Prompt Paste] Note: {_pe}")
+    return False
 
 
 def inject_character_files_into_gemini(driver, *args, **kwargs):
