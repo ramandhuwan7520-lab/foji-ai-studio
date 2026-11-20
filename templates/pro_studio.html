@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Foji AI Studio Pro — 3D Cinema & Tri-Platform Automation</title>
+  <title>Foji AI Studio — Creator Command Suite</title>
   <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
@@ -13,516 +13,440 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <!-- FOJI_PRO_V5_CLEAN_SLATE -->
+  <!-- FOJI_PRO_V6_FLAGSHIP -->
   <style>
     :root {
-      --bg-base: #030612;
-      --bg-panel: rgba(11, 18, 36, 0.78);
-      --bg-panel-solid: #0a1124;
-      --border-glass: rgba(148, 163, 184, 0.16);
-      --border-glow: rgba(245, 158, 11, 0.42);
+      --bg-base: #030611;
+      --bg-card: rgba(11, 18, 36, 0.84);
+      --border: rgba(148, 163, 184, 0.16);
       --gold: #f59e0b;
-      --gold-bright: #fde047;
+      --gold-hi: #fde047;
       --cyan: #06b6d4;
-      --cyan-bright: #38bdf8;
+      --cyan-hi: #38bdf8;
       --violet: #8b5cf6;
       --emerald: #10b981;
       --rose: #f43f5e;
       --text-1: #f8fafc;
       --text-2: #94a3b8;
       --text-3: #64748b;
-      --sidebar-w: 248px;
-      --radius-lg: 20px;
-      --radius-md: 14px;
+      --sidebar-w: 244px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body {
-      min-height: 100vh;
-      background: var(--bg-base);
-      color: var(--text-1);
+      min-height: 100vh; background: var(--bg-base); color: var(--text-1);
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
     }
 
-    /* Animated Obsidian Aurora Background */
-    .aurora-bg {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    /* Deep Obsidian Ambient Stage */
+    .ambient-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 60% 45% at 12% 8%, rgba(6, 182, 212, 0.16), transparent 65%),
-        radial-gradient(ellipse 55% 45% at 88% 12%, rgba(139, 92, 246, 0.16), transparent 65%),
-        radial-gradient(ellipse 65% 40% at 50% 96%, rgba(245, 158, 11, 0.11), transparent 70%),
-        #030612;
+        radial-gradient(ellipse 58% 44% at 10% 6%, rgba(6, 182, 212, 0.16), transparent 64%),
+        radial-gradient(ellipse 54% 44% at 90% 10%, rgba(139, 92, 246, 0.15), transparent 64%),
+        radial-gradient(ellipse 65% 42% at 50% 96%, rgba(245, 158, 11, 0.11), transparent 70%),
+        #030611;
     }
-    .aurora-grid {
+    .ambient-grid {
       position: absolute; inset: 0;
       background-image:
         linear-gradient(rgba(148,163,184,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(148,163,184,0.03) 1px, transparent 1px);
-      background-size: 46px 46px;
-      mask-image: radial-gradient(circle at 50% 20%, black 25%, transparent 80%);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at 50% 25%, black 25%, transparent 82%);
     }
 
     /* =====================================================================
-       1. UNIQUE 3D HOLOGRAPHIC ORBITAL WELCOME BOOT SCREEN
+       1. CINEMATIC 3D WELCOME BOOT SCREEN
        ===================================================================== */
-    #v5-intro {
+    #v6-intro {
       position: fixed; inset: 0; z-index: 999999;
-      background: radial-gradient(circle at 50% 44%, #0d2144 0%, #02050f 72%);
+      background: radial-gradient(circle at 50% 42%, #0e244a 0%, #02050f 72%);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       overflow: hidden; cursor: pointer;
-      transition: opacity 0.65s ease, transform 0.7s cubic-bezier(.16,1,.3,1);
+      transition: opacity 0.6s ease, transform 0.65s cubic-bezier(.16,1,.3,1);
     }
-    #v5-intro.exit { opacity: 0; transform: scale(1.06); pointer-events: none; }
-    #v5-intro.done { display: none; }
-    .intro-ring {
-      position: absolute; border-radius: 50%; pointer-events: none;
-    }
-    .intro-ring.r1 {
-      width: min(360px, 84vw); height: min(360px, 84vw);
-      border: 1.5px solid rgba(6, 182, 212, 0.42);
-      box-shadow: 0 0 80px rgba(6, 182, 212, 0.2), inset 0 0 50px rgba(245, 158, 11, 0.1);
-      animation: spinCw 6s linear infinite;
-    }
-    .intro-ring.r2 {
-      width: min(268px, 64vw); height: min(268px, 64vw);
-      border: 2px dashed rgba(245, 158, 11, 0.55);
-      animation: spinCcw 9s linear infinite;
-    }
-    .intro-ring.r3 {
-      width: min(194px, 46vw); height: min(194px, 46vw);
-      border: 1px solid rgba(167, 139, 250, 0.5);
-      animation: spinCw 3.8s linear infinite;
-    }
-    .intro-laser {
-      position: absolute; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, #38bdf8, #fde047, #a78bfa, transparent);
-      box-shadow: 0 0 26px #38bdf8;
-      animation: laserScan 2s ease-in-out infinite;
-    }
-    .intro-crest {
-      width: 112px; height: 112px; border-radius: 50%; z-index: 2; object-fit: cover;
-      border: 2.5px solid var(--gold-bright); background: #071024;
-      box-shadow: 0 0 46px rgba(245, 158, 11, 0.65), 0 0 95px rgba(139, 92, 246, 0.4);
-      animation: crestPop 0.8s cubic-bezier(.16,1,.3,1) forwards;
-    }
-    .intro-brand {
-      margin-top: 22px; z-index: 2;
-      font-size: clamp(22px, 4.6vw, 40px); font-weight: 900; letter-spacing: 5px;
-      background: linear-gradient(90deg, #fde047, #ffffff, #38bdf8, #c084fc, #fde047);
-      background-size: 240% auto;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      animation: shimmer 2.3s linear infinite;
-    }
-    .intro-tags {
-      margin-top: 10px; z-index: 2; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
-    }
-    .intro-tag {
-      font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 999px; color: #cbd5e1;
-      background: rgba(15,23,42,0.82); border: 1px solid rgba(56,189,248,0.32);
-    }
-    .intro-bar {
-      margin-top: 22px; width: min(270px, 72vw); height: 4px; border-radius: 99px;
-      background: rgba(255,255,255,0.1); overflow: hidden; z-index: 2;
-    }
-    .intro-bar-fill {
-      height: 100%; width: 0%;
-      background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6);
-      animation: barFill 1.8s cubic-bezier(.22,1,.36,1) forwards;
-    }
+    #v6-intro.exit { opacity: 0; transform: scale(1.06); pointer-events: none; }
+    #v6-intro.done { display: none; }
+    .ring { position: absolute; border-radius: 50%; pointer-events: none; }
+    .ring.r1 { width: min(350px, 84vw); height: min(350px, 84vw); border: 1.5px solid rgba(56,189,248,0.45); box-shadow: 0 0 80px rgba(6,182,212,0.22); animation: spinCw 6s linear infinite; }
+    .ring.r2 { width: min(260px, 62vw); height: min(260px, 62vw); border: 2px dashed rgba(245,158,11,0.55); animation: spinCcw 9s linear infinite; }
+    .ring.r3 { width: min(188px, 46vw); height: min(188px, 46vw); border: 1px solid rgba(167,139,250,0.5); animation: spinCw 3.6s linear infinite; }
+    .laser { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #38bdf8, #fde047, #a78bfa, transparent); box-shadow: 0 0 24px #38bdf8; animation: scanY 1.9s ease-in-out infinite; }
+    .intro-logo { width: 108px; height: 108px; border-radius: 50%; z-index: 2; object-fit: cover; border: 2.5px solid var(--gold-hi); background: #071024; box-shadow: 0 0 46px rgba(245,158,11,0.65); animation: popIn 0.75s cubic-bezier(.16,1,.3,1); }
+    .intro-name { margin-top: 20px; z-index: 2; font-size: clamp(24px, 4.6vw, 40px); font-weight: 900; letter-spacing: 5px; background: linear-gradient(90deg, #fde047, #ffffff, #38bdf8, #c084fc, #fde047); background-size: 240% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 2.2s linear infinite; }
+    .intro-sub { margin-top: 8px; z-index: 2; font-size: 11px; font-weight: 800; letter-spacing: 2.6px; color: #94a3b8; text-transform: uppercase; }
+    .intro-track { margin-top: 20px; width: min(250px, 70vw); height: 4px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden; z-index: 2; }
+    .intro-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6); animation: fillW 1.7s cubic-bezier(.22,1,.36,1) forwards; }
     @keyframes spinCw { to { transform: rotate(360deg); } }
     @keyframes spinCcw { to { transform: rotate(-360deg); } }
-    @keyframes laserScan { 0%,100% { top: 15%; } 50% { top: 84%; } }
-    @keyframes crestPop { 0% { opacity:0; transform: scale(0.55) translateY(18px); } 100% { opacity:1; transform: scale(1) translateY(0); } }
+    @keyframes scanY { 0%,100%{top:15%;} 50%{top:84%;} }
+    @keyframes popIn { 0%{opacity:0;transform:scale(0.55);} 100%{opacity:1;transform:scale(1);} }
     @keyframes shimmer { to { background-position: 240% center; } }
-    @keyframes barFill { to { width: 100%; } }
+    @keyframes fillW { to { width: 100%; } }
 
     /* =====================================================================
-       2. APP SHELL (DESKTOP SIDEBAR + MAIN STAGE + MOBILE BOTTOM DOCK)
+       2. 3D TACTILE PUSH BUTTONS (REAL PHYSICAL PRESS FEEL)
        ===================================================================== */
-    .app-shell {
-      position: relative; z-index: 2; display: flex; min-height: 100vh;
+    .btn3d {
+      position: relative; border: 1px solid rgba(255,255,255,0.14);
+      background: linear-gradient(180deg, #1b2847 0%, #101930 100%);
+      color: var(--text-1); border-radius: 12px; padding: 9px 15px;
+      font-size: 12px; font-weight: 800; font-family: inherit;
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      box-shadow: 0 4px 0 #070d1d, 0 8px 18px -6px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.16);
+      transform: translateY(0);
+      transition: transform 0.1s cubic-bezier(.22,1,.36,1), box-shadow 0.1s ease, filter 0.15s ease;
+      user-select: none;
     }
+    .btn3d:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 6px 0 #070d1d, 0 12px 24px -6px rgba(6,182,212,0.32), inset 0 1px 0 rgba(255,255,255,0.22); }
+    .btn3d:active { transform: translateY(3px); box-shadow: 0 1px 0 #070d1d, 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.35); }
 
-    /* Desktop Left Glassmorphic Sidebar */
+    .btn3d.gold {
+      background: linear-gradient(180deg, #fde047 0%, #f59e0b 100%); color: #090d16; border-color: rgba(255,255,255,0.45);
+      box-shadow: 0 4px 0 #92400e, 0 10px 24px -6px rgba(245,158,11,0.55), inset 0 1px 0 rgba(255,255,255,0.65);
+    }
+    .btn3d.gold:active { box-shadow: 0 1px 0 #92400e; }
+
+    .btn3d.cyan {
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%); color: #ffffff; border-color: rgba(255,255,255,0.28);
+      box-shadow: 0 4px 0 #075985, 0 10px 24px -6px rgba(6,182,212,0.5), inset 0 1px 0 rgba(255,255,255,0.45);
+    }
+    .btn3d.cyan:active { box-shadow: 0 1px 0 #075985; }
+
+    .btn3d.emerald {
+      background: linear-gradient(180deg, #34d399 0%, #059669 100%); color: #04130d; border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 4px 0 #065f46, 0 10px 22px -6px rgba(16,185,129,0.5), inset 0 1px 0 rgba(255,255,255,0.45);
+    }
+    .btn3d.emerald:active { box-shadow: 0 1px 0 #065f46; }
+
+    .btn3d.danger {
+      background: linear-gradient(180deg, #fb7185 0%, #dc2626 100%); color: #ffffff; border-color: rgba(255,255,255,0.28);
+      box-shadow: 0 4px 0 #7f1d1d, 0 10px 24px -6px rgba(239,68,68,0.6), inset 0 1px 0 rgba(255,255,255,0.35);
+    }
+    .btn3d.danger:active { box-shadow: 0 1px 0 #7f1d1d; }
+
+    .btn3d.violet {
+      background: linear-gradient(180deg, #a78bfa 0%, #7c3aed 100%); color: #ffffff; border-color: rgba(255,255,255,0.25);
+      box-shadow: 0 4px 0 #4c1d95, 0 10px 22px -6px rgba(139,92,246,0.5), inset 0 1px 0 rgba(255,255,255,0.35);
+    }
+    .btn3d.violet:active { box-shadow: 0 1px 0 #4c1d95; }
+
+    .btn3d.sm { padding: 6px 10px; font-size: 11px; border-radius: 10px; box-shadow: 0 3px 0 #070d1d; }
+    .btn3d.sm.gold { box-shadow: 0 3px 0 #92400e; }
+    .btn3d.sm.cyan { box-shadow: 0 3px 0 #075985; }
+    .btn3d.sm.emerald { box-shadow: 0 3px 0 #065f46; }
+    .btn3d.sm.danger { box-shadow: 0 3px 0 #7f1d1d; }
+    .btn3d.sm.violet { box-shadow: 0 3px 0 #4c1d95; }
+    .btn3d.pulsing { animation: btnPulse 1.3s ease-in-out infinite; }
+    @keyframes btnPulse { 0%,100%{box-shadow:0 4px 0 #7f1d1d, 0 0 0 0 rgba(244,63,94,0.65);} 50%{box-shadow:0 4px 0 #7f1d1d, 0 0 0 12px rgba(244,63,94,0);} }
+
+    /* =====================================================================
+       3. LAYOUT: DESKTOP SIDEBAR + MAIN STAGE + MOBILE FLOATING DOCK
+       ===================================================================== */
+    .shell { position: relative; z-index: 2; display: flex; min-height: 100vh; }
+
     .sidebar {
       position: fixed; top: 0; left: 0; bottom: 0; width: var(--sidebar-w);
-      background: linear-gradient(180deg, rgba(8, 14, 30, 0.94), rgba(4, 8, 20, 0.98));
-      border-right: 1px solid var(--border-glass);
-      backdrop-filter: blur(22px);
+      background: linear-gradient(180deg, rgba(8,14,30,0.95), rgba(4,7,18,0.98));
+      border-right: 1px solid var(--border); backdrop-filter: blur(22px);
       display: flex; flex-direction: column; padding: 18px 14px; z-index: 40;
     }
-    .brand-card {
+    .brand-box {
       display: flex; align-items: center; gap: 11px; padding: 10px;
-      border-radius: 16px; background: rgba(15, 23, 42, 0.65);
-      border: 1px solid rgba(245, 158, 11, 0.28); margin-bottom: 18px;
+      border-radius: 16px; background: rgba(15,23,42,0.68);
+      border: 1px solid rgba(245,158,11,0.32); margin-bottom: 18px;
     }
-    .brand-logo {
-      width: 42px; height: 42px; border-radius: 12px; object-fit: cover;
-      border: 1.5px solid var(--gold); box-shadow: 0 0 18px rgba(245,158,11,0.35);
-    }
-    .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 0.4px; color: var(--gold-bright); }
-    .brand-ver { font-size: 10px; font-weight: 700; color: var(--cyan-bright); margin-top: 1px; }
+    .brand-img { width: 42px; height: 42px; border-radius: 12px; object-fit: cover; border: 1.5px solid var(--gold); }
+    .brand-h { font-size: 14.5px; font-weight: 900; color: var(--gold-hi); letter-spacing: 0.3px; }
+    .brand-p { font-size: 10.5px; font-weight: 700; color: var(--cyan-hi); margin-top: 1px; }
 
-    .nav-list { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-    .nav-btn {
+    .nav-col { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .nav-item {
       width: 100%; border: 1px solid transparent; background: transparent; color: var(--text-2);
-      border-radius: 13px; padding: 11px 12px; font-size: 13px; font-weight: 700;
+      border-radius: 13px; padding: 11px 12px; font-size: 13px; font-weight: 700; font-family: inherit;
       display: flex; align-items: center; justify-content: space-between; cursor: pointer;
-      transition: all 0.2s cubic-bezier(.22,1,.36,1); text-align: left; font-family: inherit;
+      transition: all 0.18s ease; text-align: left;
     }
-    .nav-btn:hover { background: rgba(255,255,255,0.04); color: var(--text-1); }
-    .nav-btn.active {
-      background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(6,182,212,0.14));
-      border-color: rgba(245,158,11,0.42); color: #ffffff;
-      box-shadow: 0 8px 24px -12px rgba(245,158,11,0.55);
+    .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(6,182,212,0.14));
+      border-color: rgba(245,158,11,0.45); color: #fff;
+      box-shadow: 0 8px 22px -12px rgba(245,158,11,0.6);
     }
-    .nav-left { display: flex; align-items: center; gap: 10px; }
-    .nav-badge {
-      font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px;
-      background: rgba(56,189,248,0.16); color: var(--cyan-bright);
-    }
+    .nav-cnt { font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: rgba(56,189,248,0.16); color: var(--cyan-hi); }
 
-    .sidebar-foot {
-      margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-glass);
-      display: flex; flex-direction: column; gap: 8px;
-    }
-    .clock-pill {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 9px 11px; border-radius: 12px; background: rgba(15,23,42,0.72);
-      border: 1px solid var(--border-glass); font-size: 11.5px; font-weight: 700;
-    }
-    .live-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--emerald);
-      box-shadow: 0 0 12px var(--emerald); animation: pulseDot 1.6s infinite;
-    }
+    .sidebar-foot { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+    .meta-pill { display: flex; align-items: center; justify-content: space-between; padding: 8px 11px; border-radius: 12px; background: rgba(15,23,42,0.72); border: 1px solid var(--border); font-size: 11.5px; font-weight: 700; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 12px var(--emerald); animation: pulseDot 1.5s infinite; }
     @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(1.35);} }
 
-    /* Main Content Stage */
-    .main-stage {
-      flex: 1; margin-left: var(--sidebar-w); padding: 20px 26px 44px 26px;
-      max-width: calc(100% - var(--sidebar-w));
-    }
+    .main { flex: 1; margin-left: var(--sidebar-w); max-width: calc(100% - var(--sidebar-w)); padding: 20px 26px 48px 26px; }
 
-    /* Top Executive Header Bar */
+    /* Top Command Bar */
     .topbar {
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-      margin-bottom: 20px; padding: 12px 16px; border-radius: 18px;
-      background: var(--bg-panel); border: 1px solid var(--border-glass); backdrop-filter: blur(18px);
+      margin-bottom: 18px; padding: 12px 16px; border-radius: 18px;
+      background: var(--bg-card); border: 1px solid var(--border); backdrop-filter: blur(18px);
     }
-    .topbar-left { display: flex; align-items: center; gap: 12px; }
-    .page-heading { font-size: 18px; font-weight: 900; letter-spacing: -0.2px; }
-    .page-sub { font-size: 11.5px; color: var(--text-2); margin-top: 2px; }
-    .topbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .session-pill {
+      display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 800; background: rgba(6,182,212,0.14); border: 1px solid rgba(56,189,248,0.38); color: var(--cyan-hi);
+      margin-top: 5px;
+    }
+    .session-pill.live-now {
+      background: rgba(244,63,94,0.18); border-color: rgba(244,63,94,0.55); color: #fda4af;
+    }
 
-    /* Buttons & Badges */
-    .btn {
-      border: 1px solid var(--border-glass); background: rgba(15,23,42,0.78); color: var(--text-1);
-      border-radius: 12px; padding: 8px 14px; font-size: 12px; font-weight: 800; font-family: inherit;
-      cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
-      transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease, filter 0.15s ease;
-    }
-    .btn:hover { transform: translateY(-1px); border-color: rgba(56,189,248,0.5); }
-    .btn:active { transform: scale(0.97); }
-    .btn-gold {
-      background: linear-gradient(135deg, #f59e0b, #fde047); color: #090d16; border: none;
-      box-shadow: 0 10px 26px -10px rgba(245, 158, 11, 0.7);
-    }
-    .btn-gold:hover { filter: brightness(1.06); color: #090d16; }
-    .btn-cyan {
-      background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #ffffff; border: none;
-      box-shadow: 0 10px 26px -10px rgba(6, 182, 212, 0.65);
-    }
-    .btn-emerald {
-      background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; border: none;
-    }
-    .btn-danger {
-      background: linear-gradient(135deg, #ef4444, #be123c); color: #ffffff; border: none;
-    }
-    .btn-sm { padding: 6px 10px; font-size: 11px; border-radius: 10px; }
-
-    /* Glass Cards */
-    .glass-card {
+    /* Glass Cards & Grids */
+    .card {
       position: relative; overflow: hidden;
-      background: linear-gradient(155deg, rgba(13, 22, 44, 0.84), rgba(6, 11, 24, 0.94));
-      border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 18px;
-      backdrop-filter: blur(18px);
-      box-shadow: 0 18px 42px -22px rgba(0, 0, 0, 0.85);
-      transition: border-color 0.24s ease, transform 0.24s ease, box-shadow 0.24s ease;
+      background: linear-gradient(155deg, rgba(13,22,44,0.86), rgba(6,11,24,0.95));
+      border: 1px solid var(--border); border-radius: 20px; padding: 18px;
+      backdrop-filter: blur(18px); box-shadow: 0 18px 42px -20px rgba(0,0,0,0.85);
     }
-    .glass-card::before {
+    .card::before {
       content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
       background: linear-gradient(90deg, transparent, rgba(245,158,11,0.7), rgba(6,182,212,0.7), rgba(139,92,246,0.7), transparent);
-      opacity: 0.7;
+      opacity: 0.72;
     }
-    .glass-card:hover { border-color: rgba(148,163,184,0.3); }
+    .view { display: none; animation: fadeInUp 0.28s cubic-bezier(.16,1,.3,1); }
+    .view.active { display: block; }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
 
-    /* Views */
-    .view-section { display: none; animation: viewFade 0.28s cubic-bezier(.16,1,.3,1); }
-    .view-section.active { display: block; }
-    @keyframes viewFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* KPI Row */
-    .kpi-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 18px;
-    }
-    .kpi-card {
-      background: linear-gradient(150deg, rgba(14,24,48,0.86), rgba(7,12,26,0.94));
-      border: 1px solid var(--border-glass); border-radius: 16px; padding: 15px 16px;
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .kpi {
+      background: linear-gradient(155deg, rgba(14,24,48,0.88), rgba(7,12,26,0.95));
+      border: 1px solid var(--border); border-radius: 16px; padding: 15px 16px; cursor: pointer;
       transition: transform 0.2s ease, border-color 0.2s ease;
     }
-    .kpi-card:hover { transform: translateY(-2px); border-color: var(--border-glow); }
-    .kpi-lbl { font-size: 11px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.6px; }
-    .kpi-val { font-size: 26px; font-weight: 900; margin-top: 6px; letter-spacing: -0.5px; }
+    .kpi:hover { transform: translateY(-3px); border-color: rgba(245,158,11,0.45); }
+    .kpi-lbl { font-size: 11px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.5px; }
+    .kpi-num { font-size: 26px; font-weight: 900; margin-top: 6px; letter-spacing: -0.6px; }
     .kpi-sub { font-size: 11px; color: var(--text-2); margin-top: 4px; }
 
     /* =====================================================================
-       3. LIVE 8-STEP ANIMATED FOJI COMMANDO MISSION TRACK
+       4. 3D AK-47 FIRING FOJI COMMANDO MISSION RUNWAY
        ===================================================================== */
-    .mission-card { margin-bottom: 18px; }
-    .mission-top {
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-      margin-bottom: 16px;
+    .runway-card { margin-bottom: 18px; }
+    .runway-arena {
+      position: relative; padding: 84px 14px 16px 14px; border-radius: 18px;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.12), transparent 62%),
+        linear-gradient(180deg, rgba(5,12,28,0.94), rgba(10,21,44,0.85));
+      border: 1px solid rgba(56,189,248,0.22); overflow: hidden;
     }
-    .mission-status-pill {
-      display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px; border-radius: 999px;
-      font-size: 11px; font-weight: 800; background: rgba(16,185,129,0.16); border: 1px solid rgba(16,185,129,0.4); color: #34d399;
-    }
-    .mission-status-pill.active {
-      background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.55); color: var(--gold-bright);
-    }
-    .mission-status-pill.error {
-      background: rgba(244,63,94,0.18); border-color: rgba(244,63,94,0.5); color: #fda4af;
-    }
-
-    .runway-stage {
-      position: relative; padding: 58px 12px 14px 12px; border-radius: 16px;
-      background: linear-gradient(180deg, rgba(6,13,30,0.92), rgba(10,22,46,0.75));
-      border: 1px solid rgba(56,189,248,0.18); overflow: hidden;
-    }
-    .runway-track-bg {
-      position: relative; height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08);
-      margin: 0 16px;
-    }
-    .runway-track-fill {
+    .ground-track { position: relative; height: 9px; border-radius: 99px; background: rgba(255,255,255,0.08); margin: 0 18px; }
+    .ground-fill {
       position: absolute; top: 0; left: 0; bottom: 0; width: 0%; border-radius: 99px;
-      background: linear-gradient(90deg, #f59e0b, #06b6d4, #10b981);
-      box-shadow: 0 0 18px rgba(6, 182, 212, 0.7);
-      transition: width 0.8s cubic-bezier(.22,1,.36,1);
-    }
-    /* Animated 3D-Styled Foji Commando SVG Walker */
-    #v5-foji-walker {
-      position: absolute; top: 6px; left: 3%; width: 46px; height: 52px;
-      transform: translateX(-50%);
-      transition: left 0.85s cubic-bezier(.22,1,.36,1);
-      filter: drop-shadow(0 6px 12px rgba(245,158,11,0.45));
-      z-index: 4;
-    }
-    #v5-foji-walker.walking { animation: fojiMarch 0.55s ease-in-out infinite; }
-    @keyframes fojiMarch {
-      0%,100% { transform: translateX(-50%) translateY(0px) rotate(-2deg); }
-      50% { transform: translateX(-50%) translateY(-5px) rotate(3deg); }
-    }
-    .steps-row {
-      display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-top: 14px; text-align: center;
-    }
-    .step-node { font-size: 10px; font-weight: 700; color: var(--text-3); transition: color 0.25s ease; }
-    .step-node .s-dot {
-      width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 5px auto;
-      background: rgba(148,163,184,0.25); border: 1.5px solid rgba(148,163,184,0.35);
-      transition: all 0.3s ease;
-    }
-    .step-node.done { color: #34d399; }
-    .step-node.done .s-dot { background: #10b981; border-color: #34d399; box-shadow: 0 0 12px #10b981; }
-    .step-node.current { color: var(--gold-bright); font-weight: 900; }
-    .step-node.current .s-dot {
-      background: var(--gold); border-color: var(--gold-bright);
-      box-shadow: 0 0 16px var(--gold); transform: scale(1.3);
+      background: linear-gradient(90deg, #f59e0b, #38bdf8, #10b981);
+      box-shadow: 0 0 20px rgba(56,189,248,0.75);
+      transition: width 0.85s cubic-bezier(.22,1,.36,1);
     }
 
-    /* Studio 2-Column Layout */
-    .studio-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; }
-    .track-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-top: 12px; }
-    .track-chip {
-      padding: 12px; border-radius: 14px; cursor: pointer;
-      background: rgba(15,23,42,0.7); border: 1px solid var(--border-glass);
-      transition: all 0.2s ease;
+    /* 3D Foji Commando with AK-47 */
+    #foji-commando {
+      position: absolute; top: 8px; left: 5%; width: 78px; height: 74px;
+      transform: translateX(-50%);
+      transition: left 0.9s cubic-bezier(.22,1,.36,1);
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,0.75));
+      z-index: 5;
     }
-    .track-chip:hover { border-color: rgba(56,189,248,0.45); transform: translateY(-2px); }
-    .track-chip.selected {
-      background: linear-gradient(145deg, rgba(245,158,11,0.2), rgba(6,182,212,0.14));
-      border-color: var(--gold); box-shadow: 0 8px 22px -12px rgba(245,158,11,0.7);
+    #foji-commando.resting { animation: breatheRest 2.8s ease-in-out infinite; }
+    #foji-commando.resting .ak-group { transform: rotate(22deg) translateY(5px); transform-origin: 36px 40px; }
+    #foji-commando.resting .muzzle-flash, #foji-commando.resting .tracer-bullet { opacity: 0 !important; }
+
+    #foji-commando.firing { animation: combatStride 0.48s ease-in-out infinite; }
+    #foji-commando.firing .leg-l { animation: legSwingA 0.48s ease-in-out infinite; transform-origin: 28px 50px; }
+    #foji-commando.firing .leg-r { animation: legSwingB 0.48s ease-in-out infinite; transform-origin: 36px 50px; }
+    #foji-commando.firing .ak-group { animation: akRecoil 0.16s linear infinite; transform-origin: 34px 38px; }
+    #foji-commando.firing .muzzle-flash { animation: flashBlink 0.16s linear infinite; }
+    #foji-commando.firing .tracer-bullet { animation: tracerShot 0.34s linear infinite; }
+
+    @keyframes breatheRest { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(-2.5px);} }
+    @keyframes combatStride { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(-5px);} }
+    @keyframes legSwingA { 0%,100%{transform:rotate(-16deg);} 50%{transform:rotate(18deg);} }
+    @keyframes legSwingB { 0%,100%{transform:rotate(18deg);} 50%{transform:rotate(-16deg);} }
+    @keyframes akRecoil { 0%,100%{transform:translateX(0) rotate(0deg);} 50%{transform:translateX(-2.2px) rotate(-2deg);} }
+    @keyframes flashBlink { 0%,45%{opacity:1;transform:scale(1.15);} 55%,100%{opacity:0.15;transform:scale(0.65);} }
+    @keyframes tracerShot { 0%{opacity:1;transform:translateX(0);} 100%{opacity:0;transform:translateX(26px);} }
+
+    .steps-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-top: 14px; text-align: center; }
+    .st-item { font-size: 10.5px; font-weight: 700; color: var(--text-3); transition: color 0.25s ease; }
+    .st-dot { width: 11px; height: 11px; border-radius: 50%; margin: 0 auto 6px auto; background: rgba(148,163,184,0.22); border: 1.5px solid rgba(148,163,184,0.35); transition: all 0.28s ease; }
+    .st-item.done { color: #34d399; }
+    .st-item.done .st-dot { background: #10b981; border-color: #34d399; box-shadow: 0 0 12px #10b981; }
+    .st-item.now { color: var(--gold-hi); font-weight: 900; }
+    .st-item.now .st-dot { background: var(--gold); border-color: var(--gold-hi); box-shadow: 0 0 18px var(--gold); transform: scale(1.35); }
+
+    /* Two-Column Studio Grid */
+    .two-col { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; }
+    .tracks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; margin-top: 12px; }
+    .track-btn {
+      padding: 12px; border-radius: 14px; cursor: pointer; text-align: left;
+      background: rgba(15,23,42,0.72); border: 1px solid var(--border);
+      transition: all 0.18s ease;
     }
-    .inp, textarea.inp {
-      width: 100%; background: rgba(3,7,18,0.88); border: 1px solid rgba(148,163,184,0.26);
-      color: var(--text-1); border-radius: 12px; padding: 10px 13px; font-size: 12.5px;
-      font-family: inherit; outline: none; transition: border-color 0.2s ease;
+    .track-btn:hover { border-color: rgba(56,189,248,0.48); transform: translateY(-2px); }
+    .track-btn.selected {
+      background: linear-gradient(145deg, rgba(245,158,11,0.22), rgba(6,182,212,0.14));
+      border-color: var(--gold); box-shadow: 0 8px 22px -12px rgba(245,158,11,0.75);
     }
-    .inp:focus { border-color: var(--cyan-bright); }
+    .inp {
+      width: 100%; background: rgba(3,7,18,0.9); border: 1px solid rgba(148,163,184,0.26);
+      color: #fff; border-radius: 12px; padding: 10px 13px; font-size: 12.5px; font-family: inherit; outline: none;
+    }
+    .inp:focus { border-color: var(--cyan-hi); }
 
     /* =====================================================================
-       4. VAULT & QUEUE (9:16 REEL CARDS + THEATER MODAL)
+       5. VIDEOS & QUEUE (5 TACTILE 3D BUTTONS UNDER EVERY REEL!)
        ===================================================================== */
-    .subtab-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .subtab {
-      padding: 8px 14px; border-radius: 12px; border: 1px solid var(--border-glass);
-      background: rgba(15,23,42,0.7); color: var(--text-2); font-size: 12px; font-weight: 800;
-      cursor: pointer; font-family: inherit; transition: all 0.18s ease;
+    .tabs-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tab-btn {
+      padding: 8px 14px; border-radius: 12px; border: 1px solid var(--border);
+      background: rgba(15,23,42,0.74); color: var(--text-2); font-size: 12px; font-weight: 800; font-family: inherit; cursor: pointer;
     }
-    .subtab.active {
-      background: linear-gradient(135deg, rgba(245,158,11,0.24), rgba(6,182,212,0.18));
-      border-color: var(--gold); color: var(--gold-bright);
-    }
-    .vault-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 16px;
-    }
+    .tab-btn.active { background: linear-gradient(135deg, rgba(245,158,11,0.25), rgba(6,182,212,0.18)); border-color: var(--gold); color: var(--gold-hi); }
+
+    .reels-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 16px; }
     .reel-card {
-      background: linear-gradient(160deg, rgba(13,22,44,0.9), rgba(6,10,22,0.96));
-      border: 1px solid var(--border-glass); border-radius: 18px; overflow: hidden;
-      display: flex; flex-direction: column; transition: transform 0.22s ease, border-color 0.22s ease;
+      background: linear-gradient(160deg, rgba(13,22,44,0.92), rgba(6,10,22,0.97));
+      border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+      display: flex; flex-direction: column; transition: transform 0.2s ease, border-color 0.2s ease;
     }
     .reel-card:hover { transform: translateY(-4px); border-color: rgba(56,189,248,0.45); }
-    .reel-poster {
-      position: relative; aspect-ratio: 9 / 13; background: #070e1f; cursor: pointer; overflow: hidden;
-    }
-    .reel-poster img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
-    .reel-card:hover .reel-poster img { transform: scale(1.04); }
-    .reel-play-badge {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(180deg, transparent 40%, rgba(2,6,23,0.88) 100%);
-    }
-    .play-circle {
-      width: 48px; height: 48px; border-radius: 50%; background: rgba(245,158,11,0.9);
-      color: #090d16; display: flex; align-items: center; justify-content: center; font-size: 18px;
-      box-shadow: 0 0 28px rgba(245,158,11,0.6);
-    }
-    .reel-status-chip {
-      position: absolute; top: 10px; left: 10px; padding: 4px 9px; border-radius: 999px;
-      font-size: 10px; font-weight: 800; backdrop-filter: blur(8px);
-      background: rgba(3,7,18,0.82); border: 1px solid rgba(255,255,255,0.2);
-    }
+    .reel-thumb-wrap { position: relative; aspect-ratio: 9 / 12.5; background: #060c1b; cursor: pointer; overflow: hidden; }
+    .reel-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
+    .reel-card:hover .reel-thumb-wrap img { transform: scale(1.04); }
+    .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, transparent 42%, rgba(2,6,23,0.9) 100%); }
+    .play-orb { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #fde047, #f59e0b); color: #090d16; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 0 28px rgba(245,158,11,0.65); }
+    .reel-badge { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 999px; font-size: 10px; font-weight: 800; background: rgba(3,7,18,0.84); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(8px); }
     .reel-body { padding: 13px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .reel-title { font-size: 13px; font-weight: 800; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .reel-meta { font-size: 11px; color: var(--text-2); }
-    .reel-acts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+    .reel-name { font-size: 13px; font-weight: 800; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .reel-slot { font-size: 11px; color: var(--cyan-hi); font-weight: 700; }
+    .reel-actions-5 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: auto; padding-top: 8px; }
+    .reel-actions-5 .full-span { grid-column: 1 / -1; }
 
-    /* =====================================================================
-       5. 5-SESSIONS TIMELINE & EDITABLE POSTING SLOTS
-       ===================================================================== */
-    .session-row {
+    /* Sessions List */
+    .sess-item {
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
       padding: 13px 15px; border-radius: 14px; margin-bottom: 10px;
-      background: rgba(15,23,42,0.72); border: 1px solid var(--border-glass);
-      transition: border-color 0.2s ease;
+      background: rgba(15,23,42,0.74); border: 1px solid var(--border);
     }
-    .session-row:hover { border-color: rgba(245,158,11,0.4); }
-    .time-inp {
-      background: #040917; border: 1px solid rgba(56,189,248,0.42); color: #fff;
-      border-radius: 12px; padding: 9px 12px; font-size: 14px; font-weight: 800; font-family: inherit;
-    }
+    .sess-item.active-now { border-color: var(--gold); background: rgba(245,158,11,0.1); }
+    .time-inp { background: #040917; border: 1px solid rgba(56,189,248,0.45); color: #fff; border-radius: 12px; padding: 9px 12px; font-size: 14px; font-weight: 800; font-family: inherit; }
 
     /* =====================================================================
-       6. TRI-PLATFORM INSIGHTS HUB + DEDICATED FULL-SCREEN DEEP-DIVE PAGES
+       6. ULTRA-PRO ANALYTICS & FULL-SCREEN PLATFORM DEEP-DIVE
        ===================================================================== */
-    .tri-cards-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin-top: 16px;
-    }
-    .plat-launch-card {
-      position: relative; overflow: hidden; cursor: pointer;
+    .plat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin-top: 16px; }
+    .plat-card {
+      position: relative; cursor: pointer; overflow: hidden;
       background: linear-gradient(155deg, rgba(14,24,48,0.92), rgba(6,11,24,0.97));
-      border: 1px solid var(--border-glass); border-radius: 20px; padding: 22px;
-      transition: transform 0.24s cubic-bezier(.22,1,.36,1), box-shadow 0.24s ease, border-color 0.24s ease;
+      border: 1px solid var(--border); border-radius: 20px; padding: 22px;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
     }
-    .plat-launch-card:hover { transform: translateY(-5px); box-shadow: 0 22px 46px -18px rgba(6,182,212,0.4); }
-    .plat-launch-card.ig { border-top: 3px solid #ec4899; }
-    .plat-launch-card.yt { border-top: 3px solid #ef4444; }
-    .plat-launch-card.fb { border-top: 3px solid #38bdf8; }
-    .plat-big-num { font-size: 32px; font-weight: 900; margin: 14px 0 6px 0; letter-spacing: -0.8px; }
+    .plat-card:hover { transform: translateY(-5px); box-shadow: 0 22px 46px -16px rgba(6,182,212,0.38); }
+    .plat-card.ig { border-top: 3px solid #ec4899; }
+    .plat-card.yt { border-top: 3px solid #ef4444; }
+    .plat-card.fb { border-top: 3px solid #38bdf8; }
 
-    /* Dedicated Full-Screen Deep Analytics Overlay Page */
-    #v5-deep-page {
+    #v6-deep-page {
       display: none; position: fixed; inset: 0; z-index: 500;
       background:
         radial-gradient(circle at 12% 8%, rgba(6,182,212,0.16), transparent 40%),
         radial-gradient(circle at 88% 12%, rgba(139,92,246,0.16), transparent 40%),
-        #030612;
-      overflow-y: auto; padding: 22px 18px 60px 18px;
-      animation: slideUpPage 0.28s cubic-bezier(.16,1,.3,1);
+        #030611;
+      overflow-y: auto; padding: 20px 18px 64px 18px;
+      animation: fadeInUp 0.26s cubic-bezier(.16,1,.3,1);
     }
-    #v5-deep-page.open { display: block; }
-    @keyframes slideUpPage { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    .deep-container { max-width: 1260px; margin: 0 auto; }
-    .badge-viral { color: #fde047; background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.5); padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
-    .badge-up { color: #34d399; background: rgba(16,185,129,0.18); border: 1px solid rgba(16,185,129,0.45); padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
-    .badge-down { color: #fb7185; background: rgba(244,63,94,0.18); border: 1px solid rgba(244,63,94,0.45); padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    #v6-deep-page.open { display: block; }
+    .deep-wrap { max-width: 1280px; margin: 0 auto; }
+    .tag-viral { color: #fde047; background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.5); padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .tag-up { color: #34d399; background: rgba(16,185,129,0.18); border: 1px solid rgba(16,185,129,0.45); padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .tag-down { color: #fb7185; background: rgba(244,63,94,0.18); border: 1px solid rgba(244,63,94,0.45); padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+
+    .pro-analytics-split { display: grid; grid-template-columns: 1.45fr 1fr; gap: 16px; margin-bottom: 18px; }
     .deep-reel-row {
       display: grid; grid-template-columns: 58px 1fr auto; gap: 14px; align-items: center;
       padding: 11px 13px; border-radius: 15px; margin-bottom: 9px;
-      background: rgba(12,21,42,0.82); border: 1px solid var(--border-glass);
-      transition: border-color 0.2s ease, transform 0.18s ease;
+      background: rgba(12,21,42,0.84); border: 1px solid var(--border);
+      transition: border-color 0.18s ease, transform 0.16s ease;
     }
-    .deep-reel-row:hover { border-color: rgba(56,189,248,0.45); transform: translateX(3px); }
+    .deep-reel-row:hover { border-color: rgba(56,189,248,0.48); transform: translateX(3px); }
     .deep-thumb { width: 58px; height: 76px; border-radius: 10px; object-fit: cover; background: #0f172a; }
-    .perf-track { height: 5px; border-radius: 99px; background: rgba(255,255,255,0.08); margin-top: 7px; overflow: hidden; }
-    .perf-fill { height: 100%; border-radius: 99px; }
+    .bar-track { height: 6px; border-radius: 99px; background: rgba(255,255,255,0.08); margin-top: 6px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
 
     /* =====================================================================
-       7. MODALS (REEL THEATER + LIVE GEMINI SCREENSHOT + TOAST)
+       7. 3D GLASS POPUP MODALS, THEATER, CONFETTI CELEBRATION & TOASTS
        ===================================================================== */
-    .modal-backdrop {
-      display: none; position: fixed; inset: 0; z-index: 800;
-      background: rgba(2, 6, 23, 0.86); backdrop-filter: blur(12px);
+    .modal-bg {
+      display: none; position: fixed; inset: 0; z-index: 900;
+      background: rgba(2,6,23,0.84); backdrop-filter: blur(12px);
       align-items: center; justify-content: center; padding: 16px;
+      perspective: 1100px;
     }
-    .modal-backdrop.open { display: flex; }
-    .theater-box {
-      width: 100%; max-width: 880px; max-height: 92vh; overflow-y: auto;
-      background: #081022; border: 1px solid rgba(245,158,11,0.45); border-radius: 22px;
-      display: grid; grid-template-columns: 320px 1fr; gap: 0; overflow: hidden;
-      box-shadow: 0 28px 80px rgba(0,0,0,0.92);
+    .modal-bg.open { display: flex; }
+    .modal-3d {
+      width: 100%; max-width: 460px;
+      background: linear-gradient(155deg, rgba(16,28,56,0.96), rgba(7,12,28,0.98));
+      border: 1.5px solid rgba(245,158,11,0.52); border-radius: 24px; padding: 24px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.9), 0 0 50px -12px rgba(245,158,11,0.35), inset 0 1px 0 rgba(255,255,255,0.18);
+      text-align: center;
+      animation: modalPop3D 0.32s cubic-bezier(.16,1,.3,1);
     }
-    .theater-video-pane {
-      background: #02050d; display: flex; align-items: center; justify-content: center; padding: 14px;
+    @keyframes modalPop3D {
+      0% { opacity: 0; transform: rotateX(18deg) scale(0.86) translateY(24px); }
+      100% { opacity: 1; transform: rotateX(0deg) scale(1) translateY(0); }
     }
-    .theater-video-pane video {
-      width: 100%; max-height: 76vh; border-radius: 14px; background: #000;
+    .theater-card {
+      width: 100%; max-width: 880px; max-height: 92vh; overflow: hidden;
+      background: #081022; border: 1.5px solid rgba(245,158,11,0.48); border-radius: 22px;
+      display: grid; grid-template-columns: 320px 1fr; box-shadow: 0 30px 80px rgba(0,0,0,0.92);
     }
-    .theater-info-pane { padding: 20px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 88vh; }
+    .theater-left { background: #02050d; display: flex; align-items: center; justify-content: center; padding: 14px; }
+    .theater-left video { width: 100%; max-height: 76vh; border-radius: 14px; background: #000; }
+    .theater-right { padding: 20px; display: flex; flex-direction: column; gap: 11px; overflow-y: auto; max-height: 88vh; }
 
-    #v5-toast {
+    /* Floating 3D Notification Stack */
+    #toast-stack {
       position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-      background: rgba(10,18,38,0.96); border: 1px solid var(--gold); color: #fff;
-      padding: 12px 18px; border-radius: 14px; font-size: 13px; font-weight: 700;
-      box-shadow: 0 18px 44px rgba(0,0,0,0.75);
-      transform: translateY(120px); opacity: 0; transition: all 0.28s cubic-bezier(.16,1,.3,1);
+      display: flex; flex-direction: column; gap: 10px; max-width: 360px; pointer-events: none;
     }
-    #v5-toast.show { transform: translateY(0); opacity: 1; }
+    .toast-3d {
+      pointer-events: auto;
+      background: linear-gradient(145deg, rgba(15,26,52,0.96), rgba(7,12,28,0.98));
+      border: 1.5px solid rgba(245,158,11,0.55); border-radius: 16px; padding: 13px 16px;
+      color: #fff; font-size: 12.5px; font-weight: 700;
+      box-shadow: 0 18px 42px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.16);
+      display: flex; align-items: center; gap: 10px;
+      animation: toastSlide 0.3s cubic-bezier(.16,1,.3,1);
+    }
+    .toast-3d.err { border-color: rgba(244,63,94,0.7); }
+    .toast-3d.ok { border-color: rgba(16,185,129,0.65); }
+    @keyframes toastSlide { from{opacity:0;transform:translateX(40px) scale(0.92);} to{opacity:1;transform:translateX(0) scale(1);} }
 
-    /* Mobile Floating Bottom Navigation Dock */
+    #confetti-canvas { position: fixed; inset: 0; z-index: 9998; pointer-events: none; display: none; }
+
+    /* Mobile Dock */
     .mobile-dock {
       display: none; position: fixed; left: 10px; right: 10px; bottom: 10px; z-index: 120;
-      background: rgba(7, 13, 28, 0.94); border: 1px solid rgba(148,163,184,0.22);
-      border-radius: 18px; padding: 7px 6px; backdrop-filter: blur(20px);
-      box-shadow: 0 18px 44px rgba(0,0,0,0.85);
+      background: rgba(7,13,28,0.95); border: 1px solid rgba(148,163,184,0.22); border-radius: 18px;
+      padding: 7px 6px; backdrop-filter: blur(20px); box-shadow: 0 18px 44px rgba(0,0,0,0.85);
       grid-template-columns: repeat(5, 1fr); gap: 4px;
     }
-    .mdock-btn {
-      border: none; background: transparent; color: var(--text-2); font-family: inherit;
-      padding: 6px 4px; border-radius: 12px; display: flex; flex-direction: column;
-      align-items: center; gap: 3px; font-size: 10px; font-weight: 800; cursor: pointer;
-    }
-    .mdock-btn.active {
-      background: rgba(245,158,11,0.18); color: var(--gold-bright);
-    }
+    .mdock-btn { border: none; background: transparent; color: var(--text-2); font-family: inherit; padding: 6px 4px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; font-weight: 800; cursor: pointer; }
+    .mdock-btn.active { background: rgba(245,158,11,0.2); color: var(--gold-hi); }
 
     @media (max-width: 960px) {
       .sidebar { display: none; }
-      .main-stage { margin-left: 0; max-width: 100%; padding: 14px 12px 92px 12px; }
+      .main { margin-left: 0; max-width: 100%; padding: 14px 12px 92px 12px; }
       .mobile-dock { display: grid; }
-      .studio-grid { grid-template-columns: 1fr; }
-      .theater-box { grid-template-columns: 1fr; max-height: 92vh; overflow-y: auto; }
-      .steps-row { grid-template-columns: repeat(4, 1fr); row-gap: 10px; }
+      .two-col, .pro-analytics-split { grid-template-columns: 1fr; }
+      .theater-card { grid-template-columns: 1fr; max-height: 92vh; overflow-y: auto; }
+      .steps-grid { grid-template-columns: repeat(4, 1fr); row-gap: 10px; }
     }
     @media (max-width: 600px) {
       .deep-reel-row { grid-template-columns: 48px 1fr; }
@@ -531,283 +455,288 @@
   </style>
 </head>
 <body>
-  <div class="aurora-bg"><div class="aurora-grid"></div></div>
+  <div class="ambient-bg"><div class="ambient-grid"></div></div>
+  <canvas id="confetti-canvas"></canvas>
 
-  <!-- 1. UNIQUE 3D HOLOGRAPHIC ORBITAL WELCOME SCREEN -->
-  <div id="v5-intro" onclick="closeIntro()">
-    <div class="intro-laser"></div>
-    <div class="intro-ring r1"></div>
-    <div class="intro-ring r2"></div>
-    <div class="intro-ring r3"></div>
-    <img src="/emblem-logo.png" class="intro-crest" alt="Foji AI Studio Pro" onerror="this.style.display='none'" />
-    <div class="intro-brand">FOJI AI STUDIO PRO</div>
-    <div class="intro-tags">
-      <span class="intro-tag">3D Veo v5 Engine</span>
-      <span class="intro-tag">Instagram Official</span>
-      <span class="intro-tag">YouTube Shorts</span>
-      <span class="intro-tag">Facebook Reels</span>
-    </div>
-    <div class="intro-bar"><div class="intro-bar-fill"></div></div>
+  <!-- 1. WELCOME SCREEN -->
+  <div id="v6-intro" onclick="closeIntro()">
+    <div class="laser"></div>
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+    <div class="ring r3"></div>
+    <img src="/emblem-logo.png" class="intro-logo" alt="Foji AI Studio" onerror="this.style.display='none'" />
+    <div class="intro-name">FOJI AI STUDIO</div>
+    <div class="intro-sub">3D CREATOR COMMAND SUITE</div>
+    <div class="intro-track"><div class="intro-fill"></div></div>
   </div>
 
-  <div class="app-shell">
-    <!-- 2. DESKTOP EXECUTIVE SIDEBAR -->
+  <div class="shell">
+    <!-- DESKTOP SIDEBAR -->
     <aside class="sidebar">
-      <div class="brand-card">
-        <img src="/emblem-logo.png" class="brand-logo" alt="Logo" onerror="this.style.display='none'" />
+      <div class="brand-box">
+        <img src="/emblem-logo.png" class="brand-img" alt="Logo" onerror="this.style.display='none'" />
         <div>
-          <div class="brand-title">FOJI AI STUDIO</div>
-          <div class="brand-ver">PRO v5 • SAAS EDITION</div>
+          <div class="brand-h">FOJI AI STUDIO</div>
+          <div class="brand-p">Creator Pro Suite</div>
         </div>
       </div>
 
-      <nav class="nav-list">
-        <button id="snav-studio" class="nav-btn active" onclick="switchView('studio')">
-          <span class="nav-left">🎬 Command Studio</span>
-          <span class="nav-badge" id="nb-live">LIVE</span>
+      <nav class="nav-col">
+        <button id="snav-studio" class="nav-item active" onclick="switchView('studio')">
+          <span>🎬 Studio</span><span class="nav-cnt" id="nb-live">LIVE</span>
         </button>
-        <button id="snav-vault" class="nav-btn" onclick="switchView('vault')">
-          <span class="nav-left">🎞️ Vault & Queue</span>
-          <span class="nav-badge" id="nb-vault">0</span>
+        <button id="snav-vault" class="nav-item" onclick="switchView('vault')">
+          <span>🎞️ Videos & Queue</span><span class="nav-cnt" id="nb-vault">0</span>
         </button>
-        <button id="snav-sessions" class="nav-btn" onclick="switchView('sessions')">
-          <span class="nav-left">⚡ 5-Sessions & Slots</span>
-          <span class="nav-badge" id="nb-sess">5</span>
+        <button id="snav-sessions" class="nav-item" onclick="switchView('sessions')">
+          <span>⚡ Auto Schedule</span><span class="nav-cnt">5</span>
         </button>
-        <button id="snav-insights" class="nav-btn" onclick="switchView('insights')">
-          <span class="nav-left">📊 Insights Hub</span>
-          <span class="nav-badge">3X</span>
+        <button id="snav-insights" class="nav-item" onclick="switchView('insights')">
+          <span>📊 Analytics</span><span class="nav-cnt">PRO</span>
         </button>
-        <button id="snav-system" class="nav-btn" onclick="switchView('system')">
-          <span class="nav-left">⚙️ API & System</span>
-          <span class="nav-badge" id="nb-sys">PRO</span>
+        <button id="snav-system" class="nav-item" onclick="switchView('system')">
+          <span>⚙️ Connections</span><span class="nav-cnt">API</span>
         </button>
       </nav>
 
       <div class="sidebar-foot">
-        <div class="clock-pill">
-          <span style="display:flex;align-items:center;gap:7px;"><span class="live-dot"></span> IST Live</span>
-          <span id="sidebar-clock" style="color:var(--gold-bright);">--:--</span>
+        <div class="meta-pill">
+          <span style="display:flex;align-items:center;gap:7px;"><span class="live-dot"></span> IST Time</span>
+          <span id="sidebar-clock" style="color:var(--gold-hi);">--:--</span>
         </div>
-        <div class="clock-pill" style="font-size:11px;color:var(--text-2);">
-          <span>💾 Cloud Storage</span>
+        <div class="meta-pill" style="font-size:11px;color:var(--text-2);">
+          <span>💾 Active Files</span>
           <span id="sidebar-storage" style="color:#34d399;font-weight:800;">-- MB</span>
         </div>
       </div>
     </aside>
 
-    <!-- 3. MAIN STAGE -->
-    <main class="main-stage">
-      <!-- TOPBAR -->
+    <!-- MAIN STAGE -->
+    <main class="main">
+      <!-- TOP BAR -->
       <header class="topbar">
-        <div class="topbar-left">
-          <div>
-            <div id="top-page-title" class="page-heading">🎬 Command Studio</div>
-            <div id="top-page-sub" class="page-sub">12-Step Calibrated Veo Engine • Next Auto-Slot: <span id="top-next-slot" style="color:var(--cyan-bright);font-weight:700;">--</span></div>
-          </div>
+        <div>
+          <div id="top-title" style="font-size:19px;font-weight:900;letter-spacing:-0.3px;">🎬 Studio</div>
+          <div id="active-session-pill" class="session-pill">🕒 Checking next auto session...</div>
         </div>
-        <div class="topbar-actions">
-          <button class="btn btn-gold" onclick="triggerGenerate(1)">🚀 Create 1 Reel</button>
-          <button class="btn btn-cyan" onclick="triggerGenerate(3)">⚡ Batch 3 Reels</button>
-          <button class="btn" onclick="openLiveScreenshot()" title="See Live Gemini Browser Screen">👁️ Live Cam</button>
-          <button class="btn" onclick="replayIntro()" title="Replay Welcome Animation">✨</button>
+        <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+          <!-- Dynamic Generate <-> Stop Button -->
+          <button id="primary-gen-btn" class="btn3d gold" onclick="handlePrimaryGenOrStop()">🚀 Generate Video</button>
+          <button id="batch-gen-btn" class="btn3d cyan" onclick="triggerGenerate(3)">⚡ Batch 3</button>
+          <button class="btn3d" onclick="openLiveCam()" title="Live Screen">👁️ Live View</button>
+          <button id="sound-toggle-btn" class="btn3d" onclick="toggleSound()" title="Toggle Studio Sound">🔊 Sound ON</button>
         </div>
       </header>
 
       <!-- =============================================================
-           VIEW 1: COMMAND STUDIO
+           VIEW 1: STUDIO
            ============================================================= -->
-      <section id="view-studio" class="view-section active">
-        <!-- KPI Strip -->
-        <div class="kpi-grid">
-          <div class="kpi-card" style="cursor:pointer;" onclick="switchView('vault','pending')">
-            <div class="kpi-lbl">⏳ Pending Review</div>
-            <div id="kpi-pending" class="kpi-val" style="color:var(--gold-bright);">0</div>
-            <div class="kpi-sub">Ready for 1-Tap Approval</div>
+      <section id="view-studio" class="view active">
+        <div class="kpi-row">
+          <div class="kpi" onclick="switchView('vault','pending')">
+            <div class="kpi-lbl">⏳ Ready for Review</div>
+            <div id="kpi-pending" class="kpi-num" style="color:var(--gold-hi);">0</div>
+            <div class="kpi-sub">Approve, Schedule or Post</div>
           </div>
-          <div class="kpi-card" style="cursor:pointer;" onclick="switchView('vault','scheduled')">
-            <div class="kpi-lbl">📅 Auto-Scheduled</div>
-            <div id="kpi-scheduled" class="kpi-val" style="color:var(--cyan-bright);">0</div>
-            <div class="kpi-sub">Protected Queue Slots</div>
+          <div class="kpi" onclick="switchView('vault','scheduled')">
+            <div class="kpi-lbl">📅 Scheduled</div>
+            <div id="kpi-scheduled" class="kpi-num" style="color:var(--cyan-hi);">0</div>
+            <div class="kpi-sub">Next Slot: <span id="kpi-next-slot">--</span></div>
           </div>
-          <div class="kpi-card" style="cursor:pointer;" onclick="switchView('vault','posted')">
-            <div class="kpi-lbl">✅ Published Reels</div>
-            <div id="kpi-posted" class="kpi-val" style="color:#34d399;">0</div>
-            <div class="kpi-sub">Auto-Archived After Post</div>
+          <div class="kpi" onclick="switchView('vault','posted')">
+            <div class="kpi-lbl">✅ Posted Reels</div>
+            <div id="kpi-posted" class="kpi-num" style="color:#34d399;">0</div>
+            <div class="kpi-sub">Locked & Archived</div>
           </div>
-          <div class="kpi-card" style="cursor:pointer;" onclick="openDeepPlatform('instagram')">
-            <div class="kpi-lbl">👁️ Total Empire Reach</div>
-            <div id="kpi-reach" class="kpi-val" style="color:#c084fc;">--</div>
-            <div class="kpi-sub">Tap for Growth & Dip →</div>
+          <div class="kpi" onclick="openDeepPlatform('instagram')">
+            <div class="kpi-lbl">👁️ Total Reach</div>
+            <div id="kpi-reach" class="kpi-num" style="color:#c084fc;">--</div>
+            <div class="kpi-sub">Tap for Pro Analytics →</div>
           </div>
         </div>
 
-        <!-- LIVE 8-STEP FOJI COMMANDO MISSION TRACK -->
-        <div class="glass-card mission-card">
-          <div class="mission-top">
+        <!-- LIVE 3D AK-47 FIRING FOJI COMMANDO RUNWAY -->
+        <div class="card runway-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
             <div>
-              <div style="font-size:15px;font-weight:900;display:flex;align-items:center;gap:9px;">
-                🪖 Live 3D Production Pipeline
-                <span id="mission-pct" style="font-size:12px;color:var(--gold-bright);background:rgba(245,158,11,0.16);padding:3px 9px;border-radius:999px;">0%</span>
+              <div style="font-size:15.5px;font-weight:900;display:flex;align-items:center;gap:10px;">
+                🪖 Live Production Progress
+                <span id="mission-pct" style="font-size:12px;color:var(--gold-hi);background:rgba(245,158,11,0.18);padding:3px 10px;border-radius:999px;">0%</span>
+                <span id="mission-state-tag" class="tag-up">STANDBY</span>
               </div>
-              <div id="mission-detail" style="font-size:12px;color:var(--text-2);margin-top:4px;">Engine standing by — ready for next automated session or 1-tap render.</div>
+              <div id="mission-detail" style="font-size:12px;color:var(--text-2);margin-top:4px;">Commando resting — ready to roll when you start a video or next session begins.</div>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <span id="mission-pill" class="mission-status-pill">● STANDBY</span>
-              <button class="btn btn-danger btn-sm" onclick="stopPipeline()">🛑 Stop</button>
-              <button class="btn btn-sm" onclick="resetTelemetry()">↺ Reset</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn3d sm" onclick="resetTelemetry()">↺ Reset</button>
+              <button class="btn3d sm violet" onclick="celebrateVictory('Preview Celebration!','Sound & confetti test ready for your next 3D reel!')">🎉 Test Victory</button>
             </div>
           </div>
 
-          <div class="runway-stage">
-            <!-- Animated Foji Commando SVG Walker -->
-            <div id="v5-foji-walker">
-              <svg viewBox="0 0 64 72" width="46" height="52" xmlns="http://www.w3.org/2000/svg">
+          <div class="runway-arena">
+            <!-- Detailed 3D-Shaded Foji Commando with AK-47 & Live Firing Muzzle Flash -->
+            <div id="foji-commando" class="resting">
+              <svg viewBox="0 0 92 84" width="78" height="74" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <linearGradient id="beretG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#9f1239"/><stop offset="100%" stop-color="#4c0519"/></linearGradient>
-                  <linearGradient id="uniG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4d7c0f"/><stop offset="100%" stop-color="#365314"/></linearGradient>
+                  <linearGradient id="cBeret" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#be123c"/><stop offset="100%" stop-color="#4c0519"/></linearGradient>
+                  <linearGradient id="cSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbd3b6"/><stop offset="100%" stop-color="#d4936a"/></linearGradient>
+                  <linearGradient id="cArmor" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4d7c0f"/><stop offset="55%" stop-color="#365314"/><stop offset="100%" stop-color="#1a2e05"/></linearGradient>
+                  <linearGradient id="cMetal" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#0f172a"/></linearGradient>
+                  <linearGradient id="cWood" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#b45309"/><stop offset="100%" stop-color="#78350f"/></linearGradient>
+                  <radialGradient id="cFlash"><stop offset="0%" stop-color="#ffffff"/><stop offset="45%" stop-color="#fde047"/><stop offset="100%" stop-color="#f97316" stop-opacity="0"/></radialGradient>
                 </defs>
-                <!-- Beret -->
-                <path d="M16 18 C18 7, 46 6, 48 16 C42 20, 22 20, 16 18 Z" fill="url(#beretG)" stroke="#fde047" stroke-width="1.2"/>
-                <circle cx="38" cy="13" r="2.2" fill="#fde047"/>
-                <!-- Face -->
-                <circle cx="32" cy="24" r="10.5" fill="#f5c6a5"/>
-                <circle cx="28.5" cy="23" r="1.6" fill="#0f172a"/>
-                <circle cx="35.5" cy="23" r="1.6" fill="#0f172a"/>
-                <!-- Mustache -->
-                <path d="M26 28 Q32 25.5 38 28 Q32 30.2 26 28 Z" fill="#1e293b"/>
-                <!-- Uniform Torso -->
-                <rect x="20" y="34" width="24" height="20" rx="6" fill="url(#uniG)" stroke="#a3e635" stroke-width="0.9"/>
-                <rect x="20" y="45" width="24" height="3.2" fill="#1e293b"/>
-                <rect x="29.5" y="44.5" width="5" height="4.2" rx="1" fill="#fde047"/>
+                <!-- Ground Shadow -->
+                <ellipse cx="34" cy="79" rx="18" ry="4" fill="rgba(0,0,0,0.5)"/>
+                <!-- Animated Legs -->
+                <g class="leg-l">
+                  <path d="M28 52 L22 73" stroke="#2c4410" stroke-width="7.5" stroke-linecap="round"/>
+                  <ellipse cx="22" cy="75.5" rx="6" ry="3.2" fill="#0f172a"/>
+                </g>
+                <g class="leg-r">
+                  <path d="M38 52 L44 73" stroke="#3f6212" stroke-width="7.5" stroke-linecap="round"/>
+                  <ellipse cx="45" cy="75.5" rx="6" ry="3.2" fill="#0f172a"/>
+                </g>
+                <!-- 3D Camo Torso & Tactical Vest -->
+                <rect x="21" y="31" width="24" height="24" rx="7" fill="url(#cArmor)" stroke="#84cc16" stroke-width="0.9"/>
+                <rect x="24" y="34" width="18" height="14" rx="3" fill="#1e293b" opacity="0.55"/>
                 <!-- Tiranga Chest Patch -->
-                <rect x="35" y="38" width="6" height="1.4" fill="#f97316"/>
-                <rect x="35" y="39.4" width="6" height="1.4" fill="#ffffff"/>
-                <rect x="35" y="40.8" width="6" height="1.4" fill="#16a34a"/>
-                <!-- Arms -->
-                <path d="M20 37 L13 48" stroke="#4d7c0f" stroke-width="5.5" stroke-linecap="round"/>
-                <path d="M44 37 L51 46" stroke="#4d7c0f" stroke-width="5.5" stroke-linecap="round"/>
-                <!-- Legs -->
-                <path d="M27 54 L23 67" stroke="#365314" stroke-width="6" stroke-linecap="round"/>
-                <path d="M37 54 L42 67" stroke="#365314" stroke-width="6" stroke-linecap="round"/>
-                <!-- Boots -->
-                <ellipse cx="22.5" cy="68.5" rx="4.5" ry="2.6" fill="#0f172a"/>
-                <ellipse cx="42.5" cy="68.5" rx="4.5" ry="2.6" fill="#0f172a"/>
+                <rect x="26" y="36" width="7" height="1.6" fill="#f97316"/>
+                <rect x="26" y="37.6" width="7" height="1.6" fill="#ffffff"/>
+                <rect x="26" y="39.2" width="7" height="1.6" fill="#16a34a"/>
+                <!-- Tactical Belt -->
+                <rect x="21" y="48" width="24" height="4" fill="#0f172a"/>
+                <rect x="30" y="47.5" width="6" height="5" rx="1" fill="#fde047"/>
+                <!-- Head & Mustache -->
+                <circle cx="33" cy="21" r="10.5" fill="url(#cSkin)"/>
+                <path d="M18 15 C20 5, 46 4, 48 13 C42 18, 22 18, 18 15 Z" fill="url(#cBeret)" stroke="#fde047" stroke-width="1.2"/>
+                <circle cx="39" cy="10.5" r="2.2" fill="#fde047"/>
+                <circle cx="30" cy="20" r="1.5" fill="#0f172a"/>
+                <circle cx="37" cy="20" r="1.5" fill="#0f172a"/>
+                <path d="M27.5 17.5 L32 18.4 M34.5 18.4 L39 17.5" stroke="#1e293b" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M28 24.5 Q33.5 22 39 24.5 Q33.5 26.8 28 24.5 Z" fill="#1e293b"/>
+
+                <!-- AK-47 Rifle + Arms + Muzzle Flash Group -->
+                <g class="ak-group">
+                  <!-- Wooden Stock -->
+                  <polygon points="24,41 37,39 37,43 24,45" fill="url(#cWood)"/>
+                  <!-- Receiver & Handguard -->
+                  <rect x="36" y="37.5" width="21" height="5.5" rx="1.4" fill="url(#cMetal)"/>
+                  <rect x="52" y="38.2" width="9" height="4.2" rx="1" fill="url(#cWood)"/>
+                  <!-- Curved Banana Magazine -->
+                  <path d="M46 43 Q48 51 53 53 L56 51 Q52 48 50 43 Z" fill="#1e293b" stroke="#64748b" stroke-width="0.7"/>
+                  <!-- Barrel & Front Sight -->
+                  <rect x="61" y="39" width="12" height="2.4" fill="#334155"/>
+                  <rect x="69" y="36.2" width="2" height="3.2" fill="#94a3b8"/>
+                  <!-- Commando Hands Holding AK-47 -->
+                  <circle cx="40" cy="42.5" r="3.2" fill="url(#cSkin)"/>
+                  <circle cx="55" cy="42" r="3.2" fill="url(#cSkin)"/>
+                  <!-- Glowing Muzzle Flash Starburst -->
+                  <g class="muzzle-flash">
+                    <circle cx="77" cy="40" r="7.5" fill="url(#cFlash)"/>
+                    <polygon points="73,40 86,35 81,40 88,40 81,42 85,46 73,41" fill="#fde047"/>
+                  </g>
+                  <!-- Tracer Bullet -->
+                  <rect class="tracer-bullet" x="80" y="39.2" width="10" height="2" rx="1" fill="#fde047"/>
+                </g>
               </svg>
             </div>
-            <div class="runway-track-bg">
-              <div id="runway-fill" class="runway-track-fill"></div>
-            </div>
-            <div class="steps-row" id="mission-steps-row">
-              <div class="step-node" data-step="1"><div class="s-dot"></div>1. Auth</div>
-              <div class="step-node" data-step="2"><div class="s-dot"></div>2. Script</div>
-              <div class="step-node" data-step="3"><div class="s-dot"></div>3. Veo Mode</div>
-              <div class="step-node" data-step="4"><div class="s-dot"></div>4. 9:16 + Cast</div>
-              <div class="step-node" data-step="5"><div class="s-dot"></div>5. Prompt</div>
-              <div class="step-node" data-step="6"><div class="s-dot"></div>6. Rendering</div>
-              <div class="step-node" data-step="7"><div class="s-dot"></div>7. BGM Mix</div>
-              <div class="step-node" data-step="8"><div class="s-dot"></div>8. Cloud Ready</div>
+
+            <div class="ground-track"><div id="runway-fill" class="ground-fill"></div></div>
+            <div class="steps-grid" id="steps-row">
+              <div class="st-item" data-s="1"><div class="st-dot"></div>1. Login</div>
+              <div class="st-item" data-s="2"><div class="st-dot"></div>2. Script</div>
+              <div class="st-item" data-s="3"><div class="st-dot"></div>3. Video Mode</div>
+              <div class="st-item" data-s="4"><div class="st-dot"></div>4. Cast & 9:16</div>
+              <div class="st-item" data-s="5"><div class="st-dot"></div>5. Directing</div>
+              <div class="st-item" data-s="6"><div class="st-dot"></div>6. Rendering</div>
+              <div class="st-item" data-s="7"><div class="st-dot"></div>7. Music Mix</div>
+              <div class="st-item" data-s="8"><div class="st-dot"></div>8. Ready</div>
             </div>
           </div>
         </div>
 
-        <!-- DIRECTOR STUDIO + LIVE SCRIPT PREVIEW -->
-        <div class="studio-grid">
-          <div class="glass-card">
+        <!-- SERIES SELECTOR + LIVE SCRIPT -->
+        <div class="two-col">
+          <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
               <div>
-                <div style="font-size:15px;font-weight:900;">🎭 Story Universe & Series Selector</div>
-                <div style="font-size:11.5px;color:var(--text-2);margin-top:2px;">Choose active series or enable Smart Auto-Rotate</div>
+                <div style="font-size:15.5px;font-weight:900;">🎭 Story Series</div>
+                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">Pick a series or leave Auto-Rotate ON</div>
               </div>
-              <button id="btn-autorotate" class="btn btn-sm" onclick="selectTrack('auto')">🔄 Auto-Rotate</button>
+              <button id="btn-autorotate" class="btn3d sm" onclick="selectTrack('auto')">🔄 Auto-Rotate</button>
             </div>
-            <div id="tracks-container" class="track-grid">Loading series tracks...</div>
+            <div id="tracks-box" class="tracks-grid">Loading series...</div>
 
-            <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border-glass);">
-              <label style="font-size:11.5px;font-weight:800;color:var(--cyan-bright);display:block;margin-bottom:6px;">💡 Custom Director Twist (Optional)</label>
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+              <label style="font-size:11.5px;font-weight:800;color:var(--cyan-hi);display:block;margin-bottom:6px;">💡 Custom Idea (Optional)</label>
               <div style="display:flex;gap:8px;">
-                <input id="custom-twist-inp" class="inp" placeholder="e.g. Meera calls during midnight snow patrol..." />
-                <button class="btn btn-gold" onclick="previewScript()">✨ Preview</button>
+                <input id="twist-inp" class="inp" placeholder="e.g. Ustad catches Makra eating extra gulab jamun..." />
+                <button class="btn3d gold" onclick="previewScript()">✨ Preview</button>
               </div>
             </div>
           </div>
 
-          <div class="glass-card" style="display:flex;flex-direction:column;">
+          <div class="card" style="display:flex;flex-direction:column;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
               <div>
-                <div style="font-size:15px;font-weight:900;">🧠 Live AI Script & Activity Feed</div>
-                <div style="font-size:11.5px;color:var(--text-2);margin-top:2px;">High-Class 3D Pixar Fauji Cinematic Engine</div>
+                <div style="font-size:15.5px;font-weight:900;">📝 Script Preview & Alerts</div>
+                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">Trending Bollywood BGM auto-matches every mood</div>
               </div>
-              <button class="btn btn-sm" onclick="previewScript()">🎲 Fresh Script</button>
+              <button class="btn3d sm" onclick="previewScript()">🎲 New Script</button>
             </div>
-            <div id="script-preview-box" style="background:rgba(3,7,18,0.82);border:1px solid var(--border-glass);border-radius:14px;padding:13px;font-size:12px;line-height:1.55;color:#cbd5e1;min-height:132px;max-height:210px;overflow-y:auto;">
-              Click <strong>✨ Preview</strong> to compose a live 3D Fauji scene, Haryanvi/Hindi dialogue & BGM direction before rendering.
+            <div id="script-box" style="background:rgba(3,7,18,0.84);border:1px solid var(--border);border-radius:14px;padding:13px;font-size:12px;line-height:1.58;color:#cbd5e1;min-height:126px;max-height:200px;overflow-y:auto;">
+              Tap <strong>✨ Preview</strong> to test your next episode script and dialogue before generating.
             </div>
-            <div style="margin-top:14px;font-size:11.5px;font-weight:800;color:var(--text-2);margin-bottom:7px;">🔔 Recent Studio Alerts</div>
-            <div id="notif-list" style="display:flex;flex-direction:column;gap:6px;max-height:165px;overflow-y:auto;">
-              <div style="font-size:11.5px;color:var(--text-3);">Loading notifications...</div>
-            </div>
+            <div style="margin-top:14px;font-size:11.5px;font-weight:800;color:var(--text-2);margin-bottom:7px;">🔔 Live Updates</div>
+            <div id="notif-box" style="display:flex;flex-direction:column;gap:6px;max-height:165px;overflow-y:auto;"></div>
           </div>
         </div>
       </section>
 
       <!-- =============================================================
-           VIEW 2: VAULT & QUEUE
+           VIEW 2: VIDEOS & QUEUE (5 BUTTONS UNDER EVERY VIDEO!)
            ============================================================= -->
-      <section id="view-vault" class="view-section">
-        <div class="subtab-bar">
-          <button id="vtab-pending" class="subtab active" onclick="setVaultTab('pending')">⏳ Pending (<span id="vc-pending">0</span>)</button>
-          <button id="vtab-scheduled" class="subtab" onclick="setVaultTab('scheduled')">📅 Scheduled (<span id="vc-scheduled">0</span>)</button>
-          <button id="vtab-posted" class="subtab" onclick="setVaultTab('posted')">✅ Posted (<span id="vc-posted">0</span>)</button>
-          <button id="vtab-all" class="subtab" onclick="setVaultTab('all')">🎞️ All Reels (<span id="vc-all">0</span>)</button>
+      <section id="view-vault" class="view">
+        <div class="tabs-bar">
+          <button id="vtab-pending" class="tab-btn active" onclick="setVaultTab('pending')">⏳ Review (<span id="vc-pending">0</span>)</button>
+          <button id="vtab-scheduled" class="tab-btn" onclick="setVaultTab('scheduled')">📅 Scheduled (<span id="vc-scheduled">0</span>)</button>
+          <button id="vtab-posted" class="tab-btn" onclick="setVaultTab('posted')">✅ Posted (<span id="vc-posted">0</span>)</button>
+          <button id="vtab-all" class="tab-btn" onclick="setVaultTab('all')">🎞️ All Videos (<span id="vc-all">0</span>)</button>
         </div>
-        <div id="vault-grid-box" class="vault-grid">Loading vault...</div>
+        <div id="vault-grid" class="reels-grid">Loading videos...</div>
       </section>
 
       <!-- =============================================================
-           VIEW 3: 5-SESSIONS & AUTO-POSTING SLOTS
+           VIEW 3: AUTO SCHEDULE (5 SESSIONS + EDITABLE POSTING TIMES)
            ============================================================= -->
-      <section id="view-sessions" class="view-section">
-        <div class="studio-grid">
-          <div class="glass-card">
+      <section id="view-sessions" class="view">
+        <div class="two-col">
+          <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
               <div>
-                <div style="font-size:16px;font-weight:900;">⚡ 5 Daily Auto-Render Sessions (IST)</div>
-                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">3 Reels per session • 2-min gap • Failed parts never skip</div>
+                <div style="font-size:16px;font-weight:900;">⚡ Daily Creation Sessions (IST)</div>
+                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">3 Videos per session • Failed parts auto-retry next slot</div>
               </div>
-              <button id="master-auto-btn" class="btn btn-emerald" onclick="toggleMasterSessions()">AUTO: ON</button>
+              <button id="master-btn" class="btn3d emerald" onclick="toggleMaster()">AUTO: ON</button>
             </div>
-            <div id="sessions-list-box">Loading 5 sessions...</div>
+            <div id="sessions-box">Loading schedule...</div>
           </div>
 
-          <div class="glass-card">
-            <div style="font-size:16px;font-weight:900;margin-bottom:4px;">⏰ Editable Daily Posting Schedule (IST)</div>
-            <div style="font-size:12px;color:var(--text-2);margin-bottom:16px;">Change your 3 daily publishing times anytime — existing scheduled reels stay 100% protected.</div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px;">
-              <div>
-                <div style="font-size:10.5px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Morning Slot</div>
-                <input id="slot-inp-1" type="time" class="time-inp" value="06:30" />
-              </div>
-              <div>
-                <div style="font-size:10.5px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Midday Slot</div>
-                <input id="slot-inp-2" type="time" class="time-inp" value="12:30" />
-              </div>
-              <div>
-                <div style="font-size:10.5px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Evening Slot</div>
-                <input id="slot-inp-3" type="time" class="time-inp" value="18:30" />
-              </div>
+          <div class="card">
+            <div style="font-size:16px;font-weight:900;margin-bottom:4px;">⏰ Daily Posting Times (IST)</div>
+            <div style="font-size:12px;color:var(--text-2);margin-bottom:16px;">Edit your 3 posting slots anytime — scheduled videos stay safe.</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">
+              <div><div style="font-size:11px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Morning</div><input id="slot-1" type="time" class="time-inp" value="06:30" /></div>
+              <div><div style="font-size:11px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Midday</div><input id="slot-2" type="time" class="time-inp" value="12:30" /></div>
+              <div><div style="font-size:11px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Evening</div><input id="slot-3" type="time" class="time-inp" value="18:30" /></div>
             </div>
-            <button class="btn btn-gold" onclick="savePostingSlots()">💾 Save Posting Slots</button>
+            <button class="btn3d gold" onclick="saveSlots()">💾 Save Posting Times</button>
 
-            <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--border-glass);">
-              <div style="font-size:14px;font-weight:800;margin-bottom:10px;">🌐 Simultaneous Multi-Platform Auto-Post</div>
+            <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--border);">
+              <div style="font-size:14px;font-weight:800;margin-bottom:10px;">🌐 Auto-Post Platforms</div>
               <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <label class="btn btn-sm" style="cursor:pointer;"><input id="chk-plat-ig" type="checkbox" checked onchange="savePlatforms()" /> 📸 Instagram Reels</label>
-                <label class="btn btn-sm" style="cursor:pointer;"><input id="chk-plat-fb" type="checkbox" checked onchange="savePlatforms()" /> 📘 Facebook Reels</label>
-                <label class="btn btn-sm" style="cursor:pointer;"><input id="chk-plat-yt" type="checkbox" checked onchange="savePlatforms()" /> ▶️ YouTube Shorts</label>
-              </div>
-              <div style="font-size:11.5px;color:var(--text-2);margin-top:10px;">
-                🛡️ GitHub Actions 5-Second Minute-Saver Gate automatically pauses auto-renders when 12+ reels are already queued or when a session is switched OFF/Skipped.
+                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-ig" type="checkbox" checked onchange="savePlats()" /> 📸 Instagram</label>
+                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-fb" type="checkbox" checked onchange="savePlats()" /> 📘 Facebook</label>
+                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-yt" type="checkbox" checked onchange="savePlats()" /> ▶️ YouTube</label>
               </div>
             </div>
           </div>
@@ -815,118 +744,87 @@
       </section>
 
       <!-- =============================================================
-           VIEW 4: TRI-PLATFORM INSIGHTS HUB (CLICKABLE FULL-SCREEN PAGES)
+           VIEW 4: ANALYTICS HUB
            ============================================================= -->
-      <section id="view-insights" class="view-section">
-        <div class="glass-card" style="margin-bottom:16px;">
+      <section id="view-insights" class="view">
+        <div class="card" style="margin-bottom:16px;">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
             <div>
-              <div style="font-size:18px;font-weight:900;color:var(--gold-bright);">🌐 Tri-Platform Empire Command Insights</div>
-              <div style="font-size:12px;color:var(--text-2);margin-top:3px;">Click any platform below to open its dedicated full-screen page with Reel-wise Views, Growth vs Downfall %, Trend Graph & Viral Alerts.</div>
+              <div style="font-size:19px;font-weight:900;color:var(--gold-hi);">📊 Multi-Platform Growth Center</div>
+              <div style="font-size:12px;color:var(--text-2);margin-top:3px;">Click any platform to open its full-screen executive dashboard with Growth/Downfall gauge, series leaderboard, hourly matrix & reel-by-reel breakdown.</div>
             </div>
             <div style="display:flex;gap:8px;">
-              <button class="btn btn-cyan btn-sm" onclick="refreshTriInsights(true)">🔄 Sync Live Data</button>
-              <button class="btn btn-gold btn-sm" onclick="switchView('system')">⚙️ Connect APIs</button>
+              <button class="btn3d cyan sm" onclick="refreshTri(true)">🔄 Sync Live</button>
+              <button class="btn3d gold sm" onclick="switchView('system')">⚙️ Connections</button>
             </div>
           </div>
         </div>
 
-        <div class="tri-cards-grid">
-          <div class="plat-launch-card ig" onclick="openDeepPlatform('instagram')">
+        <div class="plat-grid">
+          <div class="plat-card ig" onclick="openDeepPlatform('instagram')">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <div style="font-size:16px;font-weight:900;color:#f472b6;">📸 Instagram Reels</div>
-              <span class="btn btn-sm btn-gold">Open Deep Page →</span>
+              <span class="btn3d sm gold">Open Analytics →</span>
             </div>
-            <div id="ins-ig-views" class="plat-big-num">--</div>
-            <div id="ins-ig-sub" style="font-size:12px;color:var(--text-2);">Loading Instagram analytics...</div>
-            <div id="ins-ig-src" style="margin-top:12px;font-size:11px;color:#34d399;font-weight:700;">● Ready</div>
+            <div id="ins-ig-views" style="font-size:32px;font-weight:900;margin:14px 0 6px 0;">--</div>
+            <div id="ins-ig-sub" style="font-size:12px;color:var(--text-2);">Loading...</div>
           </div>
 
-          <div class="plat-launch-card yt" onclick="openDeepPlatform('youtube')">
+          <div class="plat-card yt" onclick="openDeepPlatform('youtube')">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <div style="font-size:16px;font-weight:900;color:#f87171;">▶️ YouTube Shorts</div>
-              <span class="btn btn-sm">Open Deep Page →</span>
+              <span class="btn3d sm">Open Analytics →</span>
             </div>
-            <div id="ins-yt-views" class="plat-big-num">Connect</div>
-            <div id="ins-yt-sub" style="font-size:12px;color:var(--text-2);">Official YouTube Data API v3</div>
-            <div id="ins-yt-src" style="margin-top:12px;font-size:11px;color:var(--gold-bright);font-weight:700;">● Tap to view / connect</div>
+            <div id="ins-yt-views" style="font-size:32px;font-weight:900;margin:14px 0 6px 0;">Connect</div>
+            <div id="ins-yt-sub" style="font-size:12px;color:var(--text-2);">Connect YouTube in Connections tab</div>
           </div>
 
-          <div class="plat-launch-card fb" onclick="openDeepPlatform('facebook')">
+          <div class="plat-card fb" onclick="openDeepPlatform('facebook')">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <div style="font-size:16px;font-weight:900;color:#38bdf8;">📘 Facebook Reels</div>
-              <span class="btn btn-sm">Open Deep Page →</span>
+              <span class="btn3d sm">Open Analytics →</span>
             </div>
-            <div id="ins-fb-views" class="plat-big-num">Connect</div>
-            <div id="ins-fb-sub" style="font-size:12px;color:var(--text-2);">Official Meta Facebook Reels API</div>
-            <div id="ins-fb-src" style="margin-top:12px;font-size:11px;color:var(--cyan-bright);font-weight:700;">● Tap to view / connect</div>
+            <div id="ins-fb-views" style="font-size:32px;font-weight:900;margin:14px 0 6px 0;">Connect</div>
+            <div id="ins-fb-sub" style="font-size:12px;color:var(--text-2);">Connect Facebook Page in Connections tab</div>
           </div>
         </div>
       </section>
 
       <!-- =============================================================
-           VIEW 5: OFFICIAL API HUB & SYSTEM DIAGNOSTICS
+           VIEW 5: CONNECTIONS & HEALTH
            ============================================================= -->
-      <section id="view-system" class="view-section">
-        <div class="studio-grid">
-          <div class="glass-card">
-            <div style="font-size:16px;font-weight:900;color:var(--gold-bright);margin-bottom:4px;">🔐 Official IG + Facebook + YouTube API Center</div>
-            <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;">100% Official Free APIs — Zero Ban Risk. Paste your tokens once to activate simultaneous tri-platform publishing & live insights.</div>
-
+      <section id="view-system" class="view">
+        <div class="two-col">
+          <div class="card">
+            <div style="font-size:16px;font-weight:900;color:var(--gold-hi);margin-bottom:4px;">🔐 Official Platform Connections</div>
+            <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;">Connect official Instagram, Facebook & YouTube APIs for live analytics and 1-click multi-platform publishing.</div>
             <div style="display:flex;flex-direction:column;gap:10px;">
-              <div>
-                <label style="font-size:11px;font-weight:700;color:var(--text-2);">Meta App ID (App Settings → Basic)</label>
-                <input id="api-meta-id" class="inp" placeholder="e.g. 123456789012345" style="margin-top:4px;" />
-              </div>
-              <div>
-                <label style="font-size:11px;font-weight:700;color:var(--text-2);">Meta App Secret (App Settings → Basic)</label>
-                <input id="api-meta-secret" type="password" class="inp" placeholder="Paste Meta App Secret" style="margin-top:4px;" />
-              </div>
-              <div>
-                <label style="font-size:11px;font-weight:700;color:#f472b6;">Instagram Official Access Token</label>
-                <input id="api-ig-token" type="password" class="inp" placeholder="IGAA... or EAA..." style="margin-top:4px;" />
-              </div>
-              <div>
-                <label style="font-size:11px;font-weight:700;color:#f472b6;">Instagram Account ID (Optional — Auto-Detected)</label>
-                <input id="api-ig-id" class="inp" placeholder="Leave blank for auto-detect" style="margin-top:4px;" />
+              <div><label style="font-size:11px;font-weight:700;color:var(--text-2);">Meta App ID</label><input id="api-meta-id" class="inp" placeholder="App Settings → Basic → App ID" style="margin-top:4px;" /></div>
+              <div><label style="font-size:11px;font-weight:700;color:var(--text-2);">Meta App Secret</label><input id="api-meta-secret" type="password" class="inp" placeholder="App Settings → Basic → App Secret" style="margin-top:4px;" /></div>
+              <div><label style="font-size:11px;font-weight:700;color:#f472b6;">Instagram Access Token</label><input id="api-ig-token" type="password" class="inp" placeholder="Paste Instagram Token" style="margin-top:4px;" /></div>
+              <div><label style="font-size:11px;font-weight:700;color:#f472b6;">Instagram Account ID (Optional)</label><input id="api-ig-id" class="inp" placeholder="Auto-detected if empty" style="margin-top:4px;" /></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div><label style="font-size:11px;font-weight:700;color:#38bdf8;">Facebook Page ID</label><input id="api-fb-id" class="inp" placeholder="Page ID" style="margin-top:4px;" /></div>
+                <div><label style="font-size:11px;font-weight:700;color:#38bdf8;">Facebook Page Token</label><input id="api-fb-token" type="password" class="inp" placeholder="Page Token" style="margin-top:4px;" /></div>
               </div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                <div>
-                  <label style="font-size:11px;font-weight:700;color:#38bdf8;">Facebook Page ID</label>
-                  <input id="api-fb-id" class="inp" placeholder="FB Page ID" style="margin-top:4px;" />
-                </div>
-                <div>
-                  <label style="font-size:11px;font-weight:700;color:#38bdf8;">Facebook Page Token</label>
-                  <input id="api-fb-token" type="password" class="inp" placeholder="FB Page Access Token" style="margin-top:4px;" />
-                </div>
+                <div><label style="font-size:11px;font-weight:700;color:#f87171;">YouTube Channel ID</label><input id="api-yt-cid" class="inp" placeholder="UCxxxxxxxx" style="margin-top:4px;" /></div>
+                <div><label style="font-size:11px;font-weight:700;color:#f87171;">YouTube API Key</label><input id="api-yt-key" type="password" class="inp" placeholder="AIzaSy..." style="margin-top:4px;" /></div>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                <div>
-                  <label style="font-size:11px;font-weight:700;color:#f87171;">YouTube Channel ID</label>
-                  <input id="api-yt-cid" class="inp" placeholder="UCxxxxxxxxxxxxxx" style="margin-top:4px;" />
-                </div>
-                <div>
-                  <label style="font-size:11px;font-weight:700;color:#f87171;">YouTube Data API v3 Key</label>
-                  <input id="api-yt-key" type="password" class="inp" placeholder="AIzaSy..." style="margin-top:4px;" />
-                </div>
-              </div>
-              <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
-                <button class="btn btn-gold" onclick="saveApiConfig()">✅ Verify & Save Official APIs</button>
-                <span id="api-save-status" style="font-size:12px;color:#34d399;font-weight:700;"></span>
+              <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
+                <button class="btn3d gold" onclick="saveApis()">✅ Save Connections</button>
+                <span id="api-status" style="font-size:12px;color:#34d399;font-weight:700;"></span>
               </div>
             </div>
           </div>
 
-          <div class="glass-card">
-            <div style="font-size:16px;font-weight:900;margin-bottom:14px;">🛡️ Engine Diagnostics & Cloud Health</div>
-            <div id="sys-diag-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-              <div class="kpi-card"><div class="kpi-lbl">Active Storage</div><div id="diag-storage" class="kpi-val" style="font-size:20px;color:#34d399;">-- MB</div><div class="kpi-sub">Auto-Archive Active</div></div>
-              <div class="kpi-card"><div class="kpi-lbl">Gemini Cookies</div><div id="diag-cookies" class="kpi-val" style="font-size:20px;color:var(--gold-bright);">--</div><div class="kpi-sub">Account #1 Pro</div></div>
-              <div class="kpi-card"><div class="kpi-lbl">Calibrated Steps</div><div id="diag-steps" class="kpi-val" style="font-size:20px;color:var(--cyan-bright);">12</div><div class="kpi-sub">Veo v5 Direct-Paste</div></div>
-              <div class="kpi-card"><div class="kpi-lbl">Minutes Guard</div><div class="kpi-val" style="font-size:20px;color:#c084fc;">ACTIVE</div><div class="kpi-sub">5-Sec Pre-Install Gate</div></div>
-            </div>
-            <div style="margin-top:16px;padding:13px;border-radius:14px;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.28);font-size:12px;color:#cbd5e1;line-height:1.55;">
-              <strong>💡 Render Permanent Persistence Tip:</strong> Render free tier restarts reset local JSON files. After saving your Meta token here, also add <code>META_APP_ID</code>, <code>META_APP_SECRET</code>, and <code>IG_OFFICIAL_ACCESS_TOKEN</code> once inside Render → Environment Variables.
+          <div class="card">
+            <div style="font-size:16px;font-weight:900;margin-bottom:14px;">🛡️ Studio Health</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div class="kpi"><div class="kpi-lbl">Active Storage</div><div id="diag-storage" class="kpi-num" style="font-size:21px;color:#34d399;">-- MB</div><div class="kpi-sub">Auto-Archive Active</div></div>
+              <div class="kpi"><div class="kpi-lbl">Account #1 Session</div><div id="diag-cookies" class="kpi-num" style="font-size:21px;color:var(--gold-hi);">--</div><div class="kpi-sub">2FA Protected</div></div>
+              <div class="kpi"><div class="kpi-lbl">Account #2 Failover</div><div class="kpi-num" style="font-size:21px;color:var(--cyan-hi);">READY</div><div class="kpi-sub">Auto-Switch on Limit</div></div>
+              <div class="kpi"><div class="kpi-lbl">Audio Engine</div><div class="kpi-num" style="font-size:21px;color:#c084fc;">BGM PRO</div><div class="kpi-sub">Trending Viral Cuts</div></div>
             </div>
           </div>
         </div>
@@ -934,158 +832,258 @@
     </main>
   </div>
 
-  <!-- MOBILE FLOATING BOTTOM DOCK -->
+  <!-- MOBILE BOTTOM DOCK -->
   <nav class="mobile-dock">
     <button id="mnav-studio" class="mdock-btn active" onclick="switchView('studio')"><span style="font-size:17px;">🎬</span>Studio</button>
-    <button id="mnav-vault" class="mdock-btn" onclick="switchView('vault')"><span style="font-size:17px;">🎞️</span>Vault</button>
-    <button id="mnav-sessions" class="mdock-btn" onclick="switchView('sessions')"><span style="font-size:17px;">⚡</span>Sessions</button>
-    <button id="mnav-insights" class="mdock-btn" onclick="switchView('insights')"><span style="font-size:17px;">📊</span>Insights</button>
+    <button id="mnav-vault" class="mdock-btn" onclick="switchView('vault')"><span style="font-size:17px;">🎞️</span>Videos</button>
+    <button id="mnav-sessions" class="mdock-btn" onclick="switchView('sessions')"><span style="font-size:17px;">⚡</span>Schedule</button>
+    <button id="mnav-insights" class="mdock-btn" onclick="switchView('insights')"><span style="font-size:17px;">📊</span>Analytics</button>
     <button id="mnav-system" class="mdock-btn" onclick="switchView('system')"><span style="font-size:17px;">⚙️</span>APIs</button>
   </nav>
 
-  <!-- DEDICATED FULL-SCREEN PLATFORM DEEP-DIVE ANALYTICS PAGE -->
-  <div id="v5-deep-page">
-    <div class="deep-container">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--border-glass);margin-bottom:20px;">
+  <!-- ULTRA-PRO FULL-SCREEN PLATFORM DEEP ANALYTICS PAGE -->
+  <div id="v6-deep-page">
+    <div class="deep-wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:20px;">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-          <button class="btn" onclick="closeDeepPlatform()">← Back to Studio</button>
+          <button class="btn3d sm" onclick="closeDeepPlatform()">← Back</button>
           <div>
-            <div id="deep-title" style="font-size:21px;font-weight:900;color:var(--gold-bright);">📸 Instagram Deep Analytics</div>
-            <div id="deep-sub" style="font-size:12px;color:var(--text-2);">Reel-by-reel Growth, Downfall, Trend & Viral Analysis</div>
+            <div id="deep-title" style="font-size:21px;font-weight:900;color:var(--gold-hi);">📸 Instagram Pro Analytics</div>
+            <div id="deep-sub" style="font-size:12px;color:var(--text-2);">Growth, Downfall, Series Leaderboard & Reel Breakdown</div>
           </div>
         </div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap;">
-          <button class="btn btn-sm" onclick="openDeepPlatform('instagram')">📸 Instagram</button>
-          <button class="btn btn-sm" onclick="openDeepPlatform('youtube')">▶️ YouTube</button>
-          <button class="btn btn-sm" onclick="openDeepPlatform('facebook')">📘 Facebook</button>
-          <button class="btn btn-gold btn-sm" onclick="closeDeepPlatform();switchView('system');">⚙️ API Hub</button>
-        </div>
-      </div>
-      <div id="deep-body">Loading analytics...</div>
-    </div>
-  </div>
-
-  <!-- FULL-SCREEN 9:16 REEL THEATER MODAL -->
-  <div id="v5-theater" class="modal-backdrop" onclick="if(event.target===this)closeTheater()">
-    <div class="theater-box">
-      <div class="theater-video-pane">
-        <video id="theater-video" controls playsinline></video>
-      </div>
-      <div class="theater-info-pane">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span id="theater-badge" class="badge-viral">REEL PREVIEW</span>
-          <button class="btn btn-sm" onclick="closeTheater()">✕ Close</button>
-        </div>
-        <div id="theater-title" style="font-size:16px;font-weight:900;line-height:1.35;">Reel Title</div>
-        <div id="theater-meta" style="font-size:11.5px;color:var(--text-2);">Slot Info</div>
-        <label style="font-size:11px;font-weight:800;color:var(--cyan-bright);">📝 Caption & Hashtags (Editable)</label>
-        <textarea id="theater-caption" class="inp" rows="6"></textarea>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-sm" onclick="saveTheaterCaption()">💾 Save Caption</button>
-          <button class="btn btn-cyan btn-sm" onclick="approveTheaterReel()">📅 Approve & Schedule</button>
-          <button class="btn btn-gold btn-sm" onclick="publishTheaterReel()">🚀 Publish Now (IG/YT/FB)</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteTheaterReel()">🗑️ Delete</button>
+          <button class="btn3d sm" onclick="openDeepPlatform('instagram')">📸 Instagram</button>
+          <button class="btn3d sm" onclick="openDeepPlatform('youtube')">▶️ YouTube</button>
+          <button class="btn3d sm" onclick="openDeepPlatform('facebook')">📘 Facebook</button>
+        </div>
+      </div>
+      <div id="deep-body">Loading executive insights...</div>
+    </div>
+  </div>
+
+  <!-- 9:16 VIDEO THEATER MODAL -->
+  <div id="v6-theater" class="modal-bg" onclick="if(event.target===this)closeTheater()">
+    <div class="theater-card">
+      <div class="theater-left"><video id="th-video" controls playsinline></video></div>
+      <div class="theater-right">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span id="th-badge" class="tag-viral">VIDEO</span>
+          <button class="btn3d sm" onclick="closeTheater()">✕ Close</button>
+        </div>
+        <div id="th-title" style="font-size:16px;font-weight:900;line-height:1.35;">Title</div>
+        <div id="th-meta" style="font-size:11.5px;color:var(--text-2);">Info</div>
+        <label style="font-size:11px;font-weight:800;color:var(--cyan-hi);">📝 Caption & Hashtags</label>
+        <textarea id="th-caption" class="inp" rows="6"></textarea>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+          <button class="btn3d sm" onclick="saveTheaterCaption()">💾 Save Caption</button>
+          <button class="btn3d sm gold" onclick="actReel('post', STATE.thItem)">🚀 Approve & Post</button>
+          <button class="btn3d sm cyan" onclick="actReel('schedule', STATE.thItem)">📅 Schedule</button>
+          <button class="btn3d sm violet" onclick="actReel('regen', STATE.thItem)">🔄 Regenerate</button>
+          <button class="btn3d sm emerald" onclick="actReel('posted', STATE.thItem)">✅ Mark Posted</button>
+          <button class="btn3d sm danger" onclick="actReel('delete', STATE.thItem)">🗑️ Delete</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- LIVE GEMINI SCREENSHOT MODAL -->
-  <div id="v5-cam-modal" class="modal-backdrop" onclick="if(event.target===this)this.classList.remove('open')">
-    <div class="glass-card" style="width:100%;max-width:780px;padding:18px;">
+  <!-- LIVE SCREEN VIEWER MODAL -->
+  <div id="v6-cam" class="modal-bg" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="card" style="width:100%;max-width:780px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div style="font-size:15px;font-weight:900;color:var(--gold-bright);">👁️ Live Gemini Engine Monitor</div>
+        <div style="font-size:15px;font-weight:900;color:var(--gold-hi);">👁️ Live Generation Screen</div>
         <div style="display:flex;gap:8px;">
-          <button class="btn btn-sm" onclick="refreshCam()">🔄 Refresh</button>
-          <button class="btn btn-sm" onclick="document.getElementById('v5-cam-modal').classList.remove('open')">✕</button>
+          <button class="btn3d sm cyan" onclick="refreshCam()">🔄 Refresh</button>
+          <button class="btn3d sm" onclick="document.getElementById('v6-cam').classList.remove('open')">✕</button>
         </div>
       </div>
-      <img id="v5-cam-img" style="width:100%;border-radius:12px;border:1px solid var(--border-glass);background:#02050d;min-height:220px;object-fit:contain;" alt="Latest Gemini Screenshot" />
+      <img id="v6-cam-img" style="width:100%;border-radius:14px;border:1px solid var(--border);background:#02050d;min-height:240px;object-fit:contain;" alt="Live Screen" />
     </div>
   </div>
 
-  <div id="v5-toast">Ready</div>
+  <!-- UNIVERSAL 3D GLASS POPUP (CONFIRM / ALERT / VICTORY CELEBRATION) -->
+  <div id="v6-popup" class="modal-bg" onclick="if(event.target===this)closePopup3D()">
+    <div class="modal-3d">
+      <div id="pop-icon" style="font-size:46px;margin-bottom:10px;">🎉</div>
+      <div id="pop-title" style="font-size:20px;font-weight:900;color:var(--gold-hi);margin-bottom:8px;">Mission Accomplished!</div>
+      <div id="pop-msg" style="font-size:13px;color:#cbd5e1;line-height:1.6;margin-bottom:20px;">Message</div>
+      <div id="pop-actions" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"></div>
+    </div>
+  </div>
+
+  <div id="toast-stack"></div>
 
   <script>
-    // Global State
-    let STATE = { status: null, vaultTab: 'pending', sessionsCfg: null, theaterItem: null, deepData: null, deepFilter: 'all', deepSearch: '' };
-
-    function toast(msg) {
-      const t = document.getElementById('v5-toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(window.__tTimer);
-      window.__tTimer = setTimeout(() => t.classList.remove('show'), 3200);
-    }
-
-    // 1. Intro Screen Controls
-    function closeIntro() {
-      const el = document.getElementById('v5-intro');
-      if (!el) return;
-      el.classList.add('exit');
-      setTimeout(() => el.classList.add('done'), 650);
-    }
-    function replayIntro() {
-      const el = document.getElementById('v5-intro');
-      if (!el) return;
-      el.classList.remove('done', 'exit');
-      setTimeout(closeIntro, 2000);
-    }
-    setTimeout(closeIntro, 1950);
-
-    // Clear any legacy PWA Service Worker cache once
-    if ('serviceWorker' in navigator && localStorage.getItem('foji_v5_clean_sw') !== '1') {
-      navigator.serviceWorker.getRegistrations().then(regs => Promise.all(regs.map(r => r.unregister()))).catch(()=>{});
-      if ('caches' in window) caches.keys().then(ks => Promise.all(ks.map(k => caches.delete(k)))).catch(()=>{});
-      try { localStorage.setItem('foji_v5_clean_sw', '1'); } catch(e){}
-    }
-
-    // 2. Navigation Switching
-    const VIEW_META = {
-      studio:   ['🎬 Command Studio', '12-Step Calibrated Veo v5 • Live 8-Step Foji Commando Mission Track'],
-      vault:    ['🎞️ Vault & Queue', 'Pending Approvals, Protected Scheduled Queue & Published History'],
-      sessions: ['⚡ 5-Sessions & Auto-Slots', '12:19 AM • 06:19 AM • 11:19 AM • 04:19 PM • 09:19 PM IST'],
-      insights: ['📊 Tri-Platform Insights Hub', 'Tap Instagram, YouTube or Facebook for Full-Screen Deep Analytics'],
-      system:   ['⚙️ Official API & System Hub', 'Zero-Ban Official API Keys & Feather-Light Cloud Storage Diagnostics']
+    const STATE = {
+      status: null, vaultTab: 'pending', sessCfg: null, thItem: null,
+      deepData: null, deepFilter: 'all', deepSearch: '', deepSort: 'latest', deepMetric: 'views',
+      isRunning: false, soundOn: true, lastStep: -1, lastStatus: '', lastErrorMsg: ''
     };
 
-    function switchView(name, subTab) {
-      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-      const target = document.getElementById('view-' + name);
-      if (target) target.classList.add('active');
-      document.querySelectorAll('.nav-btn, .mdock-btn').forEach(b => b.classList.remove('active'));
-      const sb = document.getElementById('snav-' + name);
-      const mb = document.getElementById('mnav-' + name);
-      if (sb) sb.classList.add('active');
-      if (mb) mb.classList.add('active');
-      if (VIEW_META[name]) {
-        document.getElementById('top-page-title').textContent = VIEW_META[name][0];
-        document.getElementById('top-page-sub').innerHTML = VIEW_META[name][1];
+    // =====================================================================
+    // WEB AUDIO SOUND ENGINE (CLICK / STEP CHIME / ALERT / VICTORY FANFARE)
+    // =====================================================================
+    let __audioCtx = null;
+    function getAudioCtx() {
+      if (!STATE.soundOn) return null;
+      if (!__audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) __audioCtx = new AC();
       }
-      if (name === 'vault' && subTab) setVaultTab(subTab);
-      if (name === 'sessions') loadSessionsConfig();
-      if (name === 'insights') refreshTriInsights(false);
-      if (name === 'system') loadDiagnostics();
+      if (__audioCtx && __audioCtx.state === 'suspended') __audioCtx.resume().catch(()=>{});
+      return __audioCtx;
+    }
+    function playTone(freq, dur, type='sine', vol=0.07, delay=0) {
+      const ctx = getAudioCtx(); if (!ctx) return;
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+      g.gain.setValueAtTime(vol, ctx.currentTime + delay);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + dur);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(ctx.currentTime + delay); o.stop(ctx.currentTime + delay + dur);
+    }
+    function sfxClick() { playTone(520, 0.045, 'triangle', 0.045); }
+    function sfxStep(stepNum) {
+      const base = 360 + (stepNum * 55);
+      playTone(base, 0.12, 'triangle', 0.07, 0);
+      playTone(base * 1.25, 0.16, 'sine', 0.06, 0.08);
+    }
+    function sfxError() {
+      playTone(240, 0.16, 'sawtooth', 0.06, 0);
+      playTone(185, 0.24, 'sawtooth', 0.06, 0.16);
+    }
+    function sfxVictory() {
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => playTone(f, 0.28, 'triangle', 0.09, i * 0.11));
+    }
+    function toggleSound() {
+      STATE.soundOn = !STATE.soundOn;
+      document.getElementById('sound-toggle-btn').textContent = STATE.soundOn ? '🔊 Sound ON' : '🔇 Muted';
+      if (STATE.soundOn) sfxStep(3);
+    }
+    document.addEventListener('click', e => { if (e.target.closest('.btn3d')) sfxClick(); });
+
+    // =====================================================================
+    // 3D GLASS POPUP & FLOATING TOAST SYSTEM + CONFETTI ENGINE
+    // =====================================================================
+    function showToast(msg, kind='') {
+      const stack = document.getElementById('toast-stack');
+      const el = document.createElement('div');
+      el.className = 'toast-3d ' + kind;
+      el.innerHTML = `<span>${msg}</span>`;
+      stack.appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(40px)'; setTimeout(() => el.remove(), 260); }, 3600);
     }
 
-    // 3. Poll Core Universe Status + Live 8-Step Foji Walker
-    async function pollStudioStatus() {
+    function openPopup3D({icon='✨', title='Notice', msg='', buttons=[]}) {
+      document.getElementById('pop-icon').textContent = icon;
+      document.getElementById('pop-title').textContent = title;
+      document.getElementById('pop-msg').textContent = msg;
+      const box = document.getElementById('pop-actions');
+      box.innerHTML = '';
+      (buttons.length ? buttons : [{label:'Got It', cls:'gold', onClick: closePopup3D}]).forEach(b => {
+        const btn = document.createElement('button');
+        btn.className = 'btn3d ' + (b.cls || '');
+        btn.textContent = b.label;
+        btn.onclick = () => { closePopup3D(); if (b.onClick) b.onClick(); };
+        box.appendChild(btn);
+      });
+      document.getElementById('v6-popup').classList.add('open');
+    }
+    function closePopup3D() { document.getElementById('v6-popup').classList.remove('open'); }
+
+    function launchConfetti() {
+      const cvs = document.getElementById('confetti-canvas');
+      cvs.style.display = 'block';
+      cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+      const ctx = cvs.getContext('2d');
+      const cols = ['#fde047','#f59e0b','#38bdf8','#34d399','#a78bfa','#f43f5e'];
+      const parts = Array.from({length: 130}, () => ({
+        x: Math.random() * cvs.width, y: -20 - Math.random() * 200,
+        vx: (Math.random() - 0.5) * 6, vy: 3 + Math.random() * 5,
+        sz: 5 + Math.random() * 6, rot: Math.random() * 360, vr: (Math.random() - 0.5) * 10,
+        c: cols[Math.floor(Math.random() * cols.length)]
+      }));
+      let frames = 0;
+      function draw() {
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        parts.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.vy += 0.06;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI / 180);
+          ctx.fillStyle = p.c; ctx.fillRect(-p.sz/2, -p.sz/2, p.sz, p.sz * 0.65); ctx.restore();
+        });
+        if (++frames < 150) requestAnimationFrame(draw);
+        else cvs.style.display = 'none';
+      }
+      draw();
+    }
+
+    function celebrateVictory(title, msg) {
+      sfxVictory();
+      launchConfetti();
+      openPopup3D({
+        icon: '🏆',
+        title: title || 'Congratulations! New 3D Reel Ready!',
+        msg: msg || 'Your new 3D video has been rendered, mixed with BGM, and added to Review.',
+        buttons: [
+          {label: '🎞️ Open Review Queue', cls: 'gold', onClick: () => switchView('vault', 'pending')},
+          {label: 'Awesome!', cls: ''}
+        ]
+      });
+    }
+
+    // Intro Screen
+    function closeIntro() { const el = document.getElementById('v6-intro'); if (el) { el.classList.add('exit'); setTimeout(() => el.classList.add('done'), 620); } }
+    setTimeout(closeIntro, 1850);
+
+    // Navigation
+    const TITLES = { studio: '🎬 Studio', vault: '🎞️ Videos & Queue', sessions: '⚡ Auto Schedule', insights: '📊 Analytics', system: '⚙️ Connections' };
+    function switchView(name, subTab) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const tgt = document.getElementById('view-' + name);
+      if (tgt) tgt.classList.add('active');
+      document.querySelectorAll('.nav-item, .mdock-btn').forEach(b => b.classList.remove('active'));
+      const sb = document.getElementById('snav-' + name), mb = document.getElementById('mnav-' + name);
+      if (sb) sb.classList.add('active'); if (mb) mb.classList.add('active');
+      document.getElementById('top-title').textContent = TITLES[name] || 'Studio';
+      if (name === 'vault' && subTab) setVaultTab(subTab);
+      if (name === 'sessions') loadSessions();
+      if (name === 'insights') refreshTri(false);
+      if (name === 'system') loadDiag();
+    }
+
+    // =====================================================================
+    // ACTIVE SESSION INDICATOR + LIVE POLLING + COMMANDO AK-47 ANIMATION
+    // =====================================================================
+    async function pollActiveSession() {
       try {
-        const res = await fetch('/api/universe/status');
-        const d = await res.json();
+        const d = await (await fetch('/api/active_session_info')).json();
+        if (!d || !d.ok) return;
+        const pill = document.getElementById('active-session-pill');
+        if (d.active_session) {
+          pill.className = 'session-pill live-now';
+          pill.textContent = `🔴 ACTIVE SESSION: ${d.active_session.label} (${d.active_session.display} IST)`;
+        } else if (STATE.isRunning) {
+          pill.className = 'session-pill live-now';
+          pill.textContent = '⚡ MANUAL GENERATION RUNNING LIVE';
+        } else if (d.next_session) {
+          const hrs = Math.floor((d.minutes_to_next || 0) / 60);
+          const mins = (d.minutes_to_next || 0) % 60;
+          pill.className = 'session-pill';
+          pill.textContent = `🕒 Next Auto Session: ${d.next_session.label} (${d.next_session.display} IST • in ${hrs}h ${mins}m)`;
+        }
+      } catch(e){}
+    }
+
+    async function pollStatus() {
+      try {
+        const d = await (await fetch('/api/universe/status')).json();
         if (!d) return;
         STATE.status = d;
-
         if (d.server_time_ist) document.getElementById('sidebar-clock').textContent = d.server_time_ist;
-        const nSlot = document.getElementById('top-next-slot');
-        if (nSlot && d.next_open_slot) nSlot.textContent = d.next_open_slot;
+        if (d.next_open_slot) document.getElementById('kpi-next-slot').textContent = d.next_open_slot;
 
         const q = d.queue || {};
-        const pend = q.unapproved_videos || [];
-        const sched = q.scheduled_posts || [];
-        const post = q.published_posts || [];
-        const vault = d.master_vault || [];
-
+        const pend = q.unapproved_videos || [], sched = q.scheduled_posts || [], post = q.published_posts || [], vault = d.master_vault || [];
         document.getElementById('kpi-pending').textContent = pend.length;
         document.getElementById('kpi-scheduled').textContent = sched.length;
         document.getElementById('kpi-posted').textContent = post.length;
@@ -1095,162 +1093,198 @@
         document.getElementById('vc-posted').textContent = post.length;
         document.getElementById('vc-all').textContent = vault.length;
 
-        updateMissionWalker(d.telemetry || {});
+        updateCommandoRunway(d.telemetry || {});
         renderTracks(d);
-        renderNotifications(d.notifications || []);
-        renderVaultGrid();
-      } catch (e) {}
+        renderAlerts(d.notifications || []);
+        renderVault();
+      } catch(e){}
     }
 
-    let __lastTelKey = '';
-    function updateMissionWalker(tel) {
-      // Automatic Live Step-Change Popup Notification on Frontend whenever pipeline updates!
-      const telKey = `${tel.step_num || 0}|${tel.step_title || ''}|${tel.status || ''}`;
-      if (tel.step_title && __lastTelKey && telKey !== __lastTelKey) {
-        toast(`🎬 ${tel.step_title}${tel.sub_detail ? ' — ' + tel.sub_detail.slice(0, 70) : ''}`);
-        const camModal = document.getElementById('v5-cam-modal');
-        if (camModal && camModal.classList.contains('open')) refreshCam();
-      }
-      if (tel.step_title) __lastTelKey = telKey;
+    function updateCommandoRunway(tel) {
       const step = Number(tel.step_num || 0);
       const pct = Math.max(0, Math.min(100, Number(tel.progress || (step > 0 ? Math.round((step / 8) * 100) : 0))));
       const st = String(tel.status || 'idle').toLowerCase();
-      const isActive = (st === 'active' || st === 'running' || (step > 0 && step < 8 && st !== 'error' && st !== 'idle'));
+      const running = (st === 'active' || st === 'running' || (step > 0 && step < 8 && st !== 'error' && st !== 'warning' && st !== 'idle' && st !== 'completed'));
+      STATE.isRunning = running;
 
+      // Dynamic Primary Generate <-> Stop Button
+      const pBtn = document.getElementById('primary-gen-btn');
+      const bBtn = document.getElementById('batch-gen-btn');
+      if (running) {
+        pBtn.className = 'btn3d danger pulsing';
+        pBtn.textContent = '🛑 Stop Generation';
+        if (bBtn) bBtn.style.display = 'none';
+      } else {
+        pBtn.className = 'btn3d gold';
+        pBtn.textContent = '🚀 Generate Video';
+        if (bBtn) bBtn.style.display = 'inline-flex';
+      }
+
+      // Live Step Sound FX + Popups + Victory Celebration on State Transitions!
+      if (STATE.lastStep !== -1) {
+        if (step > STATE.lastStep && step > 0 && step < 8) {
+          sfxStep(step);
+          showToast(`🎬 Step ${step}/8: ${tel.step_title || 'Advancing...'}`, 'ok');
+        }
+        if ((step >= 8 || st === 'completed') && STATE.lastStatus !== 'completed' && STATE.lastStep < 8) {
+          celebrateVictory('Congratulations! 3D Reel Ready!', tel.sub_detail || 'Video rendered, BGM mixed, and ready in Review.');
+        }
+        if ((st === 'error' || st === 'warning') && tel.sub_detail && tel.sub_detail !== STATE.lastErrorMsg) {
+          STATE.lastErrorMsg = tel.sub_detail;
+          sfxError();
+          openPopup3D({
+            icon: '⚠️',
+            title: tel.step_title || 'Generation Notice',
+            msg: tel.sub_detail,
+            buttons: [
+              {label: '👁️ View Screenshot', cls: 'cyan', onClick: openLiveCam},
+              {label: 'Close', cls: 'gold'}
+            ]
+          });
+        }
+      }
+      STATE.lastStep = step;
+      STATE.lastStatus = st;
+
+      // Update Commando Runway Visuals
       document.getElementById('mission-pct').textContent = pct + '%';
       document.getElementById('mission-detail').textContent =
-        (tel.step_title ? tel.step_title + ' — ' : '') + (tel.sub_detail || 'Engine standing by for next automated session or 1-tap render.');
+        (tel.step_title ? tel.step_title + ' — ' : '') + (tel.sub_detail || 'Commando resting — ready for your next video.');
 
-      const pill = document.getElementById('mission-pill');
-      if (st === 'error') { pill.className = 'mission-status-pill error'; pill.textContent = '● ATTENTION NEEDED'; }
-      else if (isActive) { pill.className = 'mission-status-pill active'; pill.textContent = '● RENDERING LIVE'; }
-      else if (step >= 8 || st === 'completed') { pill.className = 'mission-status-pill'; pill.textContent = '● MISSION COMPLETE'; }
-      else { pill.className = 'mission-status-pill'; pill.textContent = '● STANDBY READY'; }
+      const tag = document.getElementById('mission-state-tag');
+      if (st === 'error' || st === 'warning') { tag.className = 'tag-down'; tag.textContent = 'ATTENTION'; }
+      else if (running) { tag.className = 'tag-viral'; tag.textContent = 'FIRING LIVE'; }
+      else if (step >= 8 || st === 'completed') { tag.className = 'tag-up'; tag.textContent = 'MISSION DONE'; }
+      else { tag.className = 'tag-up'; tag.textContent = 'RESTING'; }
 
       document.getElementById('runway-fill').style.width = pct + '%';
-      const walker = document.getElementById('v5-foji-walker');
-      walker.style.left = Math.max(4, Math.min(96, pct || 4)) + '%';
-      walker.classList.toggle('walking', isActive);
+      const cmd = document.getElementById('foji-commando');
+      cmd.style.left = Math.max(5, Math.min(95, pct || 5)) + '%';
+      cmd.className = running ? 'firing' : 'resting';
 
-      document.querySelectorAll('#mission-steps-row .step-node').forEach(node => {
-        const sIdx = Number(node.getAttribute('data-step'));
-        node.classList.remove('done', 'current');
-        if (step >= sIdx && step > 0) {
-          if (sIdx === step && isActive) node.classList.add('current');
-          else node.classList.add('done');
-        }
+      document.querySelectorAll('#steps-row .st-item').forEach(n => {
+        const i = Number(n.getAttribute('data-s'));
+        n.classList.remove('done', 'now');
+        if (step >= i && step > 0) n.classList.add(i === step && running ? 'now' : 'done');
       });
+
+      const cam = document.getElementById('v6-cam');
+      if (cam && cam.classList.contains('open') && running) refreshCam();
     }
 
-    function renderTracks(d) {
-      const box = document.getElementById('tracks-container');
-      const tracks = d.tracks || d.series_tracks || [
-        {id: 'love_meera', name: '❤️ Foji & Fojan Love', desc: 'Emotional Nok-Jhok & Romance'},
-        {id: 'ustad_ragda', name: '🔥 Ustad Ka Ragda', desc: 'Training Ground Comedy & Josh'},
-        {id: 'border_duty', name: '🇮🇳 Border Duty Pride', desc: 'LOC Night Patrol & Deshbhakti'},
-        {id: 'viral_desi', name: '🚀 Desi Viral Specials', desc: 'Trending Haryanvi Fauji Hits'}
-      ];
-      const activeId = d.active_track_id || d.selected_track || '';
-      const autoRot = Boolean(d.auto_rotate);
-      const ab = document.getElementById('btn-autorotate');
-      if (ab) ab.className = 'btn btn-sm ' + (autoRot ? 'btn-gold' : '');
-
-      box.innerHTML = tracks.map(t => {
-        const tid = t.id || t.track_id;
-        const isSel = !autoRot && activeId === tid;
-        return `<div class="track-chip ${isSel ? 'selected' : ''}" onclick="selectTrack('${tid}')">
-          <div style="font-size:12.5px;font-weight:800;color:#f8fafc;">${t.name || t.title || tid}</div>
-          <div style="font-size:10.5px;color:var(--text-2);margin-top:4px;">${t.desc || (t.parts ? 'Part #' + t.parts : '3D Pixar Series')}</div>
-        </div>`;
-      }).join('');
-    }
-
-    function renderNotifications(notifs) {
-      const box = document.getElementById('notif-list');
-      if (!notifs.length) {
-        box.innerHTML = '<div style="font-size:11.5px;color:var(--text-3);">All clear — no recent alerts.</div>';
-        return;
-      }
-      box.innerHTML = notifs.slice(0, 6).map(n => `
-        <div style="padding:8px 10px;border-radius:10px;background:rgba(15,23,42,0.68);border:1px solid var(--border-glass);font-size:11.5px;">
-          <strong style="color:var(--gold-bright);">${n.title || 'Studio Notice'}</strong>
-          <div style="color:var(--text-2);margin-top:2px;">${n.message || ''}</div>
-        </div>
-      `).join('');
-    }
-
-    // Studio Actions
-    async function selectTrack(tid) {
-      const body = tid === 'auto' ? {auto_rotate: true} : {track_id: tid, auto_rotate: false};
-      await fetch('/api/universe/select_track', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
-      toast(tid === 'auto' ? '🔄 Smart Auto-Rotate Enabled!' : '🎭 Active Series Updated!');
-      pollStudioStatus();
-    }
-
-    async function previewScript() {
-      const box = document.getElementById('script-preview-box');
-      box.innerHTML = '🧠 Composing high-class 3D Pixar Fauji script & dialogue...';
-      const custom_idea = document.getElementById('custom-twist-inp').value.trim();
-      try {
-        const d = await (await fetch('/api/universe/generate_preview_script', {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({custom_idea})
-        })).json();
-        const pkg = d.package || d;
-        box.innerHTML = `
-          <div style="color:var(--gold-bright);font-weight:800;margin-bottom:6px;">🎬 ${pkg.emotion_name || pkg.title || 'Fresh 3D Episode'}</div>
-          <div style="color:#38bdf8;margin-bottom:6px;">🗣️ "${pkg.dialogue || pkg.dialogue_line || ''}"</div>
-          <div style="font-size:11.5px;color:#94a3b8;">${pkg.gemini_video_prompt || pkg.visual_scene || JSON.stringify(pkg).slice(0, 320)}</div>
-        `;
-      } catch(e) {
-        box.textContent = 'Could not generate preview right now.';
+    function handlePrimaryGenOrStop() {
+      if (STATE.isRunning) {
+        openPopup3D({
+          icon: '🛑', title: 'Stop Current Generation?',
+          msg: 'This will cancel the running cloud video task immediately.',
+          buttons: [
+            {label: 'Yes, Stop Now', cls: 'danger', onClick: stopPipeline},
+            {label: 'Keep Running', cls: ''}
+          ]
+        });
+      } else {
+        triggerGenerate(1);
       }
     }
 
     async function triggerGenerate(count) {
-      const custom_idea = document.getElementById('custom-twist-inp').value.trim();
-      toast(`🚀 Launching ${count}x 3D Veo Render...`);
+      const custom_idea = document.getElementById('twist-inp').value.trim();
+      showToast(`🚀 Launching ${count} video${count > 1 ? 's' : ''}...`, 'ok');
+      sfxStep(1);
       try {
         const d = await (await fetch('/api/universe/trigger_pipeline', {
           method:'POST', headers:{'Content-Type':'application/json'},
           body: JSON.stringify({count, custom_idea})
         })).json();
-        toast(d.message || (d.ok ? '✅ Pipeline Triggered!' : '⚠️ Trigger Notice'));
-        pollStudioStatus();
-      } catch(e) { toast('⚠️ Could not reach pipeline endpoint'); }
+        showToast(d.message || (d.ok ? '✅ Started! Commando advancing!' : '⚠️ Notice'), d.ok ? 'ok' : 'err');
+        pollStatus(); pollActiveSession();
+      } catch(e) { showToast('⚠️ Could not start pipeline', 'err'); }
     }
 
     async function stopPipeline() {
       await fetch('/api/universe/stop_pipeline', {method:'POST'});
-      toast('🛑 Stop signal sent to pipeline!');
-      pollStudioStatus();
+      showToast('🛑 Stop signal sent!', 'err');
+      pollStatus();
     }
 
     async function resetTelemetry() {
       await fetch('/api/reset_telemetry', {method:'POST'});
-      toast('↺ Pipeline monitor reset to Standby');
-      pollStudioStatus();
+      STATE.lastStep = 0; STATE.lastStatus = 'idle';
+      showToast('↺ Runway reset to Standby');
+      pollStatus();
     }
 
-    function openLiveScreenshot() {
-      document.getElementById('v5-cam-modal').classList.add('open');
-      refreshCam();
-    }
-    function refreshCam() {
-      document.getElementById('v5-cam-img').src = '/api/universe/live_screenshot?t=' + Date.now();
+    function renderTracks(d) {
+      const box = document.getElementById('tracks-box');
+      const tracks = d.tracks || d.series_tracks || [
+        {id:'training_ustad', name:'⚔️ Academy Training & Drill', badge:'Training'},
+        {id:'unit_ragda', name:'🔥 Ustad Ka Ragda & Punishment', badge:'Ragda'},
+        {id:'funny_fauji', name:'😂 Fauji Masti & Bakwas', badge:'Comedy'},
+        {id:'duty_fatigue', name:'🪖 Duty, Fatigue & Working', badge:'Reality'},
+        {id:'agniveer_reality', name:'🇮🇳 Agniveer Reality & Pride', badge:'Agniveer'},
+        {id:'love_meera', name:'❤️ Foji & Fojan Nok-Jhok', badge:'Desi Love'}
+      ];
+      const activeId = d.active_track_id || d.selected_track || '';
+      const autoRot = Boolean(d.auto_rotate);
+      document.getElementById('btn-autorotate').className = 'btn3d sm ' + (autoRot ? 'gold' : '');
+      box.innerHTML = tracks.map(t => {
+        const tid = t.id || t.track_id;
+        const sel = !autoRot && activeId === tid;
+        return `<button class="track-btn ${sel ? 'selected' : ''}" onclick="selectTrack('${tid}')">
+          <div style="font-size:12.5px;font-weight:800;color:#f8fafc;">${t.name || t.title || tid}</div>
+          <div style="font-size:10.5px;color:var(--text-2);margin-top:4px;">${t.badge || '3D Series'}</div>
+        </button>`;
+      }).join('');
     }
 
-    // 4. Vault & Queue Rendering + Reel Theater
-    function setVaultTab(tab) {
-      STATE.vaultTab = tab;
-      document.querySelectorAll('.subtab').forEach(b => b.classList.remove('active'));
-      const b = document.getElementById('vtab-' + tab);
+    async function selectTrack(tid) {
+      const body = tid === 'auto' ? {auto_rotate: true} : {track_id: tid, auto_rotate: false};
+      await fetch('/api/universe/select_track', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+      showToast(tid === 'auto' ? '🔄 Auto-Rotate ON' : '🎭 Series Selected!', 'ok');
+      pollStatus();
+    }
+
+    async function previewScript() {
+      const box = document.getElementById('script-box');
+      box.innerHTML = '✍️ Writing fresh 3D episode script...';
+      const custom_idea = document.getElementById('twist-inp').value.trim();
+      try {
+        const d = await (await fetch('/api/universe/generate_preview_script', {
+          method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({custom_idea})
+        })).json();
+        const p = d.package || d;
+        box.innerHTML = `<div style="color:var(--gold-hi);font-weight:800;margin-bottom:6px;">🎬 ${p.emotion_name || p.title || 'New Episode'}</div>
+          <div style="color:#38bdf8;margin-bottom:6px;">🗣️ "${p.dialogue || p.dialogue_line || ''}"</div>
+          <div style="font-size:11.5px;color:#94a3b8;">${p.gemini_video_prompt || p.visual_scene || ''}</div>`;
+      } catch(e) { box.textContent = 'Could not generate preview right now.'; }
+    }
+
+    function renderAlerts(list) {
+      const box = document.getElementById('notif-box');
+      if (!list.length) { box.innerHTML = '<div style="font-size:11.5px;color:var(--text-3);">No recent alerts.</div>'; return; }
+      box.innerHTML = list.slice(0, 6).map(n => `
+        <div style="padding:8px 11px;border-radius:11px;background:rgba(15,23,42,0.7);border:1px solid var(--border);font-size:11.5px;">
+          <strong style="color:var(--gold-hi);">${n.title || 'Update'}</strong>
+          <div style="color:var(--text-2);margin-top:2px;">${n.message || ''}</div>
+        </div>`).join('');
+    }
+
+    function openLiveCam() { document.getElementById('v6-cam').classList.add('open'); refreshCam(); }
+    function refreshCam() { document.getElementById('v6-cam-img').src = '/api/universe/live_screenshot?t=' + Date.now(); }
+
+    // =====================================================================
+    // VIDEOS & QUEUE WITH ALL 5 TACTILE 3D BUTTONS UNDER EVERY VIDEO
+    // =====================================================================
+    function setVaultTab(t) {
+      STATE.vaultTab = t;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const b = document.getElementById('vtab-' + t);
       if (b) b.classList.add('active');
-      renderVaultGrid();
+      renderVault();
     }
 
-    function renderVaultGrid() {
-      const box = document.getElementById('vault-grid-box');
+    function renderVault() {
+      const box = document.getElementById('vault-grid');
       if (!box || !STATE.status) return;
       const q = STATE.status.queue || {};
       let items = [];
@@ -1258,268 +1292,314 @@
       else if (STATE.vaultTab === 'scheduled') items = q.scheduled_posts || [];
       else if (STATE.vaultTab === 'posted') items = q.published_posts || [];
       else items = STATE.status.master_vault || [];
+      window.__vaultItems = items;
 
       if (!items.length) {
-        box.innerHTML = `<div class="glass-card" style="grid-column:1/-1;text-align:center;padding:38px;color:var(--text-2);">
-          No reels in <strong>${STATE.vaultTab.toUpperCase()}</strong> yet. Click <strong>🚀 Create 1 Reel</strong> to produce your next 3D hit!
-        </div>`;
+        box.innerHTML = `<div class="card" style="grid-column:1/-1;text-align:center;padding:42px;color:var(--text-2);">No videos in <strong>${STATE.vaultTab.toUpperCase()}</strong> right now.</div>`;
         return;
       }
 
-      box.innerHTML = items.map((item, idx) => {
-        const vf = item.video_file || item.filename || '';
-        const title = item.title || item.clean_label || item.emotion_name || vf || 'Foji 3D Reel';
-        const slot = item.scheduled_display || item.published_at || item.created_at || STATE.vaultTab.toUpperCase();
+      box.innerHTML = items.map((it, idx) => {
+        const vf = it.video_file || it.filename || '';
+        const title = it.title || it.clean_label || it.emotion_name || vf;
+        const slot = it.scheduled_display || it.published_at || it.created_at || STATE.vaultTab.toUpperCase();
         const thumb = vf ? `/api/universe/thumb_file/${encodeURIComponent(vf)}` : '/emblem-logo.png';
-        const stCol = STATE.vaultTab === 'posted' ? '#34d399' : (STATE.vaultTab === 'scheduled' ? '#38bdf8' : '#fde047');
+        const isPosted = (STATE.vaultTab === 'posted' || String(it.status || '').toLowerCase() === 'published');
+        const col = isPosted ? '#34d399' : (STATE.vaultTab === 'scheduled' ? '#38bdf8' : '#fde047');
+
         return `<div class="reel-card">
-          <div class="reel-poster" onclick="openTheater(${idx})">
+          <div class="reel-thumb-wrap" onclick="openTheater(${idx})">
             <img src="${thumb}" loading="lazy" onerror="this.src='/emblem-logo.png'" />
-            <span class="reel-status-chip" style="color:${stCol};">${STATE.vaultTab.toUpperCase()}</span>
-            <div class="reel-play-badge"><div class="play-circle">▶</div></div>
+            <span class="reel-badge" style="color:${col};">${isPosted ? 'POSTED' : STATE.vaultTab.toUpperCase()}</span>
+            <div class="play-overlay"><div class="play-orb">▶</div></div>
           </div>
           <div class="reel-body">
-            <div class="reel-title">${title}</div>
-            <div class="reel-meta">🕒 ${slot}</div>
-            <div class="reel-acts">
-              <button class="btn btn-sm" onclick="openTheater(${idx})">▶ Preview</button>
-              ${STATE.vaultTab === 'pending' ? `<button class="btn btn-cyan btn-sm" onclick="quickApprove('${vf}')">📅 Schedule</button>` : ''}
-              ${STATE.vaultTab !== 'posted' ? `<button class="btn btn-gold btn-sm" onclick="quickPublish('${vf}')">🚀 Post</button>` : ''}
+            <div class="reel-name">${title}</div>
+            <div class="reel-slot">🕒 ${slot}</div>
+            <div class="reel-actions-5">
+              ${!isPosted ? `<button class="btn3d sm gold" onclick="actReelIdx('post', ${idx})">🚀 Post Now</button>` : ''}
+              ${!isPosted ? `<button class="btn3d sm cyan" onclick="actReelIdx('schedule', ${idx})">📅 Schedule</button>` : ''}
+              <button class="btn3d sm violet" onclick="actReelIdx('regen', ${idx})">🔄 Regenerate</button>
+              ${!isPosted ? `<button class="btn3d sm emerald" onclick="actReelIdx('posted', ${idx})">✅ Posted</button>` : ''}
+              <button class="btn3d sm danger ${!isPosted ? 'full-span' : ''}" onclick="actReelIdx('delete', ${idx})">🗑️ Delete</button>
             </div>
           </div>
         </div>`;
       }).join('');
-      window.__currentVaultItems = items;
+    }
+
+    function actReelIdx(kind, idx) { actReel(kind, (window.__vaultItems || [])[idx]); }
+
+    function actReel(kind, item) {
+      if (!item) return;
+      const vf = item.video_file || item.filename || '';
+      const cap = (STATE.thItem && STATE.thItem === item) ? document.getElementById('th-caption').value : (item.caption || '');
+
+      if (kind === 'post') {
+        openPopup3D({
+          icon: '🚀', title: 'Approve & Post Now?',
+          msg: `Publish "${item.title || vf}" immediately to your connected account?`,
+          buttons: [
+            {label: '🚀 Publish Now', cls: 'gold', onClick: async () => {
+              showToast('🚀 Publishing reel live...', 'ok');
+              const d = await (await fetch('/api/universe/publish_latest_reel', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption: cap})})).json();
+              showToast(d.ok ? '✅ Published Live & Locked!' : ('⚠️ ' + (d.error || 'Publish failed')), d.ok ? 'ok' : 'err');
+              closeTheater(); pollStatus();
+            }},
+            {label: 'Cancel'}
+          ]
+        });
+      } else if (kind === 'schedule') {
+        (async () => {
+          await fetch('/api/universe/approve_and_schedule', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption: cap})});
+          showToast('📅 Approved & Scheduled!', 'ok');
+          closeTheater(); pollStatus();
+        })();
+      } else if (kind === 'posted') {
+        openPopup3D({
+          icon: '✅', title: 'Mark as Already Posted?',
+          msg: 'This will move the video to Posted, remove it from Scheduled forever, and prevent any duplicate auto-post.',
+          buttons: [
+            {label: '✅ Confirm Posted', cls: 'emerald', onClick: async () => {
+              await fetch('/api/universe/mark_already_posted', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption: cap})});
+              showToast('✅ Permanently Marked as Posted!', 'ok');
+              closeTheater(); pollStatus();
+            }},
+            {label: 'Cancel'}
+          ]
+        });
+      } else if (kind === 'regen') {
+        openPopup3D({
+          icon: '🔄', title: 'Regenerate This Video?',
+          msg: 'The current video will be discarded and a fresh version will be generated immediately.',
+          buttons: [
+            {label: '🔄 Regenerate Now', cls: 'violet', onClick: async () => {
+              showToast('🔄 Regenerating fresh video...', 'ok');
+              await fetch('/api/universe/regenerate_reel', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf})});
+              closeTheater(); switchView('studio'); pollStatus();
+            }},
+            {label: 'Cancel'}
+          ]
+        });
+      } else if (kind === 'delete') {
+        openPopup3D({
+          icon: '🗑️', title: 'Delete Video Permanently?',
+          msg: `Remove "${vf}" from the studio?`,
+          buttons: [
+            {label: '🗑️ Delete', cls: 'danger', onClick: async () => {
+              await fetch('/api/universe/delete_video', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, id: item.id || ''})});
+              showToast('🗑️ Video deleted');
+              closeTheater(); pollStatus();
+            }},
+            {label: 'Cancel'}
+          ]
+        });
+      }
     }
 
     function openTheater(idx) {
-      const item = (window.__currentVaultItems || [])[idx];
-      if (!item) return;
-      STATE.theaterItem = item;
-      const vf = item.video_file || item.filename || '';
-      document.getElementById('theater-title').textContent = item.title || item.clean_label || vf;
-      document.getElementById('theater-badge').textContent = (item.status || STATE.vaultTab || 'REEL').toUpperCase();
-      document.getElementById('theater-meta').textContent = 'File: ' + vf + ' • ' + (item.scheduled_display || item.published_at || 'Ready');
-      document.getElementById('theater-caption').value = item.caption || '';
-      const vid = document.getElementById('theater-video');
-      vid.src = vf ? `/api/universe/video_file/${encodeURIComponent(vf)}` : '';
-      document.getElementById('v5-theater').classList.add('open');
+      const it = (window.__vaultItems || [])[idx]; if (!it) return;
+      STATE.thItem = it;
+      const vf = it.video_file || it.filename || '';
+      document.getElementById('th-title').textContent = it.title || it.clean_label || vf;
+      document.getElementById('th-badge').textContent = (it.status || STATE.vaultTab).toUpperCase();
+      document.getElementById('th-meta').textContent = (it.scheduled_display || it.published_at || 'Ready');
+      document.getElementById('th-caption').value = it.caption || '';
+      const v = document.getElementById('th-video');
+      v.src = vf ? `/api/universe/video_file/${encodeURIComponent(vf)}` : '';
+      document.getElementById('v6-theater').classList.add('open');
     }
-
     function closeTheater() {
-      const vid = document.getElementById('theater-video');
-      vid.pause(); vid.src = '';
-      document.getElementById('v5-theater').classList.remove('open');
+      const v = document.getElementById('th-video'); v.pause(); v.src = '';
+      document.getElementById('v6-theater').classList.remove('open');
     }
-
     async function saveTheaterCaption() {
-      if (!STATE.theaterItem) return;
-      const vf = STATE.theaterItem.video_file || STATE.theaterItem.filename;
-      const caption = document.getElementById('theater-caption').value;
-      await fetch('/api/universe/update_caption', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption})});
-      toast('💾 Caption saved!');
-      pollStudioStatus();
+      if (!STATE.thItem) return;
+      const vf = STATE.thItem.video_file || STATE.thItem.filename;
+      await fetch('/api/universe/update_caption', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption: document.getElementById('th-caption').value})});
+      showToast('💾 Caption saved!', 'ok');
+      pollStatus();
     }
 
-    async function approveTheaterReel() {
-      if (!STATE.theaterItem) return;
-      const vf = STATE.theaterItem.video_file || STATE.theaterItem.filename;
-      const caption = document.getElementById('theater-caption').value;
-      await fetch('/api/universe/approve_and_schedule', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption})});
-      toast('📅 Approved & added to Auto-Schedule!');
-      closeTheater(); pollStudioStatus();
-    }
-
-    async function publishTheaterReel() {
-      if (!STATE.theaterItem) return;
-      if (!confirm('Publish this reel right now to your connected platform(s)?')) return;
-      const vf = STATE.theaterItem.video_file || STATE.theaterItem.filename;
-      const caption = document.getElementById('theater-caption').value;
-      toast('🚀 Publishing reel...');
-      const d = await (await fetch('/api/universe/publish_latest_reel', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption})})).json();
-      toast(d.ok ? '✅ Published Live!' : ('⚠️ ' + (d.error || 'Publish error')));
-      closeTheater(); pollStudioStatus();
-    }
-
-    async function deleteTheaterReel() {
-      if (!STATE.theaterItem || !confirm('Delete this video permanently?')) return;
-      const vf = STATE.theaterItem.video_file || STATE.theaterItem.filename;
-      await fetch('/api/universe/delete_video', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, id: STATE.theaterItem.id || ''})});
-      toast('🗑️ Reel deleted');
-      closeTheater(); pollStudioStatus();
-    }
-
-    async function quickApprove(vf) {
-      await fetch('/api/universe/approve_and_schedule', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf})});
-      toast('📅 Scheduled in next open slot!');
-      pollStudioStatus();
-    }
-
-    async function quickPublish(vf) {
-      if (!confirm('Publish ' + vf + ' immediately?')) return;
-      toast('🚀 Publishing...');
-      const d = await (await fetch('/api/universe/publish_latest_reel', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf})})).json();
-      toast(d.ok ? '✅ Published Live!' : ('⚠️ ' + (d.error || 'Error')));
-      pollStudioStatus();
-    }
-
-    // 5. 5-Sessions & Editable Posting Slots
-    async function loadSessionsConfig() {
+    // =====================================================================
+    // AUTO SCHEDULE (5 SESSIONS + EDITABLE SLOTS)
+    // =====================================================================
+    async function loadSessions() {
       try {
         const d = await (await fetch('/api/studio_sessions_config')).json();
         if (!d || !d.ok) return;
-        const cfg = d.config;
-        STATE.sessionsCfg = cfg;
-        const mb = document.getElementById('master-auto-btn');
-        mb.textContent = cfg.master_auto_enabled ? 'AUTO: ON' : 'AUTO: PAUSED';
-        mb.className = 'btn ' + (cfg.master_auto_enabled ? 'btn-emerald' : 'btn-danger');
+        const c = d.config; STATE.sessCfg = c;
+        const mb = document.getElementById('master-btn');
+        mb.textContent = c.master_auto_enabled ? 'AUTO: ON' : 'AUTO: PAUSED';
+        mb.className = 'btn3d ' + (c.master_auto_enabled ? 'emerald' : 'danger');
+        const sl = c.posting_slots_ist || ['06:30','12:30','18:30'];
+        document.getElementById('slot-1').value = sl[0] || '06:30';
+        document.getElementById('slot-2').value = sl[1] || '12:30';
+        document.getElementById('slot-3').value = sl[2] || '18:30';
+        const pl = c.auto_post_platforms || {instagram:true, facebook:true, youtube:true};
+        document.getElementById('chk-ig').checked = Boolean(pl.instagram);
+        document.getElementById('chk-fb').checked = Boolean(pl.facebook);
+        document.getElementById('chk-yt').checked = Boolean(pl.youtube);
 
-        const slots = cfg.posting_slots_ist || ['06:30','12:30','18:30'];
-        document.getElementById('slot-inp-1').value = slots[0] || '06:30';
-        document.getElementById('slot-inp-2').value = slots[1] || '12:30';
-        document.getElementById('slot-inp-3').value = slots[2] || '18:30';
-
-        const plats = cfg.auto_post_platforms || {instagram:true, facebook:true, youtube:true};
-        document.getElementById('chk-plat-ig').checked = Boolean(plats.instagram);
-        document.getElementById('chk-plat-fb').checked = Boolean(plats.facebook);
-        document.getElementById('chk-plat-yt').checked = Boolean(plats.youtube);
-
-        const today = cfg.today_ist || '';
-        document.getElementById('sessions-list-box').innerHTML = (cfg.sessions || []).map(s => {
-          const skipped = s.skip_date && s.skip_date === today;
-          const active = s.enabled && !skipped;
-          return `<div class="session-row">
+        const today = c.today_ist || '';
+        document.getElementById('sessions-box').innerHTML = (c.sessions || []).map(s => {
+          const skip = s.skip_date && s.skip_date === today;
+          const on = s.enabled && !skip;
+          return `<div class="sess-item">
             <div>
-              <span style="font-size:15px;font-weight:900;color:${active ? 'var(--gold-bright)' : 'var(--text-3)'};">${s.display} IST</span>
-              <span style="font-size:12px;color:var(--text-2);margin-left:8px;">${s.label} (3 Reels)</span>
-              ${skipped ? '<span class="badge-down" style="margin-left:8px;">Skipped Today</span>' : ''}
+              <strong style="font-size:15px;color:${on ? 'var(--gold-hi)' : 'var(--text-3)'};">${s.display} IST</strong>
+              <span style="font-size:12px;color:var(--text-2);margin-left:8px;">${s.label}</span>
+              ${skip ? '<span class="tag-down" style="margin-left:8px;">Skipped Today</span>' : ''}
             </div>
             <div style="display:flex;gap:7px;">
-              <button class="btn btn-sm" onclick="postSessionAct({skip_session_id:'${s.id}'})">${skipped ? '↩ Undo Skip' : '⏭ Skip Today'}</button>
-              <button class="btn btn-sm ${s.enabled ? 'btn-cyan' : ''}" onclick="postSessionAct({toggle_session_id:'${s.id}'})">${s.enabled ? '● ON' : '○ OFF'}</button>
+              <button class="btn3d sm" onclick="actSession({skip_session_id:'${s.id}'})">${skip ? '↩ Undo' : '⏭ Skip Today'}</button>
+              <button class="btn3d sm ${s.enabled ? 'cyan' : ''}" onclick="actSession({toggle_session_id:'${s.id}'})">${s.enabled ? 'ON' : 'OFF'}</button>
             </div>
           </div>`;
         }).join('');
-      } catch(e) {}
+      } catch(e){}
     }
+    async function actSession(p) {
+      await fetch('/api/studio_sessions_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(p)});
+      await loadSessions(); showToast('✅ Schedule updated!', 'ok');
+    }
+    function toggleMaster() { if (STATE.sessCfg) actSession({master_auto_enabled: !STATE.sessCfg.master_auto_enabled}); }
+    function saveSlots() { actSession({posting_slots_ist: [document.getElementById('slot-1').value, document.getElementById('slot-2').value, document.getElementById('slot-3').value]}); }
+    function savePlats() { actSession({auto_post_platforms: {instagram:document.getElementById('chk-ig').checked, facebook:document.getElementById('chk-fb').checked, youtube:document.getElementById('chk-yt').checked}}); }
 
-    async function postSessionAct(payload) {
-      await fetch('/api/studio_sessions_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-      await loadSessionsConfig();
-      toast('✅ Session schedule updated & synced!');
-    }
-    function toggleMasterSessions() {
-      if (!STATE.sessionsCfg) return;
-      postSessionAct({master_auto_enabled: !STATE.sessionsCfg.master_auto_enabled});
-    }
-    function savePostingSlots() {
-      const s = [document.getElementById('slot-inp-1').value, document.getElementById('slot-inp-2').value, document.getElementById('slot-inp-3').value];
-      postSessionAct({posting_slots_ist: s});
-    }
-    function savePlatforms() {
-      postSessionAct({auto_post_platforms: {
-        instagram: document.getElementById('chk-plat-ig').checked,
-        facebook: document.getElementById('chk-plat-fb').checked,
-        youtube: document.getElementById('chk-plat-yt').checked
-      }});
-    }
-
-    // 6. Tri-Platform Insights Hub + Dedicated Full-Screen Platform Deep-Dive Pages
-    async function refreshTriInsights(force) {
-      if (force) {
-        toast('🔄 Syncing live insights...');
-        fetch('/api/universe/ig_analytics?force=1').catch(()=>{});
-      }
+    // =====================================================================
+    // ULTRA-PRO ANALYTICS (GAUGE + DUAL CURVE + SERIES LEADERBOARD + MATRIX)
+    // =====================================================================
+    async function refreshTri(force) {
+      if (force) { showToast('🔄 Syncing live insights...', 'ok'); fetch('/api/universe/ig_analytics?force=1').catch(()=>{}); }
       try {
         const d = await (await fetch('/api/tri_platform_insights')).json();
         if (!d || !d.ok) return;
         document.getElementById('kpi-reach').textContent = Number(d.combined_views || 0).toLocaleString();
         const ig = d.instagram || {}, yt = d.youtube || {}, fb = d.facebook || {};
-
         document.getElementById('ins-ig-views').textContent = Number(ig.total_views || 0).toLocaleString() + ' Views';
-        document.getElementById('ins-ig-sub').textContent = `${ig.followers || 0} Followers • ${ig.media_count || 0} Reels • ❤️ ${Number(ig.total_likes || 0).toLocaleString()} Likes`;
-        document.getElementById('ins-ig-src').textContent = '● ' + (ig.source || 'Live');
-
-        document.getElementById('ins-yt-views').textContent = yt.connected ? (Number(yt.total_views || 0).toLocaleString() + ' Views') : 'Setup API';
-        document.getElementById('ins-yt-sub').textContent = yt.connected ? `${yt.subscribers || 0} Subscribers • ${yt.video_count || 0} Shorts` : 'Connect YouTube Data API v3 in API Hub';
-        document.getElementById('ins-yt-src').textContent = '● ' + (yt.source || 'Not Connected');
-
-        document.getElementById('ins-fb-views').textContent = fb.connected ? (Number(fb.total_views || 0).toLocaleString() + ' Views') : 'Setup API';
-        document.getElementById('ins-fb-sub').textContent = fb.connected ? `${fb.followers || 0} Followers • ${fb.media_count || 0} Reels` : 'Connect Meta Page Token in API Hub';
-        document.getElementById('ins-fb-src').textContent = '● ' + (fb.source || 'Not Connected');
-      } catch(e) {}
+        document.getElementById('ins-ig-sub').textContent = `${ig.followers || 0} Followers • ${ig.media_count || 0} Reels • ❤️ ${Number(ig.total_likes||0).toLocaleString()} Likes`;
+        document.getElementById('ins-yt-views').textContent = yt.connected ? (Number(yt.total_views||0).toLocaleString() + ' Views') : 'Connect';
+        document.getElementById('ins-yt-sub').textContent = yt.connected ? `${yt.subscribers||0} Subs • ${yt.video_count||0} Shorts` : 'Connect YouTube API in Connections';
+        document.getElementById('ins-fb-views').textContent = fb.connected ? (Number(fb.total_views||0).toLocaleString() + ' Views') : 'Connect';
+        document.getElementById('ins-fb-sub').textContent = fb.connected ? `${fb.followers||0} Followers • ${fb.media_count||0} Reels` : 'Connect Facebook API in Connections';
+      } catch(e){}
     }
 
-    function closeDeepPlatform() { document.getElementById('v5-deep-page').classList.remove('open'); }
+    function closeDeepPlatform() { document.getElementById('v6-deep-page').classList.remove('open'); }
 
-    function buildNeonTrendChart(reels, avgViews) {
-      if (!reels || !reels.length) return '<div style="padding:26px;text-align:center;color:var(--text-2);">No reels available for trend curve yet.</div>';
-      const chron = [...reels].reverse().slice(-30);
-      const W = 960, H = 230, pL = 44, pR = 16, pT = 18, pB = 30;
-      const maxV = Math.max(100, ...chron.map(r => r.views || 0), avgViews * 1.15);
-      const pts = chron.map((r, i) => {
-        const x = pL + (chron.length === 1 ? (W - pL - pR)/2 : (i / (chron.length - 1)) * (W - pL - pR));
-        const y = pT + (1 - (r.views || 0) / maxV) * (H - pT - pB);
-        return {x: x.toFixed(1), y: y.toFixed(1), r};
-      });
-      const avgY = (pT + (1 - avgViews / maxV) * (H - pT - pB)).toFixed(1);
-      const poly = pts.map(p => `${p.x},${p.y}`).join(' ');
-      const area = `${pts[0].x},${H-pB} ${poly} ${pts[pts.length-1].x},${H-pB}`;
-      const dots = pts.map(p => {
-        const c = p.r.status === 'viral' ? '#fde047' : (p.r.status === 'growing' ? '#34d399' : '#fb7185');
-        return `<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${c}" stroke="#030612" stroke-width="1.6"><title>${(p.r.title||'').replace(/"/g,'')} | ${Number(p.r.views||0).toLocaleString()} views (${p.r.delta_pct >= 0 ? '+' : ''}${p.r.delta_pct}% vs avg)</title></circle>`;
-      }).join('');
-      return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;">
-        <defs>
-          <linearGradient id="neonArea" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.44"/>
-            <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.02"/>
-          </linearGradient>
-        </defs>
-        <line x1="${pL}" y1="${avgY}" x2="${W-pR}" y2="${avgY}" stroke="#f59e0b" stroke-dasharray="6,5" stroke-width="1.5"/>
-        <text x="${pL+8}" y="${Math.max(14, avgY-6)}" fill="#fde047" font-size="11" font-weight="800">Account Baseline Avg: ${Number(avgViews||0).toLocaleString()} views</text>
-        <polygon points="${area}" fill="url(#neonArea)"/>
-        <polyline points="${poly}" fill="none" stroke="#38bdf8" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
-        ${dots}
-        <text x="${pL}" y="${H-8}" fill="#94a3b8" font-size="10.5">Oldest (${chron.length} Reels Chronological Curve)</text>
-        <text x="${W-pR-82}" y="${H-8}" fill="#94a3b8" font-size="10.5">Latest Reel →</text>
+    function buildMomentumGauge(pct) {
+      const clamped = Math.max(-60, Math.min(60, Number(pct || 0)));
+      const angle = (clamped / 60) * 80; // -80deg to +80deg
+      const col = pct >= 10 ? '#34d399' : (pct >= 0 ? '#fde047' : '#fb7185');
+      return `<svg viewBox="0 0 220 130" style="width:100%;max-width:220px;display:block;margin:0 auto;">
+        <path d="M 24 110 A 86 86 0 0 1 196 110" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M 24 110 A 86 86 0 0 1 110 24" fill="none" stroke="#f43f5e" stroke-width="14" stroke-linecap="round" opacity="0.55"/>
+        <path d="M 110 24 A 86 86 0 0 1 196 110" fill="none" stroke="#10b981" stroke-width="14" stroke-linecap="round" opacity="0.65"/>
+        <g transform="translate(110,110) rotate(${angle})">
+          <line x1="0" y1="0" x2="0" y2="-66" stroke="${col}" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="0" cy="0" r="7" fill="${col}"/>
+        </g>
+        <text x="110" y="96" text-anchor="middle" fill="${col}" font-size="18" font-weight="900">${pct >= 0 ? '+' : ''}${pct}%</text>
+        <text x="110" y="124" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700">LAST 5 VS PREV 5 REELS</text>
       </svg>`;
     }
 
+    function buildDualChart(reels, avgVal, metric) {
+      if (!reels || !reels.length) return '<div style="padding:26px;text-align:center;color:var(--text-2);">No reels yet.</div>';
+      const chron = [...reels].reverse().slice(-30);
+      const W = 940, H = 225, pL = 44, pR = 16, pT = 18, pB = 30;
+      const getV = r => metric === 'er' ? Number(r.er || 0) : Number(r.views || 0);
+      const maxV = Math.max(metric === 'er' ? 5 : 100, ...chron.map(getV), avgVal * 1.15);
+      const pts = chron.map((r, i) => {
+        const x = pL + (chron.length === 1 ? (W - pL - pR)/2 : (i / (chron.length - 1)) * (W - pL - pR));
+        const y = pT + (1 - getV(r) / maxV) * (H - pT - pB);
+        return {x: x.toFixed(1), y: y.toFixed(1), r, v: getV(r)};
+      });
+      const avgY = (pT + (1 - avgVal / maxV) * (H - pT - pB)).toFixed(1);
+      const poly = pts.map(p => `${p.x},${p.y}`).join(' ');
+      const area = `${pts[0].x},${H-pB} ${poly} ${pts[pts.length-1].x},${H-pB}`;
+      const strokeCol = metric === 'er' ? '#c084fc' : '#38bdf8';
+      const dots = pts.map(p => {
+        const c = p.r.status === 'viral' ? '#fde047' : (p.r.status === 'growing' ? '#34d399' : '#fb7185');
+        return `<circle cx="${p.x}" cy="${p.y}" r="4.6" fill="${c}" stroke="#030611" stroke-width="1.6"><title>${(p.r.title||'').replace(/"/g,'')} | ${metric==='er' ? p.v+'% ER' : p.v.toLocaleString()+' views'}</title></circle>`;
+      }).join('');
+      return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;">
+        <defs><linearGradient id="gArea6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${strokeCol}" stop-opacity="0.42"/><stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.02"/></linearGradient></defs>
+        <line x1="${pL}" y1="${avgY}" x2="${W-pR}" y2="${avgY}" stroke="#f59e0b" stroke-dasharray="6,5" stroke-width="1.4"/>
+        <text x="${pL+8}" y="${Math.max(14, avgY-6)}" fill="#fde047" font-size="11" font-weight="800">Average: ${metric==='er' ? avgVal+'%' : Number(avgVal).toLocaleString() + ' views'}</text>
+        <polygon points="${area}" fill="url(#gArea6)"/>
+        <polyline points="${poly}" fill="none" stroke="${strokeCol}" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+        ${dots}
+      </svg>`;
+    }
+
+    function buildSeriesLeaderboard(reels) {
+      const buckets = {};
+      (reels || []).forEach(r => {
+        const t = (r.title || '').toLowerCase();
+        let cat = 'Other Specials';
+        if (t.includes('ragda') || t.includes('punish') || t.includes('ustad')) cat = '🔥 Ustad & Ragda';
+        else if (t.includes('training') || t.includes('drill') || t.includes('academy')) cat = '⚔️ Academy Training';
+        else if (t.includes('love') || t.includes('meera') || t.includes('fojan') || t.includes('pyar')) cat = '❤️ Foji & Fojan';
+        else if (t.includes('masti') || t.includes('funny') || t.includes('comedy')) cat = '😂 Fauji Masti';
+        else if (t.includes('border') || t.includes('duty') || t.includes('agniveer') || t.includes('loc')) cat = '🇮🇳 Duty & Agniveer';
+        buckets[cat] = buckets[cat] || {sum:0, cnt:0};
+        buckets[cat].sum += Number(r.views || 0); buckets[cat].cnt += 1;
+      });
+      const rows = Object.entries(buckets).map(([k, v]) => ({name: k, avg: Math.round(v.sum / v.cnt), cnt: v.cnt})).sort((a,b) => b.avg - a.avg);
+      const top = Math.max(1, ...(rows.map(x => x.avg)));
+      return rows.map((x, idx) => `
+        <div style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;">
+            <span>${idx===0 ? '👑 ' : ''}${x.name} <span style="color:var(--text-3);font-weight:600;">(${x.cnt})</span></span>
+            <span style="color:var(--gold-hi);">${x.avg.toLocaleString()} avg</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.round((x.avg/top)*100)}%;background:linear-gradient(90deg,#f59e0b,#38bdf8);"></div></div>
+        </div>`).join('');
+    }
+
+    function setDeepMetric(m) {
+      STATE.deepMetric = m;
+      const d = STATE.deepData; if (!d) return;
+      const k = d.kpis || {};
+      document.getElementById('deep-chart-host').innerHTML = buildDualChart(d.reels || [], m === 'er' ? (k.avg_er || 0) : (k.avg_views || 0), m);
+    }
     function setDeepFilter(f) { STATE.deepFilter = f; renderDeepReels(); }
+    function setDeepSort(s) { STATE.deepSort = s; renderDeepReels(); }
     function setDeepSearch(q) { STATE.deepSearch = (q || '').toLowerCase(); renderDeepReels(); }
 
     function renderDeepReels() {
-      const host = document.getElementById('deep-reels-list');
+      const host = document.getElementById('deep-reels-box');
       if (!host || !STATE.deepData) return;
-      const list = (STATE.deepData.reels || []).filter(r => {
+      let list = [...(STATE.deepData.reels || [])].filter(r => {
         if (STATE.deepFilter !== 'all' && r.status !== STATE.deepFilter) return false;
         if (STATE.deepSearch && !(r.title || '').toLowerCase().includes(STATE.deepSearch)) return false;
         return true;
       });
+      if (STATE.deepSort === 'views') list.sort((a,b) => (b.views||0) - (a.views||0));
+      else if (STATE.deepSort === 'er') list.sort((a,b) => (b.er||0) - (a.er||0));
+      else if (STATE.deepSort === 'dip') list.sort((a,b) => (a.delta_pct||0) - (b.delta_pct||0));
+
       const maxV = Math.max(1, ...(STATE.deepData.reels || []).map(r => r.views || 0));
-      if (!list.length) {
-        host.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-2);">No reels match this filter.</div>';
-        return;
-      }
+      if (!list.length) { host.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-2);">No reels match filter.</div>'; return; }
       host.innerHTML = list.map(r => {
-        const bCls = r.status === 'viral' ? 'badge-viral' : (r.status === 'growing' ? 'badge-up' : 'badge-down');
-        const bTxt = r.status === 'viral' ? `🚀 Viral +${r.delta_pct}%` : (r.status === 'growing' ? `📈 Growth +${r.delta_pct}%` : `📉 Downfall ${r.delta_pct}%`);
+        const cls = r.status === 'viral' ? 'tag-viral' : (r.status === 'growing' ? 'tag-up' : 'tag-down');
+        const txt = r.status === 'viral' ? `🚀 Viral +${r.delta_pct}%` : (r.status === 'growing' ? `📈 +${r.delta_pct}%` : `📉 ${r.delta_pct}%`);
         const bar = r.status === 'viral' ? 'linear-gradient(90deg,#f59e0b,#fde047)' : (r.status === 'growing' ? 'linear-gradient(90deg,#10b981,#38bdf8)' : 'linear-gradient(90deg,#f43f5e,#fb7185)');
-        const w = Math.max(4, Math.min(100, Math.round((r.views / maxV) * 100)));
         return `<div class="deep-reel-row">
           <img class="deep-thumb" src="${r.thumbnail_url || '/emblem-logo.png'}" onerror="this.src='/emblem-logo.png'" />
           <div style="min-width:0;">
             <div style="font-size:13.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.title}</div>
             <div style="font-size:11px;color:var(--text-2);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
               <span>🕒 ${r.posted_at || 'Published'}</span>
-              <span class="${bCls}">${bTxt}</span>
-              ${r.permalink ? `<a href="${r.permalink}" target="_blank" style="color:var(--cyan-bright);text-decoration:none;font-weight:700;">Watch ↗</a>` : ''}
+              <span class="${cls}">${txt}</span>
+              ${r.permalink ? `<a href="${r.permalink}" target="_blank" style="color:var(--cyan-hi);text-decoration:none;font-weight:800;">Open ↗</a>` : ''}
             </div>
-            <div class="perf-track"><div class="perf-fill" style="width:${w}%;background:${bar};"></div></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.max(4, Math.round((r.views/maxV)*100))}%;background:${bar};"></div></div>
           </div>
           <div class="deep-metrics" style="text-align:right;white-space:nowrap;">
-            <div style="font-size:17px;font-weight:900;color:var(--cyan-bright);">${Number(r.views||0).toLocaleString()} <span style="font-size:10px;color:var(--text-2);">views</span></div>
+            <div style="font-size:17px;font-weight:900;color:var(--cyan-hi);">${Number(r.views||0).toLocaleString()} <span style="font-size:10px;color:var(--text-2);">views</span></div>
             <div style="font-size:11px;color:#cbd5e1;margin-top:3px;">❤️ ${r.likes} • 💬 ${r.comments} • ⚡ ${r.er}% ER</div>
           </div>
         </div>`;
@@ -1527,93 +1607,103 @@
     }
 
     async function openDeepPlatform(plat) {
-      const titles = {instagram:'📸 Instagram Reels Deep Analytics', youtube:'▶️ YouTube Shorts Deep Analytics', facebook:'📘 Facebook Reels Deep Analytics'};
-      document.getElementById('deep-title').textContent = titles[plat] || 'Deep Analytics';
-      document.getElementById('v5-deep-page').classList.add('open');
+      const titles = {instagram:'📸 Instagram Pro Analytics', youtube:'▶️ YouTube Shorts Analytics', facebook:'📘 Facebook Reels Analytics'};
+      document.getElementById('deep-title').textContent = titles[plat] || 'Pro Analytics';
+      document.getElementById('v6-deep-page').classList.add('open');
       const body = document.getElementById('deep-body');
-      body.innerHTML = '<div style="padding:46px;text-align:center;color:var(--cyan-bright);font-weight:800;">⚡ Computing Growth vs Downfall & Reel-Wise Telemetry...</div>';
+      body.innerHTML = '<div style="padding:46px;text-align:center;color:var(--cyan-hi);font-weight:800;">⚡ Analyzing growth velocity, series leaders & dips...</div>';
 
       try {
         const d = await (await fetch('/api/platform_deep_analytics/' + plat)).json();
-        STATE.deepData = d; STATE.deepFilter = 'all'; STATE.deepSearch = '';
+        STATE.deepData = d; STATE.deepFilter = 'all'; STATE.deepSort = 'latest'; STATE.deepMetric = 'views';
         const k = d.kpis || {}, m = d.meta || {};
-        document.getElementById('deep-sub').textContent = `${m.username || plat} • ${m.source || 'API'} • ${Number(m.followers||0).toLocaleString()} Audience`;
+        document.getElementById('deep-sub').textContent = `${m.username || plat} • ${Number(m.followers||0).toLocaleString()} Audience • ${k.total_reels||0} Videos`;
 
         if (!m.connected && !(d.reels || []).length) {
-          body.innerHTML = `<div class="glass-card" style="text-align:center;padding:44px 20px;">
-            <div style="font-size:22px;font-weight:900;color:var(--gold-bright);margin-bottom:10px;">Connect Official ${plat.toUpperCase()} API</div>
-            <div style="font-size:13px;color:var(--text-2);max-width:540px;margin:0 auto 20px auto;line-height:1.6;">
-              Paste your official ${plat.toUpperCase()} API credentials once inside the API Hub to unlock live reel-by-reel analytics, Growth/Downfall alerts, interactive trend curves, and simultaneous 1-click auto-posting!
-            </div>
-            <button class="btn btn-gold" onclick="closeDeepPlatform();switchView('system');">⚙️ Go to Official API Hub</button>
+          body.innerHTML = `<div class="card" style="text-align:center;padding:46px 20px;">
+            <div style="font-size:22px;font-weight:900;color:var(--gold-hi);margin-bottom:10px;">Connect ${plat.toUpperCase()} Account</div>
+            <div style="font-size:13px;color:var(--text-2);max-width:520px;margin:0 auto 20px auto;">Connect your official ${plat.toUpperCase()} API in the Connections tab to unlock live analytics, viral series leaderboards & auto-posting.</div>
+            <button class="btn3d gold" onclick="closeDeepPlatform();switchView('system');">⚙️ Go to Connections</button>
           </div>`;
           return;
         }
 
-        const isUp = (k.momentum_pct || 0) >= 0;
+        const hitRate = k.total_reels ? Math.round((((k.viral_count||0) + (k.growing_count||0)) / k.total_reels) * 100) : 0;
         const bestHr = (k.best_hour_ist !== null && k.best_hour_ist !== undefined) ? `${String(k.best_hour_ist).padStart(2,'0')}:00 IST` : '--';
 
         body.innerHTML = `
-          <div class="kpi-grid">
-            <div class="kpi-card">
-              <div class="kpi-lbl">👁️ Total Platform Views</div>
-              <div class="kpi-val" style="color:var(--cyan-bright);">${Number(k.total_views||0).toLocaleString()}</div>
-              <div class="kpi-sub">Avg ${Number(k.avg_views||0).toLocaleString()} / Reel • ${k.total_reels||0} Total</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-lbl">⚡ Growth vs Downfall (Last 5)</div>
-              <div class="kpi-val" style="font-size:20px;margin-top:10px;">
-                <span class="${isUp ? 'badge-up' : 'badge-down'}">${isUp ? '📈 Growth +' : '📉 Downfall '}${k.momentum_pct}%</span>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-lbl">👁️ Total Views</div><div class="kpi-num" style="color:var(--cyan-hi);">${Number(k.total_views||0).toLocaleString()}</div><div class="kpi-sub">Avg ${Number(k.avg_views||0).toLocaleString()} / Reel</div></div>
+            <div class="kpi"><div class="kpi-lbl">🎯 Hit Rate (Above Avg)</div><div class="kpi-num" style="color:#34d399;">${hitRate}%</div><div class="kpi-sub">🚀 ${k.viral_count||0} Viral • 📈 ${k.growing_count||0} Grow • 📉 ${k.downfall_count||0} Dip</div></div>
+            <div class="kpi"><div class="kpi-lbl">⚡ Engagement Rate</div><div class="kpi-num" style="color:#c084fc;">${k.avg_er||0}%</div><div class="kpi-sub">❤️ ${Number(k.total_likes||0).toLocaleString()} Likes • 💬 ${k.total_comments||0} Comments</div></div>
+            <div class="kpi"><div class="kpi-lbl">⏰ Peak Posting Hour</div><div class="kpi-num" style="color:var(--gold-hi);">${bestHr}</div><div class="kpi-sub">Avg ${Number(k.best_hour_avg||0).toLocaleString()} views in this slot</div></div>
+          </div>
+
+          <div class="pro-analytics-split">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div style="font-size:15px;font-weight:900;">📈 Performance Curve</div>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn3d sm cyan" onclick="setDeepMetric('views')">👁️ Views</button>
+                  <button class="btn3d sm violet" onclick="setDeepMetric('er')">⚡ Engagement %</button>
+                </div>
               </div>
-              <div class="kpi-sub">Last 5 Avg: ${Number(k.recent_5_avg||0).toLocaleString()} vs Prev 5: ${Number(k.prev_5_avg||0).toLocaleString()}</div>
+              <div id="deep-chart-host">${buildDualChart(d.reels || [], k.avg_views || 0, 'views')}</div>
             </div>
-            <div class="kpi-card">
-              <div class="kpi-lbl">🚀 Viral / 📈 Grow / 📉 Dip</div>
-              <div class="kpi-val" style="font-size:22px;">
-                <span style="color:#fde047;">${k.viral_count||0}</span> /
-                <span style="color:#34d399;">${k.growing_count||0}</span> /
-                <span style="color:#fb7185;">${k.downfall_count||0}</span>
+
+            <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:14px;">
+              <div>
+                <div style="font-size:14.5px;font-weight:900;margin-bottom:4px;">🧭 Growth / Downfall Momentum</div>
+                ${buildMomentumGauge(k.momentum_pct || 0)}
               </div>
-              <div class="kpi-sub">❤️ ${Number(k.total_likes||0).toLocaleString()} Likes • ⚡ ${k.avg_er||0}% Avg ER</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-lbl">⏰ Winning Posting Hour</div>
-              <div class="kpi-val" style="color:var(--gold-bright);font-size:22px;">${bestHr}</div>
-              <div class="kpi-sub">Avg ${Number(k.best_hour_avg||0).toLocaleString()} views • Top: ${d.top_reel ? Number(d.top_reel.views||0).toLocaleString() : '--'}</div>
+              <div style="border-top:1px solid var(--border);padding-top:12px;">
+                <div style="font-size:13.5px;font-weight:900;margin-bottom:10px;">🏆 Top Performing Series</div>
+                ${buildSeriesLeaderboard(d.reels || [])}
+              </div>
             </div>
           </div>
 
-          <div class="glass-card" style="margin-bottom:18px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-              <div style="font-size:15px;font-weight:900;">📈 Views Trend & Growth/Downfall Curve</div>
-              <div style="font-size:11px;color:var(--text-2);">🟡 Viral (+35%+) &nbsp; 🟢 Above Avg &nbsp; 🔴 Downfall (Below Avg)</div>
+          <div class="two-col" style="margin-bottom:18px;">
+            <div class="card" style="border-color:rgba(16,185,129,0.4);">
+              <div style="font-size:12px;font-weight:800;color:#34d399;">👑 #1 TOP VIRAL REEL</div>
+              <div style="font-size:15px;font-weight:900;margin-top:6px;">${d.top_reel ? d.top_reel.title : '--'}</div>
+              <div style="font-size:12.5px;color:var(--gold-hi);margin-top:6px;font-weight:800;">${d.top_reel ? `${Number(d.top_reel.views).toLocaleString()} Views • ❤️ ${d.top_reel.likes} • ⚡ ${d.top_reel.er}% ER` : ''}</div>
             </div>
-            ${buildNeonTrendChart(d.reels || [], k.avg_views || 0)}
+            <div class="card" style="border-color:rgba(244,63,94,0.4);">
+              <div style="font-size:12px;font-weight:800;color:#fb7185;">📉 BIGGEST DIP (NEEDS STRONGER HOOK)</div>
+              <div style="font-size:15px;font-weight:900;margin-top:6px;">${d.low_reel ? d.low_reel.title : '--'}</div>
+              <div style="font-size:12.5px;color:var(--text-2);margin-top:6px;font-weight:700;">${d.low_reel ? `${Number(d.low_reel.views).toLocaleString()} Views (${d.low_reel.delta_pct}% vs avg)` : ''}</div>
+            </div>
           </div>
 
-          <div class="glass-card">
+          <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
               <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button class="btn btn-gold btn-sm" onclick="setDeepFilter('all')">All (${(d.reels||[]).length})</button>
-                <button class="btn btn-sm" onclick="setDeepFilter('viral')">🚀 Viral (${k.viral_count||0})</button>
-                <button class="btn btn-sm" onclick="setDeepFilter('growing')">📈 Growing (${k.growing_count||0})</button>
-                <button class="btn btn-sm" onclick="setDeepFilter('downfall')">📉 Downfall (${k.downfall_count||0})</button>
+                <button class="btn3d sm gold" onclick="setDeepFilter('all')">All (${(d.reels||[]).length})</button>
+                <button class="btn3d sm" onclick="setDeepFilter('viral')">🚀 Viral (${k.viral_count||0})</button>
+                <button class="btn3d sm" onclick="setDeepFilter('growing')">📈 Growing (${k.growing_count||0})</button>
+                <button class="btn3d sm" onclick="setDeepFilter('downfall')">📉 Downfall (${k.downfall_count||0})</button>
               </div>
-              <input class="inp" style="width:240px;" placeholder="🔍 Search reel title..." oninput="setDeepSearch(this.value)" />
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <select class="inp" style="width:155px;padding:7px 10px;" onchange="setDeepSort(this.value)">
+                  <option value="latest">Sort: Latest</option>
+                  <option value="views">Sort: Most Views</option>
+                  <option value="er">Sort: Highest ER%</option>
+                  <option value="dip">Sort: Biggest Dip</option>
+                </select>
+                <input class="inp" style="width:210px;padding:7px 11px;" placeholder="🔍 Search title..." oninput="setDeepSearch(this.value)" />
+              </div>
             </div>
-            <div id="deep-reels-list"></div>
+            <div id="deep-reels-box"></div>
           </div>
         `;
         renderDeepReels();
-      } catch(e) {
-        body.innerHTML = '<div class="glass-card" style="color:#fb7185;">Error loading analytics: ' + e + '</div>';
-      }
+      } catch(e) { body.innerHTML = '<div class="card" style="color:#fb7185;">Error loading analytics.</div>'; }
     }
 
-    // 7. Official API Save & System Diagnostics
-    async function saveApiConfig() {
-      const st = document.getElementById('api-save-status');
-      st.textContent = '⏳ Verifying & saving...';
+    // Connections & Health
+    async function saveApis() {
+      const st = document.getElementById('api-status'); st.textContent = '⏳ Saving...';
       const payload = {
         meta_app_id: document.getElementById('api-meta-id').value,
         meta_app_secret: document.getElementById('api-meta-secret').value,
@@ -1625,32 +1715,25 @@
         yt_api_key: document.getElementById('api-yt-key').value
       };
       const d = await (await fetch('/api/tri_platform_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})).json();
-      if (d && d.ok) {
-        st.textContent = '✅ Official APIs Saved & Active!';
-        toast('✅ Official Tri-Platform APIs Connected!');
-        refreshTriInsights(false);
-      } else {
-        st.textContent = '⚠️ Save failed.';
-      }
+      st.textContent = d && d.ok ? '✅ Saved!' : '⚠️ Error';
+      if (d && d.ok) { showToast('✅ Connections Saved!', 'ok'); refreshTri(false); }
     }
 
-    async function loadDiagnostics() {
+    async function loadDiag() {
       try {
         const d = await (await fetch('/api/system_diagnostics')).json();
         if (!d || !d.ok) return;
         document.getElementById('diag-storage').textContent = d.storage_mb + ' MB';
         document.getElementById('sidebar-storage').textContent = d.storage_mb + ' MB';
-        document.getElementById('diag-cookies').textContent = d.cookie_count + ' Fresh';
-        document.getElementById('diag-steps').textContent = d.calibrated_steps + ' Locked';
-      } catch(e) {}
+        document.getElementById('diag-cookies').textContent = d.cookie_count + ' Active';
+      } catch(e){}
     }
 
-    // Boot App Loops
-    pollStudioStatus();
-    refreshTriInsights(false);
-    loadDiagnostics();
-    setInterval(pollStudioStatus, 4500);
-    setInterval(() => refreshTriInsights(false), 60000);
+    // Boot Loops
+    pollStatus(); pollActiveSession(); refreshTri(false); loadDiag();
+    setInterval(pollStatus, 4000);
+    setInterval(pollActiveSession, 20000);
+    setInterval(() => refreshTri(false), 60000);
   </script>
 </body>
 </html>
