@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795200818470",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Selected on Account #1 — video generation limit",
+    "status": "error",
+    "time_str": "12:23 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795200818.4705436
+  },
+  {
     "id": "notif_1795200789845",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
