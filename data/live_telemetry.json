@@ -1,9 +1,8 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (3.8 min)",
-  "sub_detail": "Gemini Veo rendering Video_063_ViralTrend_Part_01_1120_212847.mp4... (229s elapsed)",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "09:33:30 PM",
-  "epoch": 1795190610.3191748
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1795190611.326368
 }
