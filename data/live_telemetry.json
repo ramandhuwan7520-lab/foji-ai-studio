@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (2.6 min)",
-  "sub_detail": "Gemini Veo rendering Video_063_ViralTrend_Part_01_1120_212847.mp4... (154s elapsed)",
+  "step_num": 7,
+  "step_title": "Stage 7: Video Rendered! Mixing Genre BGM & Saving...",
+  "sub_detail": "Adding mood-matched BGM to Video_063_ViralTrend_Part_01_1120_212847.mp4 & syncing...",
   "status": "active",
-  "progress": 82,
-  "updated_at": "09:32:15 PM",
-  "epoch": 1795190535.1229022
+  "progress": 94,
+  "updated_at": "09:32:20 PM",
+  "epoch": 1795190540.5222502
 }
