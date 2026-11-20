@@ -1190,185 +1190,153 @@ def verify_create_video_selected_or_detect_limit(driver):
 
 
 def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_prompt):
-    install_file_dialog_blocker(driver)
+    """
+    FOJI VEO ENGINE v5 (100% CLEAN-SLATE CALIBRATED 12-STEP PIPELINE — ZERO LEGACY STEPS):
+    1. Optional Mode Picker -> 'Auto'
+    2. 'Upload & tools' (+) -> 'Create video' (Instant Daily Limit Guard!)
+    3. Optional 'Try it' popup (0.35s instant check — ZERO blind wait!)
+    4. 'Format' -> 'Video'
+    5. 'Landscape (16:9)' -> 'Portrait (9:16)'
+    6. Direct Prompt-Box Character Paste via DataTransfer (keeps Create Video & 9:16 locked!)
+    7. High-Class 3D Prompt Fill & Verify
+    8. Click 'Send message'
+    """
+    print("🚀 [Foji Veo v5] Starting Clean Calibrated 12-Step Pipeline (Zero Legacy Steps)...")
+    update_3d_telemetry(3, "🎬 Step 3: Selecting Veo Video Mode", "Calibrated v5 flow: Auto -> Upload & tools -> Create video...", "active", 32)
 
-    s1_x, s1_y = load_recorded_step_coords(1, 77.7, 49.4)
-    s2_x, s2_y = load_recorded_step_coords(2, 75.1, 65.2)
-    s3_x, s3_y = load_recorded_step_coords(3, 38.8, 50.9)
-    s4_x, s4_y = load_recorded_step_coords(4, 44.5, 78.5)
-    s5_x, s5_y = load_recorded_step_coords(5, 55.4, 87.0)
-    s6_x, s6_y = load_recorded_step_coords(6, 71.1, 89.6)
-    s7_x, s7_y = load_recorded_step_coords(7, 69.1, 80.2)
-    s8_x, s8_y = load_recorded_step_coords(8, 38.5, 80.4)
-    s9_x, s9_y = load_recorded_step_coords(9, 45.2, 46.0)
-    s12_x, s12_y = load_recorded_step_coords(12, 82.3, 79.4)
+    # Load dynamic calibrated coordinates if recorded
+    s1_x, s1_y = load_recorded_step_coords(1, 77.23, 50.08)
+    s2_x, s2_y = load_recorded_step_coords(2, 74.89, 58.87)
+    s3_x, s3_y = load_recorded_step_coords(3, 38.69, 51.02)
+    s4_x, s4_y = load_recorded_step_coords(4, 41.53, 83.83)
+    s5_x, s5_y = load_recorded_step_coords(5, 54.60, 89.48)
+    s6_x, s6_y = load_recorded_step_coords(6, 71.46, 87.60)
+    s7_x, s7_y = load_recorded_step_coords(7, 69.12, 75.67)
+    s8_x, s8_y = load_recorded_step_coords(8, 51.46, 87.13)
+    s9_x, s9_y = load_recorded_step_coords(9, 49.49, 79.28)
+    s11_x, s11_y = load_recorded_step_coords(11, 81.82, 77.86)
 
-    update_3d_telemetry(3, "Step 3: Setting Up 9:16 Canvas", "Selecting 3.1 Pro (Detailed search) & 9:16 Portrait Video tool...", "active", 38)
-    print("⚡ [Step #1 & #2] Selecting '3.1 Pro (Detailed search)' Mode...")
-    opened_picker = wait_and_single_click_step(
-        driver,
-        "Step #1: Open Mode Picker",
-        aria_list=["open mode picker", "mode picker", "model"],
-        txt_list=["3.1 pro", "detailed search", "4 hydrogen", "hydrogen", "4 argon", "argon", "3.5 flash lite", "flash-lite", "flash lite", "everyday help", "quick answers", "pro", "flash"],
-        icon_list=["keyboard_arrow_down", "arrow_drop_down"],
-        near_xpct=s1_x,
-        near_ypct=s1_y,
-        verify_next_txt=["3.1 pro", "detailed search", "4 hydrogen", "hydrogen", "everyday help", "3.5 flash lite", "quick answers"],
-        wait_timeout=5.0,
-        verify_timeout=2.5,
-        max_attempts=1,
-        optional=True
-    )
-    if opened_picker:
-        picked_h2 = wait_and_single_click_step(
-            driver,
-            "Step #2: Select '3.1 Pro (Detailed search)'",
-            txt_list=["auto adapts to your needs", "auto", "3.1 pro", "pro"],
-            near_xpct=s2_x,
-            near_ypct=s2_y,
-            wait_timeout=4.0,
-            verify_timeout=2.0,
-            max_attempts=1,
-            optional=True
+    # STEP 1 & 2: Ensure Mode Picker is on 'Auto' (fast check — skip click if already Auto!)
+    already_auto = False
+    try:
+        already_auto = bool(driver.execute_script(
+            "return Boolean(document.querySelector('[aria-label*=\"currently Auto\" i]'));"
+        ))
+    except Exception:
+        pass
+    if not already_auto:
+        opened_mode = wait_and_single_click_step(
+            driver, "v5 Step #1: Mode Picker",
+            aria_list=["open mode picker", "mode picker", "model"],
+            txt_list=["auto", "fast", "thinking", "pro"],
+            near_xpct=s1_x, near_ypct=s1_y, wait_timeout=2.5, verify_timeout=1.0, max_attempts=1, optional=True
         )
-        if not picked_h2:
+        if opened_mode:
+            time.sleep(0.25)
             wait_and_single_click_step(
-                driver,
-                "Step #2 Fallback: Select '3.5 Flash Lite'",
-                txt_list=["quick answers 3.5 flash lite", "3.5 flash lite", "flash lite", "quick answers", "flash"],
-                near_xpct=s2_x,
-                near_ypct=s2_y,
-                wait_timeout=2.5,
-                verify_timeout=1.5,
-                max_attempts=1,
-                optional=True
+                driver, "v5 Step #2: Select Auto",
+                txt_list=["auto adapts to your needs", "auto"],
+                aria_list=["auto"],
+                near_xpct=s2_x, near_ypct=s2_y, wait_timeout=2.5, verify_timeout=1.0, max_attempts=1, optional=True
             )
-        time.sleep(0.8)
+            time.sleep(0.25)
 
-    print("🎬 [Step #3 & #4] Opening 'Upload & tools' (+) -> Clicking 'Create video' ONCE...")
-    dismiss_any_agree_or_consent_popup(driver)
+    # STEP 3 & 4: Open 'Upload & tools' -> Click 'Create video' (STRICT VIDEO ONLY + INSTANT LIMIT GUARD)
     wait_and_single_click_step(
-        driver,
-        "Step #3: Upload & tools (+)",
-        aria_list=["upload & tools", "tools", "add", "plus", "open upload"],
-        txt_list=["+", "tools"],
-        icon_list=["add", "add_circle", "spark", "video_spark"],
-        near_xpct=s3_x,
-        near_ypct=s3_y,
-        verify_next_txt=["create video", "upload files", "upload image"],
-        wait_timeout=6.0,
-        verify_timeout=3.0,
-        max_attempts=2,
-        optional=False
+        driver, "v5 Step #3: Upload & tools (+)",
+        aria_list=["upload & tools", "tools", "open tools"],
+        icon_list=["add", "plus", "tune", "page_info"],
+        near_xpct=s3_x, near_ypct=s3_y,
+        verify_next_txt=["create video", "generate video"],
+        verify_next_aria=["create video"],
+        wait_timeout=5.0, verify_timeout=2.0, max_attempts=2, optional=False
     )
-    time.sleep(0.6)
 
-    _cv_ok = wait_and_single_click_step(
-        driver,
-        "Step #4: Create video (STRICT VIDEO ONLY)",
+    cv_ok = wait_and_single_click_step(
+        driver, "v5 Step #4: Create video",
         aria_list=["create video"],
         txt_list=["create video", "generate video"],
         icon_list=["movie", "videocam", "video_spark", "smart_display"],
-        near_xpct=s4_x,
-        near_ypct=s4_y,
-        wait_timeout=6.0,
-        verify_timeout=2.5,
-        max_attempts=2,
-        optional=False
+        near_xpct=s4_x, near_ypct=s4_y,
+        wait_timeout=5.0, verify_timeout=1.8, max_attempts=2, optional=True
     )
-    if not _cv_ok:
-        _lim_msg = "Daily Gemini Video Limit Reached (Create video option select nahi ho raha) — Next session mein try hoga!"
-        print(f"🚫 [Daily Limit Guard] {_lim_msg}")
-        update_3d_telemetry(4, "🚫 Daily Limit Reached", _lim_msg, "warning", 0)
-        push_app_notification("warning", "🚫 Daily Video Limit Full", _lim_msg, "warning")
-        raise RuntimeError(_lim_msg)
-    time.sleep(0.45)
+    if not cv_ok:
+        lim_msg = "Daily Gemini Video Limit Reached ('Create video' unavailable) — will retry next session without skipping part!"
+        print(f"🚫 [v5 Limit Guard] {lim_msg}")
+        update_3d_telemetry(3, "🚫 Daily Video Limit Reached", lim_msg, "warning", 0)
+        push_app_notification("warning", "🚫 Daily Video Limit Full", lim_msg, "warning")
+        ErrCls = globals().get("GeminiLimitReachedError", RuntimeError)
+        raise ErrCls(lim_msg)
 
+    # STEP 5: Instant 0-Wait optional 'Try it' popup check (NEVER waits if absent!)
+    time.sleep(0.35)
     wait_and_single_click_step(
-        driver,
-        "Step #5: Try it / Agree Popup",
-        txt_list=["try it", "got it", "agree", "i agree", "accept", "continue"],
-        near_xpct=s5_x,
-        near_ypct=s5_y,
-        wait_timeout=0.4,
-        verify_timeout=0.3,
-        max_attempts=1,
-        optional=True
+        driver, "v5 Step #5: Optional Try it Popup",
+        txt_list=["try it", "got it", "agree", "i agree", "accept"],
+        near_xpct=s5_x, near_ypct=s5_y,
+        wait_timeout=0.35, verify_timeout=0.25, max_attempts=1, optional=True
     )
-    # CALIBRATED_FORMAT_PORTRAIT_LOCK (Recorded Live Steps #6 -> #9: Format->Video & Landscape->Portrait 9:16)
-    update_3d_telemetry(4, '🎬 Step 4: Setting 9:16 Portrait Video Format...', 'Selecting Format -> Video & Aspect Ratio -> Portrait (9:16)...', 'active', 48)
-    _fmt_clicked = wait_and_single_click_step(
-        driver, 'Step #6: Format Menu', txt_list=['format'], aria_list=['format'],
-        near_xpct=71.46, near_ypct=87.60, wait_timeout=1.6, verify_timeout=0.8, max_attempts=1, optional=True
-    )
-    if _fmt_clicked:
-        time.sleep(0.25)
-        wait_and_single_click_step(
-            driver, 'Step #7: Select Video Format', txt_list=['video'], aria_list=['video'],
-            near_xpct=69.12, near_ypct=75.67, wait_timeout=1.8, verify_timeout=0.8, max_attempts=1, optional=True
-        )
-        time.sleep(0.25)
-    _ar_clicked = wait_and_single_click_step(
-        driver, 'Step #8: Aspect Ratio (Landscape -> Portrait)',
-        aria_list=['aspect ratio, landscape (16:9)', 'aspect ratio', 'landscape'],
-        txt_list=['landscape', '16:9'],
-        near_xpct=51.46, near_ypct=87.13, wait_timeout=2.0, verify_timeout=0.8, max_attempts=1, optional=True
-    )
-    if _ar_clicked:
-        time.sleep(0.25)
-        wait_and_single_click_step(
-            driver, 'Step #9: Portrait (9:16)',
-            txt_list=['portrait (9:16)', 'portrait', '9:16'],
-            aria_list=['portrait (9:16)', 'portrait'],
-            near_xpct=49.49, near_ypct=79.28, wait_timeout=2.0, verify_timeout=0.8, max_attempts=1, optional=True
-        )
-        time.sleep(0.25)
 
-    dismiss_any_agree_or_consent_popup(driver)
-    time.sleep(0.8)
+    # STEP 6 & 7: Format -> Video
+    update_3d_telemetry(4, "📱 Step 4: Locking 9:16 Video & Cast", "Setting Format -> Video & Portrait (9:16), then pasting 3D character...", "active", 48)
+    fmt_ok = wait_and_single_click_step(
+        driver, "v5 Step #6: Format Menu",
+        txt_list=["format"], aria_list=["format"],
+        near_xpct=s6_x, near_ypct=s6_y, wait_timeout=1.5, verify_timeout=0.6, max_attempts=1, optional=True
+    )
+    if fmt_ok:
+        time.sleep(0.22)
+        wait_and_single_click_step(
+            driver, "v5 Step #7: Select Video",
+            txt_list=["video"], aria_list=["video"],
+            near_xpct=s7_x, near_ypct=s7_y, wait_timeout=1.6, verify_timeout=0.6, max_attempts=1, optional=True
+        )
+        time.sleep(0.22)
 
-    update_3d_telemetry(4, "Step 4: Loading Characters", "Uploading 3D character reference images into Gemini...", "active", 50)
-    print("📸 [Step #10] Attaching character reference(s) directly into Gemini Prompt Box (Zero Tools Reset)...")
+    # STEP 8 & 9: Landscape (16:9) -> Portrait (9:16)
+    already_portrait = False
+    try:
+        already_portrait = bool(driver.execute_script("return Boolean(document.querySelector('[aria-label*=Portrait i]'));"))
+    except Exception:
+        pass
+    if not already_portrait:
+        ar_ok = wait_and_single_click_step(
+            driver, "v5 Step #8: Aspect Ratio (Landscape -> Portrait)",
+            aria_list=["aspect ratio, landscape (16:9)", "aspect ratio", "landscape"],
+            txt_list=["landscape", "16:9"], icon_list=["crop_16_9"],
+            near_xpct=s8_x, near_ypct=s8_y, wait_timeout=2.2, verify_timeout=0.8, max_attempts=1, optional=True
+        )
+        if ar_ok:
+            time.sleep(0.22)
+            wait_and_single_click_step(
+                driver, "v5 Step #9: Portrait (9:16)",
+                txt_list=["portrait (9:16)", "portrait", "9:16"],
+                aria_list=["portrait (9:16)", "portrait"], icon_list=["crop_9_16"],
+                near_xpct=s9_x, near_ypct=s9_y, exclude_words=["landscape", "16:9"],
+                wait_timeout=2.2, verify_timeout=0.8, max_attempts=1, optional=True
+            )
+            time.sleep(0.25)
+
+    # STEP 10: Direct Prompt-Box Character Paste (Matches working manual calibration, NEVER resets Create video!)
+    print("🖼️ [v5 Step #10] Pasting 3D Character Reference(s) directly into Gemini Prompt Box...")
     if not paste_character_images_directly_into_prompt(driver, foji_img, fojan_img):
-        print("   ↩️ Direct paste preview not detected -> using fallback Upload & tools menu...")
-        print("📸 [Step #8, #9 & #10] Clicking 'Upload & tools' (+) -> 'Upload files' -> Injecting character assets...")
-        install_file_dialog_blocker(driver)
-        wait_and_single_click_step(
-        driver,
-        "Step #8: Upload & tools (+)",
-        aria_list=["upload & tools"],
-        icon_list=["plus", "add"],
-        near_xpct=s8_x,
-        near_ypct=s8_y,
-        verify_next_txt=["upload files"],
-        verify_next_aria=["upload files"],
-        verify_next_icon=["attach_file"]
-        )
+        print("   ↩️ Fallback: attaching via hidden file input...")
+        try:
+            install_file_dialog_blocker(driver)
+            inject_character_files_into_gemini(driver, foji_img, fojan_img)
+        except Exception as _fb_e:
+            print(f"   ℹ️ Fallback cast attach note: {_fb_e}")
 
-        install_file_dialog_blocker(driver)
-        js_verify_file_input = "return document.querySelectorAll('input[type=file]').length > 0;"
-        wait_and_single_click_step(
-        driver,
-        "Step #9: Upload files",
-        aria_list=["upload files. documents, data, code files", "upload files"],
-        txt_list=["upload files"],
-        icon_list=["attach_file"],
-        near_xpct=s9_x,
-        near_ypct=s9_y,
-        exclude_words=["drive", "video", "music", "image"],
-        custom_verify_js=js_verify_file_input
-        )
-
-        inject_character_files_into_gemini(driver, foji_img, fojan_img)
-
-    update_3d_telemetry(5, "Step 5: Directing Scene", "Injecting viral script, Haryanvi shayari & BGM cues...", "active", 62)
-    print("✉️ [Step #11] Filling fresh AI Script into 'Enter a prompt for Gemini'...")
+    # STEP 11: Fill High-Class 3D Prompt
+    update_3d_telemetry(5, "✍️ Step 5: Directing High-Class 3D Scene", "Injecting cinematic Fauji script, dialogue & lighting cues...", "active", 62)
     if not fill_gemini_prompt_box_and_verify(driver, fresh_prompt):
-        report_step_problem_instantly(driver, "Step #11: Fill Prompt Box", "Could not fill script into Gemini prompt box.")
-        raise RuntimeError("Step #11 (Fill Prompt Box) failed.")
+        report_step_problem_instantly(driver, "v5 Step #11: Fill Prompt", "Could not fill script into Gemini prompt box.")
+        raise RuntimeError("v5 Step #11 (Fill Prompt) failed.")
 
     dismiss_any_agree_or_consent_popup(driver)
-    print("🚀 [Step #12] Clicking 'Send message' (`arrow_upward`)...")
+
+    # STEP 12: Click 'Send message'
+    print("🚀 [v5 Step #12] Clicking 'Send message'...")
     js_verify_sent = """
     const box = document.querySelector('[aria-label*="Enter a prompt" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"], textarea');
     const len = box ? ((box.value || box.innerText || '').trim().length) : 0;
@@ -1376,21 +1344,21 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     return (len < 15) || Boolean(stopBtn);
     """
     ok_sent = wait_and_single_click_step(
-        driver,
-        "Step #12: Send message",
+        driver, "v5 Step #12: Send message",
         aria_list=["send message"],
         icon_list=["arrow_upward", "send"],
-        near_xpct=s12_x,
-        near_ypct=s12_y,
-        custom_verify_js=js_verify_sent
+        near_xpct=s11_x, near_ypct=s11_y,
+        custom_verify_js=js_verify_sent,
+        wait_timeout=5.0, verify_timeout=3.0, max_attempts=2, optional=False
     )
     if not ok_sent:
-        try:
-            box_el = driver.find_element(By.CSS_SELECTOR, "[aria-label*='Enter a prompt' i], rich-textarea div[contenteditable='true'], div[contenteditable='true'], textarea")
-            box_el.send_keys(Keys.ENTER)
-        except Exception:
-            pass
+        report_step_problem_instantly(driver, "v5 Step #12: Send message", "Send button did not trigger submission.")
+        raise RuntimeError("v5 Step #12 (Send message) failed.")
+
+    update_3d_telemetry(6, "⏳ Step 6: Rendering 3D Veo Reel...", "Gemini Veo is actively rendering your vertical 9:16 3D cinema reel...", "active", 74)
+    print("✅ [Foji Veo v5] All 12 calibrated steps executed cleanly — handing off to Smart Adaptive Watcher!")
     return True
+
 
 
 def get_gemini_reply_and_video_status(driver, ignored_video_urls):
