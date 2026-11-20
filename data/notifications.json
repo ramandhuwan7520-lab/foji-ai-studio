@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795213708525",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Selected on Account #1 — video generation limit",
+    "status": "error",
+    "time_str": "03:58 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795213708.526001
+  },
+  {
     "id": "notif_1795213669906",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:51 PM",
     "date_str": "18 Nov 2026",
     "timestamp": 1795018878.2460692
-  },
-  {
-    "id": "notif_1795017961913",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Fauji Mess Ka Shahi Swag is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:36 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795017961.9133475
   }
 ]
