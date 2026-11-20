@@ -36,77 +36,9 @@ SCHEDULE_CFG_FILE = "data/schedule_config.json"
 _LAST_CLOUD_PULL_TS = 0.0
 _LOCAL_QUEUE_MODIFIED_TS = 0.0
 
-FOJI_UNIVERSE_TRACKS = {
-    "love_meera": {
-        "id": "love_meera",
-        "name": "❤️ Foji & Fojan Emotional Love & Nok-Jhok",
-        "badge": "Romantic & Desi Nok-Jhok Series",
-        "characters": ["Young Haryanvi Cadet in Olive-Green Uniform", "His Devoted Partner (Jaan / Kuchu Puchu / Laado)"],
-        "theme_brief": (
-            "Heart-touching and cute relatable romance, playful teasing nok-jhok, emotional farewell, and joyful homecoming "
-            "between a young uniformed cadet and his beloved partner. Include surprise holiday visits, warm evening video calls "
-            "with cute nicknames ('Jaan', 'Kuchu Puchu', 'Bawli', 'Laado', 'Gulgule', 'Fauji Sahab'), railway station platform hugs, "
-            "and festive waiting. (STRICT BAN: No paper letters/chitthi, no weapons)."
-        )
-    },
-    "training_ustad": {
-        "id": "training_ustad",
-        "name": "⚔️ Academy Training & Morning Drill Reality",
-        "badge": "High-Energy Academy Series",
-        "characters": ["Young Cadet", "Strict Moustached Haryanvi Drill Coach (Ustad)", "Academy Batchmates"],
-        "theme_brief": (
-            "Inspiring athletic academy training life: 4 AM morning whistle sprint, obstacle wall climb, parade march rhythm, "
-            "heavy backpack jog on dusty track, pushups in morning mist, and motivating Haryanvi coaching dialogues."
-        )
-    },
-    "unit_ragda": {
-        "id": "unit_ragda",
-        "name": "🔥 Ustad Ka Ragda & Desi Attitude",
-        "badge": "Viral Fitness & Discipline Series",
-        "characters": ["Young Cadet", "Strict Drill Coach (Ustad)", "Funny Batchmate"],
-        "theme_brief": (
-            "Energetic academy fitness challenge ('Ragda' with Haryanvi swagger and brotherhood): frog jumps with backpack, "
-            "plank challenge on sunny parade ground, pushups in light rain, sweat and determination, and Coach Ustad's witty "
-            "motivational Haryanvi dialogues. (NO injury, NO blood, NO violence)."
-        )
-    },
-    "fauji_masti": {
-        "id": "fauji_masti",
-        "name": "😂 Hostel Masti, Mess & Brotherhood",
-        "badge": "Desi Comedy Series",
-        "characters": ["Young Cadet", "Desi Academy Friends", "Strict Mess Cook"],
-        "theme_brief": (
-            "Hilarious hostel and dining-hall comedy: sneaking an extra hot gulab jamun or laddu from the dining mess, "
-            "funny morning alarm prank, celebratory Haryanvi dance after weekend inspection, hiding snacks under the pillow "
-            "when Coach Ustad walks past, and unbreakable friendship."
-        )
-    },
-    "border_duty": {
-        "id": "border_duty",
-        "name": "🏔️ Snowy Mountain Post, Maa Ka Pyar & Tiranga",
-        "badge": "Goosebumps Patriotic Series",
-        "characters": ["Cadet at Snowy Mountain Outpost", "Batchmate", "Mother on Phone Call"],
-        "theme_brief": (
-            "Emotional scenic life at a snowy Himalayan mountain outpost: snowfall on olive-green winter jacket, warming hands "
-            "around a steaming steel mug of masala chai, emotional phone call with Maa back in the village, proud salute to the "
-            "Indian Tricolor flag fluttering in the sunrise wind. (NO weapons, NO war, NO conflict)."
-        )
-    },
-    "viral_trend": {
-        "id": "viral_trend",
-        "name": "🚀 Trending Viral Fauji & Desi Reality Specials",
-        "badge": "Standalone Viral Trend Engine",
-        "characters": ["Young Uniformed Cadet", "Dynamic Co-Star (Coach Ustad / Friend / Partner / Villager)"],
-        "theme_brief": (
-            "Standalone, ultra-viral high-retention 8-second reels! Instant 1-second hook! Rotate across: "
-            "City Comfort vs Early-Morning Cadet Fitness contrast, Haryanvi Attitude & Shayari on parade ground, "
-            "Cute 'Kuchu Puchu / Jaan' Video Call Comedy, Proud Uniform Visit in Village Market, and 4 AM Running Motivation. "
-            "(STRICT BAN: No weapons, no war/enemies, no blood, no paper letters)."
-        )
-    }
-}
+FOJI_UNIVERSE_TRACKS = {'training_ustad': {'id': 'training_ustad', 'name': 'Academy Training & Morning Drill', 'badge': 'Training & Drill Series', 'characters': ['Young Haryanvi Soldier Makra', 'Strict Moustached Haryanvi Drill Instructor (Ustad)', 'Batchmates'], 'theme_brief': 'Raw, energetic Indian Army academy training life: 4 AM whistle sprint on dusty parade ground, rope climb, obstacle wall, heavy backpack endurance jog, pushups in golden sunrise dust, sharp Haryanvi Ustad coaching & brotherhood grit. STRICT BAN: Zero snow, zero snow mountains, zero glaciers.'}, 'unit_ragda': {'id': 'unit_ragda', 'name': 'Ustad Ka Ragda & Punishment', 'badge': 'Viral Ragda & Punishment', 'characters': ['Young Soldier Makra', 'Strict Haryanvi Ustad', 'Funny Batchmate'], 'theme_brief': "Hilarious yet hardcore Army training punishments ('Ragda'): 4 AM murga walk, frog jumps with pithu bag, sandy ground front-roll race, caught sneaking late by Ustad, pushup penalty with savage Haryanvi one-liners & unstoppable desi attitude. STRICT BAN: Zero snow mountains."}, 'funny_fauji': {'id': 'funny_fauji', 'name': 'Fauji Masti, Bakwas & Comedy', 'badge': 'Barracks Comedy & Masti', 'characters': ['Young Soldier Makra', '2 Hilarious Barracks Buddies', 'Strict Havildar'], 'theme_brief': 'Laugh-out-loud Fauji barracks masti & desi bakwas: sneaking extra gulab jamun in mess hall, hiding phone under blanket during night inspection, snoring roommate prank, fighting for warm bucket water, hilarious Haryanvi banter. STRICT BAN: Zero snow mountains.'}, 'duty_fatigue': {'id': 'duty_fatigue', 'name': 'Duty, Fatigue & Working Reality', 'badge': 'Real Unit Work & Fatigue', 'characters': ['Young Soldier Makra', 'Unit Team & Senior Havildar'], 'theme_brief': "Authentic behind-the-scenes Army unit working reality ('Fatigue' & Duty): unloading ration trucks, sweeping barracks courtyard before CO inspection, midnight sentry guard duty with torch & hot cutting chai, polishing boots, sweaty tired smile and silent pride. STRICT BAN: Zero snow mountains."}, 'agniveer_reality': {'id': 'agniveer_reality', 'name': 'Agniveer Reality & Pride', 'badge': 'Agniveer Real Journey', 'characters': ['Young Agniveer Soldier Makra', 'Batchmates & Parents on Call'], 'theme_brief': 'Real emotional & proud Agniveer life reality: 4-year dedication, sending first salary home to mother, missing village Holi/Diwali while standing on duty, blistered feet after 10km run, proud late-night video call to parents. STRICT BAN: Zero snow mountains.'}, 'love_meera': {'id': 'love_meera', 'name': 'Foji & Fojan Desi Nok-Jhok', 'badge': 'Relatable Desi Romance', 'characters': ['Young Soldier Makra in Plain Olive Uniform', 'His Partner Meera'], 'theme_brief': 'Sweet, grounded, relatable desi nok-jhok between Makra and Meera in real Indian settings: bustling railway platform farewell, evening video call from barracks veranda, surprise home courtyard visit, playful Haryanvi teasing. STRICT BAN: Zero snow mountains, zero snowy/alpine hills, zero paper letters.'}}
 
-TRACK_ORDER = ["viral_trend", "love_meera", "unit_ragda", "training_ustad", "fauji_masti", "border_duty"]
+TRACK_ORDER = ['training_ustad', 'unit_ragda', 'funny_fauji', 'duty_fatigue', 'agniveer_reality', 'love_meera']
 
 DAILY_VIRAL_HASHTAGS = {
     0: "#mondaymotivation #agniveerbharti #indianarmy #haryanvishayari #faujilife #armyreels #desifauji #viralreels",
@@ -1016,7 +948,10 @@ def sync_raw_videos_into_unapproved_queue():
     """
     q = get_scheduled_queue()
     scheduled_files = {item.get("video_file") for item in q.get("scheduled_posts", []) if item.get("video_file")}
-    published_files = {item.get("video_file") for item in q.get("published_posts", []) if item.get("video_file")}
+    published_files = {item.get("video_file") for item in q.get("published_posts", []) if item.get("video_file")} | load_posted_ledger() | set(q.get("upload_claimed_files") or [])
+    if any(it.get("video_file") in published_files for it in q.get("scheduled_posts", [])):
+        q["scheduled_posts"] = [it for it in q.get("scheduled_posts", []) if it.get("video_file") not in published_files]
+        save_scheduled_queue(q, sync_cloud=False)
 
     del_set = set()
     if os.path.exists("data/deleted_ids.json"):
@@ -1678,3 +1613,100 @@ def auto_purge_posted_videos_older_than_1_hour():
     if changed:
         q["published_history"] = q.get("published_posts", [])
         save_scheduled_queue(q, sync_cloud=True)
+
+
+
+POSTED_LEDGER_FILE = "data/posted_ledger.json"
+
+def load_posted_ledger():
+    if os.path.exists(POSTED_LEDGER_FILE):
+        try:
+            data = json.load(open(POSTED_LEDGER_FILE, "r", encoding="utf-8"))
+            if isinstance(data, list):
+                return set(os.path.basename(str(x)) for x in data if x)
+        except Exception:
+            pass
+    return set()
+
+def record_video_permanently_posted(video_file, caption="", permalink="", media_pk=""):
+    """
+    PERMANENT ANTI-DUPLICATE LOCK:
+    1. Locks `video_file` inside `data/posted_ledger.json` forever.
+    2. Purges it from `scheduled_posts` & `unapproved_videos` and records it in `published_posts` & `upload_claimed_files`.
+    3. Saves a clean archive copy inside `archive_posted_reels/` on laptop.
+    4. Immediately pushes BOTH `data/posted_ledger.json` & `data/scheduled_queue.json` to GitHub (blocking)
+       so Render restarts/pulls NEVER resurrect an already-posted reel back into Scheduled!
+    """
+    vf = os.path.basename(str(video_file or "").strip())
+    if not vf:
+        return False
+
+    ledger = load_posted_ledger()
+    ledger.add(vf)
+    os.makedirs("data", exist_ok=True)
+    with open(POSTED_LEDGER_FILE, "w", encoding="utf-8") as lf:
+        json.dump(sorted(ledger), lf, indent=2)
+
+    q = get_scheduled_queue()
+    removed_item = None
+    new_sched = []
+    for it in q.get("scheduled_posts", []):
+        if os.path.basename(str(it.get("video_file") or "")) == vf:
+            removed_item = it
+        else:
+            new_sched.append(it)
+    q["scheduled_posts"] = new_sched
+
+    new_unapp = []
+    for it in q.get("unapproved_videos", []):
+        if os.path.basename(str(it.get("video_file") or "")) == vf:
+            removed_item = removed_item or it
+        else:
+            new_unapp.append(it)
+    q["unapproved_videos"] = new_unapp
+
+    claimed = list(q.get("upload_claimed_files") or [])
+    if vf not in claimed:
+        claimed.append(vf)
+    q["upload_claimed_files"] = claimed
+
+    pub_list = q.get("published_posts", [])
+    if not any(os.path.basename(str(p.get("video_file") or "")) == vf for p in pub_list):
+        pub_entry = dict(removed_item or {})
+        pub_entry.update({
+            "video_file": vf,
+            "caption": caption or (removed_item.get("caption", "") if removed_item else ""),
+            "status": "published",
+            "published_at": datetime.now(IST).strftime("%d %b %Y, %I:%M %p IST"),
+            "permalink": permalink or pub_entry.get("permalink", ""),
+            "media_pk": str(media_pk or pub_entry.get("media_pk", ""))
+        })
+        pub_list.insert(0, pub_entry)
+        q["published_posts"] = pub_list[:150]
+
+    save_scheduled_queue(q, sync_cloud=False)
+
+    # Archive copy locally on laptop
+    if os.environ.get("RENDER") != "true" and os.environ.get("GITHUB_ACTIONS") != "true":
+        for src_dir in ("output/raw_videos", "output/final_reels"):
+            src_p = os.path.join(src_dir, vf)
+            if os.path.exists(src_p):
+                try:
+                    os.makedirs("archive_posted_reels", exist_ok=True)
+                    dst_p = os.path.join("archive_posted_reels", vf)
+                    if not os.path.exists(dst_p):
+                        shutil.copy2(src_p, dst_p)
+                except Exception:
+                    pass
+
+    try:
+        push_json_to_github_instantly(POSTED_LEDGER_FILE, f"Lock posted ledger {vf} [skip render] [skip ci]", blocking=True)
+        push_json_to_github_instantly("data/scheduled_queue.json", f"Lock posted queue {vf} [skip render] [skip ci]", blocking=True)
+    except Exception:
+        try:
+            import gemini_bot as _gb
+            _gb.sync_file_to_github(POSTED_LEDGER_FILE, f"Lock posted ledger {vf} [skip render] [skip ci]")
+            _gb.sync_file_to_github("data/scheduled_queue.json", f"Lock posted queue {vf} [skip render] [skip ci]")
+        except Exception:
+            pass
+    return True

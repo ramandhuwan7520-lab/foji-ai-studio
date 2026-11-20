@@ -1,27 +1,40 @@
 import os
 import math
 import wave
+import glob
+import random
 import struct
 import shutil
 import subprocess
-import requests
 
 os.makedirs("assets/bgm", exist_ok=True)
+os.makedirs("assets/bgm/trending", exist_ok=True)
 
-# Verified Online Royalty-Free Genre Audio Sources (with instant local multi-harmonic synthesis fallback)
-ONLINE_GENRE_BGM_URLS = {
+TRENDING_YT_QUERIES = {
+    "ragda_action": [
+        "ytsearch1:Aarambh Hai Prachand viral reel bgm",
+        "ytsearch1:Haryanvi desi gym attitude bgm reel",
+        "ytsearch1:Chak De India motivational bgm instrumental"
+    ],
+    "agniveer_reality": [
+        "ytsearch1:Teri Mitti emotional instrumental bgm reel",
+        "ytsearch1:Sandese Aate Hai flute emotional bgm reel",
+        "ytsearch1:Shershaah Ranjha emotional instrumental bgm"
+    ],
+    "duty_fatigue": [
+        "ytsearch1:Lakshya title track motivational instrumental bgm",
+        "ytsearch1:Zinda Bhaag Milkha Bhaag motivational bgm reel",
+        "ytsearch1:Kar Har Maidaan Fateh instrumental bgm"
+    ],
     "funny_masti": [
-        "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3",
-        "https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"
+        "ytsearch1:Hera Pheri funny comedy bgm reel",
+        "ytsearch1:Bollywood comedy masti viral bgm reel",
+        "ytsearch1:Haryanvi funny desi beat bgm reel"
     ],
     "emotional_love": [
-        "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3"
-    ],
-    "ragda_action": [
-        "https://cdn.pixabay.com/download/audio/2022/10/25/audio_946b0939c8.mp3"
-    ],
-    "patriotic_border": [
-        "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3"
+        "ytsearch1:Raataan Lambiyan slowed reverb bgm reel",
+        "ytsearch1:Kesariya soft instrumental bgm reel",
+        "ytsearch1:Ve Kamleya flute instrumental bgm reel"
     ]
 }
 
@@ -37,157 +50,135 @@ def _get_ffmpeg_binary():
     return shutil.which("ffmpeg") or "ffmpeg"
 
 
-def _synthesize_genre_bgm_wav(genre_key, out_wav_path, duration_sec=12):
-    """
-    Generates a studio-grade 44.1kHz stereo WAV soundtrack tailored to the exact video mood:
-    - `funny_masti`: Upbeat bouncy dholak rhythm + playful comedic pitch slides & boing reactions!
-    - `emotional_love`: Warm soulful flute melody + gentle acoustic chord pad (A-minor -> F -> C -> G).
-    - `ragda_action`: Punchy Haryanvi bass drop (55Hz-110Hz) + military marching snare cadence.
-    - `patriotic_border`: Deep goosebump orchestral strings + slow heroic heartbeat pulse.
-    """
+def _detect_mood_from_pkg(pkg):
+    txt = ""
+    if isinstance(pkg, dict):
+        txt = " ".join([
+            str(pkg.get("track_id", "")),
+            str(pkg.get("emotion_name", "")),
+            str(pkg.get("bgm_category", "")),
+            str(pkg.get("title", ""))
+        ]).lower()
+    if any(k in txt for k in ("funny", "comedy", "masti", "bakwas", "mess")):
+        return "funny_masti"
+    if any(k in txt for k in ("ragda", "punish", "ustad", "training", "drill")):
+        return "ragda_action"
+    if any(k in txt for k in ("agniveer", "border", "desh", "patriot", "pride")):
+        return "agniveer_reality"
+    if any(k in txt for k in ("duty", "fatigue", "working", "guard")):
+        return "duty_fatigue"
+    if any(k in txt for k in ("love", "meera", "nok", "roman", "fojan")):
+        return "emotional_love"
+    return "ragda_action"
+
+
+def fetch_trending_bollywood_bgm_clip(mood_key):
+    cache_dir = os.path.join("assets", "bgm", "trending", mood_key)
+    os.makedirs(cache_dir, exist_ok=True)
+    cached = [f for f in glob.glob(os.path.join(cache_dir, "*.mp3")) if os.path.getsize(f) > 25 * 1024]
+    if len(cached) >= 2:
+        return random.choice(cached)
+
+    q = random.choice(TRENDING_YT_QUERIES.get(mood_key, TRENDING_YT_QUERIES["ragda_action"]))
+    ffmpeg_exe = _get_ffmpeg_binary()
+    out_mp3 = os.path.join(cache_dir, f"trend_{mood_key}_{random.randint(100,999)}.mp3")
+    raw_tmp = os.path.join(cache_dir, "raw_dl.m4a")
+    try:
+        yt_cmd = [
+            "yt-dlp", "-f", "bestaudio[ext=m4a]/bestaudio",
+            "--no-playlist", "--max-filesize", "8M",
+            "--download-sections", "*0:10-0:26",
+            "-o", raw_tmp, q
+        ]
+        res = subprocess.run(yt_cmd, capture_output=True, text=True, timeout=35)
+        if res.returncode != 0 or not os.path.exists(raw_tmp):
+            yt_cmd[0:1] = ["python3" if os.name != "nt" else "python", "-m", "yt_dlp"]
+            subprocess.run(yt_cmd, capture_output=True, text=True, timeout=35)
+
+        if os.path.exists(raw_tmp) and os.path.getsize(raw_tmp) > 10 * 1024:
+            subprocess.run([
+                ffmpeg_exe, "-y", "-i", raw_tmp, "-t", "12",
+                "-af", "afade=t=in:st=0:d=0.8,afade=t=out:st=10.8:d=1.2,loudnorm=I=-16:TP=-1.5:LRA=11",
+                "-c:a", "libmp3lame", "-b:a", "128k", out_mp3
+            ], capture_output=True, timeout=25)
+            try:
+                os.remove(raw_tmp)
+            except Exception:
+                pass
+            if os.path.exists(out_mp3) and os.path.getsize(out_mp3) > 20 * 1024:
+                print(f"🎵 [Trending Bollywood BGM] Cut & cached '{mood_key}': {os.path.basename(out_mp3)}")
+                return out_mp3
+    except Exception as _ye:
+        print(f"ℹ️ [Trending BGM Note] Using fallback audio ({_ye})")
+    return cached[0] if cached else None
+
+
+def _synthesize_fallback_wav(mood_key, out_wav, duration_sec=12):
     sr = 44100
-    total_samples = int(sr * duration_sec)
-    with wave.open(out_wav_path, "w") as wf:
+    n = int(sr * duration_sec)
+    freqs = {
+        "funny_masti": (261.6, 329.6, 392.0),
+        "emotional_love": (220.0, 261.6, 329.6),
+        "ragda_action": (110.0, 164.8, 220.0),
+        "agniveer_reality": (196.0, 246.9, 293.7),
+        "duty_fatigue": (146.8, 220.0, 293.7)
+    }.get(mood_key, (196.0, 246.9, 293.7))
+    with wave.open(out_wav, "w") as wf:
         wf.setnchannels(2)
         wf.setsampwidth(2)
         wf.setframerate(sr)
-
-        buf = bytearray()
-        for i in range(total_samples):
-            t = i / float(sr)
-            if genre_key == "funny_masti":
-                # Bouncy comedic rhythm (130 BPM) + funny cartoon slide/boing accents every 2.2s
-                beat = (t * 2.16) % 1.0
-                bass = math.sin(2 * math.pi * (110 + 35 * math.sin(2 * math.pi * 2.16 * t)) * t) * math.exp(-3.5 * beat)
-                boing_phase = t % 2.2
-                if boing_phase < 0.38:
-                    # Funny rising pitch reaction ("boing / slide")
-                    f_boing = 240 + 420 * (boing_phase / 0.38) + 45 * math.sin(2 * math.pi * 22 * boing_phase)
-                    melody = 0.55 * math.sin(2 * math.pi * f_boing * t) * math.exp(-3.0 * boing_phase)
-                else:
-                    melody = 0.25 * math.sin(2 * math.pi * 330 * t) * math.exp(-4.0 * (beat % 0.5))
-                val = 0.45 * bass + melody
-
-            elif genre_key == "emotional_love":
-                # Emotional romantic flute & warm acoustic chord progression (Am -> F -> C -> G)
-                chords = [(220.0, 261.63, 329.63), (174.61, 220.0, 261.63), (261.63, 329.63, 392.0), (196.0, 246.94, 293.66)]
-                c_idx = int(t / 2.8) % len(chords)
-                f1, f2, f3 = chords[c_idx]
-                pad = 0.28 * (math.sin(2 * math.pi * f1 * t) + 0.8 * math.sin(2 * math.pi * f2 * t) + 0.6 * math.sin(2 * math.pi * f3 * t))
-                # Soulful pahadi flute vibrato melody
-                flute_notes = [440.0, 523.25, 587.33, 523.25, 659.25, 587.33, 523.25, 440.0]
-                fn = flute_notes[int(t * 1.4) % len(flute_notes)]
-                vibrato = 4.5 * math.sin(2 * math.pi * 5.5 * t)
-                flute = 0.38 * math.sin(2 * math.pi * (fn + vibrato) * t)
-                val = pad + flute
-
-            elif genre_key == "ragda_action":
-                # High-energy Haryanvi bass & military snare cadence (140 BPM)
-                beat = (t * 2.33) % 1.0
-                sub_drop = math.sin(2 * math.pi * (65.4 * (1.0 + 0.5 * math.exp(-12 * beat))) * t) * math.exp(-2.8 * beat)
-                riff_notes = [130.81, 146.83, 164.81, 196.0]
-                rn = riff_notes[int(t * 2.33) % len(riff_notes)]
-                lead = 0.35 * math.tanh(2.2 * math.sin(2 * math.pi * rn * t)) * math.exp(-2.5 * (beat % 0.5))
-                val = 0.58 * sub_drop + lead
-
-            else:
-                # `patriotic_border`: Goosebump patriotic strings + slow heroic heartbeat pulse
-                hb = (t * 1.1) % 1.0
-                pulse = 0.55 * math.sin(2 * math.pi * 55.0 * t) * (math.exp(-14 * hb) + 0.65 * math.exp(-18 * abs(hb - 0.22)))
-                chords = [(146.83, 220.0, 293.66), (130.81, 196.0, 261.63), (116.54, 174.61, 233.08), (130.81, 196.0, 261.63)]
-                f1, f2, f3 = chords[int(t / 3.0) % len(chords)]
-                strings = 0.28 * (math.sin(2 * math.pi * f1 * t) + math.sin(2 * math.pi * f2 * t) + 0.8 * math.sin(2 * math.pi * f3 * t))
-                val = pulse + strings
-
-            sample_int = max(-32000, min(32000, int(val * 16500)))
-            buf.extend(struct.pack("<hh", sample_int, sample_int))
-        wf.writeframes(bytes(buf))
-    return out_wav_path
-
-
-def get_or_fetch_genre_bgm_file(track_id, dialogue_text=""):
-    """Selects and prepares the exact background music / reaction audio track for the video's mood."""
-    low_txt = (str(track_id) + " " + str(dialogue_text)).lower()
-    if track_id == "fauji_masti" or any(w in low_txt for w in ["funny", "comedy", "masti", "mess", "gulab jamun", "prank"]):
-        genre_key = "funny_masti"
-    elif track_id == "love_meera" or any(w in low_txt for w in ["jaan", "kuchu puchu", "laado", "gulgule", "pyar", "mohabbat", "yaad"]):
-        genre_key = "emotional_love"
-    elif track_id in ("unit_ragda", "training_ustad") or any(w in low_txt for w in ["ragda", "ustad", "pushup", "drill", "pithu"]):
-        genre_key = "ragda_action"
-    else:
-        genre_key = "patriotic_border"
-
-    os.makedirs("assets/bgm", exist_ok=True)
-    mp3_path = os.path.abspath(f"assets/bgm/{genre_key}.mp3")
-    wav_path = os.path.abspath(f"assets/bgm/{genre_key}.wav")
-
-    if os.path.exists(mp3_path) and os.path.getsize(mp3_path) > 15000:
-        return mp3_path, genre_key
-
-    # Try downloading curated royalty-free track online first
-    for url in ONLINE_GENRE_BGM_URLS.get(genre_key, []):
-        try:
-            r = requests.get(
-                url,
-                headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/135.0.0.0"},
-                timeout=8
+        frames = bytearray()
+        for i in range(n):
+            t = i / sr
+            env = min(1.0, t / 0.6) * min(1.0, (duration_sec - t) / 0.8)
+            val = 0.22 * env * (
+                math.sin(2 * math.pi * freqs[0] * t)
+                + 0.6 * math.sin(2 * math.pi * freqs[1] * t)
+                + 0.4 * math.sin(2 * math.pi * freqs[2] * t)
             )
-            if r.status_code == 200 and len(r.content) > 15000:
-                with open(mp3_path, "wb") as f:
-                    f.write(r.content)
-                print(f"🎵 [Online BGM Fetcher] Downloaded fresh '{genre_key}' background soundtrack ({len(r.content)//1024} KB)!")
-                return mp3_path, genre_key
-        except Exception:
-            pass
-
-    # Fallback: Synthesize studio-grade multi-harmonic WAV track locally so BGM NEVER fails!
-    if not os.path.exists(wav_path) or os.path.getsize(wav_path) < 15000:
-        _synthesize_genre_bgm_wav(genre_key, wav_path, duration_sec=14)
-        print(f"🎵 [Studio BGM Synth] Prepared '{genre_key}' multi-harmonic soundtrack & SFX!")
-    return wav_path, genre_key
+            s = int(max(-32767, min(32767, val * 32767)))
+            frames += struct.pack("<hh", s, s)
+        wf.writeframes(frames)
+    return out_wav
 
 
-def auto_mix_genre_bgm_into_video(video_path, pkg=None):
-    """
-    Mixes the genre-matched BGM / Funny Reaction / Emotional Flute track softly (16% volume)
-    underneath the 100% original Gemini spoken dialogue track using FFmpeg!
-    """
-    if not video_path or not os.path.exists(video_path) or os.path.getsize(video_path) < 30000:
-        return video_path
+def auto_mix_genre_bgm_into_video(video_path, pending_pkg=None):
+    if not video_path or not os.path.exists(video_path) or os.path.getsize(video_path) < 50 * 1024:
+        return False
+
+    mood = _detect_mood_from_pkg(pending_pkg)
+    ffmpeg_exe = _get_ffmpeg_binary()
+    bgm_file = fetch_trending_bollywood_bgm_clip(mood)
+    if not bgm_file:
+        bgm_file = os.path.join("assets", "bgm", f"synth_{mood}.wav")
+        if not os.path.exists(bgm_file):
+            _synthesize_fallback_wav(mood, bgm_file, 12)
+
+    tmp_out = video_path + ".bgm_mix.mp4"
     try:
-        pkg = pkg or {}
-        track_id = pkg.get("track_id", "viral_trend")
-        diag = pkg.get("dialogue_line_1_hinglish", "")
-        bgm_file, genre_key = get_or_fetch_genre_bgm_file(track_id, diag)
-        ffmpeg_exe = _get_ffmpeg_binary()
+        cmd = [
+            ffmpeg_exe, "-y", "-i", video_path, "-stream_loop", "-1", "-i", bgm_file,
+            "-filter_complex", "[0:a]volume=1.0[a0];[1:a]volume=0.16,afade=t=in:st=0:d=0.6[a1];[a0][a1]amix=inputs=2:duration=first:dropout_transition=2[aout]",
+            "-map", "0:v:0", "-map", "[aout]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", tmp_out
+        ]
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+        if res.returncode != 0 or not os.path.exists(tmp_out) or os.path.getsize(tmp_out) < 50 * 1024:
+            cmd2 = [
+                ffmpeg_exe, "-y", "-i", video_path, "-stream_loop", "-1", "-i", bgm_file,
+                "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", tmp_out
+            ]
+            subprocess.run(cmd2, capture_output=True, text=True, timeout=60)
 
-        tmp_out = video_path + ".bgm_mixed.mp4"
+        if os.path.exists(tmp_out) and os.path.getsize(tmp_out) > 50 * 1024:
+            os.replace(tmp_out, video_path)
+            print(f"✅ [BGM Mastered] Mixed '{mood}' BGM ({os.path.basename(bgm_file)}) into {os.path.basename(video_path)}!")
+            return True
+    except Exception as _me:
+        print(f"ℹ️ BGM mix skipped safely: {_me}")
+    finally:
         if os.path.exists(tmp_out):
             try:
                 os.remove(tmp_out)
             except Exception:
                 pass
-
-        # Mix original video audio (100% volume) + looped BGM (16% volume with smooth fade-out)
-        cmd = [
-            ffmpeg_exe, "-y",
-            "-i", video_path,
-            "-stream_loop", "-1", "-i", bgm_file,
-            "-filter_complex", "[0:a]volume=1.0[va];[1:a]volume=0.16[ba];[va][ba]amix=inputs=2:duration=first:dropout_transition=2[aout]",
-            "-map", "0:v:0", "-map", "[aout]",
-            "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
-            "-shortest", tmp_out
-        ]
-        res = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-        if res.returncode == 0 and os.path.exists(tmp_out) and os.path.getsize(tmp_out) > 30000:
-            os.replace(tmp_out, video_path)
-            print(f"🎶 [Auto-BGM Mixer] Mixed '{genre_key}' background music/SFX (16% vol) with original dialogue (100% vol) into {os.path.basename(video_path)}!")
-        else:
-            if os.path.exists(tmp_out):
-                try:
-                    os.remove(tmp_out)
-                except Exception:
-                    pass
-    except Exception as e:
-        print(f"ℹ️ [Auto-BGM Mixer] Note: {e}")
-    return video_path
+    return False

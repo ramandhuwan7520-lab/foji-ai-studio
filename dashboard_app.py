@@ -2066,24 +2066,16 @@ def api_universe_trigger_pipeline():
 @app.route("/api/universe/mark_already_posted", methods=["POST"])
 def api_universe_mark_already_posted():
     from flask import request, jsonify
-    try:
-        data = request.get_json(force=True, silent=True) or {}
-        vfile = os.path.basename((data.get("video_file") or "").strip())
-        if not vfile:
-            return jsonify({"ok": False, "error": "Missing video_file"}), 200
+    data = request.get_json(silent=True) or {}
+    vfile = os.path.basename(str(data.get("video_file") or "").strip())
+    caption = str(data.get("caption") or "")
+    if not vfile:
+        return jsonify({"ok": False, "error": "video_file required"}), 400
+    _fud.record_video_permanently_posted(vfile, caption=caption)
+    global _CACHED_UNIVERSE_TS
+    _CACHED_UNIVERSE_TS = 0
+    return jsonify({"ok": True, "video_file": vfile, "message": "Marked as Posted & locked permanently!"})
 
-        caption = (data.get("caption") or "").strip()
-        pub_item = _fud.mark_video_as_published_in_vault(vfile, caption=caption, media_pk="MANUAL_MARKED_POSTED")
-        global _CACHED_UNIVERSE_TS
-        _CACHED_UNIVERSE_TS = 0
-        return jsonify({
-            "ok": True,
-            "video_file": vfile,
-            "published_item": pub_item,
-            "message": f"Moved {vfile} to Posted Reels!"
-        })
-    except Exception as e:
-        return jsonify({"ok": False, "error": str(e)}), 200
 
 
 @app.route("/api/universe/latest_thumb", methods=["GET"])
@@ -3100,6 +3092,76 @@ def api_system_diagnostics():
         "cookie_count": ck_cnt,
         "calibrated_steps": cal_cnt,
         "ui_version": "FOJI_PRO_V5_CLEAN_SLATE"
+    })
+
+
+
+
+@app.route("/api/universe/regenerate_reel", methods=["POST"])
+def api_universe_regenerate_reel():
+    from flask import request, jsonify
+    data = request.get_json(silent=True) or {}
+    vfile = os.path.basename(str(data.get("video_file") or "").strip())
+    custom_idea = str(data.get("custom_idea") or "").strip()
+    if vfile:
+        try:
+            q = _fud.get_scheduled_queue()
+            q["unapproved_videos"] = [x for x in q.get("unapproved_videos", []) if os.path.basename(str(x.get("video_file") or "")) != vfile]
+            q["scheduled_posts"] = [x for x in q.get("scheduled_posts", []) if os.path.basename(str(x.get("video_file") or "")) != vfile]
+            _fud.save_scheduled_queue(q)
+            for dd in ("output/raw_videos", "output/final_reels"):
+                p = os.path.join(dd, vfile)
+                if os.path.exists(p):
+                    os.remove(p)
+        except Exception:
+            pass
+    try:
+        with app.test_request_context("/api/universe/trigger_pipeline", method="POST", json={"count": 1, "custom_idea": custom_idea}):
+            return api_universe_trigger_pipeline()
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)})
+
+
+@app.route("/api/active_session_info", methods=["GET"])
+def api_active_session_info():
+    from flask import jsonify
+    now_ist = datetime.now(_fud.IST)
+    cur_min = now_ist.hour * 60 + now_ist.minute
+    sessions = [
+        {"id": "S1", "label": "Midnight Session", "time_ist": "00:19", "display": "12:19 AM"},
+        {"id": "S2", "label": "Morning Session",  "time_ist": "06:19", "display": "06:19 AM"},
+        {"id": "S3", "label": "Midday Session",   "time_ist": "11:19", "display": "11:19 AM"},
+        {"id": "S4", "label": "Evening Session",  "time_ist": "16:19", "display": "04:19 PM"},
+        {"id": "S5", "label": "Night Session",    "time_ist": "21:19", "display": "09:19 PM"},
+    ]
+    if os.path.exists("data/studio_sessions_config.json"):
+        try:
+            cfg = json.load(open("data/studio_sessions_config.json", "r", encoding="utf-8"))
+            if cfg.get("sessions"):
+                sessions = cfg["sessions"]
+        except Exception:
+            pass
+
+    active_sess = None
+    next_sess = None
+    best_next_diff = 99999
+    for s in sessions:
+        hh, mm = [int(x) for x in str(s.get("time_ist", "00:19")).split(":")]
+        sm = hh * 60 + mm
+        diff = cur_min - sm
+        if 0 <= diff <= 35:
+            active_sess = s
+        fwd = (sm - cur_min) % (24 * 60)
+        if fwd < best_next_diff:
+            best_next_diff = fwd
+            next_sess = s
+
+    return jsonify({
+        "ok": True,
+        "now_ist": now_ist.strftime("%I:%M:%S %p IST"),
+        "active_session": active_sess,
+        "next_session": next_sess,
+        "minutes_to_next": best_next_diff
     })
 
 

@@ -1291,11 +1291,34 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         near_xpct=s4_x, near_ypct=s4_y,
         wait_timeout=5.0, verify_timeout=1.8, max_attempts=2, optional=True
     )
-    if not cv_ok:
-        lim_msg = "Daily Gemini Video Limit Reached ('Create video' unavailable) — will retry next session without skipping part!"
-        print(f"🚫 [v5 Limit Guard] {lim_msg}")
-        update_3d_telemetry(3, "🚫 Daily Video Limit Reached", lim_msg, "warning", 0)
-        push_app_notification("warning", "🚫 Daily Video Limit Full", lim_msg, "warning")
+    # STRICT VERIFY: Confirm 'Create video' actually activated (Format/Aspect Ratio/Veo chip visible & NO limit notice!)
+    time.sleep(0.95)
+    cv_state = driver.execute_script("""
+        const bodyTxt = (document.body.innerText || '').toLowerCase();
+        const limitHits = [
+            'reached your limit', 'video generation limit', 'daily limit', 'try again tomorrow',
+            'limit for creating videos', 'upgrade to generate more', 'unable to create more videos',
+            'video creation limit'
+        ];
+        const hitLimit = limitHits.find(k => bodyTxt.includes(k)) || '';
+        const hasVideoChip = Boolean(
+            document.querySelector(
+                '[aria-label*="Aspect ratio" i], [aria-label*="Portrait" i], [aria-label*="Landscape" i], ' +
+                '[aria-label*="Remove Create video" i], [aria-label*="Deselect Create video" i], ' +
+                '[aria-label*="Format" i], button[aria-label*="Video" i]'
+            )
+        ) || bodyTxt.includes('aspect ratio') || bodyTxt.includes('portrait (9:16)') || bodyTxt.includes('landscape (16:9)');
+        return {active: hasVideoChip && !hitLimit, hitLimit: hitLimit};
+    """) or {"active": False, "hitLimit": ""}
+
+    if (not cv_ok) or (not cv_state.get("active")):
+        acc_num = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+        lim_reason = cv_state.get("hitLimit") or "Create video option did not activate (Daily Video Limit Reached)"
+        lim_msg = f"Create Video Not Selected on Account #{acc_num} — {lim_reason}"
+        print(f"🚫 [Strict Limit Guard] {lim_msg}")
+        save_live_debug_screenshot(driver, f"create_video_limit_acc{acc_num}")
+        update_3d_telemetry(3, f"Limit Reached (Account #{acc_num})", lim_msg, "error", 0)
+        push_app_notification("error", f"Create Video Limit (Account #{acc_num})", lim_msg, "error")
         ErrCls = globals().get("GeminiLimitReachedError", RuntimeError)
         raise ErrCls(lim_msg)
 
@@ -1969,12 +1992,50 @@ def export_fresh_gemini_cookies_from_local():
 
 
 def generate_video_in_gemini(pending_pkg=None):
-    """Strictly uses ONLY Account #1 (`gemini_cookies_secret.txt`). Account #2 is completely disabled."""
+    """
+    DUAL-ACCOUNT AUTO-FAILOVER ENGINE (Account #1 -> Account #2):
+    - Starts on Account #1 (`gemini_cookies_secret.txt`).
+    - If Account #1 hits Daily Video Limit ('Create video' not selected) or fails to produce a valid MP4,
+      automatically fails over to Account #2 (`gemini_cookies_secret_2.txt` / `GEMINI_COOKIES_JSON_2`)
+      for the EXACT SAME episode & part — ZERO skipped parts!
+    """
     global _ACTIVE_COOKIE_ACCOUNT_SLOT, _SUPPRESS_FAILOVER_NOTIF
+    has_acc2 = (
+        os.path.exists("gemini_cookies_secret_2.txt")
+        or bool((os.getenv("GEMINI_COOKIES_JSON_2") or "").strip())
+        or os.path.exists("data/acc2_master_backup.json")
+    )
+
     _ACTIVE_COOKIE_ACCOUNT_SLOT = 1
     _SUPPRESS_FAILOVER_NOTIF = False
-    print("🎯 [Account Engine] Using ONLY Account #1 (Account #2 is disabled).")
-    return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
+    print(f"🎯 [Account Engine] Starting Account #1 | Account #2 Failover Ready: {has_acc2}")
+
+    try:
+        res1 = _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
+        if res1 and is_valid_mp4(res1):
+            return res1
+        if not has_acc2:
+            return res1
+        raise RuntimeError("Account #1 did not return a valid MP4 — failing over to Account #2.")
+    except Exception as acc1_err:
+        print(f"⚠️ [Account #1 Stopped] {acc1_err}")
+        if not has_acc2:
+            print("ℹ️ Account #2 cookies not linked yet (run `python save_account2_cookies.py` once to enable 2X quota).")
+            raise
+
+        msg_sw = f"Account #1 limit/error ({str(acc1_err)[:95]}) — switching to Account #2!"
+        print(f"🔄 [Account Failover] {msg_sw}")
+        update_3d_telemetry(2, "Switching to Account #2", msg_sw, "active", 22)
+        push_app_notification("warning", "Switching to Account #2", msg_sw, "warning")
+        try:
+            send_telegram_text_alert(f"🔄 Account Failover Active\nAccount #1 hit limit/error.\nSwitching automatically to Account #2 for the same reel!")
+        except Exception:
+            pass
+
+        _ACTIVE_COOKIE_ACCOUNT_SLOT = 2
+        _SUPPRESS_FAILOVER_NOTIF = True
+        return _single_attempt_generate_video_in_gemini(pending_pkg=pending_pkg)
+
 
 
 def _single_attempt_generate_video_in_gemini(pending_pkg=None):

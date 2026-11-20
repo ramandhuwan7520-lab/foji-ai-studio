@@ -68,7 +68,7 @@ jobs:
         run: |
           pip install --upgrade pip -q
           if [ -f requirements.txt ]; then pip install -r requirements.txt -q; fi
-          pip install requests selenium python-dotenv instagrapi imageio-ffmpeg flask -q
+          pip install requests selenium python-dotenv instagrapi imageio-ffmpeg flask yt-dlp -q
 
       - name: Run 13-Step Gemini 3D Video Pipeline Inside Virtual Display
         if: steps.session_gate.outputs.SHOULD_RUN == 'true'
