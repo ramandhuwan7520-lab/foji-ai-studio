@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "\u23f3 Step 6: Rendering 3D Veo Reel...",
-  "sub_detail": "Gemini Veo is actively rendering your vertical 9:16 3D cinema reel...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering Video_063_FunnyFauji_Part_01_1120_232257.mp4...",
   "status": "active",
-  "progress": 74,
-  "updated_at": "11:24:08 PM",
-  "epoch": 1795197248.1077666
+  "progress": 68,
+  "updated_at": "11:24:16 PM",
+  "epoch": 1795197256.5786333
 }
