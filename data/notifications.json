@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795197215026",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Gulab Jamun Chor | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "11:23 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795197215.0262787
+  },
+  {
     "id": "notif_1795197211210",
     "type": "warning",
     "title": "Switching to Account #2",
