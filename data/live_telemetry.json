@@ -1,9 +1,8 @@
 {
-  "step_num": 6,
-  "step_title": "\u23f3 Step 6: Rendering 3D Veo Reel...",
-  "sub_detail": "Gemini Veo is actively rendering your vertical 9:16 3D cinema reel...",
-  "status": "active",
-  "progress": 74,
-  "updated_at": "08:51:49 PM",
-  "epoch": 1795188109.2367053
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1795190165.3258584
 }
