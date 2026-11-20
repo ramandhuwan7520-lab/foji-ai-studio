@@ -2049,6 +2049,21 @@ def api_universe_trigger_pipeline():
 
         global _CACHED_UNIVERSE_TS
         _CACHED_UNIVERSE_TS = 0
+        # Immediately set local live telemetry to Step 1 (Active) so 3D Commando starts marching on Render right away!
+        try:
+            os.makedirs("data", exist_ok=True)
+            with open("data/live_telemetry.json", "w", encoding="utf-8") as _tf:
+                json.dump({
+                    "step_num": 1,
+                    "step_title": "Step 1: Launching Cloud Engine",
+                    "sub_detail": f"Booting GitHub Cloud Worker ({batch_count} Video{'s' if batch_count > 1 else ''})...",
+                    "status": "active",
+                    "progress": 12,
+                    "updated_at": datetime.now(_fud.IST).strftime("%I:%M:%S %p"),
+                    "epoch": time.time()
+                }, _tf, indent=2)
+        except Exception:
+            pass
         _execute_single_or_batch_generation(
             count=batch_count,
             reason_label=f"Dashboard Manual Trigger ({batch_count} Video{'s' if batch_count > 1 else ''})",

@@ -1341,17 +1341,32 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         const limitHits = [
             'reached your limit', 'video generation limit', 'daily limit', 'try again tomorrow',
             'limit for creating videos', 'upgrade to generate more', 'unable to create more videos',
-            'video creation limit'
+            'video creation limit', 'limit reached'
         ];
         const hitLimit = limitHits.find(k => bodyTxt.includes(k)) || '';
-        const hasVideoChip = Boolean(
-            document.querySelector(
-                '[aria-label*="Aspect ratio" i], [aria-label*="Portrait" i], [aria-label*="Landscape" i], ' +
-                '[aria-label*="Remove Create video" i], [aria-label*="Deselect Create video" i], ' +
-                '[aria-label*="Format" i], button[aria-label*="Video" i]'
-            )
-        ) || bodyTxt.includes('aspect ratio') || bodyTxt.includes('portrait (9:16)') || bodyTxt.includes('landscape (16:9)');
-        return {active: hasVideoChip && !hitLimit, hitLimit: hitLimit};
+
+        // Check ONLY outside open menus so the 'Create video' menu item itself NEVER false-positives!
+        const composerSelectors = [
+            '[aria-label*="Aspect ratio" i]',
+            '[aria-label*="Portrait" i]',
+            '[aria-label*="Landscape" i]',
+            '[aria-label*="Remove Create video" i]',
+            '[aria-label*="Deselect Create video" i]',
+            '[aria-label*="Format" i]'
+        ];
+        let hasActiveVideoChip = false;
+        for (const sel of composerSelectors) {
+            for (const el of document.querySelectorAll(sel)) {
+                if (el.closest('[role="menu"], .mat-mdc-menu-panel, [role="listbox"]')) continue;
+                const r = el.getBoundingClientRect();
+                if (r.width > 10 && r.height > 10) {
+                    hasActiveVideoChip = true;
+                    break;
+                }
+            }
+            if (hasActiveVideoChip) break;
+        }
+        return {active: hasActiveVideoChip && !hitLimit, hitLimit: hitLimit};
     """) or {"active": False, "hitLimit": ""}
 
     if (not cv_ok) or (not cv_state.get("active")):
@@ -1413,6 +1428,17 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
                 wait_timeout=2.2, verify_timeout=0.8, max_attempts=1, optional=True
             )
             time.sleep(0.25)
+
+    # HARD PRE-PASTE GATE: Never paste image or send prompt unless Video/9:16 mode actually activated!
+    if not (fmt_ok or ar_ok or already_portrait):
+        acc_num = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+        gate_msg = f"Video Mode / 9:16 did not activate on Account #{acc_num} (Limit Reached) — aborting before prompt send!"
+        print(f"🚫 [HARD PRE-PASTE GATE] {gate_msg}")
+        save_live_debug_screenshot(driver, f"video_mode_failed_acc{acc_num}")
+        update_3d_telemetry(3, f"Limit Reached (Account #{acc_num})", gate_msg, "error", 0)
+        push_app_notification("error", f"Create Video Not Selected (Account #{acc_num})", gate_msg, "error")
+        ErrCls = globals().get("GeminiLimitReachedError", RuntimeError)
+        raise ErrCls(gate_msg)
 
     # STEP 10: Direct Prompt-Box Character Paste (Matches working manual calibration, NEVER resets Create video!)
     print("🖼️ [v5 Step #10] Pasting 3D Character Reference(s) directly into Gemini Prompt Box...")

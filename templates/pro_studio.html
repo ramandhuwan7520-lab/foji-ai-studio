@@ -1197,6 +1197,9 @@
           body: JSON.stringify({count, custom_idea})
         })).json();
         showToast(d.message || (d.ok ? '✅ Started! Commando advancing!' : '⚠️ Notice'), d.ok ? 'ok' : 'err');
+        if (d && d.ok) {
+          updateCommandoRunway({step_num: 1, step_title: 'Launching Cloud Engine', sub_detail: 'Booting GitHub Cloud Worker & Gemini...', status: 'active', progress: 12});
+        }
         pollStatus(); pollActiveSession();
       } catch(e) { showToast('⚠️ Could not start pipeline', 'err'); }
     }
