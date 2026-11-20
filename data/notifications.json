@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795202588375",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Create Video Not Selected on Account #1 — video generation limit) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "12:53 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795202588.375706
+  },
+  {
     "id": "notif_1795202585391",
     "type": "error",
     "title": "Create Video Limit (Account #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:29 PM",
     "date_str": "18 Nov 2026",
     "timestamp": 1795017576.0819364
-  },
-  {
-    "id": "notif_1795017505494",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Ustad Ka Ragda & Desi Jigra | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:28 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795017505.4946048
   }
 ]
