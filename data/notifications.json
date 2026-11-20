@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795202522097",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Ki Chori | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "12:52 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795202522.0975375
+  },
+  {
     "id": "notif_1795201303994",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "08:22 PM",
     "date_str": "18 Nov 2026",
     "timestamp": 1795013559.9159503
-  },
-  {
-    "id": "notif_1795012742053",
-    "type": "error",
-    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: Sorry, something went wrong. Please try your request again.",
-    "status": "error",
-    "time_str": "08:09 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795012742.0535922
   }
 ]
