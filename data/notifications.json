@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795200933196",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (45s): I seem to be encountering an error. Can I try something else for you?",
+    "status": "error",
+    "time_str": "12:25 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795200933.196116
+  },
+  {
     "id": "notif_1795200871386",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
