@@ -1,5 +1,35 @@
 [
   {
+    "id": "notif_1795191412675_971",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "09:46 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795191412.6757653
+  },
+  {
+    "id": "notif_1795191218397",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Hostel Mein 'Jaan' Ki Pakad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:43 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795191218.3979807
+  },
+  {
+    "id": "notif_1795191170200",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Hostel Mein 'Jaan' Ki Pakad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:42 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795191170.2008474
+  },
+  {
     "id": "notif_1795190370111",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -568,85 +598,5 @@
     "time_str": "08:06 PM",
     "date_str": "18 Nov 2026",
     "timestamp": 1795012578.637188
-  },
-  {
-    "id": "notif_1795012474274",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Shehar Ki AC vs Fauji Ki Barf is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "08:04 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795012474.2746336
-  },
-  {
-    "id": "notif_1795012418830",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Shehar Ki AC vs Fauji Ki Barf | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "08:03 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795012418.83093
-  },
-  {
-    "id": "notif_1795012367853",
-    "type": "error",
-    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: I seem to be encountering an error. Can I try something else for you?",
-    "status": "error",
-    "time_str": "08:02 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795012367.853867
-  },
-  {
-    "id": "notif_1795012247770",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Maa, Minus 25 Degree Aur Tera Laadla is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "08:00 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795012247.7706935
-  },
-  {
-    "id": "notif_1795012180553",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Maa, Minus 25 Degree Aur Tera Laadla | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "07:59 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795012180.5532222
-  },
-  {
-    "id": "notif_1795006897786",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "Video_050_UnitRagda_Part_05_1111_192711.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "06:31 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795006897.7868323
-  },
-  {
-    "id": "notif_1795002294913",
-    "type": "error",
-    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: Sorry, something went wrong. Please try your request again.",
-    "status": "error",
-    "time_str": "05:14 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795002294.9138594
-  },
-  {
-    "id": "notif_1795002256778",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "😂 Barrack Masti, Mess & Brotherhood — Part 6: Gulab Jamun Ka Tactical Mission is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "05:14 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795002256.7786894
   }
 ]
