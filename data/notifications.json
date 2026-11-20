@@ -1,5 +1,35 @@
 [
   {
+    "id": "notif_1795184705825",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Maa ki Mamta aur Barfili Chai is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "07:55 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795184705.8257933
+  },
+  {
+    "id": "notif_1795184646699",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Maa ki Mamta aur Barfili Chai | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "07:54 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795184646.6996481
+  },
+  {
+    "id": "notif_1795179702145",
+    "type": "success",
+    "title": "📸 Reel Posted on Instagram!",
+    "message": "Video_042_BorderDuty_Part_03_1113_104845.mp4 is now LIVE on @ai_foji_lovelife!",
+    "status": "success",
+    "time_str": "06:31 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795179702.1458318
+  },
+  {
     "id": "notif_1795154389697_569",
     "type": "stopped",
     "title": "Generation Stopped",
