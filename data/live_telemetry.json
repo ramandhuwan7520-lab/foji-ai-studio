@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (5.0 min)",
-  "sub_detail": "Gemini Veo rendering Video_063_ViralTrend_Part_01_1120_102434.mp4... (303s elapsed)",
+  "step_title": "Stage 6: Rendering 3D Video (5.9 min)",
+  "sub_detail": "Gemini Veo rendering Video_063_ViralTrend_Part_01_1120_102434.mp4... (353s elapsed)",
   "status": "active",
   "progress": 92,
-  "updated_at": "10:30:41 AM",
-  "epoch": 1795150841.0026975
+  "updated_at": "10:31:31 AM",
+  "epoch": 1795150891.7483768
 }
