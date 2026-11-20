@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795192652101_133",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "10:07 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795192652.101827
+  },
+  {
     "id": "notif_1795191412675_971",
     "type": "stopped",
     "title": "Generation Stopped",
@@ -588,15 +598,5 @@
     "time_str": "08:07 PM",
     "date_str": "18 Nov 2026",
     "timestamp": 1795012646.3255522
-  },
-  {
-    "id": "notif_1795012578637",
-    "type": "error",
-    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: I seem to be encountering an error. Can I try something else for you?",
-    "status": "error",
-    "time_str": "08:06 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795012578.637188
   }
 ]
