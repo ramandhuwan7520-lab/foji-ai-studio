@@ -425,27 +425,66 @@ def unpack_chrome_profile_vault_if_present(profile_dir):
     return False
 
 
+
+def _get_active_account_slot(account_slot=None):
+    try:
+        s = int(account_slot if account_slot is not None else globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1))
+        return 2 if s == 2 else 1
+    except Exception:
+        return 1
+
+
+def _get_active_cookie_file(account_slot=None):
+    return "gemini_cookies_secret_2.txt" if _get_active_account_slot(account_slot) == 2 else COOKIE_FILE
+
+
+def _get_active_auth_vault_file(account_slot=None):
+    return "data/google_auth_vault_2.json" if _get_active_account_slot(account_slot) == 2 else "data/google_auth_vault.json"
+
+
 def _load_saved_session_bundle():
     """
-    ALWAYS loads the exact 51 pure cookies from `gemini_cookies_secret.txt`
-    (which succeeded 100% on Attempt 1 without any password prompt!).
+    SLOT-AWARE COOKIE LOADER:
+    - Slot 1 -> `gemini_cookies_secret.txt` (or `GEMINI_COOKIES_JSON`)
+    - Slot 2 -> `gemini_cookies_secret_2.txt` (or `GEMINI_COOKIES_JSON_2`)
     """
-    if os.path.exists(COOKIE_FILE):
+    slot = _get_active_account_slot()
+    cfile = _get_active_cookie_file(slot)
+    if os.path.exists(cfile):
         try:
-            with open(COOKIE_FILE, "r", encoding="utf-8") as f:
+            with open(cfile, "r", encoding="utf-8") as f:
                 raw = f.read().strip()
             if raw:
                 parsed = json.loads(raw)
-                if isinstance(parsed, dict) and len(parsed.get("cookies", [])) >= 8:
-                    print(f"🔐 [Pure Cookie Loader] Loaded {len(parsed['cookies'])} pure cookies from '{COOKIE_FILE}'")
+                ck_list = parsed.get("cookies", []) if isinstance(parsed, dict) else (parsed if isinstance(parsed, list) else [])
+                if len(ck_list) >= 8:
+                    print(f"🔐 [Pure Cookie Loader | Account #{slot}] Loaded {len(ck_list)} cookies from '{cfile}'")
                     return {
-                        "cookies": parsed.get("cookies", []),
-                        "user_agent": parsed.get("user_agent") or DEFAULT_WIN_UA,
-                        "local_storage": parsed.get("local_storage", {})
+                        "cookies": ck_list,
+                        "user_agent": (parsed.get("user_agent") if isinstance(parsed, dict) else None) or DEFAULT_WIN_UA,
+                        "local_storage": (parsed.get("local_storage", {}) if isinstance(parsed, dict) else {})
                     }
         except Exception:
             pass
+
+    env_key = "GEMINI_COOKIES_JSON_2" if slot == 2 else "GEMINI_COOKIES_JSON"
+    raw_env = (os.getenv(env_key) or "").strip()
+    if raw_env:
+        try:
+            parsed = json.loads(raw_env)
+            ck_list = parsed.get("cookies", []) if isinstance(parsed, dict) else (parsed if isinstance(parsed, list) else [])
+            if len(ck_list) >= 8:
+                print(f"🔐 [Env Cookie Loader | Account #{slot}] Loaded {len(ck_list)} cookies from '{env_key}'")
+                return {
+                    "cookies": ck_list,
+                    "user_agent": (parsed.get("user_agent") if isinstance(parsed, dict) else None) or DEFAULT_WIN_UA,
+                    "local_storage": (parsed.get("local_storage", {}) if isinstance(parsed, dict) else {})
+                }
+        except Exception:
+            pass
+
     return {"cookies": [], "user_agent": DEFAULT_WIN_UA, "local_storage": {}}
+
 
 
 def launch_resilient_chrome_session(download_dir, start_blank=True):
@@ -704,6 +743,8 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
       on BOTH Windows Laptop and Linux Cloud, and pushes to GitHub so stopping mid-way or running
       multiple videos NEVER causes a stale token logout!
     """
+    _active_slot = _get_active_account_slot()
+    _active_cf = _get_active_cookie_file(_active_slot)
     try:
         if not force_save and not is_gemini_truly_signed_in(driver):
             return 0
@@ -715,9 +756,9 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
 
         rotating_names = {"__Secure-1PSIDTS", "__Secure-3PSIDTS", "SIDCC", "__Secure-1PSIDCC", "__Secure-3PSIDCC"}
 
-        if os.path.exists(COOKIE_FILE):
+        if os.path.exists(_active_cf):
             try:
-                bundle = json.load(open(COOKIE_FILE, "r", encoding="utf-8"))
+                bundle = json.load(open(_active_cf, "r", encoding="utf-8"))
             except Exception:
                 bundle = {}
         else:
@@ -741,10 +782,10 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
             if updated_any or force_save:
                 bundle["cookies"] = base_cookies
                 bundle["saved_at"] = time.time()
-                with open(COOKIE_FILE, "w", encoding="utf-8") as f:
+                with open(_active_cf, "w", encoding="utf-8") as f:
                     json.dump(bundle, f, indent=2)
-                sync_file_to_github(COOKIE_FILE, "Sync rotated PSIDTS/SIDCC tokens from Cloud")
-                print("🔐 [5-Token Sync] Synced rotated PSIDTS/SIDCC tokens to GitHub!")
+                sync_file_to_github(_active_cf, "Sync rotated Account #" + str(_active_slot) + " PSIDTS/SIDCC tokens [skip render] [skip ci]")
+                print("🔐 [5-Token Sync | Acc #" + str(_active_slot) + "] Synced rotated tokens -> " + _active_cf + "!")
             return len(base_cookies)
 
         essential = []
@@ -780,9 +821,9 @@ def save_all_browser_cookies_via_cdp(driver, force_save=False):
                 "local_storage": local_store,
                 "saved_at": time.time()
             }
-            with open(COOKIE_FILE, "w", encoding="utf-8") as f:
+            with open(_active_cf, "w", encoding="utf-8") as f:
                 json.dump(new_bundle, f, indent=2)
-            sync_file_to_github(COOKIE_FILE, "Sync fresh Google session cookies to GitHub")
+            sync_file_to_github(_active_cf, "Sync fresh Google session cookies to GitHub")
             return len(essential)
     except Exception as e:
         print(f"⚠️ Cookie save note: {e}")
@@ -801,22 +842,24 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
        WITHOUT overwriting live SQLite cookies (fixes mid-way stop logout 100%!).
     3) Injects cookies when needed and auto-heals any Password / 2FA challenge automatically!
     """
+    _active_slot = _get_active_account_slot()
+    _active_cf = _get_active_cookie_file(_active_slot)
     driver.execute_cdp_cmd("Network.enable", {})
 
     update_3d_telemetry(2, "Step 2: Connecting 3D Studio", "Verifying Google session & 2FA authentication...", "active", 26)
     # 1. Pull newer rotated cookies from GitHub if available
     try:
         import foji_universe_director as _fud
-        rem_c = _fud._fetch_github_json_zero_cache(COOKIE_FILE)
+        rem_c = _fud._fetch_github_json_zero_cache(_active_cf)
         if isinstance(rem_c, dict) and len(rem_c.get("cookies") or []) >= 12:
             loc_ts = 0.0
-            if os.path.exists(COOKIE_FILE):
+            if os.path.exists(_active_cf):
                 try:
-                    loc_ts = float(json.load(open(COOKIE_FILE, "r", encoding="utf-8")).get("saved_at", 0))
+                    loc_ts = float(json.load(open(_active_cf, "r", encoding="utf-8")).get("saved_at", 0))
                 except Exception:
                     pass
             if float(rem_c.get("saved_at", 0)) > loc_ts:
-                with open(COOKIE_FILE, "w", encoding="utf-8") as cf:
+                with open(_active_cf, "w", encoding="utf-8") as cf:
                     json.dump(rem_c, cf, indent=2)
                 print("📥 [Cookie Sync] Pulled latest rotated Google tokens from GitHub!")
     except Exception:
@@ -923,7 +966,7 @@ def inject_cookies_and_open_gemini(driver, skip_cookie_inject=False):
 
         # Trigger automatic Email / Password / 2FA handler if Sign-In button or accounts.google.com is shown
         if tick >= 2:
-            if _auto_handle_google_password_screen_if_shown(driver, 1):
+            if _auto_handle_google_password_screen_if_shown(driver, account_slot=_active_slot):
                 time.sleep(2.5)
                 continue
 
@@ -2741,7 +2784,7 @@ if __name__ == "__main__":
 
 
 
-def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
+def _auto_handle_google_password_screen_if_shown(driver, account_slot=None):
     """
     STRICT TARGET-EMAIL + PASSWORD + 2FA TOTP AUTO-LOGIN ENGINE:
     1) Strictly selects `g_email` (`kathanexastories@gmail.com`) — if not in the chooser list,
@@ -2751,6 +2794,8 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
     4) If Google shows 'Tap Yes' prompt, immediately clicks 'Try another way' -> 'Google Authenticator'
        (`[data-challengetype="6"]`) -> enters live 6-digit TOTP code + checks 'Don't ask again'!
     """
+    _slot = _get_active_account_slot(account_slot)
+    _vault_file = _get_active_auth_vault_file(_slot)
     try:
         import hmac
         import struct
@@ -2758,12 +2803,12 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=1):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.common.keys import Keys
 
-        g_email = (os.getenv("GOOGLE_EMAIL") or "").strip()
-        g_pwd = (os.getenv("GOOGLE_PASSWORD") or "").strip()
-        g_totp = (os.getenv("GOOGLE_2FA_SECRET") or "").strip()
-        if os.path.exists("data/google_auth_vault.json"):
+        g_email = (os.getenv("GOOGLE_EMAIL_2" if _slot == 2 else "GOOGLE_EMAIL") or "").strip()
+        g_pwd = (os.getenv("GOOGLE_PASSWORD_2" if _slot == 2 else "GOOGLE_PASSWORD") or "").strip()
+        g_totp = (os.getenv("GOOGLE_2FA_SECRET_2" if _slot == 2 else "GOOGLE_2FA_SECRET") or "").strip()
+        if os.path.exists(_vault_file):
             try:
-                v_raw = json.load(open("data/google_auth_vault.json", "r", encoding="utf-8"))
+                v_raw = json.load(open(_vault_file, "r", encoding="utf-8"))
                 g_email = base64.b64decode(v_raw.get("email", "").encode("utf-8")).decode("utf-8").strip() or g_email
                 g_pwd = base64.b64decode(v_raw.get("password", "").encode("utf-8")).decode("utf-8").strip() or g_pwd
                 g_totp = base64.b64decode(v_raw.get("totp_secret", "").encode("utf-8")).decode("utf-8").strip() or g_totp
