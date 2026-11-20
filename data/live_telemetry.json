@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1795196599.9560661
+  "step_num": 6,
+  "step_title": "Stage 6: Rendering 3D Video (0.8 min)",
+  "sub_detail": "Gemini Veo rendering Video_063_FunnyFauji_Part_01_1120_231209.mp4... (49s elapsed)",
+  "status": "active",
+  "progress": 77,
+  "updated_at": "11:13:56 PM",
+  "epoch": 1795196636.429427
 }
