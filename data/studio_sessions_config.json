@@ -19,7 +19,7 @@
       "time_ist": "00:19",
       "display": "12:19 AM",
       "enabled": true,
-      "skip_date": ""
+      "skip_date": "2026-11-20"
     },
     {
       "id": "S2",
@@ -54,5 +54,5 @@
       "skip_date": "2026-11-20"
     }
   ],
-  "updated_at_ist": "20 Nov 2026, 10:07 PM IST"
+  "updated_at_ist": "20 Nov 2026, 11:59 PM IST"
 }
