@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795202585391",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Selected on Account #1 — video generation limit",
+    "status": "error",
+    "time_str": "12:53 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795202585.3918004
+  },
+  {
     "id": "notif_1795202522097",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:28 PM",
     "date_str": "18 Nov 2026",
     "timestamp": 1795017505.4946048
-  },
-  {
-    "id": "notif_1795013559915_463",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "08:22 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795013559.9159503
   }
 ]
