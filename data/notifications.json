@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795196531560",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Subah Ki Chai Aur Fauji Swag | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "11:12 PM",
+    "date_str": "20 Nov 2026",
+    "timestamp": 1795196531.5601087
+  },
+  {
     "id": "notif_1795192652101_133",
     "type": "stopped",
     "title": "Generation Stopped",
