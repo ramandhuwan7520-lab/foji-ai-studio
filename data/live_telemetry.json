@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra Only (Solo Army Scene))...",
+  "step_num": 4,
+  "step_title": "\ud83c\udfac Step 4: Setting 9:16 Portrait Video Format...",
+  "sub_detail": "Selecting Format -> Video & Aspect Ratio -> Portrait (9:16)...",
   "status": "active",
-  "progress": 45,
-  "updated_at": "06:27:27 AM",
-  "epoch": 1795136247.9324238
+  "progress": 48,
+  "updated_at": "06:27:36 AM",
+  "epoch": 1795136256.6157112
 }
