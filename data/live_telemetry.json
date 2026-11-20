@@ -1,9 +1,9 @@
 {
-  "step_num": 5,
-  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
-  "sub_detail": "Gemini Veo is rendering Video_063_FunnyFauji_Part_01_1120_231209.mp4...",
+  "step_num": 6,
+  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
+  "sub_detail": "Rendering Video_063_FunnyFauji_Part_01_1120_231209.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
-  "progress": 68,
-  "updated_at": "11:12:56 PM",
-  "epoch": 1795196576.5036943
+  "progress": 75,
+  "updated_at": "11:13:05 PM",
+  "epoch": 1795196585.8204272
 }
