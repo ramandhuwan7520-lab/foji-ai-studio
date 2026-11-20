@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795213421026",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: 4 AM Fauji Swag | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "03:53 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795213421.0267842
+  },
+  {
     "id": "notif_1795213415924",
     "type": "warning",
     "title": "Switching to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "09:35 PM",
     "date_str": "18 Nov 2026",
     "timestamp": 1795017904.0700483
-  },
-  {
-    "id": "notif_1795017843601",
-    "type": "error",
-    "title": "Warning: Gemini Screen Error (Video Nahi Bani)",
-    "message": "Screen par yeh aaya: I seem to be encountering an error. Can I try something else for you?",
-    "status": "error",
-    "time_str": "09:34 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795017843.601851
   }
 ]
