@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795213415924",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Create Video Not Selected on Account #1 — video generation limit) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "03:53 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795213415.9242053
+  },
+  {
     "id": "notif_1795213412837",
     "type": "error",
     "title": "Create Video Limit (Account #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:34 PM",
     "date_str": "18 Nov 2026",
     "timestamp": 1795017843.601851
-  },
-  {
-    "id": "notif_1795017771207",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Mess Ka Raaj, Ustad Naraz is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:32 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795017771.207458
   }
 ]
