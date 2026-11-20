@@ -1102,7 +1102,16 @@
       } catch (e) {}
     }
 
+    let __lastTelKey = '';
     function updateMissionWalker(tel) {
+      // Automatic Live Step-Change Popup Notification on Frontend whenever pipeline updates!
+      const telKey = `${tel.step_num || 0}|${tel.step_title || ''}|${tel.status || ''}`;
+      if (tel.step_title && __lastTelKey && telKey !== __lastTelKey) {
+        toast(`🎬 ${tel.step_title}${tel.sub_detail ? ' — ' + tel.sub_detail.slice(0, 70) : ''}`);
+        const camModal = document.getElementById('v5-cam-modal');
+        if (camModal && camModal.classList.contains('open')) refreshCam();
+      }
+      if (tel.step_title) __lastTelKey = telKey;
       const step = Number(tel.step_num || 0);
       const pct = Math.max(0, Math.min(100, Number(tel.progress || (step > 0 ? Math.round((step / 8) * 100) : 0))));
       const st = String(tel.status || 'idle').toLowerCase();

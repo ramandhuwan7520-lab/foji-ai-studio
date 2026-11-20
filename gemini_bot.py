@@ -186,6 +186,37 @@ def update_3d_telemetry(step_num, step_title, sub_detail="", status="active", pr
 
 
 
+
+
+def save_live_debug_screenshot(driver, tag="debug"):
+    try:
+        p = os.path.abspath("data/live_screenshot.png")
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        driver.save_screenshot(p)
+        sync_file_to_github("data/live_screenshot.png", f"Debug Cam {tag} [skip render] [skip ci]")
+        send_telegram_photo_alert(p, f"⚠️ Gemini Debug Snapshot ({tag})")
+    except Exception:
+        pass
+
+
+def broadcast_live_step_snapshot(driver, step_num, title, detail, progress=50, send_telegram=True):
+    """
+    Captures live Chrome screenshot -> saves to `data/live_screenshot.png`, syncs to GitHub
+    (so Render Dashboard 'Live Cam' displays it in real time), updates 3D telemetry (triggers
+    Frontend Live Popup Toast), and sends a clean Telegram step photo alert!
+    """
+    update_3d_telemetry(step_num, title, detail, "active", progress)
+    snap_path = os.path.abspath("data/live_screenshot.png")
+    try:
+        os.makedirs(os.path.dirname(snap_path), exist_ok=True)
+        driver.save_screenshot(snap_path)
+        sync_file_to_github("data/live_screenshot.png", f"Live Cam Step {step_num} [skip render] [skip ci]")
+        if send_telegram:
+            send_telegram_photo_alert(snap_path, f"🎬 {title}\n{detail}")
+    except Exception as _bs_e:
+        print(f"   ℹ️ Live snapshot broadcast note: {_bs_e}")
+
+
 def _get_live_telegram_creds():
     """Always prefers `data/telegram_config.json` over outdated GitHub Actions Secrets!"""
     if os.path.exists("data/telegram_config.json"):
@@ -1357,11 +1388,18 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
 
     update_3d_telemetry(6, "⏳ Step 6: Rendering 3D Veo Reel...", "Gemini Veo is actively rendering your vertical 9:16 3D cinema reel...", "active", 74)
     print("✅ [Foji Veo v5] All 12 calibrated steps executed cleanly — handing off to Smart Adaptive Watcher!")
+    broadcast_live_step_snapshot(driver, 6, "🚀 Prompt Sent to Gemini Veo", "All 12 steps done! Rendering 9:16 3D Reel (~60-90s)...", 72, send_telegram=True)
     return True
 
 
 
 def get_gemini_reply_and_video_status(driver, ignored_video_urls):
+    """
+    BULLETPROOF VIDEO & DOWNLOAD BUTTON DETECTOR (Fixes y=-23 off-screen & 18-min hang!):
+    - Detects 'Your video is ready' & <video> elements cleanly and clears stuck isGenerating=True.
+    - Never rejects Download buttons above y=60! Scrolls the button into the exact center of the
+      viewport (`scrollIntoView({block:'center'})`) and re-measures positive on-screen (x, y).
+    """
     js_status = """
     const ignored = new Set(arguments[0] || []);
 
@@ -1384,50 +1422,61 @@ def get_gemini_reply_and_video_status(driver, ignored_video_urls):
     const cards = document.querySelectorAll('model-response, message-content, video, [class*="video" i], [class*="media" i]');
     if (cards.length > 0) {
         const lastCard = cards[cards.length - 1];
-        lastCard.scrollIntoView({block: 'center', behavior: 'instant'});
-        lastCard.dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));
-        lastCard.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
-        lastCard.dispatchEvent(new MouseEvent('mousemove', {bubbles: true}));
+        try {
+            lastCard.dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));
+            lastCard.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
+            lastCard.dispatchEvent(new MouseEvent('mousemove', {bubbles: true}));
+        } catch (e) {}
     }
 
     const allNodes = walkAll(document);
-    let isGenerating = false;
 
-    for (const el of allNodes) {
-        if (!el.offsetParent && el.tagName !== 'MAT-PROGRESS-BAR') continue;
-        const aria = (el.getAttribute && (el.getAttribute('aria-label') || '')).toLowerCase();
-        const txt = (el.innerText || '').trim().toLowerCase();
-        const tag = (el.tagName || '').toLowerCase();
-        if (
-            aria.includes('stop response') ||
-            aria.includes('stop generating') ||
-            txt.includes('generating video') ||
-            txt.includes('creating video') ||
-            txt.includes('generating your video') ||
-            (txt.includes('generating') && txt.length < 55) ||
-            tag === 'mat-progress-bar' ||
-            tag === 'mat-spinner' ||
-            tag === 'mat-progress-spinner'
-        ) {
-            isGenerating = true;
-            break;
-        }
+    // 1. Collect latest response text first
+    let latestReply = '';
+    const msgContainers = document.querySelectorAll('message-content, model-response');
+    if (msgContainers.length > 0) {
+        latestReply = (msgContainers[msgContainers.length - 1].innerText || '').trim();
     }
+    const lowReply = latestReply.toLowerCase();
+    const replySaysReady = (
+        lowReply.includes('your video is ready') ||
+        lowReply.includes('here is your video') ||
+        lowReply.includes('video is ready')
+    );
 
+    // 2. Detect any NEW <video> element on screen
     const newVideos = [];
+    let latestVideoEl = null;
     for (const el of allNodes) {
         const tag = (el.tagName || '').toLowerCase();
         if (tag === 'video') {
             const src = el.currentSrc || el.src || (el.querySelector('source') ? el.querySelector('source').src : '');
             if (src && src.length > 8 && !ignored.has(src)) {
                 newVideos.push(src);
-            } else if (el.offsetWidth > 100 && el.offsetHeight > 100) {
+                latestVideoEl = el;
+            } else if (el.offsetWidth > 80 && el.offsetHeight > 80) {
                 newVideos.push('DOM_VIDEO_ELEMENT_VISIBLE');
+                latestVideoEl = el;
             }
         }
     }
 
+    // Hover & center the newly created video so Gemini reveals its Download button inside viewport!
+    if (latestVideoEl) {
+        try {
+            latestVideoEl.scrollIntoView({block: 'center', behavior: 'instant'});
+            latestVideoEl.dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));
+            latestVideoEl.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
+            if (latestVideoEl.parentElement) {
+                latestVideoEl.parentElement.dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));
+                latestVideoEl.parentElement.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
+            }
+        } catch (e) {}
+    }
+
+    // 3. Find the latest Download Video button ANYWHERE (NO y > 60 rejection!)
     let dlBtn = null;
+    let dlCandidates = [];
     for (const el of allNodes) {
         const tag = (el.tagName || '').toLowerCase();
         const aria = ((el.getAttribute && el.getAttribute('aria-label')) || '').trim().toLowerCase();
@@ -1448,114 +1497,233 @@ def get_gemini_reply_and_video_status(driver, ignored_video_urls):
         if (isDownloadMatch) {
             const clickable = el.closest('button, a, [role="button"]') || el;
             const r = clickable.getBoundingClientRect();
-            if (r.width >= 8 && r.height >= 8 && r.top > 60) {
-                dlBtn = {
-                    x: Math.round(r.left + r.width / 2),
-                    y: Math.round(r.top + r.height / 2),
+            if (r.width >= 8 && r.height >= 8) {
+                dlCandidates.push({
+                    el: clickable,
                     label: (aria || tip || iconTxt || 'download_video').slice(0, 40)
-                };
+                });
             }
         }
     }
 
-    let latestReply = '';
-    const msgContainers = document.querySelectorAll('message-content, model-response, .model-response-text, [data-message-author-role="model"]');
-    if (msgContainers.length > 0) {
-        const last = msgContainers[msgContainers.length - 1];
-        latestReply = (last.innerText || '').trim().replace(/\\s+/g, ' ').slice(0, 400);
+    if (dlCandidates.length > 0) {
+        // Pick the LAST (most recent) download button, scroll it squarely into the center of screen!
+        const chosen = dlCandidates[dlCandidates.length - 1];
+        try {
+            chosen.el.scrollIntoView({block: 'center', inline: 'center', behavior: 'instant'});
+        } catch (e) {}
+        const r2 = chosen.el.getBoundingClientRect();
+        dlBtn = {
+            x: Math.round(r2.left + r2.width / 2),
+            y: Math.round(r2.top + r2.height / 2),
+            label: chosen.label,
+            in_view: (r2.top >= 20 && r2.bottom <= (window.innerHeight - 10))
+        };
+    } else if (newVideos.length > 0 && replySaysReady) {
+        // Video is 100% ready even if button needs hover/JS trigger inside Step 13!
+        dlBtn = {x: 0, y: 0, label: 'video_ready_js_trigger', in_view: false};
     }
 
-    const lowReply = latestReply.toLowerCase();
-    const isLimit = (
-        lowReply.includes('limit') || lowReply.includes('quota') ||
-        lowReply.includes('try again tomorrow') || lowReply.includes('reached your')
-    );
-    const isRefusalOrError = isLimit || (
-        lowReply.includes("can't generate") || lowReply.includes('cannot generate') ||
-        lowReply.includes('unable to') || lowReply.includes('something went wrong') ||
-        lowReply.includes("i can't create") || lowReply.includes('policy')
-    );
+    // 4. Determine isGenerating — NEVER stay stuck True once video is actually ready!
+    let isGenerating = false;
+    if (!replySaysReady && newVideos.length === 0) {
+        for (const el of allNodes) {
+            if (!el.offsetParent && el.tagName !== 'MAT-PROGRESS-BAR') continue;
+            const aria = (el.getAttribute && (el.getAttribute('aria-label') || '')).toLowerCase();
+            const txt = (el.innerText || '').trim().toLowerCase();
+            const tag = (el.tagName || '').toLowerCase();
+            if (
+                aria.includes('stop response') ||
+                aria.includes('stop generating') ||
+                txt.includes('generating video') ||
+                txt.includes('creating video') ||
+                txt.includes('generating your video') ||
+                (txt.includes('generating') && txt.length < 55) ||
+                tag === 'mat-progress-bar' ||
+                tag === 'mat-spinner' ||
+                tag === 'mat-progress-spinner'
+            ) {
+                isGenerating = true;
+                break;
+            }
+        }
+    }
 
     return {
         is_generating: isGenerating,
         new_video_urls: newVideos,
         download_btn: dlBtn,
-        screen_reply_text: latestReply,
-        is_limit: isLimit,
-        is_refusal_or_error: isRefusalOrError
+        screen_reply_text: latestReply.slice(0, 400)
     };
     """
     try:
-        return driver.execute_script(js_status, list(ignored_video_urls)) or {
-            "is_generating": False,
-            "new_video_urls": [],
-            "download_btn": None,
-            "screen_reply_text": "",
-            "is_limit": False,
-            "is_refusal_or_error": False
-        }
+        res = driver.execute_script(js_status, list(ignored_video_urls or []))
+        if isinstance(res, dict):
+            return res
     except Exception:
-        return {
-            "is_generating": False,
-            "new_video_urls": [],
-            "download_btn": None,
-            "screen_reply_text": "",
-            "is_limit": False,
-            "is_refusal_or_error": False
-        }
+        pass
+    return {"is_generating": False, "new_video_urls": [], "download_btn": None, "screen_reply_text": ""}
+
 
 
 def execute_step13_download_video(driver, dl_btn, new_video_url, raw_dir, existing_mp4s, output_video_path):
-    print("📥 [Step #13] Clicking 'Download video' (`Icon='download'`)...")
+    """
+    BULLETPROOF STEP #13 VIDEO DOWNLOADER (ZERO y=-23 MISSES, ZERO 180s BLIND HANGS):
+    1. Scrolls the latest <video> & Download button into exact center of screen, triggers hover + JS .click()
+       AND positive-coordinate CDP click (never clicks negative y!).
+    2. Actively watches `raw_dir` for `.mp4` & `.crdownload` progress; retries click at 18s if no file started.
+    3. Instant fallback: downloads directly from `<video>` HTTP src (with cookies) or in-browser `fetch(blob)`.
+    """
+    print("📥 [Step #13] Scrolling Download Button into Viewport & Starting Video Download...")
+    os.makedirs(raw_dir, exist_ok=True)
 
-    if dl_btn:
-        single_clean_click_xy(driver, dl_btn["x"], dl_btn["y"], f"Step #13: {dl_btn['label']}")
-    else:
-        wait_and_single_click_step(
-            driver,
-            "Step #13: Download video",
-            aria_list=["download video", "download"],
-            icon_list=["download"],
-            near_xpct=52.3,
-            near_ypct=66.5,
-            wait_timeout=25.0,
-            max_attempts=3
-        )
+    # Guarantee Chrome downloads straight to raw_dir without prompt
+    try:
+        driver.execute_cdp_cmd("Page.setDownloadBehavior", {"behavior": "allow", "downloadPath": os.path.abspath(raw_dir)})
+    except Exception:
+        try:
+            driver.execute_cdp_cmd("Browser.setDownloadBehavior", {"behavior": "allow", "downloadPath": os.path.abspath(raw_dir)})
+        except Exception:
+            pass
 
-    # Wait as long as the file is downloading (.crdownload present or file arriving)
-    for _ in range(90):
-        time.sleep(2.0)
+    def _trigger_download_click_in_viewport():
+        js_scroll_and_click = """
+        function walkAll(root) {
+            let res = [];
+            try {
+                for (const el of root.querySelectorAll('*')) {
+                    res.push(el);
+                    if (el.shadowRoot) res = res.concat(walkAll(el.shadowRoot));
+                }
+            } catch (e) {}
+            return res;
+        }
+        const vids = document.querySelectorAll('video');
+        if (vids.length > 0) {
+            const lv = vids[vids.length - 1];
+            try {
+                lv.scrollIntoView({block: 'center', behavior: 'instant'});
+                lv.dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));
+                lv.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
+                if (lv.parentElement) {
+                    lv.parentElement.dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));
+                    lv.parentElement.dispatchEvent(new MouseEvent('mouseover', {bubbles: true}));
+                }
+            } catch (e) {}
+        }
+        const nodes = walkAll(document);
+        let cands = [];
+        for (const el of nodes) {
+            const tag = (el.tagName || '').toLowerCase();
+            const aria = ((el.getAttribute && el.getAttribute('aria-label')) || '').trim().toLowerCase();
+            const tip = ((el.getAttribute && (el.getAttribute('mattooltip') || el.getAttribute('title'))) || '').trim().toLowerCase();
+            const iconEl = (el.querySelector && el.querySelector('mat-icon, i, span[class*="icon" i]')) || (tag === 'mat-icon' ? el : null);
+            const iconTxt = iconEl ? ((iconEl.getAttribute('data-mat-icon-name') || iconEl.getAttribute('fonticon') || iconEl.innerText || '').trim().toLowerCase()) : '';
+            if (
+                aria.includes('download video') || tip.includes('download video') ||
+                aria === 'download' || tip === 'download' ||
+                iconTxt === 'download' || iconTxt === 'file_download' ||
+                (tag === 'a' && el.hasAttribute('download'))
+            ) {
+                const clickable = el.closest('button, a, [role="button"]') || el;
+                const r = clickable.getBoundingClientRect();
+                if (r.width >= 8 && r.height >= 8) cands.push(clickable);
+            }
+        }
+        if (cands.length === 0) return {clicked: false, x: 0, y: 0, video_src: (vids.length ? (vids[vids.length-1].currentSrc || vids[vids.length-1].src || '') : '')};
+        const btn = cands[cands.length - 1];
+        try { btn.scrollIntoView({block: 'center', inline: 'center', behavior: 'instant'}); } catch (e) {}
+        const r = btn.getBoundingClientRect();
+        try { btn.click(); } catch (e) {}
+        return {
+            clicked: true,
+            x: Math.round(r.left + r.width / 2),
+            y: Math.round(r.top + r.height / 2),
+            in_view: (r.top >= 20 && r.bottom <= window.innerHeight),
+            video_src: (vids.length ? (vids[vids.length-1].currentSrc || vids[vids.length-1].src || '') : '')
+        };
+        """
+        try:
+            info = driver.execute_script(js_scroll_and_click) or {}
+            print(f"   🎯 [Step #13 Viewport Click] clicked={info.get('clicked')} | pos=({info.get('x')},{info.get('y')}) | in_view={info.get('in_view')}")
+            # Also fire a real CDP click ONLY if coordinates are safely inside the visible viewport!
+            if info.get("in_view") and int(info.get("y") or 0) > 25 and int(info.get("x") or 0) > 25:
+                time.sleep(0.25)
+                # Only fire CDP click if no .crdownload already appeared from JS .click()
+                if not glob.glob(os.path.join(raw_dir, "*.crdownload")):
+                    single_clean_click_xy(driver, int(info["x"]), int(info["y"]), "Step #13: Download video (Viewport Verified)")
+            return info.get("video_src") or ""
+        except Exception as _ce:
+            print(f"   ⚠️ Step #13 click note: {_ce}")
+            return ""
+
+    detected_src = _trigger_download_click_in_viewport()
+    if detected_src and (not new_video_url or new_video_url == "DOM_VIDEO_ELEMENT_VISIBLE"):
+        new_video_url = detected_src
+
+    # Smart download watcher: tracks `.crdownload` progress instead of waiting 180s blindly!
+    t_dl_start = time.time()
+    retried_click = False
+    while time.time() - t_dl_start < 110:
+        time.sleep(1.5)
         current_mp4s = set(glob.glob(os.path.join(raw_dir, "*.mp4")))
         new_files = [f for f in (current_mp4s - existing_mp4s) if not f.endswith(".crdownload")]
         if new_files:
             newest = max(new_files, key=os.path.getctime)
+            time.sleep(0.6)
             if is_valid_mp4(newest):
                 if os.path.abspath(newest) != os.path.abspath(output_video_path):
                     shutil.move(newest, output_video_path)
+                sz_mb = round(os.path.getsize(output_video_path) / (1024 * 1024), 2)
+                print(f"   ✅ [Step #13] Downloaded valid MP4 via Chrome ({sz_mb} MB) in {int(time.time()-t_dl_start)}s!")
                 return True
 
+        cr_files = glob.glob(os.path.join(raw_dir, "*.crdownload"))
+        elapsed_dl = int(time.time() - t_dl_start)
+        if cr_files:
+            cr_sz = round(os.path.getsize(cr_files[0]) / (1024 * 1024), 2)
+            if elapsed_dl % 6 == 0:
+                print(f"   ⬇️ Downloading MP4... ({cr_sz} MB so far, {elapsed_dl}s)")
+            continue
+
+        # If NO .crdownload started after 14s, retry click ONCE; if still nothing by 28s, break to fast HTTP/Blob fallback!
+        if elapsed_dl >= 14 and not retried_click:
+            retried_click = True
+            print("   🔁 No .crdownload detected yet at 14s — scrolling & re-clicking Download button...")
+            s2 = _trigger_download_click_in_viewport()
+            if s2 and (not new_video_url or new_video_url == "DOM_VIDEO_ELEMENT_VISIBLE"):
+                new_video_url = s2
+        elif elapsed_dl >= 28:
+            print("   ⚡ Switching to Fast Direct Video Stream / Blob Fallback (28s)...")
+            break
+
+    # Fallback #1: Direct HTTP stream with authenticated browser cookies
     if new_video_url and new_video_url.startswith("http") and not new_video_url.startswith("blob:"):
         try:
+            print("   🌐 [Fallback #1] Downloading directly from authenticated Gemini video URL...")
             cookies_dict = {c["name"]: c["value"] for c in driver.get_cookies()}
-            r = requests.get(new_video_url, cookies=cookies_dict, headers={"User-Agent": "Mozilla/5.0"}, stream=True, timeout=180)
+            r = requests.get(new_video_url, cookies=cookies_dict, headers={"User-Agent": "Mozilla/5.0"}, stream=True, timeout=120)
             if r.status_code == 200:
                 with open(output_video_path, "wb") as f:
                     for chunk in r.iter_content(chunk_size=65536):
                         if chunk:
                             f.write(chunk)
                 if is_valid_mp4(output_video_path):
+                    print(f"   ✅ [Fallback #1] Saved valid MP4 ({round(os.path.getsize(output_video_path)/(1024*1024),2)} MB)!")
                     return True
-        except Exception:
-            pass
+        except Exception as _fe1:
+            print(f"   ⚠️ Fallback #1 note: {_fe1}")
 
-    if new_video_url:
+    # Fallback #2: In-browser fetch(url) -> Blob -> Base64
+    if new_video_url and new_video_url != "DOM_VIDEO_ELEMENT_VISIBLE":
         try:
-            driver.set_script_timeout(180)
+            print("   🧬 [Fallback #2] Extracting MP4 directly via browser fetch(blob)...")
+            driver.set_script_timeout(120)
             b64_data = driver.execute_async_script(
                 """
                 const url = arguments[0];
                 const callback = arguments[arguments.length - 1];
-                fetch(url)
+                fetch(url, {credentials: 'include'})
                   .then(r => r.blob())
                   .then(blob => {
                       const reader = new FileReader();
@@ -1572,11 +1740,13 @@ def execute_step13_download_video(driver, dl_btn, new_video_url, raw_dir, existi
                 with open(output_video_path, "wb") as f:
                     f.write(raw_bytes)
                 if is_valid_mp4(output_video_path):
+                    print(f"   ✅ [Fallback #2] Saved valid MP4 ({round(os.path.getsize(output_video_path)/(1024*1024),2)} MB)!")
                     return True
-        except Exception:
-            pass
+        except Exception as _fe2:
+            print(f"   ⚠️ Fallback #2 note: {_fe2}")
 
     return False
+
 
 
 def rotate_track_and_script_in_history(pending_pkg):
@@ -1786,7 +1956,7 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             # abort this video cleanly so the next video in the batch starts, and keep this Part uncompleted for next run!
             # SMART ADAPTIVE RENDER WATCHER: Never kill an active Veo render! Wait up to 720s while is_generating=True;
             # exit early at 180s ONLY if Gemini stopped generating (is_generating=False) with 0 video.
-            if ((not is_gen and elapsed_sec >= 180) or elapsed_sec >= 720) and dl_btn is None and len(new_vids) == 0:
+            if ((not is_gen and elapsed_sec >= 180 and dl_btn is None and len(new_vids) == 0) or elapsed_sec >= 720):
                 t_msg = (
                     f"6-Minute Smart Render Timeout ({elapsed_mins} min) reached for {unique_fname}. "
                     f"Stopping this attempt to start the next video — Part #{pending_pkg.get('part_number', 1)} will be built next run!"
