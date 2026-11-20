@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795200961022",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Kambal Ke Neeche Wali Video Call | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "12:26 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795200961.022375
+  },
+  {
     "id": "notif_1795200933196",
     "type": "error",
     "title": "⚠️ Gemini Video Error",
