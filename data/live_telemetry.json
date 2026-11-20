@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Step 2: Connecting 3D Studio",
-  "sub_detail": "Verifying Google session & 2FA authentication...",
+  "step_num": 3,
+  "step_title": "\ud83c\udfac Step 3: Selecting Veo Video Mode",
+  "sub_detail": "Calibrated v5 flow: Auto -> Upload & tools -> Create video...",
   "status": "active",
-  "progress": 26,
-  "updated_at": "08:49:30 PM",
-  "epoch": 1795187970.2552607
+  "progress": 32,
+  "updated_at": "08:51:02 PM",
+  "epoch": 1795188062.423921
 }
