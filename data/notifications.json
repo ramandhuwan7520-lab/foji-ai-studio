@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795276844553",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (357s): I couldn't do that because I'm getting a lot of requests r) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "09:30 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795276844.5533144
+  },
+  {
     "id": "notif_1795276841801",
     "type": "error",
     "title": "⚠️ Gemini Video Error",
@@ -788,15 +798,5 @@
     "time_str": "10:25 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795236947.1412659
-  },
-  {
-    "id": "notif_1795230351301",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Barrack Wali Chori | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "08:35 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795230351.3013875
   }
 ]
