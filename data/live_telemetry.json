@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_072_CivilVsFauji_Part_01_1122_001949.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 45s \u2014 hovering & downloading Video_072_CivilVsFauji_Part_01_1122_001949.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "12:21:05 AM",
-  "epoch": 1795287065.401959
+  "progress": 86,
+  "updated_at": "12:21:52 AM",
+  "epoch": 1795287112.5537863
 }
