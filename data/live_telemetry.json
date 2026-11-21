@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Step 6: Rendering 3D Video (Acc #1)",
-  "sub_detail": "Gemini Veo is rendering your vertical 9:16 3D reel (~60-90s)...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering Video_071_BorderNightReality_Part_01_1121_213325.mp4...",
   "status": "active",
-  "progress": 74,
-  "updated_at": "09:34:18 PM",
-  "epoch": 1795277058.6839688
+  "progress": 68,
+  "updated_at": "09:34:24 PM",
+  "epoch": 1795277064.5814633
 }
