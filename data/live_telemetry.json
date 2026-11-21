@@ -1,9 +1,9 @@
 {
-  "step_num": 5,
-  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
-  "sub_detail": "Gemini Veo is rendering Video_064_AgniveerReality_Part_01_1121_131847.mp4...",
+  "step_num": 6,
+  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
+  "sub_detail": "Rendering Video_064_AgniveerReality_Part_01_1121_131847.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
-  "progress": 68,
-  "updated_at": "01:19:42 PM",
-  "epoch": 1795247382.6661649
+  "progress": 75,
+  "updated_at": "01:19:52 PM",
+  "epoch": 1795247392.1496465
 }
