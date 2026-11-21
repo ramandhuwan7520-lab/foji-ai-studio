@@ -1,9 +1,8 @@
 {
-  "step_num": 7,
-  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
-  "sub_detail": "Rendered in 40s \u2014 hovering & downloading Video_063_FunnyFauji_Part_01_1121_102545.mp4...",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "10:27:32 AM",
-  "epoch": 1795237052.5604331
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Ready",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1795239569.2194135
 }
