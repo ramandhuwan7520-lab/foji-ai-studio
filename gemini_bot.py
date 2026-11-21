@@ -3010,13 +3010,46 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=None):
                 time.sleep(2.5)
                 return True
 
+            globals()["_EMAIL_SUBMIT_HITS"] = 0
             print(f"🔐 [Auto-Login] Entering Google Password for '{g_email}'...")
             pwd_el = pwd_inputs[0]
             pwd_el.click()
+            try:
+                pwd_el.send_keys(Keys.CONTROL, "a")
+                pwd_el.send_keys(Keys.BACKSPACE)
+            except Exception:
+                pass
             pwd_el.clear()
             pwd_el.send_keys(g_pwd)
             time.sleep(0.4)
             pwd_el.send_keys(Keys.ENTER)
+            time.sleep(1.2)
+
+            # Fallback: Explicitly click #passwordNext / Next button if password field is still visible
+            still_pwd_now = [p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"]') if p.is_displayed()]
+            if still_pwd_now:
+                try:
+                    btn_rect = driver.execute_script("""
+                        const btn = document.querySelector('#passwordNext button, #passwordNext, button[type="submit"]')
+                            || Array.from(document.querySelectorAll('button, div[role="button"]')).find(b => {
+                                if (b.offsetParent === null) return false;
+                                const t = (b.innerText || b.textContent || '').trim().toLowerCase();
+                                return t === 'next' || t === 'आगे बढ़ें';
+                            });
+                        if (!btn) return null;
+                        btn.scrollIntoView({block: 'center'});
+                        btn.click();
+                        const r = btn.getBoundingClientRect();
+                        return {x: Math.round(r.left + r.width/2), y: Math.round(r.top + r.height/2)};
+                    """)
+                    if btn_rect and btn_rect.get("x", 0) > 0:
+                        time.sleep(0.4)
+                        if [p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"]') if p.is_displayed()]:
+                            driver.execute_cdp_cmd("Input.dispatchMouseEvent", {"type": "mousePressed", "x": btn_rect["x"], "y": btn_rect["y"], "button": "left", "clickCount": 1})
+                            driver.execute_cdp_cmd("Input.dispatchMouseEvent", {"type": "mouseReleased", "x": btn_rect["x"], "y": btn_rect["y"], "button": "left", "clickCount": 1})
+                except Exception:
+                    pass
+
             # Wait up to 7 seconds for the password field to disappear so we NEVER type password twice!
             for _ in range(14):
                 time.sleep(0.5)
@@ -3032,19 +3065,135 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=None):
             if e.is_displayed()
         ]
         if email_inputs and g_email:
-            print(f"📧 [Auto-Login] Entering Google Email '{g_email}'...")
+            _em_hits = int(globals().get("_EMAIL_SUBMIT_HITS", 0)) + 1
+            globals()["_EMAIL_SUBMIT_HITS"] = _em_hits
+            print(f"📧 [Auto-Login] Entering Google Email '{g_email}' (Attempt {_em_hits}/4)...")
+
             em_el = email_inputs[0]
-            em_el.click()
-            em_el.clear()
+            try:
+                driver.execute_script("arguments[0].scrollIntoView({block:'center'}); arguments[0].focus();", em_el)
+                em_el.click()
+            except Exception:
+                pass
+            try:
+                em_el.send_keys(Keys.CONTROL, "a")
+                em_el.send_keys(Keys.BACKSPACE)
+            except Exception:
+                pass
+            try:
+                em_el.clear()
+            except Exception:
+                pass
             em_el.send_keys(g_email)
-            time.sleep(0.4)
-            em_el.send_keys(Keys.ENTER)
-            # Wait up to 6 seconds for password field to appear
-            for _ in range(12):
+            time.sleep(0.35)
+
+            # Verify Google Wiz input actually holds the email value (JS sync fallback if empty/mismatched)
+            cur_val = (em_el.get_attribute("value") or "").strip().lower()
+            if cur_val != g_email.strip().lower():
+                driver.execute_script("""
+                    const el = arguments[0], val = arguments[1];
+                    const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                    setter.call(el, val);
+                    el.dispatchEvent(new Event('input', {bubbles: true}));
+                    el.dispatchEvent(new Event('change', {bubbles: true}));
+                """, em_el, g_email)
+                time.sleep(0.3)
+
+            # Method A: Click #identifierNext / Next button directly via Selenium + JS + CDP real click!
+            clicked_next = False
+            try:
+                next_btns = [
+                    b for b in driver.find_elements(By.CSS_SELECTOR, '#identifierNext button, #identifierNext, button[jsname="LgbsSe"]')
+                    if b.is_displayed()
+                ]
+                if next_btns:
+                    next_btns[0].click()
+                    clicked_next = True
+                    print("   🎯 [Auto-Login] Clicked #identifierNext button!")
+            except Exception:
+                pass
+
+            if not clicked_next:
+                try:
+                    em_el.send_keys(Keys.ENTER)
+                except Exception:
+                    pass
+
+            time.sleep(1.5)
+
+            # Method B: If email input is STILL on screen, fire real CDP mouse click on Next button!
+            still_em = [e for e in driver.find_elements(By.CSS_SELECTOR, 'input[type="email"], input#identifierId, input[name="identifier"]') if e.is_displayed()]
+            if still_em:
+                try:
+                    btn_rect = driver.execute_script("""
+                        const btn = document.querySelector('#identifierNext button, #identifierNext')
+                            || Array.from(document.querySelectorAll('button, div[role="button"]')).find(b => {
+                                if (b.offsetParent === null) return false;
+                                const t = (b.innerText || b.textContent || '').trim().toLowerCase();
+                                return t === 'next' || t === 'आगे बढ़ें';
+                            });
+                        if (!btn) return null;
+                        btn.scrollIntoView({block: 'center'});
+                        btn.click();
+                        const r = btn.getBoundingClientRect();
+                        return {x: Math.round(r.left + r.width/2), y: Math.round(r.top + r.height/2)};
+                    """)
+                    if btn_rect and btn_rect.get("x", 0) > 0:
+                        driver.execute_cdp_cmd("Input.dispatchMouseEvent", {"type": "mousePressed", "x": btn_rect["x"], "y": btn_rect["y"], "button": "left", "clickCount": 1})
+                        driver.execute_cdp_cmd("Input.dispatchMouseEvent", {"type": "mouseReleased", "x": btn_rect["x"], "y": btn_rect["y"], "button": "left", "clickCount": 1})
+                        print(f"   🎯 [Auto-Login] Fired real CDP click on Next at ({btn_rect['x']}, {btn_rect['y']})!")
+                except Exception:
+                    pass
+
+            # Wait up to 7 seconds for password field to appear OR email field to disappear
+            advanced = False
+            for _ in range(14):
                 time.sleep(0.5)
                 has_pwd = [p for p in driver.find_elements(By.CSS_SELECTOR, 'input[type="password"]') if p.is_displayed()]
-                if has_pwd:
+                has_em = [e for e in driver.find_elements(By.CSS_SELECTOR, 'input[type="email"], input#identifierId, input[name="identifier"]') if e.is_displayed()]
+                if has_pwd or not has_em:
+                    advanced = True
+                    globals()["_EMAIL_SUBMIT_HITS"] = 0
                     break
+
+            if not advanced:
+                # Inspect WHY Google kept us on Email screen (error text / CAPTCHA / URL)
+                diag = driver.execute_script("""
+                    const errs = Array.from(document.querySelectorAll('[jsname="B34EJ"], [aria-live="assertive"], .o6cuMc, .Ekjuhf, .dEOOab'))
+                        .map(el => (el.innerText || '').trim()).filter(Boolean);
+                    const hasCap = !!document.querySelector('img#captchaimg, input[name="ca"], iframe[src*="recaptcha"]');
+                    const inp = document.querySelector('input[type="email"], input#identifierId, input[name="identifier"]');
+                    return {
+                        url: location.href.slice(0, 140),
+                        val: inp ? inp.value : '',
+                        err: errs.join(' | ').slice(0, 180),
+                        captcha: hasCap
+                    };
+                """) or {}
+                print(f"⚠️ [Auto-Login Email Still Visible] attempt={_em_hits} | captcha={diag.get('captcha')} | val='{diag.get('val')}' | err='{diag.get('err')}' | url={diag.get('url')}")
+
+                if _em_hits == 2:
+                    try:
+                        driver.save_screenshot("data/live_screenshot.png")
+                        sync_file_to_github("data/live_screenshot.png", "Account #2 email step diagnostic screenshot [skip render] [skip ci]")
+                        send_telegram_photo_alert("data/live_screenshot.png", f"⚠️ Account #2 Email Step Diagnostic\nErr: {diag.get('err') or 'None'}\nCaptcha: {diag.get('captcha')}")
+                    except Exception:
+                        pass
+
+                if _em_hits == 3 and not diag.get("captcha"):
+                    try:
+                        from urllib.parse import quote
+                        direct_url = f"https://accounts.google.com/v3/signin/identifier?Email={quote(g_email)}&continue=https%3A%2F%2Fgemini.google.com%2Fapp&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
+                        print("🔄 [Auto-Login] Reloading clean pre-filled Google Sign-In URL...")
+                        driver.get(direct_url)
+                        time.sleep(3.0)
+                    except Exception:
+                        pass
+
+                if _em_hits >= 4:
+                    globals()["_EMAIL_SUBMIT_HITS"] = 0
+                    raise RuntimeError(f"Account #2 Google Email step blocked (captcha={diag.get('captcha')}, err='{diag.get('err')}')")
+
             time.sleep(1.0)
             return True
 
