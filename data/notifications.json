@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795277194050",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 1: Pyar Ka Safed Jhoot (Video_071_BorderNightReality_Part_01_1121_213325.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "09:36 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795277194.0508277
+  },
+  {
     "id": "notif_1795277132317",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "01:18 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795247286.6081455
-  },
-  {
-    "id": "notif_1795247230850",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Duty, Fatigue & Working Reality — Part 1: Fatigue vs. Gulab Jamun is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "01:17 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795247230.8503306
   }
 ]
