@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795220871717",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: 4 AM Ka Swag vs Sleepy Duniya | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "05:57 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795220871.717585
+  },
+  {
     "id": "notif_1795220867820",
     "type": "warning",
     "title": "Switching to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "06:56 AM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795051588.1037695
-  },
-  {
-    "id": "notif_1795029680392_608",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "12:51 AM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795029680.3926058
   }
 ]
