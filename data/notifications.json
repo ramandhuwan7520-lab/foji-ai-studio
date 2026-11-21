@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795221169135",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Selected on Account #1 — video generation limit",
+    "status": "error",
+    "time_str": "06:02 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795221169.1352553
+  },
+  {
     "id": "notif_1795221132805",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "10:11 AM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795063287.1376169
-  },
-  {
-    "id": "notif_1795063231411",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: 4AM Sher vs City Wale | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "10:10 AM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795063231.4119937
   }
 ]
