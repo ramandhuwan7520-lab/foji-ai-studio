@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795272169283",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "08:12 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795272169.2837088
+  },
+  {
     "id": "notif_1795272166998",
     "type": "error",
     "title": "Create Video Limit (Account #1)",
@@ -788,15 +798,5 @@
     "time_str": "05:51 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795220504.1320634
-  },
-  {
-    "id": "notif_1795220502108",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Selected on Account #1 — video generation limit",
-    "status": "error",
-    "time_str": "05:51 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795220502.108218
   }
 ]
