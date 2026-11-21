@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795264610528",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_067_FunnyFauji_Part_03_1121_180319.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "06:06 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795264610.5287466
+  },
+  {
     "id": "notif_1795264459547",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
