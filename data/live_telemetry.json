@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
-  "sub_detail": "Rendered in 40s \u2014 hovering & downloading Video_063_DutyFatigue_Part_01_1121_131605.mp4...",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "01:18:01 PM",
-  "epoch": 1795247281.5885324
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "Video_063_DutyFatigue_Part_01_1121_131605.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "01:18:30 PM",
+  "epoch": 1795247310.4114215
 }
