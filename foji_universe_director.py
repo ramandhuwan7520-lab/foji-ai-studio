@@ -1622,30 +1622,44 @@ def load_posted_ledger():
     if os.path.exists(POSTED_LEDGER_FILE):
         try:
             data = json.load(open(POSTED_LEDGER_FILE, "r", encoding="utf-8"))
+            if isinstance(data, dict):
+                return set(os.path.basename(str(k)) for k in data.keys() if k)
             if isinstance(data, list):
                 return set(os.path.basename(str(x)) for x in data if x)
         except Exception:
             pass
     return set()
 
+
 def record_video_permanently_posted(video_file, caption="", permalink="", media_pk=""):
-    """
-    PERMANENT ANTI-DUPLICATE LOCK:
-    1. Locks `video_file` inside `data/posted_ledger.json` forever.
-    2. Purges it from `scheduled_posts` & `unapproved_videos` and records it in `published_posts` & `upload_claimed_files`.
-    3. Saves a clean archive copy inside `archive_posted_reels/` on laptop.
-    4. Immediately pushes BOTH `data/posted_ledger.json` & `data/scheduled_queue.json` to GitHub (blocking)
-       so Render restarts/pulls NEVER resurrect an already-posted reel back into Scheduled!
-    """
     vf = os.path.basename(str(video_file or "").strip())
     if not vf:
         return False
 
-    ledger = load_posted_ledger()
-    ledger.add(vf)
     os.makedirs("data", exist_ok=True)
+    ledger_dict = {}
+    if os.path.exists(POSTED_LEDGER_FILE):
+        try:
+            raw_d = json.load(open(POSTED_LEDGER_FILE, "r", encoding="utf-8"))
+            if isinstance(raw_d, dict):
+                ledger_dict = raw_d
+            elif isinstance(raw_d, list):
+                ledger_dict = {
+                    os.path.basename(str(x)): {"video_file": os.path.basename(str(x)), "status": "published"}
+                    for x in raw_d if x
+                }
+        except Exception:
+            ledger_dict = {}
+
+    ledger_dict[vf] = {
+        "video_file": vf,
+        "status": "published",
+        "published_at": datetime.now(IST).strftime("%d %b %Y, %I:%M %p IST"),
+        "permalink": permalink or "",
+        "media_pk": str(media_pk or "")
+    }
     with open(POSTED_LEDGER_FILE, "w", encoding="utf-8") as lf:
-        json.dump(sorted(ledger), lf, indent=2)
+        json.dump(ledger_dict, lf, indent=2)
 
     q = get_scheduled_queue()
     removed_item = None
@@ -1686,7 +1700,6 @@ def record_video_permanently_posted(video_file, caption="", permalink="", media_
 
     save_scheduled_queue(q, sync_cloud=False)
 
-    # Archive copy locally on laptop
     if os.environ.get("RENDER") != "true" and os.environ.get("GITHUB_ACTIONS") != "true":
         for src_dir in ("output/raw_videos", "output/final_reels"):
             src_p = os.path.join(src_dir, vf)
@@ -1710,3 +1723,5 @@ def record_video_permanently_posted(video_file, caption="", permalink="", media_
         except Exception:
             pass
     return True
+
+

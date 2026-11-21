@@ -1265,20 +1265,21 @@ def verify_create_video_selected_or_detect_limit(driver):
 
 def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_prompt):
     """
-    FOJI VEO ENGINE v5 (100% CLEAN-SLATE CALIBRATED 12-STEP PIPELINE — ZERO LEGACY STEPS):
-    1. Optional Mode Picker -> 'Auto'
-    2. 'Upload & tools' (+) -> 'Create video' (Instant Daily Limit Guard!)
-    3. Optional 'Try it' popup (0.35s instant check — ZERO blind wait!)
-    4. 'Format' -> 'Video'
-    5. 'Landscape (16:9)' -> 'Portrait (9:16)'
-    6. Direct Prompt-Box Character Paste via DataTransfer (keeps Create Video & 9:16 locked!)
-    7. High-Class 3D Prompt Fill & Verify
-    8. Click 'Send message'
+    FOJI VEO ENGINE v7 (SIDEBAR-IMMUNE + RELIABLE AUTO MODEL + STRICT VIDEO MODE VERIFIER):
+    1. Reliably checks visible Mode Picker text -> selects 'Auto' if on Fast/Thinking/Pro (works on Acc #1 & #2).
+    2. Opens 'Upload & tools' (+) -> clicks 'Create video'.
+    3. STRICT COMPOSER-ONLY VERIFIER (IGNORES LEFT SIDEBAR CHAT TITLES!):
+       - Confirms active Video Composer ('Describe your video' placeholder, 'Videos' chip, or 'Landscape'/'Format' pill).
+       - Checks limit notices ONLY inside active main area / snackbar / dialog (NEVER old sidebar chat titles!).
+    4. Optional 'Try it' popup (0-wait instant check).
+    5. Format -> Video, Landscape (16:9) -> Portrait (9:16).
+    6. HARD PRE-PASTE GATE: Blocks prompt/image paste if Video mode did not activate -> instant Account #2 failover!
+    7. Direct Prompt-Box Character Paste -> High-Class 3D Prompt -> Send message.
     """
-    print("🚀 [Foji Veo v5] Starting Clean Calibrated 12-Step Pipeline (Zero Legacy Steps)...")
-    update_3d_telemetry(3, "🎬 Step 3: Selecting Veo Video Mode", "Calibrated v5 flow: Auto -> Upload & tools -> Create video...", "active", 32)
+    acc_num = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
+    print(f"🚀 [Foji Veo v7 | Account #{acc_num}] Starting Clean Calibrated Pipeline...")
+    update_3d_telemetry(3, f"Step 3: Video Mode (Acc #{acc_num})", "Selecting Auto model & activating Gemini Video Mode...", "active", 32)
 
-    # Load dynamic calibrated coordinates if recorded
     s1_x, s1_y = load_recorded_step_coords(1, 77.23, 50.08)
     s2_x, s2_y = load_recorded_step_coords(2, 74.89, 58.87)
     s3_x, s3_y = load_recorded_step_coords(3, 38.69, 51.02)
@@ -1290,89 +1291,146 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
     s9_x, s9_y = load_recorded_step_coords(9, 49.49, 79.28)
     s11_x, s11_y = load_recorded_step_coords(11, 81.82, 77.86)
 
-    # STEP 1 & 2: Ensure Mode Picker is on 'Auto' (fast check — skip click if already Auto!)
-    already_auto = False
-    try:
-        already_auto = bool(driver.execute_script(
-            "return Boolean(document.querySelector('[aria-label*=\"currently Auto\" i]'));"
-        ))
-    except Exception:
-        pass
-    if not already_auto:
+    def _is_mode_already_auto():
+        try:
+            return bool(driver.execute_script("""
+                if (document.querySelector('[aria-label*="currently Auto" i]')) return true;
+                for (const b of document.querySelectorAll('button, [role="button"]')) {
+                    if (b.closest('nav, bard-sidenav, side-navigation, [role="navigation"], [role="menu"]')) continue;
+                    const r = b.getBoundingClientRect();
+                    if (r.width < 25 || r.height < 16 || r.top < 150) continue;
+                    const t = (b.innerText || '').trim().toLowerCase().replace(/\\s+/g, ' ');
+                    if (t === 'auto' || t.startsWith('auto ') || t.endsWith(' auto')) return true;
+                }
+                return false;
+            """))
+        except Exception:
+            return False
+
+    # STEP 1 & 2: Ensure Mode Picker is on 'Auto' (works on both Account #1 and Account #2!)
+    if not _is_mode_already_auto():
+        print(f"⚙️ [v7 Step #1 | Acc #{acc_num}] Switching Mode Picker -> 'Auto'...")
         opened_mode = wait_and_single_click_step(
-            driver, "v5 Step #1: Mode Picker",
+            driver, "v7 Step #1: Mode Picker",
             aria_list=["open mode picker", "mode picker", "model"],
-            txt_list=["auto", "fast", "thinking", "pro"],
-            near_xpct=s1_x, near_ypct=s1_y, wait_timeout=2.5, verify_timeout=1.0, max_attempts=1, optional=True
+            txt_list=["fast", "thinking", "pro", "flash", "auto"],
+            near_xpct=s1_x, near_ypct=s1_y, wait_timeout=5.0, verify_timeout=1.5, max_attempts=2, optional=True
         )
         if opened_mode:
-            time.sleep(0.25)
+            time.sleep(0.35)
             wait_and_single_click_step(
-                driver, "v5 Step #2: Select Auto",
+                driver, "v7 Step #2: Select Auto",
                 txt_list=["auto adapts to your needs", "auto"],
                 aria_list=["auto"],
-                near_xpct=s2_x, near_ypct=s2_y, wait_timeout=2.5, verify_timeout=1.0, max_attempts=1, optional=True
+                near_xpct=s2_x, near_ypct=s2_y, wait_timeout=4.0, verify_timeout=1.5, max_attempts=2, optional=True
             )
-            time.sleep(0.25)
+            time.sleep(0.35)
+    else:
+        print(f"✅ [v7 Step #1 | Acc #{acc_num}] Mode Picker already on 'Auto'!")
 
-    # STEP 3 & 4: Open 'Upload & tools' -> Click 'Create video' (STRICT VIDEO ONLY + INSTANT LIMIT GUARD)
+    # STEP 3 & 4: Open 'Upload & tools' (+) -> Click 'Create video'
     wait_and_single_click_step(
-        driver, "v5 Step #3: Upload & tools (+)",
+        driver, "v7 Step #3: Upload & tools (+)",
         aria_list=["upload & tools", "tools", "open tools"],
         icon_list=["add", "plus", "tune", "page_info"],
         near_xpct=s3_x, near_ypct=s3_y,
         verify_next_txt=["create video", "generate video"],
         verify_next_aria=["create video"],
-        wait_timeout=5.0, verify_timeout=2.0, max_attempts=2, optional=False
+        wait_timeout=6.0, verify_timeout=2.2, max_attempts=2, optional=False
     )
 
     cv_ok = wait_and_single_click_step(
-        driver, "v5 Step #4: Create video",
+        driver, "v7 Step #4: Create video",
         aria_list=["create video"],
         txt_list=["create video", "generate video"],
         icon_list=["movie", "videocam", "video_spark", "smart_display"],
         near_xpct=s4_x, near_ypct=s4_y,
-        wait_timeout=5.0, verify_timeout=1.8, max_attempts=2, optional=True
+        wait_timeout=5.5, verify_timeout=1.8, max_attempts=2, optional=True
     )
-    # STRICT VERIFY: Confirm 'Create video' actually activated (Format/Aspect Ratio/Veo chip visible & NO limit notice!)
-    time.sleep(0.95)
-    cv_state = driver.execute_script("""
-        const bodyTxt = (document.body.innerText || '').toLowerCase();
-        const limitHits = [
-            'reached your limit', 'video generation limit', 'daily limit', 'try again tomorrow',
-            'limit for creating videos', 'upgrade to generate more', 'unable to create more videos',
-            'video creation limit', 'limit reached'
-        ];
-        const hitLimit = limitHits.find(k => bodyTxt.includes(k)) || '';
 
-        // Check ONLY outside open menus so the 'Create video' menu item itself NEVER false-positives!
-        const composerSelectors = [
-            '[aria-label*="Aspect ratio" i]',
-            '[aria-label*="Portrait" i]',
-            '[aria-label*="Landscape" i]',
-            '[aria-label*="Remove Create video" i]',
-            '[aria-label*="Deselect Create video" i]',
-            '[aria-label*="Format" i]'
-        ];
-        let hasActiveVideoChip = false;
-        for (const sel of composerSelectors) {
-            for (const el of document.querySelectorAll(sel)) {
-                if (el.closest('[role="menu"], .mat-mdc-menu-panel, [role="listbox"]')) continue;
-                const r = el.getBoundingClientRect();
-                if (r.width > 10 && r.height > 10) {
-                    hasActiveVideoChip = true;
+    # STEP 5: Instant 0-Wait optional 'Try it' popup check BEFORE verifying active video composer!
+    time.sleep(0.45)
+    wait_and_single_click_step(
+        driver, "v7 Step #5: Optional Try it Popup",
+        txt_list=["try it", "got it", "agree", "i agree", "accept"],
+        near_xpct=s5_x, near_ypct=s5_y,
+        wait_timeout=0.5, verify_timeout=0.3, max_attempts=1, optional=True
+    )
+
+    # SIDEBAR-IMMUNE VIDEO MODE & LIMIT VERIFIER!
+    time.sleep(0.75)
+    cv_state = driver.execute_script("""
+        function isSidebarOrMenu(el) {
+            return Boolean(el && el.closest(
+                'nav, bard-sidenav, side-navigation, [class*="sidenav" i], [class*="sidebar" i], ' +
+                '[role="navigation"], [role="menu"], .mat-mdc-menu-panel, [role="listbox"]'
+            ));
+        }
+
+        // 1. Check active Video Composer signals ONLY outside sidebar & open menus
+        let hasActiveVideoComposer = false;
+        let activeSignal = '';
+
+        // Signal A: Prompt placeholder says "Describe your video"
+        for (const el of document.querySelectorAll('[data-placeholder], [placeholder], [aria-label], rich-textarea, div[contenteditable="true"]')) {
+            if (isSidebarOrMenu(el)) continue;
+            const ph = (
+                (el.getAttribute('data-placeholder') || '') + ' ' +
+                (el.getAttribute('placeholder') || '') + ' ' +
+                (el.getAttribute('aria-label') || '') + ' ' +
+                (el.innerText || '').slice(0, 60)
+            ).toLowerCase();
+            if (ph.includes('describe your video')) {
+                hasActiveVideoComposer = true;
+                activeSignal = 'placeholder:Describe your video';
+                break;
+            }
+        }
+
+        // Signal B: Active 'Videos' chip OR 'Landscape' / 'Portrait' / 'Format' pills inside composer
+        if (!hasActiveVideoComposer) {
+            for (const b of document.querySelectorAll('button, [role="button"]')) {
+                if (isSidebarOrMenu(b)) continue;
+                const r = b.getBoundingClientRect();
+                if (r.width < 18 || r.height < 14 || r.top < 120) continue;
+                const t = ((b.getAttribute('aria-label') || '') + ' ' + (b.innerText || '')).trim().toLowerCase();
+                if (
+                    t === 'videos' || t.includes('remove create video') || t.includes('deselect create video') ||
+                    t.includes('landscape') || t.includes('portrait') || t === 'format' ||
+                    t.startsWith('format ') || t.includes('aspect ratio')
+                ) {
+                    hasActiveVideoComposer = true;
+                    activeSignal = 'pill:' + t.slice(0, 28);
                     break;
                 }
             }
-            if (hasActiveVideoChip) break;
         }
-        return {active: hasActiveVideoChip && !hitLimit, hitLimit: hitLimit};
-    """) or {"active": False, "hitLimit": ""}
 
-    if (not cv_ok) or (not cv_state.get("active")):
-        acc_num = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-        lim_reason = cv_state.get("hitLimit") or "Create video option did not activate (Daily Video Limit Reached)"
-        lim_msg = f"Create Video Not Selected on Account #{acc_num} — {lim_reason}"
+        // 2. Check REAL active limit alerts ONLY in snackbars / dialogs / alerts / latest model-response (NEVER SIDEBAR!)
+        const limitHits = [
+            'reached your limit', 'video generation limit', 'daily limit', 'try again tomorrow',
+            'limit for creating videos', 'upgrade to generate more', 'unable to create more videos',
+            'video creation limit', 'over capacity'
+        ];
+        let hitLimit = '';
+        const alertZones = document.querySelectorAll(
+            'mat-snack-bar-container, [role="alert"], [role="dialog"], .cdk-overlay-container, model-response, .error-message'
+        );
+        for (const z of alertZones) {
+            if (isSidebarOrMenu(z)) continue;
+            const txt = (z.innerText || '').toLowerCase();
+            const m = limitHits.find(k => txt.includes(k));
+            if (m) { hitLimit = m; break; }
+        }
+
+        return {active: hasActiveVideoComposer && !hitLimit, signal: activeSignal, hitLimit: hitLimit};
+    """) or {"active": False, "signal": "", "hitLimit": ""}
+
+    print(f"🔎 [v7 Video Mode Check | Acc #{acc_num}] active={cv_state.get('active')} | signal='{cv_state.get('signal')}' | limit='{cv_state.get('hitLimit')}'")
+
+    if not cv_state.get("active"):
+        lim_reason = cv_state.get("hitLimit") or "Create video composer ('Describe your video') did not activate (Limit Full)"
+        lim_msg = f"Create Video Not Active on Account #{acc_num} — {lim_reason}"
         print(f"🚫 [Strict Limit Guard] {lim_msg}")
         save_live_debug_screenshot(driver, f"create_video_limit_acc{acc_num}")
         update_3d_telemetry(3, f"Limit Reached (Account #{acc_num})", lim_msg, "error", 0)
@@ -1380,68 +1438,51 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         ErrCls = globals().get("GeminiLimitReachedError", RuntimeError)
         raise ErrCls(lim_msg)
 
-    # STEP 5: Instant 0-Wait optional 'Try it' popup check (NEVER waits if absent!)
-    time.sleep(0.35)
-    wait_and_single_click_step(
-        driver, "v5 Step #5: Optional Try it Popup",
-        txt_list=["try it", "got it", "agree", "i agree", "accept"],
-        near_xpct=s5_x, near_ypct=s5_y,
-        wait_timeout=0.35, verify_timeout=0.25, max_attempts=1, optional=True
-    )
-
     # STEP 6 & 7: Format -> Video
-    update_3d_telemetry(4, "📱 Step 4: Locking 9:16 Video & Cast", "Setting Format -> Video & Portrait (9:16), then pasting 3D character...", "active", 48)
+    update_3d_telemetry(4, f"Step 4: Cast & 9:16 (Acc #{acc_num})", "Setting Format -> Video & Portrait (9:16), then attaching 3D Cast...", "active", 48)
     fmt_ok = wait_and_single_click_step(
-        driver, "v5 Step #6: Format Menu",
+        driver, "v7 Step #6: Format Menu",
         txt_list=["format"], aria_list=["format"],
-        near_xpct=s6_x, near_ypct=s6_y, wait_timeout=1.5, verify_timeout=0.6, max_attempts=1, optional=True
+        near_xpct=s6_x, near_ypct=s6_y, wait_timeout=2.5, verify_timeout=0.8, max_attempts=1, optional=True
     )
     if fmt_ok:
-        time.sleep(0.22)
+        time.sleep(0.25)
         wait_and_single_click_step(
-            driver, "v5 Step #7: Select Video",
+            driver, "v7 Step #7: Select Video",
             txt_list=["video"], aria_list=["video"],
-            near_xpct=s7_x, near_ypct=s7_y, wait_timeout=1.6, verify_timeout=0.6, max_attempts=1, optional=True
+            near_xpct=s7_x, near_ypct=s7_y, wait_timeout=2.5, verify_timeout=0.8, max_attempts=1, optional=True
         )
-        time.sleep(0.22)
+        time.sleep(0.25)
 
     # STEP 8 & 9: Landscape (16:9) -> Portrait (9:16)
     already_portrait = False
     try:
-        already_portrait = bool(driver.execute_script("return Boolean(document.querySelector('[aria-label*=Portrait i]'));"))
+        already_portrait = bool(driver.execute_script(
+            "return Boolean(document.querySelector('[aria-label*=\"Portrait\" i]'));"
+        ))
     except Exception:
         pass
+    ar_ok = False
     if not already_portrait:
         ar_ok = wait_and_single_click_step(
-            driver, "v5 Step #8: Aspect Ratio (Landscape -> Portrait)",
+            driver, "v7 Step #8: Aspect Ratio (Landscape -> Portrait)",
             aria_list=["aspect ratio, landscape (16:9)", "aspect ratio", "landscape"],
             txt_list=["landscape", "16:9"], icon_list=["crop_16_9"],
-            near_xpct=s8_x, near_ypct=s8_y, wait_timeout=2.2, verify_timeout=0.8, max_attempts=1, optional=True
+            near_xpct=s8_x, near_ypct=s8_y, wait_timeout=3.0, verify_timeout=0.9, max_attempts=2, optional=True
         )
         if ar_ok:
-            time.sleep(0.22)
+            time.sleep(0.25)
             wait_and_single_click_step(
-                driver, "v5 Step #9: Portrait (9:16)",
+                driver, "v7 Step #9: Portrait (9:16)",
                 txt_list=["portrait (9:16)", "portrait", "9:16"],
                 aria_list=["portrait (9:16)", "portrait"], icon_list=["crop_9_16"],
                 near_xpct=s9_x, near_ypct=s9_y, exclude_words=["landscape", "16:9"],
-                wait_timeout=2.2, verify_timeout=0.8, max_attempts=1, optional=True
+                wait_timeout=3.0, verify_timeout=0.9, max_attempts=2, optional=True
             )
             time.sleep(0.25)
 
-    # HARD PRE-PASTE GATE: Never paste image or send prompt unless Video/9:16 mode actually activated!
-    if not (fmt_ok or ar_ok or already_portrait):
-        acc_num = globals().get("_ACTIVE_COOKIE_ACCOUNT_SLOT", 1)
-        gate_msg = f"Video Mode / 9:16 did not activate on Account #{acc_num} (Limit Reached) — aborting before prompt send!"
-        print(f"🚫 [HARD PRE-PASTE GATE] {gate_msg}")
-        save_live_debug_screenshot(driver, f"video_mode_failed_acc{acc_num}")
-        update_3d_telemetry(3, f"Limit Reached (Account #{acc_num})", gate_msg, "error", 0)
-        push_app_notification("error", f"Create Video Not Selected (Account #{acc_num})", gate_msg, "error")
-        ErrCls = globals().get("GeminiLimitReachedError", RuntimeError)
-        raise ErrCls(gate_msg)
-
-    # STEP 10: Direct Prompt-Box Character Paste (Matches working manual calibration, NEVER resets Create video!)
-    print("🖼️ [v5 Step #10] Pasting 3D Character Reference(s) directly into Gemini Prompt Box...")
+    # STEP 10: Direct Prompt-Box Character Paste (keeps Video Mode & 9:16 intact!)
+    print(f"🖼️ [v7 Step #10 | Acc #{acc_num}] Pasting 3D Character Reference(s) directly into Video Prompt Box...")
     if not paste_character_images_directly_into_prompt(driver, foji_img, fojan_img):
         print("   ↩️ Fallback: attaching via hidden file input...")
         try:
@@ -1451,37 +1492,38 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
             print(f"   ℹ️ Fallback cast attach note: {_fb_e}")
 
     # STEP 11: Fill High-Class 3D Prompt
-    update_3d_telemetry(5, "✍️ Step 5: Directing High-Class 3D Scene", "Injecting cinematic Fauji script, dialogue & lighting cues...", "active", 62)
+    update_3d_telemetry(5, f"Step 5: Directing Scene (Acc #{acc_num})", "Injecting 3D Fauji scene script, dialogue & lighting cues...", "active", 62)
     if not fill_gemini_prompt_box_and_verify(driver, fresh_prompt):
-        report_step_problem_instantly(driver, "v5 Step #11: Fill Prompt", "Could not fill script into Gemini prompt box.")
-        raise RuntimeError("v5 Step #11 (Fill Prompt) failed.")
+        report_step_problem_instantly(driver, "v7 Step #11: Fill Prompt", "Could not fill script into Gemini prompt box.")
+        raise RuntimeError("v7 Step #11 (Fill Prompt) failed.")
 
     dismiss_any_agree_or_consent_popup(driver)
 
     # STEP 12: Click 'Send message'
-    print("🚀 [v5 Step #12] Clicking 'Send message'...")
+    print(f"🚀 [v7 Step #12 | Acc #{acc_num}] Clicking 'Send message'...")
     js_verify_sent = """
-    const box = document.querySelector('[aria-label*="Enter a prompt" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"], textarea');
+    const box = document.querySelector('[aria-label*="Describe your video" i], [aria-label*="Describe your video" i], [aria-label*="Enter a prompt" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"], textarea');
     const len = box ? ((box.value || box.innerText || '').trim().length) : 0;
     const stopBtn = document.querySelector('[aria-label*="Stop response" i], [aria-label*="Stop generating" i]');
     return (len < 15) || Boolean(stopBtn);
     """
     ok_sent = wait_and_single_click_step(
-        driver, "v5 Step #12: Send message",
-        aria_list=["send message"],
+        driver, "v7 Step #12: Send message",
+        aria_list=["send message", "send"],
         icon_list=["arrow_upward", "send"],
         near_xpct=s11_x, near_ypct=s11_y,
         custom_verify_js=js_verify_sent,
-        wait_timeout=5.0, verify_timeout=3.0, max_attempts=2, optional=False
+        wait_timeout=5.5, verify_timeout=3.0, max_attempts=2, optional=False
     )
     if not ok_sent:
-        report_step_problem_instantly(driver, "v5 Step #12: Send message", "Send button did not trigger submission.")
-        raise RuntimeError("v5 Step #12 (Send message) failed.")
+        report_step_problem_instantly(driver, "v7 Step #12: Send message", "Send button did not trigger submission.")
+        raise RuntimeError("v7 Step #12 (Send message) failed.")
 
-    update_3d_telemetry(6, "⏳ Step 6: Rendering 3D Veo Reel...", "Gemini Veo is actively rendering your vertical 9:16 3D cinema reel...", "active", 74)
-    print("✅ [Foji Veo v5] All 12 calibrated steps executed cleanly — handing off to Smart Adaptive Watcher!")
-    broadcast_live_step_snapshot(driver, 6, "🚀 Prompt Sent to Gemini Veo", "All 12 steps done! Rendering 9:16 3D Reel (~60-90s)...", 72, send_telegram=True)
+    update_3d_telemetry(6, f"Step 6: Rendering 3D Video (Acc #{acc_num})", "Gemini Veo is rendering your vertical 9:16 3D reel (~60-90s)...", "active", 74)
+    print(f"✅ [Foji Veo v7 | Acc #{acc_num}] All 12 steps executed cleanly — handing off to Smart Adaptive Watcher!")
+    broadcast_live_step_snapshot(driver, 6, f"🚀 Prompt Sent (Acc #{acc_num})", "Video Mode 9:16 verified! Rendering 3D reel (~60-90s)...", 74, send_telegram=True)
     return True
+
 
 
 
@@ -3073,7 +3115,7 @@ def paste_character_images_directly_into_prompt(driver, foji_img, fojan_img=None
 
     js_paste = """
     const filesData = arguments[0];
-    const box = document.querySelector('[aria-label*="Enter a prompt" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"], textarea');
+    const box = document.querySelector('[aria-label*="Describe your video" i], [aria-label*="Enter a prompt" i], rich-textarea div[contenteditable="true"], div[contenteditable="true"], textarea');
     if (!box) return {ok: false, reason: 'no_prompt_box'};
     box.focus();
     box.click();
