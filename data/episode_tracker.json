@@ -22,5 +22,33 @@
   "love_meera": {
     "completed_part": 6,
     "next_part": 7
+  },
+  "chhutti_ghar_wapsi": {
+    "completed_part": 1,
+    "next_part": 2
+  },
+  "fauji_dosti_barracks": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "border_night_reality": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "civil_vs_fauji": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "video_call_network": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "festival_on_duty": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "fauji_safar_train": {
+    "completed_part": 0,
+    "next_part": 1
   }
 }
