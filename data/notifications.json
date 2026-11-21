@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795269606789",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Ghar Ki Khushbu Aur Train Ka Safar | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
+    "status": "info",
+    "time_str": "07:30 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795269606.7897732
+  },
+  {
     "id": "notif_1795269577952",
     "type": "warning",
     "title": "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)",
@@ -788,15 +798,5 @@
     "time_str": "04:02 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795213979.050891
-  },
-  {
-    "id": "notif_1795213716469",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Extra Gulab Jamun Scandal | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "03:58 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795213716.4695814
   }
 ]
