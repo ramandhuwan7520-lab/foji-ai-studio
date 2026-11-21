@@ -1,9 +1,9 @@
 {
   "step_num": 2,
-  "step_title": "Stage 2: Cookie Sign-In (Account #1)",
-  "sub_detail": "Logging into Gemini & preparing Makra + Meera (Magenta Pink Floral Printed Georgette ...)...",
+  "step_title": "Switching to Account #2",
+  "sub_detail": "Account #1 limit/error (Could not verify Gemini login within timeout.) \u2014 switching to Account #2!",
   "status": "active",
-  "progress": 25,
-  "updated_at": "05:56:02 AM",
-  "epoch": 1795220762.176504
+  "progress": 22,
+  "updated_at": "05:57:46 AM",
+  "epoch": 1795220866.699082
 }
