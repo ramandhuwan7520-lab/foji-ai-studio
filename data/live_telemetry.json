@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "\u23f1\ufe0f 15-Min Timeout -> Moving to Next Video",
-  "sub_detail": "6-Minute Smart Render Timeout (5.5 min) reached for Video_069_ChhuttiGharWapsi_Part_01_1121_191346.mp4. Stopping this attempt to start the next video \u2014 Part #1 will be built next run!",
-  "status": "warning",
-  "progress": 0,
-  "updated_at": "07:21:33 PM",
-  "epoch": 1795269093.9529727
+  "step_num": 2,
+  "step_title": "Batch Video 2/3",
+  "sub_detail": "Starting fresh 3D story 2 of 3...",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "07:21:49 PM",
+  "epoch": 1795269109.5860877
 }
