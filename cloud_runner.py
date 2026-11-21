@@ -75,6 +75,10 @@ if __name__ == "__main__":
     for i in range(cnt):
         print(f"\n=======================================================")
         print(f"🎬 [BATCH ENGINE] Starting Video {i+1} of {cnt}...")
+        try:
+            gemini_bot.update_3d_telemetry(2, f"Batch Video {i+1}/{cnt}", f"Starting fresh 3D story {i+1} of {cnt}...", "active", 20)
+        except Exception:
+            pass
         print(f"=======================================================")
         success_this_slot = False
         for attempt in range(1, 2):

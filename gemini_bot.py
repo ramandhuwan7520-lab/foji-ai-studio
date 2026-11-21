@@ -81,49 +81,66 @@ def send_telegram_photo(photo_path, caption=""):
             pass
 
 
-def sync_file_to_github(rel_path, commit_msg):
+def sync_file_to_github(local_rel_path, commit_msg="Sync studio data"):
     """
-    ZERO-RENDER-BUILD GITHUB SYNC:
-    Appends `[skip render] [skip ci]` to every automated runtime commit message so Render NEVER
-    wastes your 500 free monthly build pipeline minutes on telemetry, cookies, or video uploads!
+    BULLETPROOF GITHUB SYNC WITH 5X SHA-CONFLICT (HTTP 409) RETRY:
+    Guarantees MP4s, scheduled_queue.json, cloud_mp4_index.json, cookies & telemetry
+    NEVER silently fail when multiple updates happen close together!
     """
-    gh_pat = (
-        os.getenv("GITHUB_PAT")
-        or os.getenv("GH_TOKEN")
-        or os.getenv("GITHUB_TOKEN")
-        or ""
-    ).strip()
+    token = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
     repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-    rel_clean = rel_path.replace("\\", "/")
-    full_p = os.path.abspath(rel_path)
-    if not os.path.exists(full_p):
-        return
-    safe_msg = str(commit_msg or "Sync studio file").strip()
-    if "[skip render]" not in safe_msg.lower():
-        safe_msg = f"{safe_msg} [skip render] [skip ci]"
-    if gh_pat:
+    if not token or not os.path.exists(local_rel_path):
+        print(f"⚠️ [GitHub Sync Skipped] path={local_rel_path} exists={os.path.exists(local_rel_path)} has_token={bool(token)}")
+        return False
+
+    import base64
+    rel_clean = local_rel_path.replace("\\", "/").lstrip("./")
+    api_url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json"
+    }
+    try:
+        raw_bytes = open(local_rel_path, "rb").read()
+        b64_content = base64.b64encode(raw_bytes).decode("utf-8")
+        size_kb = len(raw_bytes) // 1024
+        put_timeout = 120 if size_kb > 500 else 35
+    except Exception as _re:
+        print(f"❌ [GitHub Sync Read Err] {rel_clean}: {_re}")
+        return False
+
+    for attempt in range(1, 6):
         try:
-            with open(full_p, "rb") as f:
-                b64 = base64.b64encode(f.read()).decode("utf-8")
-            url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
-            headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
-            r = requests.get(url, headers=headers, timeout=12)
-            sha = r.json().get("sha") if r.status_code == 200 else None
-            payload = {"message": safe_msg, "content": b64, "branch": "main"}
+            sha = None
+            r_get = requests.get(api_url, headers=headers, params={"ref": "main", "_t": int(time.time())}, timeout=20)
+            if r_get.status_code == 200:
+                sha = (r_get.json() or {}).get("sha")
+
+            payload = {
+                "message": commit_msg,
+                "content": b64_content,
+                "branch": "main"
+            }
             if sha:
                 payload["sha"] = sha
-            put_r = requests.put(url, headers=headers, json=payload, timeout=45)
-            if put_r.status_code in (200, 201):
-                return
-        except Exception:
-            pass
-    if os.name != "nt":
-        try:
-            subprocess.run(["git", "add", "-f", rel_clean], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            subprocess.run(["git", "commit", "-m", safe_msg], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            subprocess.run(["git", "push", "origin", "HEAD:main", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except Exception:
-            pass
+
+            r_put = requests.put(api_url, headers=headers, json=payload, timeout=put_timeout)
+            if r_put.status_code in (200, 201):
+                if not rel_clean.endswith("live_telemetry.json"):
+                    print(f"✅ [GitHub Sync OK] {rel_clean} ({size_kb} KB) synced to main!")
+                return True
+            if r_put.status_code in (409, 422, 500, 502, 503):
+                print(f"🔁 [GitHub Sync Retry {attempt}/5] {rel_clean} HTTP {r_put.status_code} -> re-fetching SHA...")
+                time.sleep(1.2 * attempt)
+                continue
+            print(f"❌ [GitHub Sync Failed] {rel_clean} HTTP {r_put.status_code}: {r_put.text[:160]}")
+            return False
+        except Exception as _pe:
+            print(f"🔁 [GitHub Sync Net Retry {attempt}/5] {rel_clean}: {_pe}")
+            time.sleep(1.5 * attempt)
+    print(f"❌ [GitHub Sync Exhausted] Could not push {rel_clean} after 5 attempts.")
+    return False
+
 
 
 

@@ -1312,99 +1312,111 @@ def mark_video_as_published_in_vault(video_file, caption="", media_pk=""):
 
 
 def pull_latest_cloud_state_for_frontend():
+    """
+    COMPLETE RENDER <-> GITHUB STATE SYNC:
+    Pulls live_telemetry, cloud_mp4_index, scheduled_queue, posted_ledger, notifications,
+    history, and episode_tracker with safe merge rules so newly generated cloud videos
+    instantly appear in Pending Review & completed telemetry immediately rests the Commando!
+    """
     global _LAST_CLOUD_PULL_TS
     if (time.time() - _LAST_CLOUD_PULL_TS) < 2.5:
         return
     _LAST_CLOUD_PULL_TS = time.time()
 
-    for rel_json in ["data/live_telemetry.json", "data/notifications.json", "data/history.json", "data/episode_tracker.json"]:
+    sync_files = [
+        "data/live_telemetry.json",
+        "data/cloud_mp4_index.json",
+        "data/scheduled_queue.json",
+        "data/posted_ledger.json",
+        "data/notifications.json",
+        "data/history.json",
+        "data/episode_tracker.json",
+    ]
+    for rel_json in sync_files:
         remote_data = _fetch_github_json_zero_cache(rel_json)
-        if remote_data is not None:
-            local_p = os.path.abspath(rel_json)
-            os.makedirs(os.path.dirname(local_p), exist_ok=True)
-            should_write = True
-            if rel_json == "data/director_state.json" and os.path.exists(local_p):
-                try:
-                    loc_d = json.load(open(local_p, "r", encoding="utf-8"))
-                    if float(remote_data.get("updated_epoch", 0)) < float(loc_d.get("updated_epoch", 0)):
-                        should_write = False
-                except Exception:
-                    pass
-            if rel_json == "data/live_telemetry.json" and os.path.exists(local_p):
-                try:
-                    with open(local_p, "r", encoding="utf-8") as lf:
-                        loc_t = json.load(lf)
-                    loc_ep = float(loc_t.get("epoch", 0))
-                    rem_ep = float(remote_data.get("epoch", 0))
-                    # Never let stale remote 'idle' overwrite an active local pipeline!
-                    if rem_ep < loc_ep:
-                        should_write = False
-                    elif loc_t.get("status") == "active" and remote_data.get("status") == "idle" and (time.time() - loc_ep) < 120:
-                        should_write = False
-                    elif loc_t.get("status") == "active" and remote_data.get("status") == "active" and int(remote_data.get("step_num", 0)) < int(loc_t.get("step_num", 0)) and (time.time() - loc_ep) < 90:
-                        should_write = False
-                except Exception:
-                    pass
-            if should_write:
-                with open(local_p, "w", encoding="utf-8") as wf:
+        if remote_data is None:
+            continue
+        local_p = os.path.abspath(rel_json)
+        os.makedirs(os.path.dirname(local_p), exist_ok=True)
+        should_write = True
+
+        if rel_json == "data/live_telemetry.json" and os.path.exists(local_p):
+            try:
+                loc_t = json.load(open(local_p, "r", encoding="utf-8"))
+                loc_ep = float(loc_t.get("epoch", 0))
+                rem_ep = float(remote_data.get("epoch", 0))
+                rem_st = str(remote_data.get("status", "")).lower()
+                # Always accept newer remote epoch OR newer completed/error/idle finish signal!
+                if rem_ep < loc_ep and rem_st not in ("completed", "error"):
+                    should_write = False
+            except Exception:
+                pass
+
+        elif rel_json == "data/cloud_mp4_index.json" and isinstance(remote_data, list):
+            try:
+                loc_l = json.load(open(local_p, "r", encoding="utf-8")) if os.path.exists(local_p) else []
+                if isinstance(loc_l, list):
+                    merged_l = list(loc_l)
+                    for fn in remote_data:
+                        if fn and fn not in merged_l:
+                            merged_l.append(fn)
+                    remote_data = merged_l[-200:]
+            except Exception:
+                pass
+
+        elif rel_json == "data/posted_ledger.json" and isinstance(remote_data, dict):
+            try:
+                loc_d = json.load(open(local_p, "r", encoding="utf-8")) if os.path.exists(local_p) else {}
+                if isinstance(loc_d, dict):
+                    merged_d = dict(loc_d)
+                    merged_d.update(remote_data)
+                    remote_data = merged_d
+            except Exception:
+                pass
+
+        elif rel_json == "data/scheduled_queue.json" and isinstance(remote_data, dict):
+            try:
+                # Merge safely: never lose locally scheduled/published items, always absorb new remote pending videos!
+                if os.path.exists(local_p):
+                    loc_q = json.load(open(local_p, "r", encoding="utf-8"))
+                    loc_sched = {x.get("video_file"): x for x in (loc_q.get("scheduled_posts") or []) if x.get("video_file")}
+                    rem_sched = {x.get("video_file"): x for x in (remote_data.get("scheduled_posts") or []) if x.get("video_file")}
+                    loc_pub = {x.get("video_file"): x for x in (loc_q.get("published_posts") or []) if x.get("video_file")}
+                    rem_pub = {x.get("video_file"): x for x in (remote_data.get("published_posts") or []) if x.get("video_file")}
+
+                    merged_pub = dict(loc_pub)
+                    merged_pub.update(rem_pub)
+                    pub_keys = set(merged_pub.keys()) | load_posted_ledger()
+
+                    merged_sched = dict(rem_sched)
+                    merged_sched.update(loc_sched)
+                    merged_sched = {k: v for k, v in merged_sched.items() if k not in pub_keys}
+                    sched_keys = set(merged_sched.keys())
+
+                    merged_unapp = {}
+                    for it in (remote_data.get("unapproved_videos") or []) + (loc_q.get("unapproved_videos") or []):
+                        vf = it.get("video_file")
+                        if vf and vf not in pub_keys and vf not in sched_keys and vf not in merged_unapp:
+                            merged_unapp[vf] = it
+
+                    remote_data["published_posts"] = list(merged_pub.values())[:150]
+                    remote_data["scheduled_posts"] = sorted(
+                        merged_sched.values(),
+                        key=lambda x: float(x.get("scheduled_epoch", 0))
+                    )
+                    remote_data["unapproved_videos"] = list(merged_unapp.values())
+            except Exception:
+                pass
+
+        if should_write:
+            try:
+                tmp_p = local_p + ".tmp"
+                with open(tmp_p, "w", encoding="utf-8") as wf:
                     json.dump(remote_data, wf, indent=2, ensure_ascii=False)
+                os.replace(tmp_p, local_p)
+            except Exception:
+                pass
 
-    if (time.time() - _LOCAL_QUEUE_MODIFIED_TS) > 5.0:
-        remote_q = _fetch_github_json_zero_cache(QUEUE_FILE)
-        if isinstance(remote_q, dict):
-            loc_q = get_scheduled_queue()
-            if float(remote_q.get("updated_epoch", 0)) >= float(loc_q.get("updated_epoch", 0)):
-                with open(QUEUE_FILE, "w", encoding="utf-8") as wf:
-                    json.dump(remote_q, wf, indent=2, ensure_ascii=False)
-            else:
-                # Merge any newly generated unapproved video from remote_q so it never gets missed!
-                loc_known = {
-                    x.get("video_file")
-                    for k in ("unapproved_videos", "scheduled_posts", "published_posts")
-                    for x in loc_q.get(k, [])
-                }
-                added_new = False
-                for ru in remote_q.get("unapproved_videos", []):
-                    rvf = ru.get("video_file")
-                    if rvf and rvf not in loc_known:
-                        loc_q.setdefault("unapproved_videos", []).insert(0, ru)
-                        loc_known.add(rvf)
-                        added_new = True
-                if added_new:
-                    with open(QUEUE_FILE, "w", encoding="utf-8") as wf:
-                        json.dump(loc_q, wf, indent=2, ensure_ascii=False)
-
-    # ZERO-RAM CLOUD INDEX: On Render/Linux, DO NOT download 25+ MP4s into 512MB RAM!
-    # Only record their filenames in data/cloud_mp4_index.json so the Vault knows about every video with 0 MB RAM!
-    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
-    api_headers = {"Accept": "application/vnd.github+json", "Cache-Control": "no-cache"}
-    if gh_pat:
-        api_headers["Authorization"] = f"Bearer {gh_pat}"
-    try:
-        os.makedirs("output/raw_videos", exist_ok=True)
-        api_url = f"https://api.github.com/repos/{repo}/contents/output/raw_videos?ref=main&t={int(time.time())}"
-        r_list = requests.get(api_url, headers=api_headers, timeout=8)
-        if r_list.status_code == 200 and isinstance(r_list.json(), list):
-            cloud_mp4s = []
-            for item in r_list.json():
-                fname = item.get("name", "")
-                if fname.endswith(".mp4") and int(item.get("size", 0)) > 100 * 1024:
-                    cloud_mp4s.append(fname)
-                    # Only download full MP4 on Windows Laptop (never on 512MB Render Cloud!)
-                    if os.name == "nt" and not os.environ.get("RENDER"):
-                        local_vid = os.path.join("output/raw_videos", fname)
-                        if not os.path.exists(local_vid) or os.path.getsize(local_vid) < 100 * 1024:
-                            dl_url = item.get("download_url")
-                            if dl_url:
-                                vr = requests.get(dl_url, headers=api_headers, timeout=45)
-                                if vr.status_code == 200 and len(vr.content) > 100 * 1024:
-                                    with open(local_vid, "wb") as vf:
-                                        vf.write(vr.content)
-            with open("data/cloud_mp4_index.json", "w", encoding="utf-8") as cf:
-                json.dump(cloud_mp4s, cf)
-    except Exception:
-        pass
 
 
 def get_real_system_health():
@@ -1763,3 +1775,102 @@ def prune_old_posted_mp4s_keep_repo_light(max_age_days=7):
         return removed
     except Exception:
         return 0
+
+
+
+USED_STORY_HOOKS_FILE = "data/used_story_hooks.json"
+_FRESH_DRAMATIC_SEEDS = [
+    "Unexpected late-night video call during sudden mountain rain",
+    "Secret surprise parcel arriving at the army camp gate",
+    "Funny canteen bet with fellow fauji buddies over chai & samosa",
+    "Emotional train window goodbye as the whistle blows in golden dusk",
+    "Playful jealousy when Meera teases Makra about his mustache & uniform",
+    "Hidden handwritten letter tucked inside Makra's rucksack before border shift",
+    "Power-cut lantern dinner in the village courtyard with witty Haryanvi banter",
+    "Morning PT drill mishap turned into hilarious comic confession",
+    "Festival Diwali/Holi phone call when leave gets cancelled last minute",
+    "Meera catching Makra pretending to be super strict in front of his juniors",
+    "Cold winter border watchtower memory with steaming ginger tea",
+    "Sweet village rooftop stargazing promise under a glowing full moon",
+    "Hilarious luggage packing fight when Makra leaves for posting",
+    "Emotional salute moment when Meera proudly pins his badge straight",
+    "Comic misunderstanding over a voice note sent in noisy parade ground",
+    "Surprise early leave knock at the wooden haveli door at sunrise",
+]
+
+def _load_used_story_hooks():
+    try:
+        rem = _fetch_github_json_zero_cache(USED_STORY_HOOKS_FILE)
+        if isinstance(rem, list):
+            os.makedirs("data", exist_ok=True)
+            with open(USED_STORY_HOOKS_FILE, "w", encoding="utf-8") as wf:
+                json.dump(rem[-80:], wf, indent=2, ensure_ascii=False)
+            return rem[-80:]
+    except Exception:
+        pass
+    if os.path.exists(USED_STORY_HOOKS_FILE):
+        try:
+            d = json.load(open(USED_STORY_HOOKS_FILE, "r", encoding="utf-8"))
+            if isinstance(d, list):
+                return d[-80:]
+        except Exception:
+            pass
+    return []
+
+def _record_used_story_hook(pkg):
+    try:
+        hooks = _load_used_story_hooks()
+        entry = {
+            "ts": datetime.now(IST).strftime("%Y-%m-%d %H:%M"),
+            "track": pkg.get("track_id", ""),
+            "loc": str(pkg.get("new_location") or "")[:90],
+            "d1": str(pkg.get("dialogue_line_1_hinglish") or "")[:110],
+            "d2": str(pkg.get("dialogue_line_2_hinglish") or "")[:110],
+        }
+        hooks.append(entry)
+        os.makedirs("data", exist_ok=True)
+        with open(USED_STORY_HOOKS_FILE, "w", encoding="utf-8") as wf:
+            json.dump(hooks[-80:], wf, indent=2, ensure_ascii=False)
+        try:
+            import gemini_bot as _gb_h
+            _gb_h.sync_file_to_github(USED_STORY_HOOKS_FILE, "Record fresh story hook anti-repeat [skip render] [skip ci]")
+        except Exception:
+            pass
+    except Exception:
+        pass
+
+_ORIG_BUILD_REAL_FOJI_PKG = build_real_foji_universe_package
+
+def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_idea="", is_preview=False):
+    import random as _rnd_s
+    enhanced_idea = (custom_idea or "").strip()
+    if not is_preview:
+        used_hooks = _load_used_story_hooks()
+        recent_bans = [
+            f"- {h.get('loc','')} | \"{h.get('d1','')}\" / \"{h.get('d2','')}\""
+            for h in used_hooks[-18:]
+            if h.get("d1") or h.get("loc")
+        ]
+        # Pick a fresh creative seed that hasn't been used in recent runs
+        recent_txt = " ".join(recent_bans).lower()
+        fresh_pool = [s for s in _FRESH_DRAMATIC_SEEDS if s.split()[0].lower() not in recent_txt] or _FRESH_DRAMATIC_SEEDS
+        chosen_seed = _rnd_s.choice(fresh_pool)
+        uniq_nonce = datetime.now(IST).strftime("%d%b-%H%M%S")
+        fresh_directive = (
+            f"FRESH STORY MANDATE ({uniq_nonce}): Create a 100% BRAND-NEW story, fresh location & punchy viral Hindi/Haryanvi dialogues "
+            f"inspired by: '{chosen_seed}'. NEVER repeat any previous dialogue, joke, or setting."
+        )
+        if recent_bans:
+            fresh_directive += " STRICTLY AVOID REPEATING THESE RECENT STORIES: " + " ; ".join(recent_bans[-8:])
+        enhanced_idea = f"{enhanced_idea} | {fresh_directive}" if enhanced_idea else fresh_directive
+
+    pkg = _ORIG_BUILD_REAL_FOJI_PKG(
+        video_id=video_id,
+        force_track_id=force_track_id,
+        custom_idea=enhanced_idea,
+        is_preview=is_preview
+    )
+    if not is_preview and isinstance(pkg, dict):
+        # Record IMMEDIATELY (even if generation fails later, next run will NEVER reuse this story!)
+        _record_used_story_hook(pkg)
+    return pkg

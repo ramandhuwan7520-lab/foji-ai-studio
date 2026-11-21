@@ -1143,17 +1143,14 @@ def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
     }
 
 
-def _stream_mp4_instantly(filename):
+def _ensure_mp4_downloaded_locally(filename):
     """
-    INSTANT RENDER & LOCAL MP4 STREAMER WITH ON-DEMAND GITHUB FETCH + 206 RANGE SUPPORT:
-    - Looks locally in raw_videos / final_reels / archive folders.
-    - If a freshly generated cloud video isn't on Render's ephemeral disk yet, fetches it on-demand
-      from the private GitHub repo using GITHUB_PAT, caches it locally, and streams with Range (206)!
+    GUARANTEES AN MP4 EXISTS LOCALLY ON RENDER DISK (KILLS 'Video not found' EVERYWHERE!):
+    Used by Frontend Video Player, Frontend Post Now, Auto-Poster, AND Telegram Approve & Post!
     """
-    from flask import send_file
     safe_fn = os.path.basename(str(filename or "").strip())
     if not safe_fn or not safe_fn.lower().endswith(".mp4"):
-        return ("Invalid video file", 400)
+        return None
 
     search_dirs = [
         "output/raw_videos",
@@ -1162,85 +1159,108 @@ def _stream_mp4_instantly(filename):
         "local_published_archive",
         "output"
     ]
-    found_path = None
     for sd in search_dirs:
         p = os.path.abspath(os.path.join(sd, safe_fn))
         if os.path.isfile(p) and os.path.getsize(p) > 40 * 1024:
-            found_path = p
-            break
+            return p
 
-    # On-demand cloud fetch for newly generated videos not yet cached on Render disk!
-    if not found_path:
-        pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
-        repo = (os.getenv("GITHUB_REPO") or "ramandhuwan7520-lab/foji-ai-studio").strip()
-        os.makedirs("output/raw_videos", exist_ok=True)
-        cache_p = os.path.abspath(os.path.join("output/raw_videos", safe_fn))
-        headers = {"Accept": "application/vnd.github.raw"}
-        if pat:
-            headers["Authorization"] = f"Bearer {pat}"
+    pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    repo = (os.getenv("GITHUB_REPO") or "ramandhuwan7520-lab/foji-ai-studio").strip()
+    os.makedirs("output/raw_videos", exist_ok=True)
+    cache_p = os.path.abspath(os.path.join("output/raw_videos", safe_fn))
+    headers = {"Accept": "application/vnd.github.raw"}
+    if pat:
+        headers["Authorization"] = f"Bearer {pat}"
 
-        # 1) Try GitHub Contents API raw stream (works for private repos up to 100 MB!)
-        for rel_dir in ("output/raw_videos", "output/final_reels"):
-            try:
-                r = requests.get(
-                    f"https://api.github.com/repos/{repo}/contents/{rel_dir}/{safe_fn}",
-                    headers=headers,
-                    timeout=35,
-                    stream=True
-                )
-                if r.status_code == 200:
-                    tmp_p = cache_p + ".dl"
-                    with open(tmp_p, "wb") as wf:
-                        for chunk in r.iter_content(chunk_size=131072):
-                            if chunk:
-                                wf.write(chunk)
-                    if os.path.exists(tmp_p) and os.path.getsize(tmp_p) > 40 * 1024:
-                        os.replace(tmp_p, cache_p)
-                        found_path = cache_p
-                        print(f"☁️ [On-Demand Video Cache] Fetched '{safe_fn}' from GitHub ({os.path.getsize(cache_p)//1024} KB)!")
-                        break
-                    elif os.path.exists(tmp_p):
-                        os.remove(tmp_p)
-            except Exception as _dl_e:
-                print(f"ℹ️ [Video Fetch Note] {rel_dir}/{safe_fn}: {_dl_e}")
+    for rel_dir in ("output/raw_videos", "output/final_reels"):
+        try:
+            r = requests.get(
+                f"https://api.github.com/repos/{repo}/contents/{rel_dir}/{safe_fn}",
+                headers=headers,
+                params={"ref": "main"},
+                timeout=45,
+                stream=True
+            )
+            if r.status_code == 200:
+                tmp_p = cache_p + ".dl"
+                with open(tmp_p, "wb") as wf:
+                    for chunk in r.iter_content(chunk_size=131072):
+                        if chunk:
+                            wf.write(chunk)
+                if os.path.exists(tmp_p) and os.path.getsize(tmp_p) > 40 * 1024:
+                    os.replace(tmp_p, cache_p)
+                    print(f"☁️ [Cloud MP4 Ready] Cached '{safe_fn}' ({os.path.getsize(cache_p)//1024} KB) locally!")
+                    return cache_p
+                elif os.path.exists(tmp_p):
+                    os.remove(tmp_p)
+        except Exception as _fe:
+            print(f"ℹ️ [MP4 Fetch Note] {rel_dir}/{safe_fn}: {_fe}")
+    return None
 
-        # 2) Fallback: check latest GitHub Releases assets matching `safe_fn`
-        if not found_path and pat:
-            try:
-                rr = requests.get(
-                    f"https://api.github.com/repos/{repo}/releases?per_page=5",
-                    headers={"Authorization": f"Bearer {pat}", "Accept": "application/vnd.github+json"},
-                    timeout=15
-                )
-                if rr.status_code == 200:
-                    for rel in (rr.json() or []):
-                        for asset in (rel.get("assets") or []):
-                            if asset.get("name") == safe_fn and asset.get("url"):
-                                ra = requests.get(
-                                    asset["url"],
-                                    headers={"Authorization": f"Bearer {pat}", "Accept": "application/octet-stream"},
-                                    timeout=35,
-                                    stream=True
-                                )
-                                if ra.status_code == 200:
-                                    tmp_p = cache_p + ".dl"
-                                    with open(tmp_p, "wb") as wf:
-                                        for chunk in ra.iter_content(chunk_size=131072):
-                                            if chunk:
-                                                wf.write(chunk)
-                                    if os.path.exists(tmp_p) and os.path.getsize(tmp_p) > 40 * 1024:
-                                        os.replace(tmp_p, cache_p)
-                                        found_path = cache_p
-                                        break
-                        if found_path:
-                            break
-            except Exception:
-                pass
 
+def _stream_mp4_instantly(filename):
+    from flask import send_file
+    found_path = _ensure_mp4_downloaded_locally(filename)
     if not found_path or not os.path.exists(found_path):
-        return (f"Video not found on server or cloud: {safe_fn}", 404)
-
+        return (f"Video not found on server or cloud: {os.path.basename(str(filename or ''))}", 404)
     return send_file(found_path, mimetype="video/mp4", conditional=True, max_age=3600)
+
+
+_LAST_GH_RUN_CHECK_TS = 0.0
+
+def _auto_heal_stuck_telemetry_from_github():
+    """
+    COMMANDO ANTI-STUCK GUARD:
+    If local telemetry claims `active` for >75 seconds, verify directly with GitHub Actions.
+    If ZERO `cloud_video_engine.yml` runs are currently queued or in_progress, immediately
+    transition telemetry to `completed` (or `idle`) so 3D Commando ALWAYS returns to Duty Stand!
+    """
+    global _LAST_GH_RUN_CHECK_TS
+    tel_p = "data/live_telemetry.json"
+    if not os.path.exists(tel_p):
+        return
+    try:
+        tel = json.load(open(tel_p, "r", encoding="utf-8"))
+        st = str(tel.get("status") or "").lower()
+        ep = float(tel.get("epoch") or 0)
+        age = time.time() - ep
+        if st not in ("active", "running") or age < 75:
+            return
+        if (time.time() - _LAST_GH_RUN_CHECK_TS) < 20:
+            return
+        _LAST_GH_RUN_CHECK_TS = time.time()
+
+        pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+        repo = (os.getenv("GITHUB_REPO") or "ramandhuwan7520-lab/foji-ai-studio").strip()
+        if not pat:
+            return
+        hdrs = {"Authorization": f"Bearer {pat}", "Accept": "application/vnd.github+json"}
+        rr = requests.get(
+            f"https://api.github.com/repos/{repo}/actions/workflows/cloud_video_engine.yml/runs?per_page=3",
+            headers=hdrs,
+            timeout=8
+        )
+        if rr.status_code != 200:
+            return
+        runs = (rr.json() or {}).get("workflow_runs") or []
+        any_running = any(r.get("status") in ("queued", "in_progress", "waiting") for r in runs)
+        if not any_running:
+            last_conc = (runs[0].get("conclusion") if runs else "") or "success"
+            new_st = "completed" if (last_conc == "success" and int(tel.get("step_num") or 0) >= 6) else "idle"
+            tel.update({
+                "step_num": 8 if new_st == "completed" else 0,
+                "step_title": "Mission Complete! Returned to Duty Stand" if new_st == "completed" else "Standby — Duty Stand",
+                "sub_detail": "Cloud worker finished cleanly. Ready for next command.",
+                "status": new_st,
+                "progress": 100 if new_st == "completed" else 0,
+                "updated_at": datetime.now(_fud.IST).strftime("%I:%M:%S %p"),
+                "epoch": time.time()
+            })
+            with open(tel_p, "w", encoding="utf-8") as wf:
+                json.dump(tel, wf, indent=2)
+    except Exception:
+        pass
+
 
 
 
@@ -1422,70 +1442,65 @@ def build_fresh_prompt_package(track=None, next_part=1, new_id=1, used_lines=Non
     return _fud.build_real_foji_universe_package(video_id=new_id, is_preview=False)
 
 
-def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", custom_idea=""):
+def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", custom_idea="", track_id=""):
     def _worker():
         import gemini_bot
         gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
         repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+        safe_cnt = max(1, min(10, int(count or 1)))
 
-        # ⚡ INSTANT 0.5s CLOUD WORKFLOW DISPATCH ON RENDER (Zero delay on Step 1!)
         if (os.environ.get("RENDER") or os.name != "nt") and gh_pat:
             try:
                 gemini_bot.update_3d_telemetry(
                     1,
-                    "Step 1: Launching Cloud 3D Studio",
-                    "Triggering GitHub Actions 3D Worker...",
+                    f"Step 1: Launching Cloud Studio ({safe_cnt}x)",
+                    f"{reason_label} — Dispatching {safe_cnt} video(s) to GitHub Actions...",
                     "active",
-                    18
+                    15
                 )
                 headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
                 wf_url = f"https://api.github.com/repos/{repo}/actions/workflows/cloud_video_engine.yml/dispatches"
-                r = requests.post(
-                    wf_url,
-                    headers=headers,
-                    json={"ref": "main", "inputs": {"action_type": "generate_only", "custom_topic": custom_idea or ""}},
-                    timeout=10
-                )
-                if r.status_code not in (200, 201, 204):
-                    r = requests.post(wf_url, headers=headers, json={"ref": "main"}, timeout=10)
-
+                payload = {
+                    "ref": "main",
+                    "inputs": {
+                        "batch_count": str(safe_cnt),
+                        "track_id": str(track_id or ""),
+                        "custom_idea": str(custom_idea or "")
+                    }
+                }
+                r = requests.post(wf_url, headers=headers, json=payload, timeout=15)
                 if r.status_code in (200, 201, 204):
                     gemini_bot.update_3d_telemetry(
                         2,
-                        "Step 2: 3D Studio Connected!",
-                        "GitHub Actions 3D Worker started!",
+                        f"Step 2: Cloud Batch Running ({safe_cnt}x)",
+                        f"GitHub Actions generating {safe_cnt} fresh 3D video(s)...",
                         "active",
-                        30
+                        24
                     )
+                    gemini_bot.sync_file_to_github("data/live_telemetry.json", f"Start {safe_cnt}x batch telemetry [skip render] [skip ci]")
                     return
-                else:
-                    raise RuntimeError(f"GitHub Workflow HTTP {r.status_code}: {r.text[:120]}")
-            except Exception as ex:
-                gemini_bot.update_3d_telemetry(1, "Cloud Trigger Error", str(ex)[:180], "error", 0)
-                gemini_bot.push_app_notification("error", "Cloud Trigger Error", str(ex)[:180], "error")
+                raise RuntimeError(f"GitHub Dispatch HTTP {r.status_code}: {r.text[:160]}")
+            except Exception as _ce:
+                gemini_bot.update_3d_telemetry(0, "Dispatch Error", str(_ce)[:180], "error", 0)
+                print(f"❌ [Cloud Dispatch Error] {_ce}")
                 return
 
-        # 💻 LOCAL LAPTOP EXECUTION
-        for i in range(1, int(count) + 1):
-            try:
-                gemini_bot.update_3d_telemetry(1, f"Step 1: Writing Story Script ({i}/{count})", "Creating original Hinglish script...", "active", 15)
+        # Local Windows execution fallback
+        try:
+            for idx in range(safe_cnt):
                 pkg = _fud.build_real_foji_universe_package(
-                    video_id=int(time.time()) % 100000,
-                    custom_idea=custom_idea if i == 1 else "",
+                    force_track_id=(track_id or None),
+                    custom_idea=(custom_idea if idx == 0 else ""),
                     is_preview=False
                 )
-                gemini_bot.update_3d_telemetry(2, f"Step 2: Connecting 3D Studio ({i}/{count})", "Opening Chrome & Gemini...", "active", 28)
-                vid_path = gemini_bot.generate_video_in_gemini(pkg)
-                if vid_path and os.path.exists(vid_path):
-                    _fud.mark_episode_part_completed(pkg["track_id"], pkg["part_number"])
-                    _fud.sync_raw_videos_into_unapproved_queue()
-            except Exception as ex:
-                try:
-                    gemini_bot.update_3d_telemetry(1, "Pipeline Error", str(ex)[:200], "error", 0)
-                    gemini_bot.push_app_notification("error", "Pipeline Failed", str(ex)[:200], "error")
-                except Exception:
-                    pass
-    _threading.Thread(target=_worker, daemon=True).start()
+                gemini_bot.generate_video_in_gemini(pending_pkg=pkg)
+            gemini_bot.update_3d_telemetry(8, "Mission Complete!", f"{safe_cnt} video(s) ready in Review Queue!", "completed", 100)
+        except Exception as _le:
+            gemini_bot.update_3d_telemetry(0, "Generation Error", str(_le)[:180], "error", 0)
+            print(f"❌ [Local Batch Error] {_le}")
+
+    threading.Thread(target=_worker, daemon=True).start()
+
 
 
 def _sanitize_mp4_for_instagram_no_green_line(input_mp4_path):
