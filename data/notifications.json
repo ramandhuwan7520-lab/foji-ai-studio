@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795276841801",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (357s): I couldn't do that because I'm getting a lot of requests right now. Please try again later.",
+    "status": "error",
+    "time_str": "09:30 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795276841.8017607
+  },
+  {
     "id": "notif_1795276468929",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "08:35 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795230351.3013875
-  },
-  {
-    "id": "notif_1795230346638",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "08:35 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795230346.6380873
   }
 ]
