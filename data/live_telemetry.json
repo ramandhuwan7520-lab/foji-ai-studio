@@ -1,9 +1,9 @@
 {
   "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra + Meera (Turquoise Cyan Cotton Village Suit wit...))...",
-  "status": "active",
-  "progress": 45,
-  "updated_at": "01:21:54 PM",
-  "epoch": 1795247514.3265762
+  "step_title": "Limit Reached (Account #1)",
+  "sub_detail": "Create Video Not Active on Account #1 \u2014 Create video composer ('Describe your video') did not activate (Limit Full)",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "01:22:07 PM",
+  "epoch": 1795247527.3197696
 }
