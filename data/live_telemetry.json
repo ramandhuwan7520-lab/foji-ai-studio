@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Ready",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1795264763.0113435
+  "step_num": 2,
+  "step_title": "Batch Video 1/3",
+  "sub_detail": "Starting fresh 3D story 1 of 3...",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "07:13:32 PM",
+  "epoch": 1795268612.5190098
 }
