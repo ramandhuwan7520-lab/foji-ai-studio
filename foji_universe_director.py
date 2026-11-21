@@ -1226,12 +1226,18 @@ def approve_and_schedule_video_item(video_file=None, custom_caption="", source_l
     q["scheduled_posts"].append(target_item)
     q["scheduled_posts"].sort(key=lambda x: float(x.get("scheduled_epoch", 0)))
 
-    claimed = list(q.get("upload_claimed_files") or [])
-    if vname not in claimed:
-        claimed.append(vname)
-    q["upload_claimed_files"] = claimed
+    _sched_vf = target_item.get("video_file", "reel.mp4")
+    # Ensure a newly scheduled reel is NOT stuck inside upload_claimed_files
+    q["upload_claimed_files"] = [
+        x for x in (q.get("upload_claimed_files") or [])
+        if os.path.basename(str(x)) != os.path.basename(str(_sched_vf))
+    ]
     save_scheduled_queue(q, sync_cloud=False)
-    push_json_to_github_instantly(SCHEDULED_QUEUE_FILE, f"Published & Locked {vname} [skip render] [skip ci]", blocking=True)
+    push_json_to_github_instantly(
+        SCHEDULED_QUEUE_FILE,
+        f"Scheduled {_sched_vf} -> {slot_info['display_time']} [skip render] [skip ci]",
+        blocking=True
+    )
 
     # Non-blocking notification
     def _bg_sched_notif():
@@ -1725,3 +1731,35 @@ def record_video_permanently_posted(video_file, caption="", permalink="", media_
     return True
 
 
+
+
+
+def prune_old_posted_mp4s_keep_repo_light(max_age_days=7):
+    """
+    LIFETIME STORAGE GUARD:
+    Deletes raw MP4s from `output/raw_videos/` ONLY if they are ALREADY locked in
+    `posted_ledger.json` AND older than `max_age_days` (keeping laptop `archive_posted_reels/` untouched).
+    """
+    try:
+        ledger = load_posted_ledger()
+        if not ledger:
+            return 0
+        raw_dir = "output/raw_videos"
+        if not os.path.isdir(raw_dir):
+            return 0
+        cutoff = time.time() - (max_age_days * 86400)
+        removed = 0
+        for fn in os.listdir(raw_dir):
+            if fn.endswith(".mp4") and fn in ledger:
+                fp = os.path.join(raw_dir, fn)
+                if os.path.isfile(fp) and os.path.getmtime(fp) < cutoff:
+                    if os.environ.get("RENDER") != "true" and os.environ.get("GITHUB_ACTIONS") != "true":
+                        os.makedirs("archive_posted_reels", exist_ok=True)
+                        dst = os.path.join("archive_posted_reels", fn)
+                        if not os.path.exists(dst):
+                            shutil.copy2(fp, dst)
+                    os.remove(fp)
+                    removed += 1
+        return removed
+    except Exception:
+        return 0

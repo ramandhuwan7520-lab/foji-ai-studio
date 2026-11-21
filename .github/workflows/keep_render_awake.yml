@@ -1,8 +1,6 @@
-name: 24x7 Render Keep-Alive Pinger
+name: Render Manual Wake Ping (Zero Auto-Minutes)
 
 on:
-  schedule:
-    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,5 +9,4 @@ jobs:
     steps:
       - name: Ping Foji AI Studio Render Server
         run: |
-          curl -s -L --max-time 15 "${{ secrets.RENDER_EXTERNAL_URL || 'https://foji-ai-studio-mgs6.onrender.com' }}/api/ping" || true
-          curl -s -L --max-time 15 "https://foji-ai-studio.onrender.com/api/ping" || true
+          curl -s -L --max-time 15 "https://foji-ai-studio-mgs6.onrender.com/api/ping" || true

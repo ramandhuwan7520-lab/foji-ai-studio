@@ -1104,7 +1104,10 @@
       const step = Number(tel.step_num || 0);
       const pct = Math.max(0, Math.min(100, Number(tel.progress || (step > 0 ? Math.round((step / 8) * 100) : 0))));
       const st = String(tel.status || 'idle').toLowerCase();
-      const running = (st === 'active' || st === 'running' || (step > 0 && step < 8 && st !== 'error' && st !== 'warning' && st !== 'idle' && st !== 'completed'));
+      const staleSec = tel.epoch ? ((Date.now() / 1000) - Number(tel.epoch)) : 0;
+      const isStale = (staleSec > 900);
+      const isDone = (step >= 8 || st === 'completed' || st === 'done' || pct >= 100);
+      const running = (!isDone && !isStale && (st === 'active' || st === 'running'));
       STATE.isRunning = running;
 
       // Dynamic Primary Generate <-> Stop Button
@@ -1354,9 +1357,18 @@
         });
       } else if (kind === 'schedule') {
         (async () => {
-          await fetch('/api/universe/approve_and_schedule', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption: cap})});
-          showToast('📅 Approved & Scheduled!', 'ok');
-          closeTheater(); pollStatus();
+          try {
+            const resp = await fetch('/api/universe/approve_and_schedule', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption: cap})});
+            const jd = await resp.json();
+            if (jd && jd.ok) {
+              showToast(jd.message || '📅 Approved & Scheduled!', 'ok');
+              closeTheater(); pollStatus();
+            } else {
+              showToast('⚠️ ' + ((jd && jd.error) || 'Could not schedule'), 'err');
+            }
+          } catch (err) {
+            showToast('⚠️ Schedule request failed', 'err');
+          }
         })();
       } else if (kind === 'posted') {
         openPopup3D({

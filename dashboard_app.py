@@ -2453,287 +2453,66 @@ _LAST_USER_INFO_FETCH_TS = 0.0
 
 def _get_readonly_ig_client_no_login():
     """
-    Loads `data/ig_session.json` ONCE into a persistent read-only Client object
-    WITHOUT calling `login_by_sessionid()` or `account_info()`.
-    100% immune to login-handshake rate limits!
+    ACCOUNT SAFETY LOCK:
+    Unofficial `instagrapi` background analytics scraping is PERMANENTLY DISABLED
+    to protect `@ai_foji_lovelife` from Instagram automated-activity restrictions.
+    Analytics strictly uses the Official Meta Graph API (`tri_platform_api.py`).
     """
-    global _GLOBAL_READONLY_IG_CLIENT
-    if _GLOBAL_READONLY_IG_CLIENT is not None:
-        return _GLOBAL_READONLY_IG_CLIENT
-    if not os.path.exists("data/ig_session.json"):
-        return None
-    try:
-        from instagrapi import Client
-        cl = Client()
-        cl.delay_range = [1, 2]
-        cl.load_settings("data/ig_session.json")
-        _GLOBAL_READONLY_IG_CLIENT = cl
-        return cl
-    except Exception as e:
-        print(f"ℹ️ [IG Session Loader] Note: {e}")
-        return None
+    return None
+
 
 
 _GLOBAL_READONLY_IG_CLIENT = None
 _LAST_USER_INFO_FETCH_TS = 0.0
 
 
-def _get_readonly_ig_client_no_login():
-    """
-    Loads `data/ig_session.json` ONCE into a persistent read-only Client object
-    WITHOUT calling `login_by_sessionid()` or `account_info()`.
-    100% immune to login-handshake rate limits!
-    """
-    global _GLOBAL_READONLY_IG_CLIENT
-    if _GLOBAL_READONLY_IG_CLIENT is not None:
-        return _GLOBAL_READONLY_IG_CLIENT
-    if not os.path.exists("data/ig_session.json"):
-        return None
-    try:
-        from instagrapi import Client
-        cl = Client()
-        cl.delay_range = [1, 2]
-        cl.load_settings("data/ig_session.json")
-        _GLOBAL_READONLY_IG_CLIENT = cl
-        return cl
-    except Exception as e:
-        print(f"ℹ️ [IG Session Loader] Note: {e}")
-        return None
 
 
 def _refresh_ig_live_analytics_worker():
     """
-    BULLETPROOF FULL-PAGINATION INSTAGRAM LIVE ANALYTICS ENGINE (ALL 50+ REELS):
-    1) Uses the working `GET feed/user/{uid}/` endpoint with `max_id` pagination across up to 8 pages
-       (fetching all 50 to 150+ reels on `@ai_foji_lovelife`, never stopping at 24!).
-    2) Checks `users/{uid}/info/` at most once every 10 minutes (600s) for exact `follower_count`
-       and `media_count` so `/users/{uid}/info/` NEVER hits HTTP 429!
-    3) Also checks standard `clips/user/` (without invalid `page_size=35`) to merge any Reels-only items.
+    100% SAFE OFFICIAL-API-ONLY INSTAGRAM ANALYTICS WORKER (ZERO `instagrapi` SCRAPING!):
+    - Uses ONLY Official Meta Graph API (when configured in Connections).
+    - Otherwise serves the last saved snapshot from `data/ig_live_analytics.json` safely with ZERO account risk!
     """
-    global _IG_ANALYTICS_CACHE, _IG_ANALYTICS_LAST_FETCH_TS, _LAST_IG_WEB_FETCH_OK_TS, _LAST_USER_INFO_FETCH_TS
+    global _IG_ANALYTICS_CACHE, _IG_ANALYTICS_LAST_FETCH_TS
     if not _IG_ANALYTICS_LOCK.acquire(blocking=False):
         return
     try:
-        ig_user = os.getenv("INSTAGRAM_USERNAME", "ai_foji_lovelife").strip().lstrip("@")
         prev_saved = _load_best_saved_ig_analytics()
         if prev_saved and _IG_ANALYTICS_CACHE is None:
             _IG_ANALYTICS_CACHE = prev_saved
 
-        prev_reels_by_code = {
-            (r.get("code") or r.get("media_pk") or r.get("video_file")): r
-            for r in (prev_saved.get("reels") or [])
-            if (r.get("code") or r.get("media_pk") or r.get("video_file"))
-        }
+        # Try Official Meta Graph API cleanly (100% official, zero ban risk!)
+        try:
+            import tri_platform_api as _tpa
+            tri = _tpa.get_combined_tri_platform_insights(force_refresh=True)
+            ig_off = (tri or {}).get("instagram") or {}
+            if ig_off.get("connected") and ig_off.get("source") == "official_graph_api":
+                merged = dict(prev_saved or {})
+                merged["followers_count"] = int(ig_off.get("followers") or merged.get("followers_count") or 0)
+                merged["profile_total_posts"] = int(ig_off.get("media_count") or merged.get("profile_total_posts") or 0)
+                merged["total_views"] = int(ig_off.get("total_views") or merged.get("total_views") or 0)
+                merged["total_likes"] = int(ig_off.get("total_likes") or merged.get("total_likes") or 0)
+                merged["source"] = "official_graph_api"
+                merged["fetched_at"] = datetime.now(_fud.IST).strftime("%d %b %Y, %I:%M %p IST")
+                if ig_off.get("reels"):
+                    merged["reels"] = ig_off["reels"]
+                _IG_ANALYTICS_CACHE = merged
+                _IG_ANALYTICS_LAST_FETCH_TS = time.time()
+                os.makedirs("data", exist_ok=True)
+                with open("data/ig_live_analytics.json", "w", encoding="utf-8") as af:
+                    json.dump(merged, af, indent=2)
+                return
+        except Exception as _ge:
+            print(f"ℹ️ [Safe IG Analytics] Official API check note: {_ge}")
 
-        followers_count = int(prev_saved.get("followers_count", 42))
-        following_count = int(prev_saved.get("following_count", 0))
-        profile_total_posts = int(prev_saved.get("profile_total_posts", 0))
-        live_reels_map = {}
-        fetched_live_ok = False
-        pages_loaded = 0
-        uid = "22494488394"
-
-        if os.path.exists("data/ig_session.json"):
-            try:
-                s_raw = json.load(open("data/ig_session.json", "r", encoding="utf-8"))
-                uid = str((s_raw.get("authorization_data") or {}).get("ds_user_id") or uid)
-            except Exception:
-                pass
-
-        cl = _get_readonly_ig_client_no_login()
-        if cl:
-            # STEP A: Paginate `GET feed/user/{uid}/` across all pages (up to 8 pages = 150+ reels!)
-            # If we already have >40 reels cached, only poll Page 1 & Page 2 on normal 60s ticks,
-            # or poll ALL pages whenever total cached reels < 45!
-            max_pages_to_poll = 8 if len(prev_reels_by_code) < 45 else 2
-            next_max_id = None
-
-            for page_num in range(1, max_pages_to_poll + 1):
-                try:
-                    params = {"count": "33"}
-                    if next_max_id:
-                        params["max_id"] = str(next_max_id)
-                    feed_res = cl.private_request(f"feed/user/{uid}/", params=params)
-                    items = (feed_res or {}).get("items") or []
-                    if not items:
-                        break
-                    pages_loaded += 1
-                    fetched_live_ok = True
-
-                    for m in items:
-                        code = m.get("code") or ""
-                        pk = str(m.get("pk") or m.get("id") or "")
-                        if not code:
-                            continue
-                        old_item = live_reels_map.get(code) or prev_reels_by_code.get(code) or prev_reels_by_code.get(pk) or {}
-
-                        # Extract follower_count if present in user object
-                        u_obj = m.get("user") or {}
-                        if u_obj.get("follower_count"):
-                            followers_count = max(followers_count, int(u_obj["follower_count"]))
-
-                        views = max(
-                            int(m.get("play_count") or m.get("view_count") or m.get("ig_play_count") or 0),
-                            int(old_item.get("views", 0))
-                        )
-                        likes = max(int(m.get("like_count") or 0), int(old_item.get("likes", 0)))
-                        comments = max(int(m.get("comment_count") or 0), int(old_item.get("comments", 0)))
-
-                        cap_obj = m.get("caption")
-                        cap = (
-                            cap_obj.get("text", "")
-                            if isinstance(cap_obj, dict)
-                            else str(cap_obj or old_item.get("caption", ""))
-                        ).strip()
-
-                        ts_val = int(m.get("taken_at") or old_item.get("taken_ts") or 0)
-                        posted_str = (
-                            datetime.fromtimestamp(ts_val, _fud.IST).strftime("%d %b %Y, %I:%M %p")
-                            if ts_val else (old_item.get("posted_at") or "Live on IG")
-                        )
-                        hour_ist = datetime.fromtimestamp(ts_val, _fud.IST).hour if ts_val else 18
-
-                        thumb_url = old_item.get("thumbnail_url", "")
-                        if not thumb_url:
-                            cands = ((m.get("image_versions2") or {}).get("candidates") or [])
-                            if cands and isinstance(cands[0], dict):
-                                thumb_url = cands[0].get("url") or ""
-
-                        first_line = cap.splitlines()[0][:68] if cap else (old_item.get("title") or f"Foji 3D Reel ({code})")
-                        er_pct = round(((likes + comments) / max(1, views)) * 100.0, 1) if views > 0 else 0.0
-
-                        live_reels_map[code] = {
-                            "media_pk": pk,
-                            "code": code,
-                            "title": first_line,
-                            "caption": cap[:240],
-                            "views": views,
-                            "likes": likes,
-                            "comments": comments,
-                            "engagement_rate": er_pct,
-                            "permalink": f"https://www.instagram.com/reel/{code}/",
-                            "thumbnail_url": thumb_url,
-                            "posted_at": posted_str,
-                            "taken_ts": ts_val,
-                            "hour_ist": hour_ist
-                        }
-
-                    more_avail = feed_res.get("more_available")
-                    next_max_id = feed_res.get("next_max_id")
-                    if not more_avail or not next_max_id:
-                        break
-                    time.sleep(1.1)
-                except Exception as e_feed:
-                    print(f"ℹ️ [IG Feed Page {page_num}] Note: {e_feed}")
-                    break
-
-            # STEP B: Check `users/{uid}/info/` at most once every 10 minutes (600s) for exact `follower_count` & `media_count`
-            if (time.time() - _LAST_USER_INFO_FETCH_TS) >= 600.0 or followers_count <= 0 or profile_total_posts < len(live_reels_map):
-                try:
-                    u_res = cl.private_request(f"users/{uid}/info/")
-                    u_dict = (u_res or {}).get("user") or {}
-                    if u_dict:
-                        _LAST_USER_INFO_FETCH_TS = time.time()
-                        fc_now = int(u_dict.get("follower_count") or 0)
-                        flc_now = int(u_dict.get("following_count") or 0)
-                        mc_now = int(u_dict.get("media_count") or u_dict.get("total_clips_count") or 0)
-                        if fc_now > 0:
-                            followers_count = fc_now
-                            fetched_live_ok = True
-                        if flc_now > 0:
-                            following_count = flc_now
-                        if mc_now > 0:
-                            profile_total_posts = max(profile_total_posts, mc_now)
-                except Exception as e_uinfo:
-                    # Put 5-min cooldown if rate-limited so we never spam `users/{uid}/info/`
-                    _LAST_USER_INFO_FETCH_TS = time.time() - 300.0
-                    print(f"ℹ️ [IG User Info Cooldown] Note: {e_uinfo}")
-
-        # Merge any previously saved reels so older pages stay permanently in the dataset
-        for old_r in (prev_saved.get("reels") or []):
-            c_key = old_r.get("code") or old_r.get("media_pk") or old_r.get("video_file")
-            if c_key and c_key not in live_reels_map:
-                live_reels_map[c_key] = old_r
-
-        final_reels = sorted(
-            list(live_reels_map.values()),
-            key=lambda x: int(x.get("taken_ts") or 0),
-            reverse=True
-        )
-
-        total_views = sum(int(r.get("views", 0)) for r in final_reels)
-        if total_views == 0:
-            total_views = int(prev_saved.get("total_views_reach", 0))
-        total_likes = sum(int(r.get("likes", 0)) for r in final_reels)
-        if total_likes == 0:
-            total_likes = int(prev_saved.get("total_likes", 0))
-        total_comments = sum(int(r.get("comments", 0)) for r in final_reels)
-        total_reels_cnt = max(len(final_reels), profile_total_posts)
-        avg_views_per_reel = int(round(total_views / max(1, len(final_reels) or total_reels_cnt)))
-        avg_er = round(((total_likes + total_comments) / max(1, total_views)) * 100.0, 1) if total_views > 0 else 0.0
-
-        # Calculate AI Golden Viral Posting Window across all fetched reels
-        slot_buckets = {
-            "Morning (06:00-11:59 IST)": [],
-            "Afternoon (12:00-16:59 IST)": [],
-            "Evening Prime (17:00-22:59 IST)": []
-        }
-        for r in final_reels:
-            h = int(r.get("hour_ist", 18))
-            v = int(r.get("views", 0))
-            if 6 <= h < 12:
-                slot_buckets["Morning (06:00-11:59 IST)"].append(v)
-            elif 12 <= h < 17:
-                slot_buckets["Afternoon (12:00-16:59 IST)"].append(v)
-            else:
-                slot_buckets["Evening Prime (17:00-22:59 IST)"].append(v)
-
-        best_window = prev_saved.get("best_posting_window") or "Evening Prime (06:30 PM IST)"
-        best_avg = 0
-        for w_name, v_list in slot_buckets.items():
-            if v_list:
-                w_avg = sum(v_list) / len(v_list)
-                if w_avg > best_avg:
-                    best_avg = w_avg
-                    best_window = f"{w_name} (~{int(w_avg):,} Avg Views)"
-
-        sync_source_lbl = (
-            f"Instagram Live API (@{ig_user} • {len(final_reels)} Reels Synced)"
-            if fetched_live_ok
-            else f"Instagram Verified Cache (@{ig_user})"
-        )
-
-        payload = {
-            "ok": True,
-            "username": f"@{ig_user}",
-            "followers_count": followers_count,
-            "following_count": following_count,
-            "total_reels_posted": total_reels_cnt,
-            "profile_total_posts": profile_total_posts,
-            "reels_loaded_in_graph": len(final_reels),
-            "total_views_reach": total_views,
-            "avg_views_per_reel": avg_views_per_reel,
-            "total_likes": total_likes,
-            "total_comments": total_comments,
-            "avg_engagement_rate": avg_er,
-            "best_posting_window": best_window,
-            "sync_source": sync_source_lbl,
-            "updated_at_ist": datetime.now(_fud.IST).strftime("%I:%M:%S %p IST"),
-            "updated_epoch": time.time(),
-            "reels": final_reels[:150]
-        }
-        _IG_ANALYTICS_CACHE = payload
-        _IG_ANALYTICS_LAST_FETCH_TS = time.time()
-        os.makedirs("data", exist_ok=True)
-        with open("data/ig_live_analytics.json", "w", encoding="utf-8") as af:
-            json.dump(payload, af, indent=2, ensure_ascii=False)
-        if fetched_live_ok and (time.time() - _LAST_IG_WEB_FETCH_OK_TS) > 120:
-            _LAST_IG_WEB_FETCH_OK_TS = time.time()
-            _fud.push_json_to_github_instantly("data/ig_live_analytics.json", "Sync all 50+ paginated IG reels analytics [skip render] [skip ci]")
-    except Exception as e:
-        print(f"⚠️ IG Analytics worker note: {e}")
+        # Safe fallback: use cached snapshot without EVER calling unofficial instagrapi!
+        if prev_saved:
+            _IG_ANALYTICS_CACHE = prev_saved
+            _IG_ANALYTICS_LAST_FETCH_TS = time.time()
     finally:
         _IG_ANALYTICS_LOCK.release()
+
 
 
 

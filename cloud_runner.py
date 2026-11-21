@@ -100,4 +100,27 @@ if __name__ == "__main__":
             print("⏳ Cooling down 8s before starting next video in batch...")
             time.sleep(8)
 
+    # FINALIZE TELEMETRY SO 3D COMMANDO IMMEDIATELY RESTS & CELEBRATES ON FRONTEND!
+    try:
+        if completed_videos > 0:
+            gemini_bot.update_3d_telemetry(
+                8,
+                "Mission Complete! 3D Reel Ready",
+                f"{completed_videos}/{cnt} new 3D video(s) ready in Review Queue!",
+                "completed",
+                100
+            )
+        else:
+            gemini_bot.update_3d_telemetry(
+                0,
+                "Batch Ended — Standby",
+                (last_err_msg[:120] if last_err_msg else "No video generated in this run."),
+                "error",
+                0
+            )
+        gemini_bot.sync_file_to_github("data/live_telemetry.json", "Finalize batch telemetry status [skip render] [skip ci]")
+        fud.prune_old_posted_mp4s_keep_repo_light(max_age_days=7)
+    except Exception as _te:
+        print(f"ℹ️ Telemetry finalize note: {_te}")
+
     print(f"\n🎉 BATCH FINISHED: {completed_videos}/{cnt} videos generated & synced to Studio!")
