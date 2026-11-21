@@ -1,5 +1,45 @@
 [
   {
+    "id": "notif_1795230351301",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Barrack Wali Chori | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "08:35 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795230351.3013875
+  },
+  {
+    "id": "notif_1795230346638",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "08:35 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795230346.6380873
+  },
+  {
+    "id": "notif_1795230344090",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
+    "status": "error",
+    "time_str": "08:35 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795230344.0909147
+  },
+  {
+    "id": "notif_1795230299279",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Barrack Wali Chori | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "08:34 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795230299.2795863
+  },
+  {
     "id": "notif_1795221174899",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -758,45 +798,5 @@
     "time_str": "07:32 PM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795096970.1887913
-  },
-  {
-    "id": "notif_1795096928492",
-    "type": "warning",
-    "title": "⏱️ 15-Minute Timeout (Part Saved for Next Run)",
-    "message": "15-Minute Render Timeout (15.0 min) reached for Video_063_ViralTrend_Part_01_1119_191554.mp4. Stopping this attempt to start the next video — Part #1 will be built next run!",
-    "status": "warning",
-    "time_str": "07:32 PM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795096928.492348
-  },
-  {
-    "id": "notif_1795096013752",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Pahadi Chai & Maa Ki Yaad is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "07:16 PM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795096013.752718
-  },
-  {
-    "id": "notif_1795095957215",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Pahadi Chai & Maa Ki Yaad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "07:15 PM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795095957.2154346
-  },
-  {
-    "id": "notif_1795093288772",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "Video_032_TrainingUstad_Part_04_1114_215449.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "06:31 PM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795093288.7725298
   }
 ]
