@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Limit Reached (Account #1)",
-  "sub_detail": "Create Video Not Selected on Account #1 \u2014 video generation limit",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "06:02:48 AM",
-  "epoch": 1795221168.0464606
+  "step_num": 2,
+  "step_title": "Switching to Account #2",
+  "sub_detail": "Account #1 limit/error (Create Video Not Selected on Account #1 \u2014 video generation limit) \u2014 switching to Account #2!",
+  "status": "active",
+  "progress": 22,
+  "updated_at": "06:02:50 AM",
+  "epoch": 1795221170.2494764
 }
