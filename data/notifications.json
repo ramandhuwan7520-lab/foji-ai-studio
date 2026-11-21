@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795254616674",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "03:20 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795254616.6746397
+  },
+  {
     "id": "notif_1795254614283",
     "type": "error",
     "title": "Create Video Limit (Account #1)",
@@ -788,15 +798,5 @@
     "time_str": "11:12 PM",
     "date_str": "20 Nov 2026",
     "timestamp": 1795196577.6096945
-  },
-  {
-    "id": "notif_1795196531560",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Subah Ki Chai Aur Fauji Swag | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "11:12 PM",
-    "date_str": "20 Nov 2026",
-    "timestamp": 1795196531.5601087
   }
 ]
