@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795277065680",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 1: Pyar Ka Safed Jhoot is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:34 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795277065.680445
+  },
+  {
     "id": "notif_1795277009602",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "01:16 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795247167.647673
-  },
-  {
-    "id": "notif_1795244451703_117",
-    "type": "warning",
-    "title": "Scheduled Post Auto-Shifted",
-    "message": "Video_032_BorderDuty_Part_04_1115_044337.mp4 could not post (Video file Video_032_BorderDuty_Part_04_1115_044337.mp4 not found!). Auto-shifted to Next Slot & cascaded queue!",
-    "status": "warning",
-    "time_str": "12:30 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795244451.7037606
   }
 ]
