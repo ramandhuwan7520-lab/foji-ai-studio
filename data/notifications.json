@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795276973895",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (40s): Sorry, something went wrong. Please try your request again.",
+    "status": "error",
+    "time_str": "09:32 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795276973.8955612
+  },
+  {
     "id": "notif_1795276918354",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "10:28 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795237083.1822207
-  },
-  {
-    "id": "notif_1795237056950",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_063_FunnyFauji_Part_01_1121_102545.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "10:27 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795237056.9505935
   }
 ]
