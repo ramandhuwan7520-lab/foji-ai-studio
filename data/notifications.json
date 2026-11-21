@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795237056950",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_063_FunnyFauji_Part_01_1121_102545.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "10:27 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795237056.9505935
+  },
+  {
     "id": "notif_1795237002042",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "07:36 PM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795097164.8906589
-  },
-  {
-    "id": "notif_1795097107896",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — Part 1: Subah Ki Chai Aur Fauji Swag | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "07:35 PM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795097107.8966417
   }
 ]
