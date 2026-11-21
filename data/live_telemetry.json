@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "\u26a0\ufe0f Gemini Video Refused/Error",
-  "sub_detail": "Gemini refused/errored early (40s): Sorry, something went wrong. Please try your request again.",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "09:32:52 PM",
-  "epoch": 1795276972.7267733
+  "step_num": 2,
+  "step_title": "Batch Video 3/3",
+  "sub_detail": "Starting fresh 3D story 3 of 3...",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "09:33:08 PM",
+  "epoch": 1795276988.499894
 }
