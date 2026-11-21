@@ -2837,17 +2837,35 @@ def api_tri_platform_config():
     import tri_platform_api as _tpa
     if request.method == "POST":
         body = request.get_json(silent=True) or {}
-        saved = _tpa.save_tri_config(body)
-        from flask import has_request_context as _hrc, request as _req_f
-        _force_live = (_hrc() and _req_f.args.get("force") in ("1", "true", "yes"))
-        summary = _tpa.get_combined_tri_platform_insights(force_refresh=_force_live)
-        return jsonify({"ok": True, "saved_keys": [k for k, v in saved.items() if v], "summary": summary})
+        # Never overwrite real saved tokens/secrets with masked placeholders ("••••") or accidental blanks!
+        clean_body = {}
+        for k, v in body.items():
+            sval = str(v or "").strip()
+            if not sval or "•" in sval or "\u2022" in sval or "ΓÇó" in sval:
+                continue
+            clean_body[k] = sval
+        saved = _tpa.save_tri_config(clean_body) if clean_body else _tpa.load_tri_config()
+        # Reset short burst cache & trigger live insights refresh in background so Save returns in <0.1s!
+        try:
+            _tpa._IG_FAST_MEM_CACHE["ts"] = 0.0
+        except Exception:
+            pass
+        threading.Thread(
+            target=lambda: _tpa.get_combined_tri_platform_insights(force_refresh=True),
+            daemon=True
+        ).start()
+        return jsonify({
+            "ok": True,
+            "saved_keys": [k for k, v in saved.items() if v],
+            "message": "Connections saved! Live analytics syncing in background (~3s)."
+        })
     cfg = _tpa.load_tri_config()
     masked = {
         k: (v[:6] + "••••" + v[-4:] if len(str(v)) > 14 and ("token" in k or "secret" in k or "key" in k) else v)
         for k, v in cfg.items()
     }
     return jsonify({"ok": True, "config": masked})
+
 
 
 

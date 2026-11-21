@@ -54,42 +54,53 @@ DAILY_VIRAL_HASHTAGS = {
 _GH_PUSH_LOCK = threading.Lock() if "threading" in globals() else __import__("threading").Lock()
 
 def push_json_to_github_instantly(rel_path, commit_msg, blocking=False):
-    """Non-blocking background GitHub state sync with `[skip render] [skip ci]` so Render NEVER burns build minutes!"""
+    """
+    BULLETPROOF 5X-RETRY GITHUB JSON SYNC WITH `[skip render] [skip ci]`:
+    When `blocking=True` (used for Schedule / Delete / Queue updates), waits until GitHub
+    confirms 200/201 so Render polls NEVER revert a scheduled video back to Pending!
+    """
     import threading as _th
     safe_msg = str(commit_msg or "Sync studio state").strip()
     if "[skip render]" not in safe_msg.lower():
         safe_msg = f"{safe_msg} [skip render] [skip ci]"
-    def _bg_push():
+
+    def _do_push():
         gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
         repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-        rel_clean = rel_path.replace("\\", "/")
+        rel_clean = rel_path.replace("\\", "/").lstrip("./")
         full_p = os.path.abspath(rel_path)
         if not gh_pat or not os.path.exists(full_p):
             return False
         with _GH_PUSH_LOCK:
-            for _attempt in range(2):
+            for attempt in range(1, 6):
                 try:
                     with open(full_p, "rb") as f:
                         b64_content = _b64.b64encode(f.read()).decode("utf-8")
                     url = f"https://api.github.com/repos/{repo}/contents/{rel_clean}"
                     headers = {"Authorization": f"Bearer {gh_pat}", "Accept": "application/vnd.github+json"}
-                    r = requests.get(f"{url}?ref=main&t={int(time.time()*1000)}", headers=headers, timeout=8)
+                    r = requests.get(f"{url}?ref=main&t={int(time.time()*1000)}", headers=headers, timeout=12)
                     sha = r.json().get("sha") if r.status_code == 200 else None
                     payload = {"message": safe_msg, "content": b64_content, "branch": "main"}
                     if sha:
                         payload["sha"] = sha
-                    put_r = requests.put(url, headers=headers, json=payload, timeout=12)
-                    if put_r.status_code in (200, 201):
+                    rp = requests.put(url, headers=headers, json=payload, timeout=18)
+                    if rp.status_code in (200, 201):
                         return True
-                    time.sleep(0.5)
-                except Exception:
-                    time.sleep(0.5)
+                    if rp.status_code in (409, 422, 500, 502, 503):
+                        time.sleep(0.8 * attempt)
+                        continue
+                    print(f"⚠️ [GH Push] {rel_clean} HTTP {rp.status_code}: {rp.text[:120]}")
+                    return False
+                except Exception as _pe:
+                    print(f"🔁 [GH Push Retry {attempt}/5] {rel_clean}: {_pe}")
+                    time.sleep(0.9 * attempt)
         return False
 
     if blocking:
-        return _bg_push()
-    _th.Thread(target=_bg_push, daemon=True).start()
+        return _do_push()
+    _th.Thread(target=_do_push, daemon=True).start()
     return True
+
 
 
 
@@ -894,7 +905,11 @@ def enforce_smart_cascade_schedule(q_data, force_shift_video_file=None):
 
 
 def save_scheduled_queue(q_data, sync_cloud=True):
-    """Runs Smart Domino Cascade Scheduler before every save and pushes via `push_json_to_github_instantly`."""
+    """
+    PERMANENT QUEUE SAVE:
+    Runs Smart Domino Cascade Scheduler, writes atomically to disk, locks `_LOCAL_QUEUE_MODIFIED_TS`,
+    and performs a BLOCKING 5x-retry push to GitHub so scheduled videos NEVER revert to Pending!
+    """
     global _LOCAL_QUEUE_MODIFIED_TS
     try:
         enforce_smart_cascade_schedule(q_data)
@@ -903,13 +918,16 @@ def save_scheduled_queue(q_data, sync_cloud=True):
     q_data["updated_epoch"] = time.time()
     _LOCAL_QUEUE_MODIFIED_TS = q_data["updated_epoch"]
     os.makedirs("data", exist_ok=True)
-    with open(QUEUE_FILE, "w", encoding="utf-8") as f:
+    tmp_p = QUEUE_FILE + ".tmp"
+    with open(tmp_p, "w", encoding="utf-8") as f:
         json.dump(q_data, f, indent=2, ensure_ascii=False)
+    os.replace(tmp_p, QUEUE_FILE)
     if sync_cloud and "push_json_to_github_instantly" in globals():
         try:
-            push_json_to_github_instantly(QUEUE_FILE, "Sync smart-cascaded scheduled queue")
+            push_json_to_github_instantly(QUEUE_FILE, "Sync permanently locked scheduled queue", blocking=True)
         except Exception:
             pass
+
 
 
 def _infer_track_and_part_from_filename(fname, meta=None):
@@ -1313,13 +1331,14 @@ def mark_video_as_published_in_vault(video_file, caption="", media_pk=""):
 
 def pull_latest_cloud_state_for_frontend():
     """
-    COMPLETE RENDER <-> GITHUB STATE SYNC:
-    Pulls live_telemetry, cloud_mp4_index, scheduled_queue, posted_ledger, notifications,
-    history, and episode_tracker with safe merge rules so newly generated cloud videos
-    instantly appear in Pending Review & completed telemetry immediately rests the Commando!
+    RACE-FREE RENDER <-> GITHUB STATE SYNC (v12):
+    - Respects 25-second `_LOCAL_QUEUE_MODIFIED_TS` lock so local Schedule/Delete actions
+      NEVER get overwritten by a slightly delayed GitHub CDN read!
+    - Always absorbs brand-new cloud videos into Pending Review without ever pulling
+      already-scheduled or deleted videos back into Pending!
     """
     global _LAST_CLOUD_PULL_TS
-    if (time.time() - _LAST_CLOUD_PULL_TS) < 2.5:
+    if (time.time() - _LAST_CLOUD_PULL_TS) < 3.0:
         return
     _LAST_CLOUD_PULL_TS = time.time()
 
@@ -1332,7 +1351,18 @@ def pull_latest_cloud_state_for_frontend():
         "data/history.json",
         "data/episode_tracker.json",
     ]
+    local_q_age = time.time() - float(globals().get("_LOCAL_QUEUE_MODIFIED_TS", 0) or 0)
+
+    del_set = set()
+    if os.path.exists("data/deleted_ids.json"):
+        try:
+            del_set.update(os.path.basename(str(x)) for x in json.load(open("data/deleted_ids.json", "r", encoding="utf-8")))
+        except Exception:
+            pass
+
     for rel_json in sync_files:
+        if rel_json == "data/scheduled_queue.json" and local_q_age < 25:
+            continue
         remote_data = _fetch_github_json_zero_cache(rel_json)
         if remote_data is None:
             continue
@@ -1346,7 +1376,6 @@ def pull_latest_cloud_state_for_frontend():
                 loc_ep = float(loc_t.get("epoch", 0))
                 rem_ep = float(remote_data.get("epoch", 0))
                 rem_st = str(remote_data.get("status", "")).lower()
-                # Always accept newer remote epoch OR newer completed/error/idle finish signal!
                 if rem_ep < loc_ep and rem_st not in ("completed", "error"):
                     should_write = False
             except Exception:
@@ -1358,7 +1387,7 @@ def pull_latest_cloud_state_for_frontend():
                 if isinstance(loc_l, list):
                     merged_l = list(loc_l)
                     for fn in remote_data:
-                        if fn and fn not in merged_l:
+                        if fn and fn not in merged_l and os.path.basename(str(fn)) not in del_set:
                             merged_l.append(fn)
                     remote_data = merged_l[-200:]
             except Exception:
@@ -1376,27 +1405,33 @@ def pull_latest_cloud_state_for_frontend():
 
         elif rel_json == "data/scheduled_queue.json" and isinstance(remote_data, dict):
             try:
-                # Merge safely: never lose locally scheduled/published items, always absorb new remote pending videos!
                 if os.path.exists(local_p):
                     loc_q = json.load(open(local_p, "r", encoding="utf-8"))
-                    loc_sched = {x.get("video_file"): x for x in (loc_q.get("scheduled_posts") or []) if x.get("video_file")}
-                    rem_sched = {x.get("video_file"): x for x in (remote_data.get("scheduled_posts") or []) if x.get("video_file")}
+                    loc_ep = float(loc_q.get("updated_epoch", 0) or 0)
+                    rem_ep = float(remote_data.get("updated_epoch", 0) or 0)
+
                     loc_pub = {x.get("video_file"): x for x in (loc_q.get("published_posts") or []) if x.get("video_file")}
                     rem_pub = {x.get("video_file"): x for x in (remote_data.get("published_posts") or []) if x.get("video_file")}
-
                     merged_pub = dict(loc_pub)
                     merged_pub.update(rem_pub)
                     pub_keys = set(merged_pub.keys()) | load_posted_ledger()
 
-                    merged_sched = dict(rem_sched)
-                    merged_sched.update(loc_sched)
-                    merged_sched = {k: v for k, v in merged_sched.items() if k not in pub_keys}
+                    # Scheduled items ALWAYS win over unapproved_videos (a scheduled video NEVER reverts to pending!)
+                    loc_sched = {x.get("video_file"): x for x in (loc_q.get("scheduled_posts") or []) if x.get("video_file")}
+                    rem_sched = {x.get("video_file"): x for x in (remote_data.get("scheduled_posts") or []) if x.get("video_file")}
+                    if loc_ep >= rem_ep:
+                        merged_sched = dict(rem_sched)
+                        merged_sched.update(loc_sched)
+                    else:
+                        merged_sched = dict(loc_sched)
+                        merged_sched.update(rem_sched)
+                    merged_sched = {k: v for k, v in merged_sched.items() if k not in pub_keys and os.path.basename(k) not in del_set}
                     sched_keys = set(merged_sched.keys())
 
                     merged_unapp = {}
                     for it in (remote_data.get("unapproved_videos") or []) + (loc_q.get("unapproved_videos") or []):
                         vf = it.get("video_file")
-                        if vf and vf not in pub_keys and vf not in sched_keys and vf not in merged_unapp:
+                        if vf and vf not in pub_keys and vf not in sched_keys and os.path.basename(vf) not in del_set and vf not in merged_unapp:
                             merged_unapp[vf] = it
 
                     remote_data["published_posts"] = list(merged_pub.values())[:150]
@@ -1405,6 +1440,7 @@ def pull_latest_cloud_state_for_frontend():
                         key=lambda x: float(x.get("scheduled_epoch", 0))
                     )
                     remote_data["unapproved_videos"] = list(merged_unapp.values())
+                    remote_data["updated_epoch"] = max(loc_ep, rem_ep)
             except Exception:
                 pass
 
@@ -1416,6 +1452,7 @@ def pull_latest_cloud_state_for_frontend():
                 os.replace(tmp_p, local_p)
             except Exception:
                 pass
+
 
 
 
@@ -1779,25 +1816,175 @@ def prune_old_posted_mp4s_keep_repo_light(max_age_days=7):
 
 
 
+# =========================================================================
+# v12 EXPANDED REAL-LIFE FAUJI CATEGORIES + DAILY LIVE VIRAL TREND RADAR
+# =========================================================================
+_EXTRA_REAL_LIFE_TRACKS = {
+    "chhutti_ghar_wapsi": {
+        "id": "chhutti_ghar_wapsi",
+        "name": "Chhutti, Maa-Baap & Ghar Ki Yaadein",
+        "badge": "Real Family & Leave Emotion",
+        "characters": ["Young Soldier Makra", "Mother (Maa)", "Father (Bapu)", "Fojan Meera"],
+        "theme_brief": "Deeply real, goosebumps Indian Army leave reality: stepping off village bus at dawn with heavy iron trunk, touching mother's feet in courtyard, father's silent proud misty eyes, homemade bajra roti & ghee, packing bag again with heavy heart when leave ends. Authentic village courtyard & rustic morning light. STRICT BAN: Zero snow mountains."
+    },
+    "fauji_dosti_barracks": {
+        "id": "fauji_dosti_barracks",
+        "name": "Fauji Dosti & Barracks Ki Asli Zindagi",
+        "badge": "True Soldier Brotherhood",
+        "characters": ["Young Soldier Makra", "Best Fauji Buddy (Raju/Sonu)", "Barracks Roommates"],
+        "theme_brief": "Raw, authentic Indian Army barracks brotherhood: sharing last hot chai & paratha after exhausting night guard, helping an injured buddy polish boots before inspection, late-night quiet heart-to-heart on iron bunk beds, unbreakable dosti across Haryana/UP/Punjab/Rajasthan jawans. Warm tungsten barracks realism. STRICT BAN: Zero snow mountains."
+    },
+    "border_night_reality": {
+        "id": "border_night_reality",
+        "name": "LOC Border Raat Ki Asli Pehredari",
+        "badge": "Real Border Night Grit",
+        "characters": ["Young Soldier Makra", "Senior Post Commander", "Sentry Partner"],
+        "theme_brief": "Gritty true-to-life border outpost reality: silent 2 AM watchtower duty in rain/mist, crackling wireless walkie-talkie check, clutching rifle with steady eyes while the whole nation sleeps peacefully, holding family photo for 2 seconds inside pocket then saluting duty. Realistic cinematic night lighting."
+    },
+    "civil_vs_fauji": {
+        "id": "civil_vs_fauji",
+        "name": "Civil Duniya vs Fauji Asli Hakikat",
+        "badge": "Real Hakikat Contrast",
+        "characters": ["Young Soldier Makra", "Civilian Friend / Crowd", "Unit Jawans"],
+        "theme_brief": "Hard-hitting, super-viral realistic contrast: civilian friends complaining about Wi-Fi or traffic vs Makra smiling through 45C desert dust storm, muddy monsoon trench, or 3 AM sudden alarm fall-in. Honest raw hakikat dialogues that hit straight to the heart and spark massive shares. STRICT BAN: Zero snow mountains."
+    },
+    "video_call_network": {
+        "id": "video_call_network",
+        "name": "1-Bar Network & Fauji Video Call",
+        "badge": "Real Signal Struggle & Love",
+        "characters": ["Young Soldier Makra", "Fojan Meera on Video Call"],
+        "theme_brief": "Ultra-relatable real Fauji life: climbing a rocky mound or tin shed roof in evening wind searching for 1 bar of mobile network just to see Meera's face for 20 seconds, pixelating screen, hilarious yet melting Haryanvi love banter before 'Reconnecting...' cuts the call. Authentic dusk sky realism. STRICT BAN: Zero snow mountains."
+    },
+    "festival_on_duty": {
+        "id": "festival_on_duty",
+        "name": "Tyohar Duty Par (Diwali, Holi & Rakhi)",
+        "badge": "Festivals Away From Home",
+        "characters": ["Young Soldier Makra", "Unit Brothers", "Family on Phone"],
+        "theme_brief": "Heart-touching real Army festival life: lighting two small clay diyas on sandbags at the unit gate on Diwali night, applying gulal on dusty uniform with batchmates on Holi, tying sister's posted Rakhi on wrist while on sentry duty, smiling through tears with proud desi spirit. STRICT BAN: Zero snow mountains."
+    },
+    "fauji_safar_train": {
+        "id": "fauji_safar_train",
+        "name": "Fauji Safar: Train, Trunk & Posting",
+        "badge": "Real Railway Journey & Respect",
+        "characters": ["Young Soldier Makra", "Fojan Meera / Fellow Train Passengers"],
+        "theme_brief": "Authentic Indian Railway sleeper-coach journey of a soldier returning to posting: blue painted Fauji iron trunk under seat, kulhad chai at golden-hour station halt, elderly passenger/kid saluting Makra with pure respect, train whistle goodbye as village fields fly past window. Realistic Indian railway atmosphere. STRICT BAN: Zero snow mountains."
+    }
+}
+
+try:
+    _sample_tr = next(iter(FOJI_UNIVERSE_TRACKS.values()))
+    for _tk_new, _tv_new in _EXTRA_REAL_LIFE_TRACKS.items():
+        if _tk_new not in FOJI_UNIVERSE_TRACKS:
+            _m_tr = dict(_sample_tr)
+            _m_tr.update(_tv_new)
+            FOJI_UNIVERSE_TRACKS[_tk_new] = _m_tr
+        if _tk_new not in TRACK_ORDER:
+            TRACK_ORDER.append(_tk_new)
+except Exception as _tr_err:
+    print(f"⚠️ Extra real tracks init note: {_tr_err}")
+
+_ORIG_GET_EP_TRACKER = get_episode_tracker
+
+
+def get_episode_tracker():
+    tr = _ORIG_GET_EP_TRACKER()
+    changed = False
+    for tk in FOJI_UNIVERSE_TRACKS:
+        if tk not in tr:
+            tr[tk] = {"completed_part": 0, "next_part": 1}
+            changed = True
+    if changed:
+        try:
+            with open(EPISODE_TRACKER_FILE, "w", encoding="utf-8") as wf:
+                json.dump(tr, wf, indent=2, ensure_ascii=False)
+        except Exception:
+            pass
+    return tr
+
+
 USED_STORY_HOOKS_FILE = "data/used_story_hooks.json"
-_FRESH_DRAMATIC_SEEDS = [
-    "Unexpected late-night video call during sudden mountain rain",
-    "Secret surprise parcel arriving at the army camp gate",
-    "Funny canteen bet with fellow fauji buddies over chai & samosa",
-    "Emotional train window goodbye as the whistle blows in golden dusk",
-    "Playful jealousy when Meera teases Makra about his mustache & uniform",
-    "Hidden handwritten letter tucked inside Makra's rucksack before border shift",
-    "Power-cut lantern dinner in the village courtyard with witty Haryanvi banter",
-    "Morning PT drill mishap turned into hilarious comic confession",
-    "Festival Diwali/Holi phone call when leave gets cancelled last minute",
-    "Meera catching Makra pretending to be super strict in front of his juniors",
-    "Cold winter border watchtower memory with steaming ginger tea",
-    "Sweet village rooftop stargazing promise under a glowing full moon",
-    "Hilarious luggage packing fight when Makra leaves for posting",
-    "Emotional salute moment when Meera proudly pins his badge straight",
-    "Comic misunderstanding over a voice note sent in noisy parade ground",
-    "Surprise early leave knock at the wooden haveli door at sunrise",
+DAILY_VIRAL_TRENDS_FILE = "data/daily_viral_trends.json"
+
+_REALISTIC_VISUAL_ANGLES = [
+    "Handheld documentary-style close-up with natural golden sunrise dust motes and real sweat texture",
+    "Over-the-shoulder candid shot inside an authentic dimly lit Indian Army barracks room",
+    "Rain-soaked railway station platform at dusk with warm sodium-lamp reflections and steam",
+    "Harsh midday 45C dusty ground shimmer with crisp shadows and gritty documentary realism",
+    "Warm kerosene-lamp / village courtyard evening glow with realistic earthen walls and brass utensils",
+    "Silent 2 AM outpost watchtower with flashlight beam cutting through real monsoon mist",
+    "Bustling army mess hall clinking steel plates, rising steam from dal-roti, candid comic framing",
+    "Windy hilltop sunset silhouette holding phone high for 1-bar mobile signal",
+    "Crowded Indian sleeper train doorway looking out at green mustard fields rushing past",
+    "Quiet dawn verandah of a Haryana village home with charpai, steaming steel glass chai, and sparrows",
+    "Muddy obstacle-course ground level low-angle tracking shot showing raw boots & grit",
+    "Sandbag bunker corner lit by two glowing clay diyas under a deep starry night sky"
 ]
+
+_VIRAL_STORY_TWISTS = [
+    "A sudden unexpected phone call changes the entire mood in the last 3 seconds",
+    "Starts like comedy/banter, flips into a raw goosebumps truth that makes viewers hit Share",
+    "Silent unspoken sacrifice that nobody notices except one close buddy or mother",
+    "A funny white lie Makra tells his family on call so they never worry about his tough duty",
+    "Savage Haryanvi witty comeback that shuts down a strict Havildar/civilian brag",
+    "Hidden handwritten note or small gift discovered inside the iron Fauji trunk",
+    "Unexpected respect from a stranger child or elder that melts away all exhaustion",
+    "A 3-second shocking opening visual hook followed by a deeply relatable real-life punchline",
+    "Friendly barracks bet that goes hilariously wrong right when the Senior Ustad walks in",
+    "Comparing a luxury civilian moment with raw Fauji pride without ever complaining",
+    "Caught sneaking extra chai/food or hiding a phone, saved by a clever last-second excuse",
+    "Counting down days to chhutti when sudden emergency duty cancels the train ticket"
+]
+
+
+def _fetch_daily_viral_army_trends():
+    """
+    LIVE DAILY VIRAL TREND RADAR (FREE & FAST):
+    Scans today's fresh Indian Army / Fauji / Agniveer / Viral Reels pulse once every 6 hours
+    so every daily script pitches fresh, relevant, high-retention viral hooks!
+    """
+    try:
+        if os.path.exists(DAILY_VIRAL_TRENDS_FILE):
+            cached = json.load(open(DAILY_VIRAL_TRENDS_FILE, "r", encoding="utf-8"))
+            if (time.time() - float(cached.get("ts", 0))) < 6 * 3600 and cached.get("trends"):
+                return cached["trends"]
+    except Exception:
+        pass
+
+    trends = []
+    rss_urls = [
+        "https://news.google.com/rss/search?q=Indian+Army+viral+video+OR+fauji+reels+OR+agniveer+story&hl=en-IN&gl=IN&ceid=IN:en",
+        "https://news.google.com/rss/search?q=Indian+Army+soldier+emotional+OR+training+viral&hl=en-IN&gl=IN&ceid=IN:en",
+    ]
+    for u in rss_urls:
+        try:
+            r = requests.get(u, timeout=4.0, headers={"User-Agent": "Mozilla/5.0"})
+            if r.status_code == 200 and "<title>" in r.text:
+                titles = re.findall(r"<title><!\[CDATA\[(.*?)\]\]></title>|<title>(.*?)</title>", r.text)
+                for t1, t2 in titles[1:6]:
+                    clean_t = re.sub(r"\s+-\s+[^-]+$", "", (t1 or t2 or "").strip())
+                    if len(clean_t) > 15 and clean_t not in trends:
+                        trends.append(clean_t[:110])
+        except Exception:
+            pass
+        if len(trends) >= 5:
+            break
+
+    if not trends:
+        trends = [
+            "Real Fauji life behind the uniform — raw 4 AM grit vs silent smile",
+            "Agniveer & young soldier emotional salary/homecoming truth",
+            "Hilarious barracks banter & strict Ustad comedy with Haryanvi punch",
+            "Fauji long-distance love & 1-bar signal video call struggle"
+        ]
+
+    try:
+        os.makedirs("data", exist_ok=True)
+        with open(DAILY_VIRAL_TRENDS_FILE, "w", encoding="utf-8") as wf:
+            json.dump({"ts": time.time(), "date": datetime.now(IST).strftime("%Y-%m-%d"), "trends": trends[:6]}, wf, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+    return trends[:6]
+
 
 def _load_used_story_hooks():
     try:
@@ -1805,18 +1992,19 @@ def _load_used_story_hooks():
         if isinstance(rem, list):
             os.makedirs("data", exist_ok=True)
             with open(USED_STORY_HOOKS_FILE, "w", encoding="utf-8") as wf:
-                json.dump(rem[-80:], wf, indent=2, ensure_ascii=False)
-            return rem[-80:]
+                json.dump(rem[-100:], wf, indent=2, ensure_ascii=False)
+            return rem[-100:]
     except Exception:
         pass
     if os.path.exists(USED_STORY_HOOKS_FILE):
         try:
             d = json.load(open(USED_STORY_HOOKS_FILE, "r", encoding="utf-8"))
             if isinstance(d, list):
-                return d[-80:]
+                return d[-100:]
         except Exception:
             pass
     return []
+
 
 def _record_used_story_hook(pkg):
     try:
@@ -1824,14 +2012,15 @@ def _record_used_story_hook(pkg):
         entry = {
             "ts": datetime.now(IST).strftime("%Y-%m-%d %H:%M"),
             "track": pkg.get("track_id", ""),
+            "title": str(pkg.get("emotion_name") or "")[:90],
             "loc": str(pkg.get("new_location") or "")[:90],
-            "d1": str(pkg.get("dialogue_line_1_hinglish") or "")[:110],
-            "d2": str(pkg.get("dialogue_line_2_hinglish") or "")[:110],
+            "d1": str(pkg.get("dialogue_line_1_hinglish") or "")[:120],
+            "d2": str(pkg.get("dialogue_line_2_hinglish") or "")[:120],
         }
         hooks.append(entry)
         os.makedirs("data", exist_ok=True)
         with open(USED_STORY_HOOKS_FILE, "w", encoding="utf-8") as wf:
-            json.dump(hooks[-80:], wf, indent=2, ensure_ascii=False)
+            json.dump(hooks[-100:], wf, indent=2, ensure_ascii=False)
         try:
             import gemini_bot as _gb_h
             _gb_h.sync_file_to_github(USED_STORY_HOOKS_FILE, "Record fresh story hook anti-repeat [skip render] [skip ci]")
@@ -1840,7 +2029,9 @@ def _record_used_story_hook(pkg):
     except Exception:
         pass
 
+
 _ORIG_BUILD_REAL_FOJI_PKG = build_real_foji_universe_package
+
 
 def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_idea="", is_preview=False):
     import random as _rnd_s
@@ -1848,21 +2039,26 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     if not is_preview:
         used_hooks = _load_used_story_hooks()
         recent_bans = [
-            f"- {h.get('loc','')} | \"{h.get('d1','')}\" / \"{h.get('d2','')}\""
-            for h in used_hooks[-18:]
-            if h.get("d1") or h.get("loc")
+            f"[{h.get('track','')}] {h.get('title','')} | {h.get('loc','')} | \"{h.get('d1','')}\""
+            for h in used_hooks[-20:]
+            if h.get("d1") or h.get("title")
         ]
-        # Pick a fresh creative seed that hasn't been used in recent runs
-        recent_txt = " ".join(recent_bans).lower()
-        fresh_pool = [s for s in _FRESH_DRAMATIC_SEEDS if s.split()[0].lower() not in recent_txt] or _FRESH_DRAMATIC_SEEDS
-        chosen_seed = _rnd_s.choice(fresh_pool)
+        trends = _fetch_daily_viral_army_trends()
+        chosen_trend = _rnd_s.choice(trends) if trends else "Authentic Indian Army real-life emotion"
+        chosen_angle = _rnd_s.choice(_REALISTIC_VISUAL_ANGLES)
+        chosen_twist = _rnd_s.choice(_VIRAL_STORY_TWISTS)
         uniq_nonce = datetime.now(IST).strftime("%d%b-%H%M%S")
+
         fresh_directive = (
-            f"FRESH STORY MANDATE ({uniq_nonce}): Create a 100% BRAND-NEW story, fresh location & punchy viral Hindi/Haryanvi dialogues "
-            f"inspired by: '{chosen_seed}'. NEVER repeat any previous dialogue, joke, or setting."
+            f"REAL-LIFE VIRAL STORY MANDATE ({uniq_nonce}): "
+            f"Today's Viral Pulse to pitch & outperform: '{chosen_trend}'. "
+            f"Visual Realism & Camera Style: {chosen_angle}. "
+            f"Story Twist: {chosen_twist}. "
+            f"MAKE IT 100% REALISTIC HAKIKAT (authentic everyday Indian Army/village truth, real body language, natural lighting, "
+            f"sharp memorable Hindi/Haryanvi dialogues — NEVER generic cartoon tropes, NEVER repeat past scenes or dialogues!)."
         )
         if recent_bans:
-            fresh_directive += " STRICTLY AVOID REPEATING THESE RECENT STORIES: " + " ; ".join(recent_bans[-8:])
+            fresh_directive += " STRICTLY BANNED PAST STORIES (DO NOT REUSE): " + " ; ".join(recent_bans[-10:])
         enhanced_idea = f"{enhanced_idea} | {fresh_directive}" if enhanced_idea else fresh_directive
 
     pkg = _ORIG_BUILD_REAL_FOJI_PKG(
@@ -1872,6 +2068,5 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
         is_preview=is_preview
     )
     if not is_preview and isinstance(pkg, dict):
-        # Record IMMEDIATELY (even if generation fails later, next run will NEVER reuse this story!)
         _record_used_story_hook(pkg)
     return pkg

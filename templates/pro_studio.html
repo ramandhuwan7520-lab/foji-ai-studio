@@ -1787,9 +1787,26 @@
         yt_channel_id: document.getElementById('api-yt-cid').value,
         yt_api_key: document.getElementById('api-yt-key').value
       };
-      const d = await (await fetch('/api/tri_platform_config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})).json();
-      st.textContent = d && d.ok ? '✅ Saved!' : '⚠️ Error';
-      if (d && d.ok) { showToast('✅ Connections Saved!', 'ok'); refreshTri(false); }
+      try {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 15000);
+        const resp = await fetch('/api/tri_platform_config', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload),
+          signal: ctrl.signal
+        });
+        clearTimeout(tid);
+        const d = await resp.json();
+        st.textContent = d && d.ok ? '✅ Saved!' : '⚠️ Error';
+        if (d && d.ok) {
+          showToast('✅ Connections Saved! Syncing Live Insights...', 'ok');
+          setTimeout(() => refreshTri(true), 2500);
+        }
+      } catch (err) {
+        st.textContent = '⚠️ Save Timeout — Retry';
+        showToast('⚠️ Connection save error: ' + (err.message || err), 'err');
+      }
     }
 
     async function loadDiag() {
