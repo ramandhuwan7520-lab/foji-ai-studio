@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795287176651",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 1: Signal Ka Sangharsh | Cast: Makra + Meera (Deep Royal Blue Silk Patiala Suit with...)",
+    "status": "info",
+    "time_str": "12:22 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795287176.651335
+  },
+  {
     "id": "notif_1795287156604",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "01:21 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795247469.7023141
-  },
-  {
-    "id": "notif_1795247443381",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_064_AgniveerReality_Part_01_1121_131847.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "01:20 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795247443.381344
   }
 ]
