@@ -43,7 +43,8 @@
       "time_ist": "16:19",
       "display": "04:19 PM",
       "enabled": true,
-      "skip_date": ""
+      "skip_date": "",
+      "last_triggered_date": "2026-11-21"
     },
     {
       "id": "S5",
