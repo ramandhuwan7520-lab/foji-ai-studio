@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795237083182",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Masti & Meethi Call (Video_063_FunnyFauji_Part_01_1121_102545.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "10:28 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795237083.1822207
+  },
+  {
     "id": "notif_1795237056950",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "07:59 PM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795098589.352305
-  },
-  {
-    "id": "notif_1795097164890",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "🚀 Trending Viral Fauji & Desi Reality Specials — Part 1: Subah Ki Chai Aur Fauji Swag is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "07:36 PM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795097164.8906589
   }
 ]
