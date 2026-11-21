@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Stage 2: Cookie Sign-In (Account #2)",
-  "sub_detail": "Logging into Gemini & preparing Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)...",
-  "status": "active",
-  "progress": 25,
-  "updated_at": "07:30:56 PM",
-  "epoch": 1795269656.999395
+  "step_num": 0,
+  "step_title": "Batch Ended \u2014 Standby",
+  "sub_detail": "Could not verify Gemini login within timeout.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "07:32:54 PM",
+  "epoch": 1795269774.7523263
 }
