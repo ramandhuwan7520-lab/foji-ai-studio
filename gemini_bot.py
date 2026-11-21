@@ -1357,23 +1357,30 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         wait_timeout=0.5, verify_timeout=0.3, max_attempts=1, optional=True
     )
 
-    # SIDEBAR-IMMUNE VIDEO MODE & LIMIT VERIFIER!
-    time.sleep(0.75)
-    cv_state = driver.execute_script("""
-        function isSidebarOrMenu(el) {
-            return Boolean(el && el.closest(
-                'nav, bard-sidenav, side-navigation, [class*="sidenav" i], [class*="sidebar" i], ' +
-                '[role="navigation"], [role="menu"], .mat-mdc-menu-panel, [role="listbox"]'
-            ));
+    # SIDEBAR-IMMUNE VIDEO MODE & LIMIT VERIFIER (v8 — NEVER IGNORES <mat-sidenav-content>!)
+    cv_state = {"active": False, "signal": "", "hitLimit": ""}
+    js_check_video_mode = """
+        function isTrueLeftDrawerOrMenu(el) {
+            if (!el) return false;
+            // Exact drawer/nav/menu tags ONLY — NEVER match <mat-sidenav-content> (which wraps main chat!)
+            if (el.closest('bard-sidenav, side-navigation, mat-drawer, mat-sidenav, nav, [role="navigation"], [role="menu"], .mat-mdc-menu-panel, [role="listbox"]')) {
+                return true;
+            }
+            // Desktop left-rail coordinate shield (left sidebar is <= 275px wide on 1920px screen)
+            const r = el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+            if (r && window.innerWidth >= 1000 && r.width > 0 && r.right <= 275) {
+                return true;
+            }
+            return false;
         }
 
-        // 1. Check active Video Composer signals ONLY outside sidebar & open menus
+        // 1. Check active Video Composer signals ONLY in main workspace
         let hasActiveVideoComposer = false;
         let activeSignal = '';
 
-        // Signal A: Prompt placeholder says "Describe your video"
-        for (const el of document.querySelectorAll('[data-placeholder], [placeholder], [aria-label], rich-textarea, div[contenteditable="true"]')) {
-            if (isSidebarOrMenu(el)) continue;
+        // Signal A: Prompt box placeholder says "Describe your video"
+        for (const el of document.querySelectorAll('[data-placeholder], [placeholder], [aria-label], rich-textarea, div[contenteditable="true"], textarea')) {
+            if (isTrueLeftDrawerOrMenu(el)) continue;
             const ph = (
                 (el.getAttribute('data-placeholder') || '') + ' ' +
                 (el.getAttribute('placeholder') || '') + ' ' +
@@ -1390,23 +1397,26 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
         // Signal B: Active 'Videos' chip OR 'Landscape' / 'Portrait' / 'Format' pills inside composer
         if (!hasActiveVideoComposer) {
             for (const b of document.querySelectorAll('button, [role="button"]')) {
-                if (isSidebarOrMenu(b)) continue;
+                if (isTrueLeftDrawerOrMenu(b)) continue;
                 const r = b.getBoundingClientRect();
                 if (r.width < 18 || r.height < 14 || r.top < 120) continue;
-                const t = ((b.getAttribute('aria-label') || '') + ' ' + (b.innerText || '')).trim().toLowerCase();
+                const aria = (b.getAttribute('aria-label') || '').trim().toLowerCase();
+                const txt = (b.innerText || '').trim().toLowerCase().replace(/\\s+/g, ' ');
+                const combo = (aria + ' ' + txt).trim();
                 if (
-                    t === 'videos' || t.includes('remove create video') || t.includes('deselect create video') ||
-                    t.includes('landscape') || t.includes('portrait') || t === 'format' ||
-                    t.startsWith('format ') || t.includes('aspect ratio')
+                    txt === 'videos' || aria === 'videos' ||
+                    combo.includes('remove create video') || combo.includes('deselect create video') ||
+                    combo.includes('landscape') || combo.includes('portrait') ||
+                    txt === 'format' || txt.startsWith('format ') || combo.includes('aspect ratio')
                 ) {
                     hasActiveVideoComposer = true;
-                    activeSignal = 'pill:' + t.slice(0, 28);
+                    activeSignal = 'pill:' + (txt || aria).slice(0, 28);
                     break;
                 }
             }
         }
 
-        // 2. Check REAL active limit alerts ONLY in snackbars / dialogs / alerts / latest model-response (NEVER SIDEBAR!)
+        // 2. Check REAL active limit alerts ONLY in snackbars / dialogs / alerts / latest model-response
         const limitHits = [
             'reached your limit', 'video generation limit', 'daily limit', 'try again tomorrow',
             'limit for creating videos', 'upgrade to generate more', 'unable to create more videos',
@@ -1417,16 +1427,25 @@ def execute_locked_13_step_gemini_pipeline(driver, foji_img, fojan_img, fresh_pr
             'mat-snack-bar-container, [role="alert"], [role="dialog"], .cdk-overlay-container, model-response, .error-message'
         );
         for (const z of alertZones) {
-            if (isSidebarOrMenu(z)) continue;
+            if (isTrueLeftDrawerOrMenu(z)) continue;
             const txt = (z.innerText || '').toLowerCase();
             const m = limitHits.find(k => txt.includes(k));
             if (m) { hitLimit = m; break; }
         }
 
         return {active: hasActiveVideoComposer && !hitLimit, signal: activeSignal, hitLimit: hitLimit};
-    """) or {"active": False, "signal": "", "hitLimit": ""}
+    """
 
-    print(f"🔎 [v7 Video Mode Check | Acc #{acc_num}] active={cv_state.get('active')} | signal='{cv_state.get('signal')}' | limit='{cv_state.get('hitLimit')}'")
+    for _poll_i in range(10):
+        time.sleep(0.55)
+        try:
+            cv_state = driver.execute_script(js_check_video_mode) or {"active": False, "signal": "", "hitLimit": ""}
+        except Exception:
+            cv_state = {"active": False, "signal": "", "hitLimit": ""}
+        if cv_state.get("active") or cv_state.get("hitLimit"):
+            break
+
+    print(f"🔎 [v8 Video Mode Check | Acc #{acc_num}] active={cv_state.get('active')} | signal='{cv_state.get('signal')}' | limit='{cv_state.get('hitLimit')}'")
 
     if not cv_state.get("active"):
         lim_reason = cv_state.get("hitLimit") or "Create video composer ('Describe your video') did not activate (Limit Full)"
@@ -3039,6 +3058,33 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=None):
         """, g_email)
         if chooser_action:
             print(f"👤 [Auto-Login] Account Chooser Action: {chooser_action}")
+            if str(chooser_action) == "use_another_account":
+                _ua_hits = int(globals().get("_USE_ANOTHER_ACC_HITS", 0)) + 1
+                globals()["_USE_ANOTHER_ACC_HITS"] = _ua_hits
+                if _ua_hits == 1:
+                    try:
+                        _u_xy = driver.execute_script("""
+                            for (const el of document.querySelectorAll('div[role="link"], li, button, a, div')) {
+                                const t = (el.innerText || "").trim().toLowerCase();
+                                if (t === "use another account" || t === "किसी अन्य खाते का उपयोग करें") {
+                                    const r = el.getBoundingClientRect();
+                                    if (r.width > 30 && r.height > 14) return [Math.round(r.left + r.width/2), Math.round(r.top + r.height/2)];
+                                }
+                            }
+                            return null;
+                        """)
+                        if _u_xy:
+                            single_clean_click_xy(driver, _u_xy[0], _u_xy[1], "Use another account (CDP)")
+                    except Exception:
+                        pass
+                else:
+                    print(f"⚡ [Auto-Login | Acc #{_slot}] Chooser stuck on use_another_account (hit #{_ua_hits}) -> Jumping straight to Email Sign-In!")
+                    globals()["_USE_ANOTHER_ACC_HITS"] = 0
+                    driver.get("https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fgemini.google.com%2Fapp&flowName=GlifWebSignIn&flowEntry=AddSession")
+                    time.sleep(3.2)
+                    return True
+            else:
+                globals()["_USE_ANOTHER_ACC_HITS"] = 0
             time.sleep(2.5)
             return True
 
