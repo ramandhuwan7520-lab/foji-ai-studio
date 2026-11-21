@@ -96,33 +96,106 @@ def _format_ig_ist_time(ts_str):
 
 
 def fetch_official_instagram_insights():
+    """
+    META UNIFIED LOGIN + INSTAGRAM LOGIN + FACEBOOK GRAPH SMART ENGINE:
+    Works with BOTH `IG...` tokens AND Meta's new Unified Login `EAA...` tokens
+    WITHOUT requiring a linked Facebook Page!
+    """
     cfg = load_tri_config()
     tok = _auto_refresh_ig_login_token_if_due(cfg)
-    ig_id = cfg.get("ig_account_id", "")
-    if not tok:
-        return {"connected": False, "source": "Not Connected", "note": "Paste Official Instagram Token in Connections tab (or Render Env: IG_OFFICIAL_ACCESS_TOKEN)"}
+    ig_id = str(cfg.get("ig_account_id") or "").strip()
+    app_id = str(cfg.get("meta_app_id") or "").strip()
+    app_sec = str(cfg.get("meta_app_secret") or "").strip()
 
-    base = _ig_graph_base(tok)
-    prof = {}
+    if not tok:
+        return {
+            "connected": False,
+            "source": "Not Connected",
+            "note": "Add IG_OFFICIAL_ACCESS_TOKEN in Render Environment or Connections tab."
+        }
+
+    prof = None
+    active_base = None
+    media_ep = None
+    debug_scopes = []
+    candidate_ids = []
+    if ig_id:
+        candidate_ids.append(ig_id)
+    last_err = ""
+
     try:
-        # Step 1: Discover & fetch profile cleanly (works for both IG Login `IG...` & Business `EAA...` tokens!)
-        if base.startswith("https://graph.instagram.com"):
-            r_me = requests.get(
-                f"{base}/me",
+        # ROUTE 1: Try `graph.instagram.com/v22.0/me` directly (works for IG tokens & IG-scoped Unified tokens)
+        try:
+            r_ig_me = requests.get(
+                "https://graph.instagram.com/v22.0/me",
                 params={"fields": "user_id,id,username,followers_count,follows_count,media_count", "access_token": tok},
                 timeout=12
             )
-            if r_me.status_code != 200:
-                err_txt = r_me.text[:180]
-                return {"connected": False, "source": "Token Error", "note": f"IG API {r_me.status_code}: {err_txt}"}
-            prof = r_me.json()
-            ig_id = str(prof.get("user_id") or prof.get("id") or ig_id or "")
-            if ig_id and ig_id != cfg.get("ig_account_id"):
-                save_tri_config({"ig_account_id": ig_id})
-        else:
-            if not ig_id:
+            if r_ig_me.status_code == 200 and r_ig_me.json().get("username"):
+                prof = r_ig_me.json()
+                ig_id = str(prof.get("user_id") or prof.get("id") or ig_id)
+                active_base = "https://graph.instagram.com/v22.0"
+                media_ep = f"{active_base}/me/media"
+            else:
+                last_err = f"IG/me {r_ig_me.status_code}: {r_ig_me.text[:120]}"
+        except Exception as _e1:
+            last_err = str(_e1)[:100]
+
+        # ROUTE 2: Use Meta `debug_token` (with App ID + Secret) to extract exact Unified Login IG target_ids!
+        if not prof and app_id and app_sec:
+            try:
+                r_dbg = requests.get(
+                    "https://graph.facebook.com/v22.0/debug_token",
+                    params={"input_token": tok, "access_token": f"{app_id}|{app_sec}"},
+                    timeout=12
+                )
+                if r_dbg.status_code == 200:
+                    dd = (r_dbg.json() or {}).get("data") or {}
+                    debug_scopes = list(dd.get("scopes") or [])
+                    for gs in (dd.get("granular_scopes") or []):
+                        sc = str(gs.get("scope") or "").lower()
+                        if "instagram" in sc:
+                            for tid in (gs.get("target_ids") or []):
+                                tid_s = str(tid).strip()
+                                if tid_s and tid_s not in candidate_ids:
+                                    candidate_ids.append(tid_s)
+                    uid_d = str(dd.get("user_id") or "").strip()
+                    if uid_d and uid_d not in candidate_ids:
+                        candidate_ids.append(uid_d)
+            except Exception as _e2:
+                last_err = f"debug_token: {_e2}"
+
+        # ROUTE 3: Probe discovered candidate IG IDs on BOTH `graph.instagram.com` & `graph.facebook.com`
+        if not prof and candidate_ids:
+            for cid in candidate_ids:
+                for b_url, flds in (
+                    ("https://graph.instagram.com/v22.0", "user_id,id,username,followers_count,follows_count,media_count"),
+                    ("https://graph.facebook.com/v22.0", "id,username,followers_count,follows_count,media_count"),
+                ):
+                    try:
+                        rp = requests.get(
+                            f"{b_url}/{cid}",
+                            params={"fields": flds, "access_token": tok},
+                            timeout=10
+                        )
+                        if rp.status_code == 200 and rp.json().get("username"):
+                            prof = rp.json()
+                            ig_id = str(prof.get("user_id") or prof.get("id") or cid)
+                            active_base = b_url
+                            media_ep = f"{active_base}/{ig_id}/media"
+                            break
+                        else:
+                            last_err = f"{b_url.split('//')[1].split('/')[0]}/{cid} {rp.status_code}: {rp.text[:110]}"
+                    except Exception:
+                        pass
+                if prof:
+                    break
+
+        # ROUTE 4: Traditional Facebook Page -> linked `instagram_business_account` fallback
+        if not prof:
+            try:
                 r_pg = requests.get(
-                    f"{base}/me/accounts",
+                    "https://graph.facebook.com/v22.0/me/accounts",
                     params={"fields": "id,name,access_token,instagram_business_account", "access_token": tok},
                     timeout=12
                 )
@@ -131,26 +204,38 @@ def fetch_official_instagram_insights():
                         iba = pg.get("instagram_business_account") or {}
                         if iba.get("id"):
                             ig_id = str(iba["id"])
-                            save_tri_config({
-                                "ig_account_id": ig_id,
-                                "fb_page_id": str(pg.get("id") or ""),
-                                "fb_page_token": str(pg.get("access_token") or "")
-                            })
-                            break
-            if not ig_id:
-                return {"connected": False, "source": "Needs IG Account ID", "note": "Paste Instagram Login Token (IG...) OR add IG Account ID in Connections."}
-            r_prof = requests.get(
-                f"{base}/{ig_id}",
-                params={"fields": "id,username,followers_count,follows_count,media_count", "access_token": tok},
-                timeout=12
-            )
-            if r_prof.status_code != 200:
-                return {"connected": False, "source": "Token Error", "note": f"Graph API {r_prof.status_code}: {r_prof.text[:160]}"}
-            prof = r_prof.json()
+                            rp2 = requests.get(
+                                f"https://graph.facebook.com/v22.0/{ig_id}",
+                                params={"fields": "id,username,followers_count,follows_count,media_count", "access_token": tok},
+                                timeout=10
+                            )
+                            if rp2.status_code == 200:
+                                prof = rp2.json()
+                                active_base = "https://graph.facebook.com/v22.0"
+                                media_ep = f"{active_base}/{ig_id}/media"
+                                save_tri_config({
+                                    "ig_account_id": ig_id,
+                                    "fb_page_id": str(pg.get("id") or ""),
+                                    "fb_page_token": str(pg.get("access_token") or "")
+                                })
+                                break
+            except Exception:
+                pass
 
-        # Step 2: Fetch up to 60 latest reels/media via Graph API
+        if not prof or not active_base:
+            sc_hint = f" | Scopes: {','.join(debug_scopes[:6])}" if debug_scopes else ""
+            cid_hint = f" | FoundIDs: {candidate_ids[:3]}" if candidate_ids else ""
+            return {
+                "connected": False,
+                "source": "Unified Token Diagnostic",
+                "note": f"{last_err}{cid_hint}{sc_hint}"[:240]
+            }
+
+        if ig_id and ig_id != cfg.get("ig_account_id"):
+            save_tri_config({"ig_account_id": ig_id})
+
+        # Fetch up to 60 latest reels/media via verified official Graph endpoint
         reels = []
-        media_ep = f"{base}/me/media" if base.startswith("https://graph.instagram.com") else f"{base}/{ig_id}/media"
         next_url = media_ep
         params = {
             "fields": "id,caption,media_type,media_product_type,permalink,timestamp,like_count,comments_count,thumbnail_url,media_url",
@@ -166,11 +251,10 @@ def fetch_official_instagram_insights():
                 views_val = 0
                 saved_val = 0
                 shares_val = 0
-                # Safe metric fallback (v22 Reels use `views`, older/non-reel items use `reach`)
                 for metric_set in ("views,reach,saved,shares", "views", "reach"):
                     try:
                         ri = requests.get(
-                            f"{base}/{item['id']}/insights",
+                            f"{active_base}/{item['id']}/insights",
                             params={"metric": metric_set, "access_token": tok},
                             timeout=6
                         )
@@ -224,7 +308,7 @@ def fetch_official_instagram_insights():
 
         result = {
             "connected": True,
-            "source": "Official Meta Graph API",
+            "source": "Official Meta Graph API (Unified)",
             "username": f"@{prof.get('username', 'ai_foji_lovelife')}",
             "followers": int(prof.get("followers_count") or 0),
             "media_count": int(prof.get("media_count") or len(reels)),
@@ -236,7 +320,6 @@ def fetch_official_instagram_insights():
             "reels": reels
         }
 
-        # Persist fresh Official API snapshot to `data/ig_live_analytics.json`
         try:
             os.makedirs("data", exist_ok=True)
             with open("data/ig_live_analytics.json", "w", encoding="utf-8") as af:
@@ -247,7 +330,7 @@ def fetch_official_instagram_insights():
                     "total_views": tot_views,
                     "total_likes": tot_likes,
                     "total_comments": tot_comments,
-                    "sync_source": "Official Meta Graph API",
+                    "sync_source": "Official Meta Graph API (Unified)",
                     "fetched_at": result["fetched_at"],
                     "reels": reels
                 }, af, indent=2)
@@ -255,7 +338,8 @@ def fetch_official_instagram_insights():
             pass
         return result
     except Exception as e:
-        return {"connected": False, "source": "Error", "note": str(e)[:150]}
+        return {"connected": False, "source": "Error", "note": str(e)[:180]}
+
 
 
 

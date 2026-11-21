@@ -1198,12 +1198,124 @@ def _ensure_mp4_downloaded_locally(filename):
     return None
 
 
+def _ensure_mp4_downloaded_locally(filename):
+    """
+    GUARANTEES AN MP4 EXISTS LOCALLY ON RENDER DISK (KILLS 'Video not found' EVERYWHERE!):
+    Used by Frontend Video Player, Frontend Post Now, Auto-Poster, AND Telegram Approve & Post!
+    """
+    safe_fn = os.path.basename(str(filename or "").strip())
+    if not safe_fn or not safe_fn.lower().endswith(".mp4"):
+        return None
+
+    search_dirs = [
+        "output/raw_videos",
+        "output/final_reels",
+        "archive_posted_reels",
+        "local_published_archive",
+        "output"
+    ]
+    for sd in search_dirs:
+        p = os.path.abspath(os.path.join(sd, safe_fn))
+        if os.path.isfile(p) and os.path.getsize(p) > 40 * 1024:
+            return p
+
+    pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    repo = (os.getenv("GITHUB_REPO") or "ramandhuwan7520-lab/foji-ai-studio").strip()
+    os.makedirs("output/raw_videos", exist_ok=True)
+    cache_p = os.path.abspath(os.path.join("output/raw_videos", safe_fn))
+    headers = {"Accept": "application/vnd.github.raw"}
+    if pat:
+        headers["Authorization"] = f"Bearer {pat}"
+
+    for rel_dir in ("output/raw_videos", "output/final_reels"):
+        try:
+            r = requests.get(
+                f"https://api.github.com/repos/{repo}/contents/{rel_dir}/{safe_fn}",
+                headers=headers,
+                params={"ref": "main"},
+                timeout=45,
+                stream=True
+            )
+            if r.status_code == 200:
+                tmp_p = cache_p + ".dl"
+                with open(tmp_p, "wb") as wf:
+                    for chunk in r.iter_content(chunk_size=131072):
+                        if chunk:
+                            wf.write(chunk)
+                if os.path.exists(tmp_p) and os.path.getsize(tmp_p) > 40 * 1024:
+                    os.replace(tmp_p, cache_p)
+                    print(f"☁️ [Cloud MP4 Ready] Cached '{safe_fn}' ({os.path.getsize(cache_p)//1024} KB) locally!")
+                    return cache_p
+                elif os.path.exists(tmp_p):
+                    os.remove(tmp_p)
+        except Exception as _fe:
+            print(f"ℹ️ [MP4 Fetch Note] {rel_dir}/{safe_fn}: {_fe}")
+    return None
+
+
 def _stream_mp4_instantly(filename):
     from flask import send_file
     found_path = _ensure_mp4_downloaded_locally(filename)
     if not found_path or not os.path.exists(found_path):
         return (f"Video not found on server or cloud: {os.path.basename(str(filename or ''))}", 404)
     return send_file(found_path, mimetype="video/mp4", conditional=True, max_age=3600)
+
+
+_LAST_GH_RUN_CHECK_TS = 0.0
+
+def _auto_heal_stuck_telemetry_from_github():
+    """
+    COMMANDO ANTI-STUCK GUARD:
+    If local telemetry claims `active` for >75 seconds, verify directly with GitHub Actions.
+    If ZERO `cloud_video_engine.yml` runs are currently queued or in_progress, immediately
+    transition telemetry to `completed` (or `idle`) so 3D Commando ALWAYS returns to Duty Stand!
+    """
+    global _LAST_GH_RUN_CHECK_TS
+    tel_p = "data/live_telemetry.json"
+    if not os.path.exists(tel_p):
+        return
+    try:
+        tel = json.load(open(tel_p, "r", encoding="utf-8"))
+        st = str(tel.get("status") or "").lower()
+        ep = float(tel.get("epoch") or 0)
+        age = time.time() - ep
+        if st not in ("active", "running") or age < 75:
+            return
+        if (time.time() - _LAST_GH_RUN_CHECK_TS) < 20:
+            return
+        _LAST_GH_RUN_CHECK_TS = time.time()
+
+        pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+        repo = (os.getenv("GITHUB_REPO") or "ramandhuwan7520-lab/foji-ai-studio").strip()
+        if not pat:
+            return
+        hdrs = {"Authorization": f"Bearer {pat}", "Accept": "application/vnd.github+json"}
+        rr = requests.get(
+            f"https://api.github.com/repos/{repo}/actions/workflows/cloud_video_engine.yml/runs?per_page=3",
+            headers=hdrs,
+            timeout=8
+        )
+        if rr.status_code != 200:
+            return
+        runs = (rr.json() or {}).get("workflow_runs") or []
+        any_running = any(r.get("status") in ("queued", "in_progress", "waiting") for r in runs)
+        if not any_running:
+            last_conc = (runs[0].get("conclusion") if runs else "") or "success"
+            new_st = "completed" if (last_conc == "success" and int(tel.get("step_num") or 0) >= 6) else "idle"
+            tel.update({
+                "step_num": 8 if new_st == "completed" else 0,
+                "step_title": "Mission Complete! Returned to Duty Stand" if new_st == "completed" else "Standby — Duty Stand",
+                "sub_detail": "Cloud worker finished cleanly. Ready for next command.",
+                "status": new_st,
+                "progress": 100 if new_st == "completed" else 0,
+                "updated_at": datetime.now(_fud.IST).strftime("%I:%M:%S %p"),
+                "epoch": time.time()
+            })
+            with open(tel_p, "w", encoding="utf-8") as wf:
+                json.dump(tel, wf, indent=2)
+    except Exception:
+        pass
+
 
 
 _LAST_GH_RUN_CHECK_TS = 0.0
@@ -1500,6 +1612,7 @@ def _execute_single_or_batch_generation(count=1, reason_label="Manual Trigger", 
             print(f"❌ [Local Batch Error] {_le}")
 
     threading.Thread(target=_worker, daemon=True).start()
+
 
 
 

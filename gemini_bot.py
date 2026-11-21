@@ -145,6 +145,7 @@ def sync_file_to_github(local_rel_path, commit_msg="Sync studio data"):
 
 
 
+
 def push_app_notification(notif_type, title, message, status="info"):
     os.makedirs("data", exist_ok=True)
     n_path = "data/notifications.json"
