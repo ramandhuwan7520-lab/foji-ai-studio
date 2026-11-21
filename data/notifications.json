@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795221132805",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Ki Meethas | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "06:02 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795221132.8052406
+  },
+  {
     "id": "notif_1795220871717",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "10:10 AM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795063231.4119937
-  },
-  {
-    "id": "notif_1795051588103",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "raw_video_1109_055706_p4.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
-    "time_str": "06:56 AM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795051588.1037695
   }
 ]
