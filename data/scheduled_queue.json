@@ -1,6 +1,18 @@
 {
   "unapproved_videos": [
     {
+      "id": "vid_Video_071_BorderNightReality_Part_01_1121_213325.mp4",
+      "video_file": "Video_071_BorderNightReality_Part_01_1121_213325.mp4",
+      "title": "LOC Border Raat Ki Asli Pehredari — Part 1: Pyar Ka Safed Jhoot",
+      "track_id": "border_night_reality",
+      "part_number": 1,
+      "dialogue": "Laado, yahan toh baraf nahi hai, main toh garam rajai mein leta hoon, tu fikar mat kar!",
+      "shayari": "Vardi ki shaan mein ye thand bhi pighal jaave hai, tere sukoon ki khatir tera yo fauji jhoot bol jaave hai.",
+      "caption": "🎖️ Part 1: Pyar Ka Safed Jhoot | LOC Border Raat Ki Asli Pehredari\n\n🗣️ \"Laado, yahan toh baraf nahi hai, main toh garam rajai mein leta hoon, tu fikar mat kar!\"\n\n🔥 Vardi ki shaan mein ye thand bhi pighal jaave hai, tere sukoon ki khatir tera yo fauji jhoot bol jaave hai.\n\n🎵 Vibe: Main yahan tu wahan, zindagi hai kahan - Lofi\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+      "created_at": "21 Nov 2026, 09:36 PM IST",
+      "status": "awaiting_approval"
+    },
+    {
       "id": "vid_Video_070_FaujiDostiBarracks_Part_01_1121_212010.mp4",
       "video_file": "Video_070_FaujiDostiBarracks_Part_01_1121_212010.mp4",
       "title": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 1: Nashik Ka Viral Jhatka",
@@ -1502,7 +1514,7 @@
       "ig_media_pk": "18117301127149408"
     }
   ],
-  "updated_epoch": 1795276387.983701,
+  "updated_epoch": 1795277189.8881166,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
