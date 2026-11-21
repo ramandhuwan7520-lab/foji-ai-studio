@@ -2909,6 +2909,8 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=None):
         from selenium.webdriver.common.keys import Keys
 
         g_email = (os.getenv("GOOGLE_EMAIL_2" if _slot == 2 else "GOOGLE_EMAIL") or "").strip()
+        if g_email.lower() == "kathnexastories@gmail.com":
+            g_email = "kathanexastories@gmail.com"
         g_pwd = (os.getenv("GOOGLE_PASSWORD_2" if _slot == 2 else "GOOGLE_PASSWORD") or "").strip()
         g_totp = (os.getenv("GOOGLE_2FA_SECRET_2" if _slot == 2 else "GOOGLE_2FA_SECRET") or "").strip()
         if os.path.exists(_vault_file):

@@ -2759,34 +2759,6 @@ def _handle_5xx_as_json(e):
 # =========================================================================
 # 🚀 FOJI AI STUDIO PRO — OFFICIAL TRI-PLATFORM + 5-SESSION CONTROL ROUTES
 # =========================================================================
-@app.route("/auth/callback", methods=["GET"])
-def meta_oauth_callback():
-    from flask import request, redirect
-    code = (request.args.get("code") or "").strip()
-    err = (request.args.get("error_description") or request.args.get("error") or "").strip()
-    if err:
-        return f"<h2>Meta Auth Notice: {err}</h2><p><a href='/'>Return to Foji AI Studio</a></p>", 200
-    if code:
-        try:
-            import tri_platform_api as _tpa
-            cfg = _tpa.load_tri_config()
-            if cfg.get("meta_app_id") and cfg.get("meta_app_secret"):
-                redir = request.url_root.rstrip("/") + "/auth/callback"
-                rt = requests.get(
-                    "https://graph.facebook.com/v22.0/oauth/access_token",
-                    params={
-                        "client_id": cfg["meta_app_id"],
-                        "client_secret": cfg["meta_app_secret"],
-                        "redirect_uri": redir,
-                        "code": code
-                    },
-                    timeout=15
-                )
-                if rt.status_code == 200 and rt.json().get("access_token"):
-                    _tpa.save_tri_config({"ig_access_token": rt.json()["access_token"]})
-        except Exception as _cb_e:
-            print(f"ℹ️ Meta OAuth callback note: {_cb_e}")
-    return redirect("/?meta_connected=1")
 
 
 @app.route("/api/studio_sessions_config", methods=["GET", "POST"])
@@ -3240,6 +3212,113 @@ def _start_exact_ist_session_dispatcher():
     threading.Thread(target=_dispatcher_loop, daemon=True).start()
 
 _start_exact_ist_session_dispatcher()
+
+@app.route("/auth/instagram_login", methods=["GET"])
+def auth_instagram_unified_login():
+    from flask import redirect
+    from urllib.parse import urlencode
+    import tri_platform_api as _tpa
+    cfg = _tpa.load_tri_config()
+    app_id = cfg.get("meta_app_id") or os.getenv("META_APP_ID") or "2384824119021890"
+    config_id = os.getenv("META_UNIFIED_CONFIG_ID", "1041174582338180").strip()
+    redirect_uri = "https://foji-ai-studio-mgs6.onrender.com/auth/callback"
+    qs = urlencode({
+        "client_id": app_id,
+        "redirect_uri": redirect_uri,
+        "config_id": config_id,
+        "response_type": "code",
+        "override_default_response_type": "true"
+    })
+    return redirect(f"https://www.facebook.com/v22.0/dialog/oauth?{qs}")
+
+
+@app.route("/auth/callback", methods=["GET"])
+def auth_instagram_unified_callback():
+    import requests as _req
+    from flask import request
+    import tri_platform_api as _tpa
+    err = request.args.get("error_message") or request.args.get("error_description") or request.args.get("error")
+    if err:
+        return (f"<h3>Meta Login Cancelled / Error</h3><pre>{err}</pre><a href='/'>Back to Studio</a>", 400)
+
+    code = (request.args.get("code") or "").strip()
+    if not code:
+        return ("<h3>No OAuth code received</h3><a href='/auth/instagram_login'>Try Again</a>", 400)
+
+    cfg = _tpa.load_tri_config()
+    app_id = cfg.get("meta_app_id") or os.getenv("META_APP_ID") or "2384824119021890"
+    app_sec = cfg.get("meta_app_secret") or os.getenv("META_APP_SECRET") or ""
+    redirect_uri = "https://foji-ai-studio-mgs6.onrender.com/auth/callback"
+    if not app_sec:
+        return ("<h3>META_APP_SECRET missing</h3><p>Add META_APP_SECRET in Render Environment or Connections tab first.</p>", 400)
+
+    short_tok = ""
+    ig_uid_from_oauth = ""
+    raw_exch = ""
+    r1 = _req.get(
+        "https://graph.facebook.com/v22.0/oauth/access_token",
+        params={"client_id": app_id, "client_secret": app_sec, "redirect_uri": redirect_uri, "code": code},
+        timeout=15
+    )
+    if r1.status_code == 200 and r1.json().get("access_token"):
+        short_tok = r1.json()["access_token"]
+    else:
+        raw_exch = r1.text[:250]
+        r1b = _req.post(
+            "https://api.instagram.com/oauth/access_token",
+            data={
+                "client_id": app_id,
+                "client_secret": app_sec,
+                "grant_type": "authorization_code",
+                "redirect_uri": redirect_uri,
+                "code": code
+            },
+            timeout=15
+        )
+        if r1b.status_code == 200 and r1b.json().get("access_token"):
+            short_tok = r1b.json()["access_token"]
+            ig_uid_from_oauth = str(r1b.json().get("user_id") or "")
+        else:
+            return (f"<h3>Token Exchange Failed</h3><pre>FB: {raw_exch}\nIG: {r1b.text[:250]}</pre><a href='/'>Back</a>", 400)
+
+    final_tok = short_tok
+    if short_tok.startswith("IG"):
+        r2 = _req.get(
+            "https://graph.instagram.com/access_token",
+            params={"grant_type": "ig_exchange_token", "client_secret": app_sec, "access_token": short_tok},
+            timeout=15
+        )
+        if r2.status_code == 200 and r2.json().get("access_token"):
+            final_tok = r2.json()["access_token"]
+    else:
+        r2 = _req.get(
+            "https://graph.facebook.com/v22.0/oauth/access_token",
+            params={"grant_type": "fb_exchange_token", "client_id": app_id, "client_secret": app_sec, "fb_exchange_token": short_tok},
+            timeout=15
+        )
+        if r2.status_code == 200 and r2.json().get("access_token"):
+            final_tok = r2.json()["access_token"]
+
+    upd = {"ig_access_token": final_tok, "ig_token_refreshed_at": int(time.time())}
+    if ig_uid_from_oauth:
+        upd["ig_account_id"] = ig_uid_from_oauth
+    _tpa.save_tri_config(upd)
+
+    live = _tpa.fetch_official_instagram_insights()
+    ok_badge = "✅ CONNECTED LIVE!" if live.get("connected") else "⚠️ TOKEN SAVED — CHECK DIAGNOSTIC BELOW"
+    return f"""
+    <html><body style="font-family:sans-serif;background:#0b1220;color:#e2e8f0;padding:24px;max-width:760px;margin:auto;">
+      <h2>{ok_badge}</h2>
+      <p><b>Status:</b> {live.get('source')} | <b>Username:</b> {live.get('username','-')} | <b>Followers:</b> {live.get('followers',0)} | <b>Reels:</b> {len(live.get('reels') or [])} | <b>Total Views:</b> {live.get('total_views',0)}</p>
+      <p><b>Note:</b> <code>{live.get('note','Live data fetched!')}</code></p>
+      <hr style="border-color:#334155">
+      <p><b>Permanent Step:</b> Copy this 60-day token and save it as <code>IG_OFFICIAL_ACCESS_TOKEN</code> in Render Dashboard &rarr; Environment so it survives redeploys:</p>
+      <textarea rows="4" style="width:100%;background:#1e293b;color:#38bdf8;padding:10px;border-radius:8px;">{final_tok}</textarea>
+      <p style="margin-top:18px;"><a href="/" style="background:#10b981;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">Open Foji AI Studio Dashboard</a></p>
+    </body></html>
+    """
+
+
 
 
 if __name__ == "__main__":
