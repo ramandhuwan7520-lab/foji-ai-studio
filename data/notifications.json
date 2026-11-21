@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795276413264",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 1: Border Ka Safed Jhoot | Cast: Makra + Meera (Emerald Green Velvet Haryanvi Daman-Ku...)",
+    "status": "info",
+    "time_str": "09:23 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795276413.2642276
+  },
+  {
     "id": "notif_1795276391935",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "08:35 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795230344.0909147
-  },
-  {
-    "id": "notif_1795230299279",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Barrack Wali Chori | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "08:34 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795230299.2795863
   }
 ]
