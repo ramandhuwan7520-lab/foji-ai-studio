@@ -1,6 +1,18 @@
 {
   "unapproved_videos": [
     {
+      "id": "vid_Video_066_DutyFatigue_Part_02_1121_162240.mp4",
+      "video_file": "Video_066_DutyFatigue_Part_02_1121_162240.mp4",
+      "title": "Duty, Fatigue & Working Reality — Part 2: Ration, Rucksack & Love",
+      "track_id": "duty_fatigue",
+      "part_number": 2,
+      "dialogue": "Bawli, boori dhote waqt tera khat mil gaya, ab thakaan kahan, ab toh bas muskurahat bachi hai!",
+      "shayari": "Pithu mein tera khat aur hathon mein ration ki bori,\nVardi ki duty ne bana di hamari ishq ki jodi.",
+      "caption": "🎖️ Part 2: Ration, Rucksack & Love | Duty, Fatigue & Working Reality\n\n🗣️ \"Bawli, boori dhote waqt tera khat mil gaya, ab thakaan kahan, ab toh bas muskurahat bachi hai!\"\n\n🔥 Pithu mein tera khat aur hathon mein ration ki bori,\nVardi ki duty ne bana di hamari ishq ki jodi.\n\n🎵 Vibe: Soulful Haryanvi flute melody with a soft dholak beat.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+      "created_at": "21 Nov 2026, 04:24 PM IST",
+      "status": "awaiting_approval"
+    },
+    {
       "id": "vid_Video_065_FunnyFauji_Part_02_1121_161953.mp4",
       "video_file": "Video_065_FunnyFauji_Part_02_1121_161953.mp4",
       "title": "Fauji Masti, Bakwas & Comedy — Part 2: Mooch Ka Swag & Meera Ki Chhed-Chhad",
@@ -1396,7 +1408,7 @@
       "ig_media_pk": "4035149926050632845"
     }
   ],
-  "updated_epoch": 1795258340.1693494,
+  "updated_epoch": 1795258498.0450983,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
