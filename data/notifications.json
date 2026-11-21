@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795269058418",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_069_ChhuttiGharWapsi_Part_01_1121_191346.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "07:20 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795269058.4188735
+  },
+  {
     "id": "notif_1795268754801",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "12:53 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795202593.512313
-  },
-  {
-    "id": "notif_1795202588375",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Create Video Not Selected on Account #1 — video generation limit) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "12:53 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795202588.375706
   }
 ]
