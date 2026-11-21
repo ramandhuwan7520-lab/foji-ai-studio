@@ -1,9 +1,9 @@
 {
   "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra + Meera (Deep Royal Blue Silk Patiala Suit with...))...",
-  "status": "active",
-  "progress": 45,
-  "updated_at": "12:26:24 AM",
-  "epoch": 1795287384.9412532
+  "step_title": "Limit Reached (Account #1)",
+  "sub_detail": "Create Video Not Active on Account #1 \u2014 Create video composer ('Describe your video') did not activate (Limit Full)",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "12:26:37 AM",
+  "epoch": 1795287397.06714
 }
