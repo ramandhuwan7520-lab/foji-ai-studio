@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "Video_072_CivilVsFauji_Part_01_1122_001949.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "12:22:35 AM",
-  "epoch": 1795287155.5443168
+  "step_num": 2,
+  "step_title": "Batch Video 2/3",
+  "sub_detail": "Starting fresh 3D story 2 of 3...",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "12:22:45 AM",
+  "epoch": 1795287165.5190697
 }
