@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795220453650",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Ke Chor aur Blanket Ke Chor | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "05:50 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795220453.6505787
+  },
+  {
     "id": "notif_1795214026080",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "12:01 AM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795026674.4293702
-  },
-  {
-    "id": "notif_1795026108303",
-    "type": "warning",
-    "title": "⏱️ 15-Minute Timeout (Part Saved for Next Run)",
-    "message": "15-Minute Render Timeout (15.0 min) reached for Video_063_ViralTrend_Part_01_1118_233544.mp4. Stopping this attempt to start the next video — Part #1 will be built next run!",
-    "status": "warning",
-    "time_str": "11:51 PM",
-    "date_str": "18 Nov 2026",
-    "timestamp": 1795026108.3034759
   }
 ]
