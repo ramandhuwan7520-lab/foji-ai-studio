@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
-  "sub_detail": "Rendered in 40s \u2014 hovering & downloading Video_070_FaujiDostiBarracks_Part_01_1121_212010.mp4...",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "09:22:13 PM",
-  "epoch": 1795276333.4726343
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "Video_070_FaujiDostiBarracks_Part_01_1121_212010.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "09:23:10 PM",
+  "epoch": 1795276390.6721005
 }
