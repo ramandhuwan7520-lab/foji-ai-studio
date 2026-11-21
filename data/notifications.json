@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795254620657",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 2: Voice Note Ka Siyappa | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
+    "status": "info",
+    "time_str": "03:20 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795254620.6575282
+  },
+  {
     "id": "notif_1795254616674",
     "type": "warning",
     "title": "Switching to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "11:22 PM",
     "date_str": "20 Nov 2026",
     "timestamp": 1795197179.1525002
-  },
-  {
-    "id": "notif_1795196577609",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Masti, Bakwas & Comedy — Part 1: Subah Ki Chai Aur Fauji Swag is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "11:12 PM",
-    "date_str": "20 Nov 2026",
-    "timestamp": 1795196577.6096945
   }
 ]
