@@ -1,5 +1,18 @@
 {
-  "unapproved_videos": [],
+  "unapproved_videos": [
+    {
+      "id": "vid_Video_063_DutyFatigue_Part_01_1121_131605.mp4",
+      "video_file": "Video_063_DutyFatigue_Part_01_1121_131605.mp4",
+      "title": "Duty, Fatigue & Working Reality — Part 1: Fatigue vs. Gulab Jamun",
+      "track_id": "duty_fatigue",
+      "part_number": 1,
+      "dialogue": "Laado, fatigue ne thaka diya par is garam jamun ne toh dimaag ki batti hi jala di!",
+      "shayari": "Vardi ki thakaan aur mess ka ye garam swaad,\nJab tu saath ho Laado, toh bhul jaun har thakaan ki yaad.",
+      "caption": "🎖️ Part 1: Fatigue vs. Gulab Jamun | Duty, Fatigue & Working Reality\n\n🗣️ \"Laado, fatigue ne thaka diya par is garam jamun ne toh dimaag ki batti hi jala di!\"\n\n🔥 Vardi ki thakaan aur mess ka ye garam swaad,\nJab tu saath ho Laado, toh bhul jaun har thakaan ki yaad.\n\n🎵 Vibe: Mast Magan soulful instrumental mix.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+      "created_at": "21 Nov 2026, 01:18 PM IST",
+      "status": "awaiting_approval"
+    }
+  ],
   "scheduled_posts": [
     {
       "id": "vid_Video_050_TrainingUstad_Part_05_1116_210700.mp4",
@@ -1349,7 +1362,7 @@
       "cloud_purged": true
     }
   ],
-  "updated_epoch": 1795244897.360935,
+  "updated_epoch": 1795247310.40966,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
