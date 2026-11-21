@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795269577952",
+    "type": "warning",
+    "title": "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)",
+    "message": "6-Minute Smart Render Timeout (5.4 min) reached for Video_069_ChhuttiGharWapsi_Part_01_1121_192158.mp4. Stopping this attempt to start the next video — Part #1 will be built next run!",
+    "status": "warning",
+    "time_str": "07:29 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795269577.9524589
+  },
+  {
     "id": "notif_1795269542408",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "03:58 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795213716.4695814
-  },
-  {
-    "id": "notif_1795213711787",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Create Video Not Selected on Account #1 — video generation limit) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "03:58 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795213711.7870994
   }
 ]
