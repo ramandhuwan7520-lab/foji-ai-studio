@@ -1,9 +1,9 @@
 {
   "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...))...",
-  "status": "active",
-  "progress": 45,
-  "updated_at": "07:22:29 PM",
-  "epoch": 1795269149.6738517
+  "step_title": "Limit Reached (Account #1)",
+  "sub_detail": "Create Video Not Active on Account #1 \u2014 Create video composer ('Describe your video') did not activate (Limit Full)",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "07:22:43 PM",
+  "epoch": 1795269163.4472697
 }
