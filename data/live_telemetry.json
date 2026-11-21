@@ -1,9 +1,9 @@
 {
-  "step_num": 5,
-  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
-  "sub_detail": "Gemini Veo is rendering Video_069_ChhuttiGharWapsi_Part_01_1121_211030.mp4...",
+  "step_num": 6,
+  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
+  "sub_detail": "Rendering Video_069_ChhuttiGharWapsi_Part_01_1121_211030.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
-  "progress": 68,
-  "updated_at": "09:11:40 PM",
-  "epoch": 1795275700.0129073
+  "progress": 75,
+  "updated_at": "09:11:50 PM",
+  "epoch": 1795275710.6185303
 }
