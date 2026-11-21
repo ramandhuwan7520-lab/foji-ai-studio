@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795220763190",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: 4 AM Ka Swag vs Sleepy Duniya | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
+    "status": "info",
+    "time_str": "05:56 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795220763.1907153
+  },
+  {
     "id": "notif_1795220507985",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "12:45 AM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795029309.884466
-  },
-  {
-    "id": "notif_1795029245594",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — Part 1: Fauji Jigra Aur Jaan Ki Yaad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:44 AM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795029245.5942676
   }
 ]
