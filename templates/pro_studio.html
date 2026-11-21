@@ -270,6 +270,41 @@
     @keyframes legSwingB { 0%,100%{transform:rotate(18deg);} 50%{transform:rotate(-16deg);} }
     @keyframes akRecoil { 0%,100%{transform:translateX(0) rotate(0deg);} 50%{transform:translateX(-2.2px) rotate(-2deg);} }
     @keyframes flashBlink { 0%,45%{opacity:1;transform:scale(1.15);} 55%,100%{opacity:0.15;transform:scale(0.65);} }
+    
+    /* Duty Stand Pad & Full-Pipeline AK-47 Flying Bullets */
+    .duty-stand-pad {
+      position: absolute; top: 68px; left: 5%; transform: translateX(-50%);
+      padding: 2px 7px; border-radius: 6px; font-size: 9px; font-weight: 900; letter-spacing: 0.6px;
+      background: rgba(16,185,129,0.18); border: 1px solid rgba(52,211,153,0.45); color: #34d399;
+      z-index: 2; white-space: nowrap;
+    }
+    .target-beacon {
+      position: absolute; top: 34px; right: 10px; font-size: 20px; z-index: 3;
+      filter: drop-shadow(0 0 10px rgba(245,158,11,0.7));
+    }
+    .bullet-stream {
+      display: none; position: absolute; top: 42px; left: 10%; right: 24px; height: 14px;
+      pointer-events: none; overflow: hidden; z-index: 4;
+    }
+    .bullet-stream.active { display: block; }
+    .bullet-round {
+      position: absolute; top: 5px; left: 0%; width: 32px; height: 3.5px; border-radius: 99px;
+      background: linear-gradient(90deg, rgba(249,115,22,0) 0%, #f59e0b 45%, #fde047 82%, #ffffff 100%);
+      box-shadow: 0 0 12px #fde047, 0 0 22px #f97316;
+      animation: flyBulletFull 0.52s linear infinite;
+      opacity: 0;
+    }
+    .bullet-round.b2 { animation-delay: 0.11s; top: 3px; }
+    .bullet-round.b3 { animation-delay: 0.22s; top: 6px; }
+    .bullet-round.b4 { animation-delay: 0.33s; top: 4px; }
+    .bullet-round.b5 { animation-delay: 0.43s; top: 7px; }
+    @keyframes flyBulletFull {
+      0%   { left: 0%; opacity: 0; transform: scaleX(0.6); }
+      8%   { opacity: 1; transform: scaleX(1.1); }
+      92%  { opacity: 1; transform: scaleX(1.25); }
+      100% { left: 97%; opacity: 0; transform: scaleX(0.4); }
+    }
+
     @keyframes tracerShot { 0%{opacity:1;transform:translateX(0);} 100%{opacity:0;transform:translateX(26px);} }
 
     .steps-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-top: 14px; text-align: center; }
@@ -573,6 +608,15 @@
           </div>
 
           <div class="runway-arena">
+            <div class="duty-stand-pad">🛡️ DUTY STAND</div>
+            <div class="target-beacon">🎯</div>
+            <div id="bullet-stream" class="bullet-stream">
+              <span class="bullet-round b1"></span>
+              <span class="bullet-round b2"></span>
+              <span class="bullet-round b3"></span>
+              <span class="bullet-round b4"></span>
+              <span class="bullet-round b5"></span>
+            </div>
             <!-- Detailed 3D-Shaded Foji Commando with AK-47 & Live Firing Muzzle Flash -->
             <div id="foji-commando" class="resting">
               <svg viewBox="0 0 92 84" width="78" height="74" xmlns="http://www.w3.org/2000/svg">
@@ -1160,10 +1204,24 @@
       else if (step >= 8 || st === 'completed') { tag.className = 'tag-up'; tag.textContent = 'MISSION DONE'; }
       else { tag.className = 'tag-up'; tag.textContent = 'RESTING'; }
 
-      document.getElementById('runway-fill').style.width = pct + '%';
       const cmd = document.getElementById('foji-commando');
-      cmd.style.left = Math.max(5, Math.min(95, pct || 5)) + '%';
-      cmd.className = running ? 'firing' : 'resting';
+      const bStream = document.getElementById('bullet-stream');
+      if (running) {
+        const livePos = Math.max(8, Math.min(86, pct || 12));
+        document.getElementById('runway-fill').style.width = pct + '%';
+        cmd.style.left = livePos + '%';
+        cmd.className = 'firing';
+        if (bStream) {
+          bStream.className = 'bullet-stream active';
+          bStream.style.left = `calc(${livePos}% + 34px)`;
+        }
+      } else {
+        // Pipeline finished, stopped, or errored -> Return Commando cleanly back to Duty Stand (5%)!
+        document.getElementById('runway-fill').style.width = (isDone ? '100%' : '0%');
+        cmd.style.left = '5%';
+        cmd.className = 'resting';
+        if (bStream) bStream.className = 'bullet-stream';
+      }
 
       document.querySelectorAll('#steps-row .st-item').forEach(n => {
         const i = Number(n.getAttribute('data-s'));
@@ -1488,12 +1546,12 @@
     async function refreshTri(force) {
       if (force) { showToast('🔄 Syncing live insights...', 'ok'); fetch('/api/universe/ig_analytics?force=1').catch(()=>{}); }
       try {
-        const d = await (await fetch('/api/tri_platform_insights')).json();
+        const d = await (await fetch('/api/tri_platform_insights' + (force ? '?force=1' : ''))).json();
         if (!d || !d.ok) return;
         document.getElementById('kpi-reach').textContent = Number(d.combined_views || 0).toLocaleString();
         const ig = d.instagram || {}, yt = d.youtube || {}, fb = d.facebook || {};
         document.getElementById('ins-ig-views').textContent = Number(ig.total_views || 0).toLocaleString() + ' Views';
-        document.getElementById('ins-ig-sub').textContent = `${ig.followers || 0} Followers • ${ig.media_count || 0} Reels • ❤️ ${Number(ig.total_likes||0).toLocaleString()} Likes`;
+        document.getElementById('ins-ig-sub').textContent = ig.connected ? `${ig.followers || 0} Followers • ${ig.media_count || 0} Reels • ❤️ ${Number(ig.total_likes||0).toLocaleString()} Likes (${ig.source || 'Live'})` : (ig.note || 'Connect Instagram Token in Connections');
         document.getElementById('ins-yt-views').textContent = yt.connected ? (Number(yt.total_views||0).toLocaleString() + ' Views') : 'Connect';
         document.getElementById('ins-yt-sub').textContent = yt.connected ? `${yt.subscribers||0} Subs • ${yt.video_count||0} Shorts` : 'Connect YouTube API in Connections';
         document.getElementById('ins-fb-views').textContent = fb.connected ? (Number(fb.total_views||0).toLocaleString() + ' Views') : 'Connect';

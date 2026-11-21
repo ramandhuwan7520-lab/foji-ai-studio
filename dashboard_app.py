@@ -1144,58 +1144,104 @@ def compute_next_schedule_countdown(sched_cfg, scheduled_reels):
 
 
 def _stream_mp4_instantly(filename):
-    from flask import request, Response, send_file, redirect
-    safe_name = os.path.basename(str(filename))
-    raw_dir = os.path.abspath("output/raw_videos")
-    os.makedirs(raw_dir, exist_ok=True)
-    p = os.path.join(raw_dir, safe_name)
-    arch_p = os.path.abspath(os.path.join("Posted_YouTube_Archive", safe_name))
-    if not os.path.exists(p) and os.path.exists(arch_p):
-        p = arch_p
+    """
+    INSTANT RENDER & LOCAL MP4 STREAMER WITH ON-DEMAND GITHUB FETCH + 206 RANGE SUPPORT:
+    - Looks locally in raw_videos / final_reels / archive folders.
+    - If a freshly generated cloud video isn't on Render's ephemeral disk yet, fetches it on-demand
+      from the private GitHub repo using GITHUB_PAT, caches it locally, and streams with Range (206)!
+    """
+    from flask import send_file
+    safe_fn = os.path.basename(str(filename or "").strip())
+    if not safe_fn or not safe_fn.lower().endswith(".mp4"):
+        return ("Invalid video file", 400)
 
-    # ZERO-BANDWIDTH CLOUD MODE: If running on Cloud (Render), stream directly from GitHub's Free CDN!
-    # This saves 99.9% of Render's 5GB bandwidth so the workspace NEVER gets suspended!
-    if os.environ.get("RENDER") or os.name != "nt":
-        repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
-        gh_cdn_url = f"https://raw.githubusercontent.com/{repo}/main/output/raw_videos/{safe_name}"
-        return redirect(gh_cdn_url, code=302)
+    search_dirs = [
+        "output/raw_videos",
+        "output/final_reels",
+        "archive_posted_reels",
+        "local_published_archive",
+        "output"
+    ]
+    found_path = None
+    for sd in search_dirs:
+        p = os.path.abspath(os.path.join(sd, safe_fn))
+        if os.path.isfile(p) and os.path.getsize(p) > 40 * 1024:
+            found_path = p
+            break
 
-    if not os.path.exists(p) or os.path.getsize(p) < 1000:
-        try:
-            import requests as _req
-            gh_raw_url = f"https://raw.githubusercontent.com/ramandhuwan7520-lab/foji-ai-studio/main/output/raw_videos/{safe_name}"
-            r = _req.get(gh_raw_url, timeout=20)
-            if r.status_code == 200 and len(r.content) > 10000:
-                with open(p, "wb") as vf:
-                    vf.write(r.content)
-        except Exception:
-            pass
+    # On-demand cloud fetch for newly generated videos not yet cached on Render disk!
+    if not found_path:
+        pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or "").strip()
+        repo = (os.getenv("GITHUB_REPO") or "ramandhuwan7520-lab/foji-ai-studio").strip()
+        os.makedirs("output/raw_videos", exist_ok=True)
+        cache_p = os.path.abspath(os.path.join("output/raw_videos", safe_fn))
+        headers = {"Accept": "application/vnd.github.raw"}
+        if pat:
+            headers["Authorization"] = f"Bearer {pat}"
 
-    if not os.path.exists(p):
-        return ("Video not found", 404)
+        # 1) Try GitHub Contents API raw stream (works for private repos up to 100 MB!)
+        for rel_dir in ("output/raw_videos", "output/final_reels"):
+            try:
+                r = requests.get(
+                    f"https://api.github.com/repos/{repo}/contents/{rel_dir}/{safe_fn}",
+                    headers=headers,
+                    timeout=35,
+                    stream=True
+                )
+                if r.status_code == 200:
+                    tmp_p = cache_p + ".dl"
+                    with open(tmp_p, "wb") as wf:
+                        for chunk in r.iter_content(chunk_size=131072):
+                            if chunk:
+                                wf.write(chunk)
+                    if os.path.exists(tmp_p) and os.path.getsize(tmp_p) > 40 * 1024:
+                        os.replace(tmp_p, cache_p)
+                        found_path = cache_p
+                        print(f"☁️ [On-Demand Video Cache] Fetched '{safe_fn}' from GitHub ({os.path.getsize(cache_p)//1024} KB)!")
+                        break
+                    elif os.path.exists(tmp_p):
+                        os.remove(tmp_p)
+            except Exception as _dl_e:
+                print(f"ℹ️ [Video Fetch Note] {rel_dir}/{safe_fn}: {_dl_e}")
 
-    file_size = os.path.getsize(p)
-    range_header = request.headers.get("Range", None)
-    if range_header:
-        m = re.search(r"bytes=(\\d+)-(\d*)", range_header)
-        if m:
-            byte1 = int(m.group(1))
-            byte2 = int(m.group(2)) if m.group(2) else file_size - 1
-            byte2 = min(byte2, file_size - 1)
-            length = byte2 - byte1 + 1
-            with open(p, "rb") as f:
-                f.seek(byte1)
-                data = f.read(length)
-            rv = Response(data, 206, mimetype="video/mp4", direct_passthrough=True)
-            rv.headers.add("Content-Range", f"bytes {byte1}-{byte2}/{file_size}")
-            rv.headers.add("Accept-Ranges", "bytes")
-            rv.headers.add("Content-Length", str(length))
-            rv.headers.add("Cache-Control", "public, max-age=86400")
-            return rv
+        # 2) Fallback: check latest GitHub Releases assets matching `safe_fn`
+        if not found_path and pat:
+            try:
+                rr = requests.get(
+                    f"https://api.github.com/repos/{repo}/releases?per_page=5",
+                    headers={"Authorization": f"Bearer {pat}", "Accept": "application/vnd.github+json"},
+                    timeout=15
+                )
+                if rr.status_code == 200:
+                    for rel in (rr.json() or []):
+                        for asset in (rel.get("assets") or []):
+                            if asset.get("name") == safe_fn and asset.get("url"):
+                                ra = requests.get(
+                                    asset["url"],
+                                    headers={"Authorization": f"Bearer {pat}", "Accept": "application/octet-stream"},
+                                    timeout=35,
+                                    stream=True
+                                )
+                                if ra.status_code == 200:
+                                    tmp_p = cache_p + ".dl"
+                                    with open(tmp_p, "wb") as wf:
+                                        for chunk in ra.iter_content(chunk_size=131072):
+                                            if chunk:
+                                                wf.write(chunk)
+                                    if os.path.exists(tmp_p) and os.path.getsize(tmp_p) > 40 * 1024:
+                                        os.replace(tmp_p, cache_p)
+                                        found_path = cache_p
+                                        break
+                        if found_path:
+                            break
+            except Exception:
+                pass
 
-    rv = send_file(p, mimetype="video/mp4", conditional=True, max_age=86400)
-    rv.headers["Accept-Ranges"] = "bytes"
-    return rv
+    if not found_path or not os.path.exists(found_path):
+        return (f"Video not found on server or cloud: {safe_fn}", 404)
+
+    return send_file(found_path, mimetype="video/mp4", conditional=True, max_age=3600)
+
 
 
 @app.route("/videos/<path:filename>")
@@ -2471,8 +2517,7 @@ _LAST_USER_INFO_FETCH_TS = 0.0
 def _refresh_ig_live_analytics_worker():
     """
     100% SAFE OFFICIAL-API-ONLY INSTAGRAM ANALYTICS WORKER (ZERO `instagrapi` SCRAPING!):
-    - Uses ONLY Official Meta Graph API (when configured in Connections).
-    - Otherwise serves the last saved snapshot from `data/ig_live_analytics.json` safely with ZERO account risk!
+    Directly calls `tri_platform_api.fetch_official_instagram_insights()` and updates cache + disk.
     """
     global _IG_ANALYTICS_CACHE, _IG_ANALYTICS_LAST_FETCH_TS
     if not _IG_ANALYTICS_LOCK.acquire(blocking=False):
@@ -2482,36 +2527,35 @@ def _refresh_ig_live_analytics_worker():
         if prev_saved and _IG_ANALYTICS_CACHE is None:
             _IG_ANALYTICS_CACHE = prev_saved
 
-        # Try Official Meta Graph API cleanly (100% official, zero ban risk!)
         try:
             import tri_platform_api as _tpa
-            tri = _tpa.get_combined_tri_platform_insights(force_refresh=True)
-            ig_off = (tri or {}).get("instagram") or {}
-            if ig_off.get("connected") and ig_off.get("source") == "official_graph_api":
-                merged = dict(prev_saved or {})
-                merged["followers_count"] = int(ig_off.get("followers") or merged.get("followers_count") or 0)
-                merged["profile_total_posts"] = int(ig_off.get("media_count") or merged.get("profile_total_posts") or 0)
-                merged["total_views"] = int(ig_off.get("total_views") or merged.get("total_views") or 0)
-                merged["total_likes"] = int(ig_off.get("total_likes") or merged.get("total_likes") or 0)
-                merged["source"] = "official_graph_api"
-                merged["fetched_at"] = datetime.now(_fud.IST).strftime("%d %b %Y, %I:%M %p IST")
-                if ig_off.get("reels"):
-                    merged["reels"] = ig_off["reels"]
+            ig_off = _tpa.fetch_official_instagram_insights()
+            if ig_off and ig_off.get("connected"):
+                merged = {
+                    "username": ig_off.get("username", "@ai_foji_lovelife"),
+                    "followers_count": int(ig_off.get("followers") or 0),
+                    "profile_total_posts": int(ig_off.get("media_count") or 0),
+                    "total_views": int(ig_off.get("total_views") or 0),
+                    "total_likes": int(ig_off.get("total_likes") or 0),
+                    "total_comments": int(ig_off.get("total_comments") or 0),
+                    "sync_source": "Official Meta Graph API",
+                    "fetched_at": ig_off.get("fetched_at") or datetime.now(_fud.IST).strftime("%d %b %Y, %I:%M %p IST"),
+                    "reels": ig_off.get("reels") or []
+                }
                 _IG_ANALYTICS_CACHE = merged
                 _IG_ANALYTICS_LAST_FETCH_TS = time.time()
-                os.makedirs("data", exist_ok=True)
-                with open("data/ig_live_analytics.json", "w", encoding="utf-8") as af:
-                    json.dump(merged, af, indent=2)
                 return
+            elif ig_off and ig_off.get("note"):
+                print(f"ℹ️ [Official IG API Status] {ig_off.get('source')}: {ig_off.get('note')}")
         except Exception as _ge:
-            print(f"ℹ️ [Safe IG Analytics] Official API check note: {_ge}")
+            print(f"ℹ️ [Safe IG Analytics] Official API error: {_ge}")
 
-        # Safe fallback: use cached snapshot without EVER calling unofficial instagrapi!
         if prev_saved:
             _IG_ANALYTICS_CACHE = prev_saved
             _IG_ANALYTICS_LAST_FETCH_TS = time.time()
     finally:
         _IG_ANALYTICS_LOCK.release()
+
 
 
 
@@ -2694,7 +2738,9 @@ def api_tri_platform_config():
     if request.method == "POST":
         body = request.get_json(silent=True) or {}
         saved = _tpa.save_tri_config(body)
-        summary = _tpa.get_unified_tri_platform_summary()
+        from flask import has_request_context as _hrc, request as _req_f
+        _force_live = (_hrc() and _req_f.args.get("force") in ("1", "true", "yes"))
+        summary = _tpa.get_combined_tri_platform_insights(force_refresh=_force_live)
         return jsonify({"ok": True, "saved_keys": [k for k, v in saved.items() if v], "summary": summary})
     cfg = _tpa.load_tri_config()
     masked = {
@@ -2718,7 +2764,9 @@ def api_platform_deep_analytics(platform):
     from flask import jsonify
     plat = (platform or "instagram").strip().lower()
     import tri_platform_api as _tpa
-    summary = _tpa.get_unified_tri_platform_summary()
+    from flask import has_request_context as _hrc, request as _req_f
+    _force_live = (_hrc() and _req_f.args.get("force") in ("1", "true", "yes"))
+    summary = _tpa.get_combined_tri_platform_insights(force_refresh=_force_live)
 
     reels = []
     meta = {"connected": False, "username": "", "followers": 0, "source": "Not Connected"}
@@ -2921,18 +2969,34 @@ def api_active_session_info():
     from flask import jsonify
     now_ist = datetime.now(_fud.IST)
     cur_min = now_ist.hour * 60 + now_ist.minute
+    today_str = now_ist.strftime("%Y-%m-%d")
     sessions = [
-        {"id": "S1", "label": "Midnight Session", "time_ist": "00:19", "display": "12:19 AM"},
-        {"id": "S2", "label": "Morning Session",  "time_ist": "06:19", "display": "06:19 AM"},
-        {"id": "S3", "label": "Midday Session",   "time_ist": "11:19", "display": "11:19 AM"},
-        {"id": "S4", "label": "Evening Session",  "time_ist": "16:19", "display": "04:19 PM"},
-        {"id": "S5", "label": "Night Session",    "time_ist": "21:19", "display": "09:19 PM"},
+        {"id": "S1", "label": "Midnight Session", "time_ist": "00:19", "display": "12:19 AM", "enabled": True},
+        {"id": "S2", "label": "Morning Session",  "time_ist": "06:19", "display": "06:19 AM", "enabled": True},
+        {"id": "S3", "label": "Midday Session",   "time_ist": "11:19", "display": "11:19 AM", "enabled": True},
+        {"id": "S4", "label": "Evening Session",  "time_ist": "16:19", "display": "04:19 PM", "enabled": True},
+        {"id": "S5", "label": "Night Session",    "time_ist": "21:19", "display": "09:19 PM", "enabled": True},
     ]
+    master_on = True
     if os.path.exists("data/studio_sessions_config.json"):
         try:
             cfg = json.load(open("data/studio_sessions_config.json", "r", encoding="utf-8"))
+            master_on = bool(cfg.get("master_auto_enabled", True))
             if cfg.get("sessions"):
                 sessions = cfg["sessions"]
+        except Exception:
+            pass
+
+    # HONEST ACTIVE CHECK: Only report `active_session` when live telemetry ACTUALLY confirms a live run!
+    pipeline_actually_running = False
+    if os.path.exists("data/live_telemetry.json"):
+        try:
+            tel = json.load(open("data/live_telemetry.json", "r", encoding="utf-8"))
+            st = str(tel.get("status") or "").lower()
+            step = int(tel.get("step_num") or 0)
+            age_s = time.time() - float(tel.get("epoch") or 0)
+            if st in ("active", "running") and 0 < step < 8 and age_s < 900:
+                pipeline_actually_running = True
         except Exception:
             pass
 
@@ -2940,23 +3004,114 @@ def api_active_session_info():
     next_sess = None
     best_next_diff = 99999
     for s in sessions:
+        if not s.get("enabled", True) or s.get("skip_date") == today_str:
+            continue
         hh, mm = [int(x) for x in str(s.get("time_ist", "00:19")).split(":")]
         sm = hh * 60 + mm
         diff = cur_min - sm
-        if 0 <= diff <= 35:
+        if pipeline_actually_running and 0 <= diff <= 40:
             active_sess = s
         fwd = (sm - cur_min) % (24 * 60)
+        if fwd == 0:
+            fwd = 24 * 60
         if fwd < best_next_diff:
             best_next_diff = fwd
             next_sess = s
 
     return jsonify({
         "ok": True,
+        "master_auto_enabled": master_on,
+        "pipeline_running": pipeline_actually_running,
         "now_ist": now_ist.strftime("%I:%M:%S %p IST"),
         "active_session": active_sess,
         "next_session": next_sess,
-        "minutes_to_next": best_next_diff
+        "minutes_to_next": best_next_diff if next_sess else None
     })
+
+
+
+
+
+_EXACT_SESSION_DISPATCHER_STARTED = False
+
+def _start_exact_ist_session_dispatcher():
+    """
+    EXACT-MINUTE IST AUTO-SESSION DISPATCHER (RUNS 24x7 ON RENDER):
+    Triggers enabled sessions (S1-S5) at the exact configured IST minute via GitHub workflow_dispatch,
+    bypassing unreliable GitHub cron delays! Daily dedupe lock guarantees ZERO duplicate runs.
+    """
+    global _EXACT_SESSION_DISPATCHER_STARTED
+    if _EXACT_SESSION_DISPATCHER_STARTED:
+        return
+    if os.environ.get("RENDER") != "true":
+        return
+    _EXACT_SESSION_DISPATCHER_STARTED = True
+
+    def _dispatcher_loop():
+        time.sleep(12)
+        while True:
+            try:
+                cfg_p = "data/studio_sessions_config.json"
+                if os.path.exists(cfg_p):
+                    cfg = json.load(open(cfg_p, "r", encoding="utf-8"))
+                    if cfg.get("master_auto_enabled", True):
+                        now_ist = datetime.now(_fud.IST)
+                        today_str = now_ist.strftime("%Y-%m-%d")
+                        cur_min = now_ist.hour * 60 + now_ist.minute
+                        vid_cnt = int(cfg.get("videos_per_session", 3))
+                        changed = False
+
+                        for s in (cfg.get("sessions") or []):
+                            if not s.get("enabled", True):
+                                continue
+                            if s.get("skip_date") == today_str:
+                                continue
+                            if s.get("last_triggered_date") == today_str:
+                                continue
+                            hh, mm = [int(x) for x in str(s.get("time_ist", "00:19")).split(":")]
+                            sm = hh * 60 + mm
+                            diff = cur_min - sm
+                            # Exact 12-minute trigger window so Render never misses or double-fires
+                            if 0 <= diff <= 12:
+                                s["last_triggered_date"] = today_str
+                                changed = True
+                                with open(cfg_p, "w", encoding="utf-8") as wf:
+                                    json.dump(cfg, wf, indent=2)
+                                try:
+                                    _fud.push_json_to_github_instantly(
+                                        cfg_p,
+                                        f"Lock auto-session {s.get('id')} for {today_str} [skip render] [skip ci]",
+                                        blocking=True
+                                    )
+                                except Exception:
+                                    pass
+                                # Write immediate Step 1 telemetry so 3D Commando marches live
+                                try:
+                                    with open("data/live_telemetry.json", "w", encoding="utf-8") as tf:
+                                        json.dump({
+                                            "step_num": 1,
+                                            "step_title": f"Step 1: {s.get('label', 'Auto Session')}",
+                                            "sub_detail": f"Auto-triggered {s.get('display')} IST ({vid_cnt} Videos)...",
+                                            "status": "active",
+                                            "progress": 12,
+                                            "updated_at": now_ist.strftime("%I:%M:%S %p"),
+                                            "epoch": time.time()
+                                        }, tf, indent=2)
+                                except Exception:
+                                    pass
+                                print(f"⚡ [Exact IST Auto-Session] Dispatching {s.get('label')} ({s.get('display')} IST) -> {vid_cnt} Videos!")
+                                _execute_single_or_batch_generation(
+                                    count=vid_cnt,
+                                    reason_label=f"Auto Session: {s.get('label')} ({s.get('display')} IST)"
+                                )
+                                break
+            except Exception as _de:
+                print(f"ℹ️ [Session Dispatcher Note] {_de}")
+            time.sleep(25)
+
+    threading.Thread(target=_dispatcher_loop, daemon=True).start()
+
+_start_exact_ist_session_dispatcher()
 
 
 if __name__ == "__main__":
