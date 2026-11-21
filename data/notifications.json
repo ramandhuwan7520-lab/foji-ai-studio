@@ -1,13 +1,73 @@
 [
   {
-    "id": "notif_1795247403773",
-    "type": "success",
-    "title": "📸 Reel Posted on Instagram!",
-    "message": "Video_063_DutyFatigue_Part_01_1121_131605.mp4 is now LIVE on @ai_foji_lovelife!",
-    "status": "success",
+    "id": "notif_1795247443381",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_064_AgniveerReality_Part_01_1121_131847.mp4 from Gemini...",
+    "status": "info",
     "time_str": "01:20 PM",
     "date_str": "21 Nov 2026",
-    "timestamp": 1795247403.7731457
+    "timestamp": 1795247443.381344
+  },
+  {
+    "id": "notif_1795247383737",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Agniveer Reality & Pride — Part 1: Mess Ka Meetha Shagun is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "01:19 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795247383.7378445
+  },
+  {
+    "id": "notif_1795247329691",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Agniveer Reality & Pride — Part 1: Mess Ka Meetha Shagun | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
+    "status": "info",
+    "time_str": "01:18 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795247329.6911683
+  },
+  {
+    "id": "notif_1795247311623",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Duty, Fatigue & Working Reality — Part 1: Fatigue vs. Gulab Jamun (Video_063_DutyFatigue_Part_01_1121_131605.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "01:18 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795247311.623517
+  },
+  {
+    "id": "notif_1795247286608",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_063_DutyFatigue_Part_01_1121_131605.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "01:18 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795247286.6081455
+  },
+  {
+    "id": "notif_1795247230850",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Duty, Fatigue & Working Reality — Part 1: Fatigue vs. Gulab Jamun is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "01:17 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795247230.8503306
+  },
+  {
+    "id": "notif_1795247167647",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Duty, Fatigue & Working Reality — Part 1: Fatigue vs. Gulab Jamun | Cast: Makra + Meera (Ivory White & Gold Festive Sharara Sui...)",
+    "status": "info",
+    "time_str": "01:16 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795247167.647673
   },
   {
     "id": "notif_1795244451703_117",
