@@ -726,6 +726,17 @@
       "ig_media_pk": "4025929349658162124",
       "published_epoch": 1794397811.0293522,
       "cloud_purged": true
+    },
+    {
+      "id": "pub_1795247403391",
+      "video_file": "Video_063_DutyFatigue_Part_01_1121_131605.mp4",
+      "title": "Foji 3D Reel (Video_063_DutyFatigue_Part_01_1121_131605.mp4)",
+      "dialogue": "Published to Instagram (@ai_foji_lovelife)",
+      "caption": "🎖️ Foji & Fojan 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife #agniveer #armyreels",
+      "status": "published",
+      "published_at": "21 Nov 2026, 01:20 PM IST",
+      "published_epoch": 1795247403.3913407,
+      "ig_media_pk": "4035149926050632845"
     }
   ],
   "published_history": [
@@ -1347,9 +1358,20 @@
       "ig_media_pk": "4025929349658162124",
       "published_epoch": 1794397811.0293522,
       "cloud_purged": true
+    },
+    {
+      "id": "pub_1795247403391",
+      "video_file": "Video_063_DutyFatigue_Part_01_1121_131605.mp4",
+      "title": "Foji 3D Reel (Video_063_DutyFatigue_Part_01_1121_131605.mp4)",
+      "dialogue": "Published to Instagram (@ai_foji_lovelife)",
+      "caption": "🎖️ Foji & Fojan 3D Story | Follow @ai_foji_lovelife 🇮🇳🔥 #indianarmy #faujilife #agniveer #armyreels",
+      "status": "published",
+      "published_at": "21 Nov 2026, 01:20 PM IST",
+      "published_epoch": 1795247403.3913407,
+      "ig_media_pk": "4035149926050632845"
     }
   ],
-  "updated_epoch": 1795247322.7663536,
+  "updated_epoch": 1795247403.3933158,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
