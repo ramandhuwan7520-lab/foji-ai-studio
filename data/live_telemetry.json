@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (5.9 min)",
-  "sub_detail": "Gemini Veo rendering Video_071_BorderNightReality_Part_01_1121_212329.mp4... (352s elapsed)",
-  "status": "active",
-  "progress": 92,
-  "updated_at": "09:30:31 PM",
-  "epoch": 1795276831.6127276
+  "step_title": "\u26a0\ufe0f Gemini Video Refused/Error",
+  "sub_detail": "Gemini refused/errored early (357s): I couldn't do that because I'm getting a lot of requests right now. Please try again later.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "09:30:40 PM",
+  "epoch": 1795276840.69427
 }
