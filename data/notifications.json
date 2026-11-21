@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795287156604",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 1: Signal Ka Sangharsh (Video_072_CivilVsFauji_Part_01_1122_001949.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "12:22 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795287156.6042633
+  },
+  {
     "id": "notif_1795287116614",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "01:20 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795247443.381344
-  },
-  {
-    "id": "notif_1795247383737",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Agniveer Reality & Pride — Part 1: Mess Ka Meetha Shagun is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "01:19 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795247383.7378445
   }
 ]
