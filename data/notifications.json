@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795277009602",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 1: Pyar Ka Safed Jhoot | Cast: Makra + Meera (Emerald Green Velvet Haryanvi Daman-Ku...)",
+    "status": "info",
+    "time_str": "09:33 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795277009.6023443
+  },
+  {
     "id": "notif_1795276973895",
     "type": "error",
     "title": "⚠️ Gemini Video Error",
@@ -788,15 +798,5 @@
     "time_str": "12:30 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795244451.7037606
-  },
-  {
-    "id": "notif_1795237083182",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Masti & Meethi Call (Video_063_FunnyFauji_Part_01_1121_102545.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "10:28 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795237083.1822207
   }
 ]
