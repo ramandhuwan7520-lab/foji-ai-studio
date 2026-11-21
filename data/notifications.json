@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795286992043",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Civil Duniya vs Fauji Asli Hakikat — Part 1: Signal Ka Sangharsh | Cast: Makra + Meera (Pastel Peach & Mint Chikankari Anarkal...)",
+    "status": "info",
+    "time_str": "12:19 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795286992.0430982
+  },
+  {
     "id": "notif_1795277194050",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "01:18 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795247311.623517
-  },
-  {
-    "id": "notif_1795247286608",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_063_DutyFatigue_Part_01_1121_131605.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "01:18 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795247286.6081455
   }
 ]
