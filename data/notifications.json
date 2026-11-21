@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795258473449",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_066_DutyFatigue_Part_02_1121_162240.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "04:24 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795258473.4498155
+  },
+  {
     "id": "notif_1795258421356",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
