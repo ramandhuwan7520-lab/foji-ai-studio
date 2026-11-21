@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (4.2 min)",
-  "sub_detail": "Gemini Veo rendering Video_069_ChhuttiGharWapsi_Part_01_1121_192158.mp4... (249s elapsed)",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 284s \u2014 hovering & downloading Video_069_ChhuttiGharWapsi_Part_01_1121_192158.mp4...",
   "status": "active",
-  "progress": 89,
-  "updated_at": "07:28:23 PM",
-  "epoch": 1795269503.0237327
+  "progress": 86,
+  "updated_at": "07:28:56 PM",
+  "epoch": 1795269536.405719
 }
