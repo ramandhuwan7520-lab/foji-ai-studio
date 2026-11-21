@@ -1,6 +1,18 @@
 {
   "unapproved_videos": [
     {
+      "id": "vid_Video_072_CivilVsFauji_Part_01_1122_001949.mp4",
+      "video_file": "Video_072_CivilVsFauji_Part_01_1122_001949.mp4",
+      "title": "Civil Duniya vs Fauji Asli Hakikat — Part 1: Signal Ka Sangharsh",
+      "track_id": "civil_vs_fauji",
+      "part_number": 1,
+      "dialogue": "Bawli, duniya BTS ke 'Namaste' pe naach rahi hai, aur tera yo fauji ek dandi signal khatir pahad chadh gaya!",
+      "shayari": "Wi-Fi aali duniya mein hum ek dandi signal dhoondhte hain, \nVardi ki khatir hum har roz maut ko peeche chhodte hain.",
+      "caption": "🎖️ Part 1: Signal Ka Sangharsh | Civil Duniya vs Fauji Asli Hakikat\n\n🗣️ \"Bawli, duniya BTS ke 'Namaste' pe naach rahi hai, aur tera yo fauji ek dandi signal khatir pahad chadh gaya!\"\n\n🔥 Wi-Fi aali duniya mein hum ek dandi signal dhoondhte hain, \nVardi ki khatir hum har roz maut ko peeche chhodte hain.\n\n🎵 Vibe: Tu thodi der aur thahar ja... (Slowed + Reverb)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#faujihakikat #armylove #indianarmy #btsarmyindia #haryanvishayar #civilvsservicelife #viralreels #faujiswag",
+      "created_at": "22 Nov 2026, 12:22 AM IST",
+      "status": "awaiting_approval"
+    },
+    {
       "id": "vid_Video_071_BorderNightReality_Part_01_1121_213325.mp4",
       "video_file": "Video_071_BorderNightReality_Part_01_1121_213325.mp4",
       "title": "LOC Border Raat Ki Asli Pehredari — Part 1: Pyar Ka Safed Jhoot",
@@ -1514,7 +1526,7 @@
       "ig_media_pk": "18117301127149408"
     }
   ],
-  "updated_epoch": 1795277189.8881166,
+  "updated_epoch": 1795287153.4485698,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
