@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795258499288",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Duty, Fatigue & Working Reality — Part 2: Ration, Rucksack & Love (Video_066_DutyFatigue_Part_02_1121_162240.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "04:24 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795258499.28845
+  },
+  {
     "id": "notif_1795258473449",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
