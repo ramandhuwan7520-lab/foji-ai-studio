@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795287057502",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 1: Signal Ka Sangharsh is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:20 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795287057.5025516
+  },
+  {
     "id": "notif_1795286992043",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "01:18 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795247329.6911683
-  },
-  {
-    "id": "notif_1795247311623",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Duty, Fatigue & Working Reality — Part 1: Fatigue vs. Gulab Jamun (Video_063_DutyFatigue_Part_01_1121_131605.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "01:18 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795247311.623517
   }
 ]
