@@ -1,22 +1,26 @@
 {
-  "love_meera": {
+  "training_ustad": {
     "completed_part": 6,
     "next_part": 7
   },
-  "training_ustad": {
-    "completed_part": 5,
-    "next_part": 6
-  },
   "unit_ragda": {
-    "completed_part": 5,
-    "next_part": 6
+    "completed_part": 6,
+    "next_part": 7
   },
-  "fauji_masti": {
-    "completed_part": 5,
-    "next_part": 6
+  "funny_fauji": {
+    "completed_part": 1,
+    "next_part": 2
   },
-  "border_duty": {
-    "completed_part": 4,
-    "next_part": 5
+  "duty_fatigue": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "agniveer_reality": {
+    "completed_part": 0,
+    "next_part": 1
+  },
+  "love_meera": {
+    "completed_part": 6,
+    "next_part": 7
   }
 }
