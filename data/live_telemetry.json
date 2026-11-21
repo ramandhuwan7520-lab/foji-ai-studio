@@ -1,9 +1,9 @@
 {
-  "step_num": 3,
-  "step_title": "Limit Reached (Account #1)",
-  "sub_detail": "Create Video Not Active on Account #1 \u2014 Create video composer ('Describe your video') did not activate (Limit Full)",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "07:14:35 PM",
-  "epoch": 1795268675.5017986
+  "step_num": 2,
+  "step_title": "Switching to Account #2",
+  "sub_detail": "Account #1 limit/error (Create Video Not Active on Account #1 \u2014 Create video composer ('Describe your video') did not a) \u2014 switching to Account #2!",
+  "status": "active",
+  "progress": 22,
+  "updated_at": "07:14:38 PM",
+  "epoch": 1795268678.3999772
 }
