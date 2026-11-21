@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795276214764",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 1: Nashik Ka Viral Jhatka | Cast: Makra + Meera (Mustard Yellow Rajasthani Bandhani Kur...)",
+    "status": "info",
+    "time_str": "09:20 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795276214.7645848
+  },
+  {
     "id": "notif_1795275795800",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "06:02 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795221169.1352553
-  },
-  {
-    "id": "notif_1795221132805",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Ki Meethas | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "06:02 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795221132.8052406
   }
 ]
