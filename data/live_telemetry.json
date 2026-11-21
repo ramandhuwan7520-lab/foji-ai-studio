@@ -1,8 +1,9 @@
 {
-  "step_num": 0,
-  "step_title": "STANDBY",
-  "sub_detail": "Generation stopped by user \u2014 Foji back on guard duty",
-  "status": "idle",
-  "progress": 0,
-  "epoch": 1795252628.1898346
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud Studio (1x)",
+  "sub_detail": "Dashboard Manual Trigger (1 Video) \u2014 Dispatching 1 video(s) to GitHub Actions...",
+  "status": "active",
+  "progress": 15,
+  "updated_at": "03:18:44 PM",
+  "epoch": 1795254524.9805717
 }
