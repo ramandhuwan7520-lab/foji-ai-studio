@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795272166998",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
+    "status": "error",
+    "time_str": "08:12 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795272166.9984388
+  },
+  {
     "id": "notif_1795272119137",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "05:51 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795220502.108218
-  },
-  {
-    "id": "notif_1795220453650",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Ke Chor aur Blanket Ke Chor | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "05:50 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795220453.6505787
   }
 ]
