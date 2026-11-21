@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Step 1: Launching Cloud Studio (1x)",
-  "sub_detail": "Dashboard Manual Trigger (1 Video) \u2014 Dispatching 1 video(s) to GitHub Actions...",
+  "step_num": 2,
+  "step_title": "Step 2: Cloud Batch Running (1x)",
+  "sub_detail": "GitHub Actions generating 1 fresh 3D video(s)...",
   "status": "active",
-  "progress": 15,
-  "updated_at": "06:02:42 PM",
-  "epoch": 1795264362.9540966
+  "progress": 24,
+  "updated_at": "06:02:46 PM",
+  "epoch": 1795264366.3983479
 }
