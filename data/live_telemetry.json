@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "\u26a0\ufe0f Gemini Video Refused/Error",
-  "sub_detail": "Gemini refused/errored early (357s): I couldn't do that because I'm getting a lot of requests right now. Please try again later.",
-  "status": "error",
-  "progress": 0,
-  "updated_at": "09:30:40 PM",
-  "epoch": 1795276840.69427
+  "step_num": 2,
+  "step_title": "Switching to Account #2",
+  "sub_detail": "Account #1 limit/error (Gemini refused/errored early (357s): I couldn't do that because I'm getting a lot of requests r) \u2014 switching to Account #2!",
+  "status": "active",
+  "progress": 22,
+  "updated_at": "09:30:43 PM",
+  "epoch": 1795276843.2874246
 }
