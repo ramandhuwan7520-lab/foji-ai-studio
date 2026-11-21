@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795287220136",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "12:23 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795287220.1360917
+  },
+  {
     "id": "notif_1795287217997",
     "type": "error",
     "title": "Create Video Limit (Account #1)",
@@ -788,15 +798,5 @@
     "time_str": "01:22 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795247528.427334
-  },
-  {
-    "id": "notif_1795247487100",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 2: 4 AM Swag & Barrack Masti | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
-    "status": "info",
-    "time_str": "01:21 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795247487.1009963
   }
 ]
