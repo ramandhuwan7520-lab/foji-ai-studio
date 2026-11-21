@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795287223919",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 1: Signal Ka Sangharsh | Cast: Makra + Meera (Deep Royal Blue Silk Patiala Suit with...)",
+    "status": "info",
+    "time_str": "12:23 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795287223.9196615
+  },
+  {
     "id": "notif_1795287220136",
     "type": "warning",
     "title": "Switching to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "01:22 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795247530.717371
-  },
-  {
-    "id": "notif_1795247528427",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
-    "status": "error",
-    "time_str": "01:22 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795247528.427334
   }
 ]
