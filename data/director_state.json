@@ -1,6 +1,6 @@
 {
   "active_mode": "auto_rotate",
-  "selected_track_id": "funny_fauji",
+  "selected_track_id": "duty_fatigue",
   "last_rotated_index": 1,
   "custom_idea": "",
   "bgm_volume": 20,
@@ -13,5 +13,5 @@
   ],
   "night_batch_time": "02:30",
   "night_batch_count": 3,
-  "updated_epoch": 1795236927.575895
+  "updated_epoch": 1795247159.7619562
 }
