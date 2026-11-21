@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795269651025",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
+    "status": "error",
+    "time_str": "07:30 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795269651.0250325
+  },
+  {
     "id": "notif_1795269606789",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "04:03 AM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795214018.1301866
-  },
-  {
-    "id": "notif_1795213979050",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 1: Ustad Ka Ragda Aur Gulab Jamun | Cast: Makra + Meera (Magenta Pink Floral Printed Georgette ...)",
-    "status": "info",
-    "time_str": "04:02 AM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795213979.050891
   }
 ]
