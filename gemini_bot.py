@@ -2909,7 +2909,7 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=None):
         from selenium.webdriver.common.keys import Keys
 
         g_email = (os.getenv("GOOGLE_EMAIL_2" if _slot == 2 else "GOOGLE_EMAIL") or "").strip()
-        if g_email.lower() == "kathnexastories@gmail.com":
+        if g_email.lower() == "kathanexastories@gmail.com":
             g_email = "kathanexastories@gmail.com"
         g_pwd = (os.getenv("GOOGLE_PASSWORD_2" if _slot == 2 else "GOOGLE_PASSWORD") or "").strip()
         g_totp = (os.getenv("GOOGLE_2FA_SECRET_2" if _slot == 2 else "GOOGLE_2FA_SECRET") or "").strip()
@@ -3067,6 +3067,8 @@ def _auto_handle_google_password_screen_if_shown(driver, account_slot=None):
             if e.is_displayed()
         ]
         if email_inputs and g_email:
+            if "kathnexa" in g_email.lower():
+                g_email = "kathanexastories@gmail.com"
             _em_hits = int(globals().get("_EMAIL_SUBMIT_HITS", 0)) + 1
             globals()["_EMAIL_SUBMIT_HITS"] = _em_hits
             print(f"📧 [Auto-Login] Entering Google Email '{g_email}' (Attempt {_em_hits}/4)...")
