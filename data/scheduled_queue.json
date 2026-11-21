@@ -1,18 +1,5 @@
 {
-  "unapproved_videos": [
-    {
-      "id": "vid_Video_063_FunnyFauji_Part_01_1121_102545.mp4",
-      "video_file": "Video_063_FunnyFauji_Part_01_1121_102545.mp4",
-      "title": "Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Masti & Meethi Call",
-      "track_id": "funny_fauji",
-      "part_number": 1,
-      "dialogue": "Bawli, ye chori ka jamun aur teri baatein hi mess ke khane ko ghar jaisa banati hain!",
-      "shayari": "Vardi ki shaan aur tera pyar, dono hi meri jaan hain,\nEk desh ka garv hai, aur dusri mera poora jahaan hai.",
-      "caption": "🎖️ Part 1: Mess Hall Masti & Meethi Call | Fauji Masti, Bakwas & Comedy\n\n🗣️ \"Bawli, ye chori ka jamun aur teri baatein hi mess ke khane ko ghar jaisa banati hain!\"\n\n🔥 Vardi ki shaan aur tera pyar, dono hi meri jaan hain,\nEk desh ka garv hai, aur dusri mera poora jahaan hai.\n\n🎵 Vibe: Desi Haryanvi instrumental with a sweet flute melody\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
-      "created_at": "21 Nov 2026, 10:27 AM IST",
-      "status": "awaiting_approval"
-    }
-  ],
+  "unapproved_videos": [],
   "scheduled_posts": [
     {
       "id": "vid_Video_050_TrainingUstad_Part_05_1116_210700.mp4",
@@ -97,6 +84,27 @@
       "scheduled_iso": "2026-11-22T18:30:00+05:30",
       "scheduled_for": "2026-11-22 18:30:00",
       "scheduled_full_badge": "22 Nov 2026 • 06:30 PM IST"
+    },
+    {
+      "id": "vid_Video_063_FunnyFauji_Part_01_1121_102545.mp4",
+      "video_file": "Video_063_FunnyFauji_Part_01_1121_102545.mp4",
+      "title": "Fauji Masti, Bakwas & Comedy — Part 1: Mess Hall Masti & Meethi Call",
+      "track_id": "funny_fauji",
+      "part_number": 1,
+      "dialogue": "Bawli, ye chori ka jamun aur teri baatein hi mess ke khane ko ghar jaisa banati hain!",
+      "shayari": "Vardi ki shaan aur tera pyar, dono hi meri jaan hain,\nEk desh ka garv hai, aur dusri mera poora jahaan hai.",
+      "caption": "🎖️ Part 1: Mess Hall Masti & Meethi Call | Fauji Masti, Bakwas & Comedy\n\n🗣️ \"Bawli, ye chori ka jamun aur teri baatein hi mess ke khane ko ghar jaisa banati hain!\"\n\n🔥 Vardi ki shaan aur tera pyar, dono hi meri jaan hain,\nEk desh ka garv hai, aur dusri mera poora jahaan hai.\n\n🎵 Vibe: Desi Haryanvi instrumental with a sweet flute melody\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+      "created_at": "21 Nov 2026, 10:27 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-23_06:30",
+      "scheduled_epoch": 1795395600.0,
+      "scheduled_display": "23 Nov 2026 at 06:30 AM IST",
+      "date_label": "23 Nov 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-11-23T06:30:00+05:30",
+      "scheduled_for": "2026-11-23 06:30:00",
+      "scheduled_full_badge": "23 Nov 2026 • 06:30 AM IST"
     }
   ],
   "published_posts": [
@@ -1341,7 +1349,7 @@
       "cloud_purged": true
     }
   ],
-  "updated_epoch": 1795244451.6999736,
+  "updated_epoch": 1795244897.360935,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
@@ -1380,6 +1388,7 @@
     "Video_050_UnitRagda_Part_05_1111_192711.mp4",
     "Video_032_TrainingUstad_Part_04_1114_215449.mp4",
     "Video_042_BorderDuty_Part_03_1113_104845.mp4",
-    "Video_032_BorderDuty_Part_04_1115_044337.mp4"
+    "Video_032_BorderDuty_Part_04_1115_044337.mp4",
+    "Video_063_DutyFatigue_Part_01_1121_123320.mp4"
   ]
 }
