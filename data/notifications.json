@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795220502108",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Selected on Account #1 — video generation limit",
+    "status": "error",
+    "time_str": "05:51 AM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795220502.108218
+  },
+  {
     "id": "notif_1795220453650",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "12:02 AM",
     "date_str": "19 Nov 2026",
     "timestamp": 1795026741.3169436
-  },
-  {
-    "id": "notif_1795026674429",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 🚀 Trending Viral Fauji & Desi Reality Specials — 🔥 Viral Special: Desi Ghee vs Ustad ki Naak | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:01 AM",
-    "date_str": "19 Nov 2026",
-    "timestamp": 1795026674.4293702
   }
 ]
