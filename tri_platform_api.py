@@ -1,3 +1,4 @@
+import re
 import os
 import json
 import time
@@ -17,6 +18,9 @@ def load_tri_config():
                 return val
         return ""
 
+    yt_tok_default = "data/yt_token.json" if os.path.exists("data/yt_token.json") else "data/youtube_token.json"
+    yt_sec_default = "data/yt_client_secret.json" if os.path.exists("data/yt_client_secret.json") else "data/youtube_client_secret.json"
+
     cfg = {
         "meta_app_id": _first_env("META_APP_ID", "FB_APP_ID"),
         "meta_app_secret": _first_env("META_APP_SECRET", "FB_APP_SECRET"),
@@ -24,10 +28,10 @@ def load_tri_config():
         "ig_account_id": _first_env("IG_OFFICIAL_ACCOUNT_ID", "IG_ACCOUNT_ID", "INSTAGRAM_ACCOUNT_ID", "IG_USER_ID"),
         "fb_page_id": _first_env("FB_PAGE_ID"),
         "fb_page_token": _first_env("FB_PAGE_ACCESS_TOKEN", "FB_PAGE_TOKEN"),
-        "yt_channel_id": _first_env("YT_CHANNEL_ID"),
-        "yt_api_key": _first_env("YT_API_KEY"),
-        "yt_client_secret_path": "data/youtube_client_secret.json",
-        "yt_token_path": "data/youtube_token.json",
+        "yt_channel_id": _first_env("YT_CHANNEL_ID", "YOUTUBE_CHANNEL_ID"),
+        "yt_api_key": _first_env("YT_API_KEY", "YOUTUBE_API_KEY"),
+        "yt_client_secret_path": yt_sec_default,
+        "yt_token_path": yt_tok_default,
         "ig_token_refreshed_at": 0
     }
     if os.path.exists(CONFIG_FILE):
@@ -38,7 +42,11 @@ def load_tri_config():
                     cfg[k] = v if isinstance(v, (int, float)) else str(v).strip()
         except Exception:
             pass
+    # Prefer existing local yt_token.json over stale default path
+    if not os.path.exists(cfg.get("yt_token_path", "")) and os.path.exists("data/yt_token.json"):
+        cfg["yt_token_path"] = "data/yt_token.json"
     return cfg
+
 
 
 
@@ -477,70 +485,395 @@ def publish_reel_official_facebook(video_public_url, caption):
         return {"ok": False, "error": str(e)}
 
 
-def fetch_official_youtube_insights():
+def _load_youtube_oauth_dict():
+    """Loads YouTube OAuth JSON cleanly from Render Env `YT_TOKEN_JSON` OR local token files."""
+    env_raw = (os.getenv("YT_TOKEN_JSON") or os.getenv("YOUTUBE_TOKEN_JSON") or "").strip()
+    if env_raw:
+        try:
+            obj = json.loads(env_raw)
+            if isinstance(obj, dict) and (obj.get("refresh_token") or obj.get("token")):
+                return obj
+        except Exception:
+            pass
     cfg = load_tri_config()
-    yt_key = cfg.get("yt_api_key", "")
-    yt_cid = cfg.get("yt_channel_id", "")
-    has_oauth = os.path.exists(cfg.get("yt_token_path", "data/youtube_token.json"))
-    if not yt_key and not has_oauth:
-        return {"connected": False, "source": "Not Connected", "subscribers": 0, "total_views": 0, "video_count": 0}
-    try:
-        if yt_key and yt_cid:
-            r = requests.get(
-                "https://www.googleapis.com/youtube/v3/channels",
-                params={"part": "snippet,statistics", "id": yt_cid, "key": yt_key},
-                timeout=12
+    for p in (cfg.get("yt_token_path", ""), "data/yt_token.json", "data/youtube_token.json"):
+        if p and os.path.exists(p):
+            try:
+                obj = json.load(open(p, "r", encoding="utf-8"))
+                if isinstance(obj, dict) and (obj.get("refresh_token") or obj.get("token")):
+                    return obj
+            except Exception:
+                pass
+    return None
+
+
+def is_youtube_upload_ready():
+    tok = _load_youtube_oauth_dict()
+    return bool(tok and (tok.get("refresh_token") or tok.get("token")))
+
+
+def _get_fresh_youtube_access_token():
+    """Exchanges permanent refresh_token for a fresh OAuth2 access_token via pure HTTP (zero googleapiclient needed)."""
+    tok_obj = _load_youtube_oauth_dict()
+    if not tok_obj:
+        return None, "YouTube OAuth token missing (Set YT_TOKEN_JSON in Render Environment)"
+
+    refresh_tok = (tok_obj.get("refresh_token") or "").strip()
+    client_id = (tok_obj.get("client_id") or "").strip()
+    client_secret = (tok_obj.get("client_secret") or "").strip()
+    token_uri = (tok_obj.get("token_uri") or "https://oauth2.googleapis.com/token").strip()
+
+    if refresh_tok and client_id and client_secret:
+        try:
+            r = requests.post(
+                token_uri,
+                data={
+                    "client_id": client_id,
+                    "client_secret": client_secret,
+                    "refresh_token": refresh_tok,
+                    "grant_type": "refresh_token"
+                },
+                timeout=15
             )
-            if r.status_code == 200:
-                items = r.json().get("items") or []
-                if items:
-                    sn = items[0].get("snippet") or {}
-                    st = items[0].get("statistics") or {}
-                    return {
-                        "connected": True,
-                        "source": "Official YouTube Data API v3",
-                        "channel_name": sn.get("title", "YouTube Channel"),
-                        "subscribers": int(st.get("subscriberCount") or 0),
-                        "total_views": int(st.get("viewCount") or 0),
-                        "video_count": int(st.get("videoCount") or 0),
-                        "oauth_upload_ready": has_oauth
-                    }
-        return {"connected": has_oauth, "source": "YouTube OAuth Ready" if has_oauth else "Add Channel ID + API Key", "subscribers": 0, "total_views": 0, "video_count": 0}
-    except Exception as e:
-        return {"connected": False, "source": "Error", "note": str(e)[:140], "subscribers": 0, "total_views": 0, "video_count": 0}
+            if r.status_code == 200 and r.json().get("access_token"):
+                return r.json()["access_token"], None
+            return None, f"YouTube OAuth refresh HTTP {r.status_code}: {r.text[:160]}"
+        except Exception as e:
+            return None, f"YouTube OAuth refresh error: {e}"
+
+    if tok_obj.get("token"):
+        return tok_obj["token"], None
+    return None, "YouTube refresh_token/client_id/client_secret incomplete"
 
 
-def publish_short_official_youtube(local_video_path, title, description):
-    cfg = load_tri_config()
-    tok_p = cfg.get("yt_token_path", "data/youtube_token.json")
-    if not os.path.exists(tok_p) or not os.path.exists(local_video_path):
-        return {"ok": False, "error": "YouTube OAuth token or video file missing"}
-    try:
-        from google.oauth2.credentials import Credentials
-        from googleapiclient.discovery import build
-        from googleapiclient.http import MediaFileUpload
+def generate_gemini_youtube_seo_package(video_filename, ig_caption="", fallback_title=""):
+    """
+    DEDICATED GEMINI YOUTUBE SHORTS SEO ENGINE:
+    Generates a separate, YouTube-optimized High-CTR Title (#Shorts), SEO Description,
+    18 searchable Tags, and 5 focused Hashtags tailored to the exact reel!
+    """
+    raw_cap = (ig_caption or "").strip()
+    base_slug = os.path.splitext(os.path.basename(str(video_filename or "Foji_3D_Short")))[0]
+    clean_base = re.sub(r"_\d{4}_\d{6}$", "", base_slug).replace("_", " ").strip()
+    first_line = (fallback_title or (raw_cap.splitlines()[0] if raw_cap else clean_base)).strip()
+    first_line = re.sub(r"#\S+", "", first_line).strip() or "Indian Army 3D Fauji Life Story"
 
-        creds = Credentials.from_authorized_user_file(tok_p, ["https://www.googleapis.com/auth/youtube.upload"])
-        yt = build("youtube", "v3", credentials=creds)
-        clean_title = (title or "Foji 3D Story #Shorts").strip()[:88]
-        if "#shorts" not in clean_title.lower():
-            clean_title = (clean_title[:80] + " #Shorts").strip()
-        body = {
-            "snippet": {
-                "title": clean_title,
-                "description": (description or "") + "\n\n#Shorts #FojiAIStudio",
-                "tags": ["Shorts", "3DAnimation", "IndianArmy", "FaujiLife", "ViralShorts"],
-                "categoryId": "24"
-            },
-            "status": {"privacyStatus": "public", "selfDeclaredMadeForKids": False}
+    default_tags = [
+        "Indian Army", "Fauji Life", "Indian Army Shorts", "Agniveer",
+        "Foji Zindagi 3D", "Indian Army 3D Animation", "Army Training",
+        "Fauji Status", "Haryanvi Fauji Comedy", "Ustad Ka Ragda",
+        "Foji Fojan", "Army Motivation Shorts", "Soldier Life Reality",
+        "Deshbhakti Shorts", "Viral Army Reels", "3D Animated Shorts",
+        "Indian Army Emotion", "Shorts"
+    ]
+    default_hashtags = ["#shorts", "#indianarmy", "#faujilife", "#agniveer", "#fojizindagi3d"]
+
+    default_title = first_line[:78].strip()
+    if "#shorts" not in default_title.lower():
+        default_title = f"{default_title} #shorts"
+
+    default_desc = (
+        f"{first_line}\n\n"
+        f"🇮🇳 Bharat ke veer jawano ki asli zindagi, training grit aur dil chhoo lene wali 3D kahani!\n"
+        f"Roz naye realistic 3D Indian Army Shorts dekhne ke liye channel ko Subscribe karein aur Video ko Like & Share zaroor karein. 🪖🔥\n\n"
+        f"📲 Instagram: @ai_foji_lovelife\n"
+        f"Jai Hind! 🇮🇳\n\n"
+        f"{' '.join(default_hashtags)}"
+    )
+
+    api_key = (os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or "").strip()
+    if not api_key:
+        return {
+            "title": default_title[:95],
+            "description": default_desc,
+            "tags": default_tags,
+            "hashtags": default_hashtags,
+            "via": "smart_template"
         }
-        media = MediaFileUpload(local_video_path, mimetype="video/mp4", resumable=True)
-        req = yt.videos().insert(part="snippet,status", body=body, media_body=media)
-        resp = req.execute()
-        vid_id = resp.get("id", "")
-        return {"ok": True, "platform": "youtube", "video_id": vid_id, "url": f"https://youtube.com/shorts/{vid_id}"}
+
+    prompt = f"""You are an elite Indian YouTube Shorts SEO Strategist for the 3D animated Indian Army channel "Foji Zindagi 3D" (@fojizindagi3d).
+Create a 100% YouTube-native, high-CTR viral SEO package SEPARATE from the Instagram caption.
+
+VIDEO FILE CONTEXT: {clean_base}
+INSTAGRAM CAPTION CONTEXT: {raw_cap[:700]}
+
+STRICT RULES:
+1. "title": Punchy Hinglish/Hindi curiosity hook (max 75 chars) + 1 relevant emoji + ends with " #shorts". MUST be completely optimized for YouTube Shorts feed CTR.
+2. "description": 4-6 crisp lines in natural Hinglish explaining the emotional/funny Fauji story, a strong Subscribe CTA for "Foji Zindagi 3D", Instagram credit "@ai_foji_lovelife", and "Jai Hind 🇮🇳". Do NOT dump 20 hashtags inside description.
+3. "tags": JSON array of 16-20 high-search YouTube keywords (mix of Hindi-in-English & English: Indian Army, Fauji life, Agniveer, exact topic keywords from this video, 3D animation shorts, etc. — no '#' symbol in tags, total < 420 chars).
+4. "hashtags": JSON array of EXACTLY 5 sharp hashtags starting with "#shorts", "#indianarmy", "#faujilife", plus 2 exact topic hashtags.
+
+Return ONLY valid raw JSON with keys: title, description, tags, hashtags."""
+
+    for model_name in ("gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-lite-latest"):
+        try:
+            r = requests.post(
+                f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}",
+                json={
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0.75, "responseMimeType": "application/json"}
+                },
+                timeout=14
+            )
+            if r.status_code != 200:
+                continue
+            cand = (((r.json().get("candidates") or [{}])[0].get("content") or {}).get("parts") or [{}])[0].get("text", "")
+            cand = re.sub(r"^```(?:json)?\s*|\s*```$", "", cand.strip())
+            parsed = json.loads(cand)
+            if isinstance(parsed, dict) and parsed.get("title"):
+                yt_title = str(parsed.get("title") or default_title).strip()
+                if "#shorts" not in yt_title.lower():
+                    yt_title = (yt_title[:84] + " #shorts").strip()
+                yt_title = yt_title[:98]
+
+                raw_ht = parsed.get("hashtags") or default_hashtags
+                clean_ht = []
+                for h in raw_ht:
+                    hs = "#" + re.sub(r"[^a-zA-Z0-9_]", "", str(h).lstrip("#"))
+                    if len(hs) > 2 and hs.lower() not in [x.lower() for x in clean_ht]:
+                        clean_ht.append(hs)
+                if not any(x.lower() == "#shorts" for x in clean_ht):
+                    clean_ht.insert(0, "#shorts")
+                clean_ht = clean_ht[:5]
+
+                yt_desc = str(parsed.get("description") or default_desc).strip()
+                if "#shorts" not in yt_desc.lower():
+                    yt_desc = yt_desc + "\n\n" + " ".join(clean_ht)
+
+                raw_tags = parsed.get("tags") or default_tags
+                clean_tags = []
+                total_len = 0
+                for t in raw_tags:
+                    ts = re.sub(r"[#<>]", "", str(t)).strip()[:40]
+                    if ts and ts.lower() not in [x.lower() for x in clean_tags] and (total_len + len(ts) + 2) < 460:
+                        clean_tags.append(ts)
+                        total_len += len(ts) + 2
+
+                return {
+                    "title": yt_title,
+                    "description": yt_desc[:4800],
+                    "tags": clean_tags or default_tags,
+                    "hashtags": clean_ht,
+                    "via": model_name
+                }
+        except Exception:
+            continue
+
+    return {
+        "title": default_title[:95],
+        "description": default_desc,
+        "tags": default_tags,
+        "hashtags": default_hashtags,
+        "via": "smart_template"
+    }
+
+
+def fetch_official_youtube_insights():
+    """
+    LIVE YOUTUBE DATA API v3 ANALYTICS (FAST PARALLEL):
+    Works with `YT_API_KEY` + `YT_CHANNEL_ID` OR OAuth `YT_TOKEN_JSON`!
+    Returns live Subscribers, Total Views, Video Count, AND latest 20 Shorts metrics!
+    """
+    cfg = load_tri_config()
+    yt_key = (cfg.get("yt_api_key") or "").strip()
+    yt_cid = (cfg.get("yt_channel_id") or "").strip()
+    has_oauth = is_youtube_upload_ready()
+
+    if not yt_key and not has_oauth:
+        return {
+            "connected": False,
+            "source": "Not Connected",
+            "subscribers": 0,
+            "total_views": 0,
+            "video_count": 0,
+            "oauth_upload_ready": False,
+            "reels": []
+        }
+
+    headers = {}
+    params_ch = {"part": "snippet,statistics,contentDetails"}
+    if yt_key and yt_cid:
+        params_ch["id"] = yt_cid
+        params_ch["key"] = yt_key
+    elif has_oauth:
+        acc_tok, err_t = _get_fresh_youtube_access_token()
+        if not acc_tok:
+            return {"connected": False, "source": "OAuth Refresh Needed", "note": err_t, "oauth_upload_ready": False, "reels": []}
+        headers["Authorization"] = f"Bearer {acc_tok}"
+        if yt_cid:
+            params_ch["id"] = yt_cid
+        else:
+            params_ch["mine"] = "true"
+    else:
+        return {"connected": False, "source": "Missing YT_CHANNEL_ID", "oauth_upload_ready": has_oauth, "reels": []}
+
+    try:
+        r = requests.get("https://www.googleapis.com/youtube/v3/channels", headers=headers, params=params_ch, timeout=10)
+        if r.status_code != 200:
+            return {"connected": False, "source": f"YT API HTTP {r.status_code}", "note": r.text[:140], "oauth_upload_ready": has_oauth, "reels": []}
+        items = r.json().get("items") or []
+        if not items:
+            return {"connected": False, "source": "Channel Not Found", "oauth_upload_ready": has_oauth, "reels": []}
+
+        ch = items[0]
+        sn = ch.get("snippet") or {}
+        st = ch.get("statistics") or {}
+        uploads_pl = ((ch.get("contentDetails") or {}).get("relatedPlaylists") or {}).get("uploads", "")
+
+        # Fetch latest 20 uploaded Shorts/videos + live views/likes/comments in just 2 ultra-fast API calls!
+        shorts_list = []
+        if uploads_pl:
+            p_pl = {"part": "snippet,contentDetails", "playlistId": uploads_pl, "maxResults": 20}
+            if yt_key and not headers:
+                p_pl["key"] = yt_key
+            r_pl = requests.get("https://www.googleapis.com/youtube/v3/playlistItems", headers=headers, params=p_pl, timeout=10)
+            if r_pl.status_code == 200:
+                vids = [x.get("contentDetails", {}).get("videoId") for x in (r_pl.json().get("items") or []) if x.get("contentDetails", {}).get("videoId")]
+                if vids:
+                    p_vs = {"part": "snippet,statistics", "id": ",".join(vids[:20])}
+                    if yt_key and not headers:
+                        p_vs["key"] = yt_key
+                    r_vs = requests.get("https://www.googleapis.com/youtube/v3/videos", headers=headers, params=p_vs, timeout=10)
+                    if r_vs.status_code == 200:
+                        for vobj in (r_vs.json().get("items") or []):
+                            vsn = vobj.get("snippet") or {}
+                            vst = vobj.get("statistics") or {}
+                            vid_id = vobj.get("id", "")
+                            vw = int(vst.get("viewCount") or 0)
+                            lk = int(vst.get("likeCount") or 0)
+                            cm = int(vst.get("commentCount") or 0)
+                            th = ((vsn.get("thumbnails") or {}).get("high") or (vsn.get("thumbnails") or {}).get("medium") or {}).get("url", "")
+                            shorts_list.append({
+                                "id": vid_id,
+                                "title": (vsn.get("title") or "YouTube Short")[:78],
+                                "views": vw,
+                                "likes": lk,
+                                "comments": cm,
+                                "er": round(((lk + cm) / max(1, vw)) * 100, 2) if vw > 0 else 0.0,
+                                "thumbnail_url": th,
+                                "permalink": f"https://youtube.com/shorts/{vid_id}",
+                                "timestamp": vsn.get("publishedAt", ""),
+                                "posted_at": _format_ig_ist_time(vsn.get("publishedAt", ""))
+                            })
+
+        avg_v = round(sum(x["views"] for x in shorts_list) / max(1, len(shorts_list))) if shorts_list else 0
+        for x in shorts_list:
+            delta = round(((x["views"] - avg_v) / max(1, avg_v)) * 100) if avg_v > 0 else 0
+            x["delta_pct"] = delta
+            x["status"] = "viral" if delta >= 35 else ("growing" if delta >= 0 else "downfall")
+
+        return {
+            "connected": True,
+            "source": "Official YouTube Data API v3 (Live)",
+            "channel_name": sn.get("title", "Foji Zindagi 3D"),
+            "username": sn.get("customUrl") or sn.get("title", "@fojizindagi3d"),
+            "subscribers": int(st.get("subscriberCount") or 0),
+            "followers": int(st.get("subscriberCount") or 0),
+            "total_views": int(st.get("viewCount") or 0),
+            "total_likes": sum(x["likes"] for x in shorts_list),
+            "total_comments": sum(x["comments"] for x in shorts_list),
+            "video_count": int(st.get("videoCount") or len(shorts_list)),
+            "oauth_upload_ready": has_oauth,
+            "fetched_at": datetime.now(IST).strftime("%d %b %Y, %I:%M %p IST"),
+            "reels": shorts_list
+        }
     except Exception as e:
-        return {"ok": False, "error": str(e)[:200]}
+        return {"connected": False, "source": "Error", "note": str(e)[:160], "oauth_upload_ready": has_oauth, "reels": []}
+
+
+def publish_short_official_youtube(local_video_path, title="", description="", ig_caption="", tags=None):
+    """
+    PURE-REQUESTS PRO YOUTUBE SHORTS AUTO-PUBLISHER:
+    - Generates dedicated Gemini YouTube SEO (Title, Description, 18 Tags, 5 Hashtags)
+    - Uses official YouTube Data API v3 Resumable Upload with auto-refreshed OAuth token
+    - Works 24x7 on Render Free Tier with ZERO heavy SDK dependencies!
+    """
+    if not local_video_path or not os.path.exists(local_video_path):
+        return {"ok": False, "error": f"Video file missing for YouTube upload: {local_video_path}"}
+
+    acc_tok, err_t = _get_fresh_youtube_access_token()
+    if not acc_tok:
+        return {"ok": False, "error": err_t or "YouTube OAuth token not configured"}
+
+    # Always generate dedicated Gemini YouTube SEO package unless explicit tags were passed
+    seo = generate_gemini_youtube_seo_package(
+        video_filename=os.path.basename(local_video_path),
+        ig_caption=(ig_caption or description or ""),
+        fallback_title=title
+    )
+    final_title = seo["title"]
+    final_desc = seo["description"]
+    final_tags = tags if (isinstance(tags, list) and tags) else seo["tags"]
+
+    metadata = {
+        "snippet": {
+            "title": final_title,
+            "description": final_desc,
+            "tags": final_tags,
+            "categoryId": "24",
+            "defaultLanguage": "hi",
+            "defaultAudioLanguage": "hi"
+        },
+        "status": {
+            "privacyStatus": "public",
+            "selfDeclaredMadeForKids": False,
+            "embeddable": True
+        }
+    }
+
+    try:
+        file_bytes = open(local_video_path, "rb").read()
+        file_size = len(file_bytes)
+
+        # Step 1: Initiate official YouTube Resumable Upload session
+        init_headers = {
+            "Authorization": f"Bearer {acc_tok}",
+            "Content-Type": "application/json; charset=UTF-8",
+            "X-Upload-Content-Length": str(file_size),
+            "X-Upload-Content-Type": "video/mp4"
+        }
+        r_init = requests.post(
+            "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
+            headers=init_headers,
+            json=metadata,
+            timeout=25
+        )
+        if r_init.status_code not in (200, 201):
+            return {"ok": False, "error": f"YT Init HTTP {r_init.status_code}: {r_init.text[:220]}"}
+
+        upload_url = r_init.headers.get("Location")
+        if not upload_url:
+            return {"ok": False, "error": "YouTube did not return resumable upload Location header"}
+
+        # Step 2: Upload MP4 bytes directly to YouTube
+        r_up = requests.put(
+            upload_url,
+            headers={
+                "Authorization": f"Bearer {acc_tok}",
+                "Content-Type": "video/mp4",
+                "Content-Length": str(file_size)
+            },
+            data=file_bytes,
+            timeout=150
+        )
+        if r_up.status_code in (200, 201):
+            vid_id = (r_up.json() or {}).get("id", "")
+            short_url = f"https://youtube.com/shorts/{vid_id}" if vid_id else ""
+            print(f"✅ [YouTube Shorts LIVE] {short_url} | SEO via {seo.get('via')} | Title: {final_title}")
+            return {
+                "ok": True,
+                "video_id": vid_id,
+                "url": short_url,
+                "title": final_title,
+                "tags_count": len(final_tags),
+                "seo_via": seo.get("via")
+            }
+        return {"ok": False, "error": f"YT Upload HTTP {r_up.status_code}: {r_up.text[:220]}"}
+    except Exception as e:
+        return {"ok": False, "error": f"YT Upload Exception: {str(e)[:180]}"}
+
+
+
 
 
 def get_unified_tri_platform_summary():

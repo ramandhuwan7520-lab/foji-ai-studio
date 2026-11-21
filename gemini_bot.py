@@ -1877,6 +1877,7 @@ def execute_step13_download_video(driver, dl_btn, new_video_url, raw_dir, existi
                 iconTxt += ' ' + (ic.getAttribute('data-mat-icon-name') || ic.getAttribute('fonticon') || ic.innerText || '').toLowerCase();
             }
             const combined = (aria + ' ' + tip + ' ' + txt + ' ' + iconTxt).trim();
+            if (combined.includes('get app') || combined.includes('download for windows') || combined.includes('desktop app') || combined.includes('mobile app') || combined.includes('install')) continue;
             const cx = r.left + r.width / 2;
             const cy = r.top + r.height / 2;
 
@@ -2297,6 +2298,8 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
             is_gen = st.get("is_generating", False)
             new_vids = st.get("new_video_urls", [])
             dl_btn = st.get("download_btn")
+            if dl_btn and any(bad in str(dl_btn).lower() for bad in ("get app", "download for windows", "desktop app", "mobile app", "install")):
+                dl_btn = None
             screen_reply = (st.get("screen_reply_text") or "").strip()
 
             print(
@@ -2344,7 +2347,7 @@ def _single_attempt_generate_video_in_gemini(pending_pkg=None):
                 push_app_notification("warning", "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)", t_msg, "warning")
                 raise TimeoutError(t_msg)
 
-            if dl_btn is not None or (len(new_vids) > 0 and not is_gen):
+            if (len(new_vids) > 0 and (dl_btn is not None or not is_gen)) or (dl_btn is not None and "video" in str(dl_btn).lower() and not is_gen):
                 print("✅ [Stage 7/8] Video Ready on Screen! Starting 1-Shot Real-Cursor Download...")
                 broadcast_live_step_snapshot(
                     driver, 7, "🎉 Video Ready! Downloading HD Reel...",

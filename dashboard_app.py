@@ -1767,7 +1767,7 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
             if _plats.get("facebook") and _tcfg.get("fb_page_id") and _tcfg.get("fb_page_token"):
                 r_fb = _tpa.publish_reel_official_facebook(_pub_mp4_url, custom_caption or "Foji 3D Story 🇮🇳")
                 print(f"📘 [Official FB Reels] Result: {r_fb}")
-            if _plats.get("youtube") and os.path.exists(_tcfg.get("yt_token_path", "data/youtube_token.json")):
+            if _plats.get("youtube") and _tpa.is_youtube_upload_ready():
                 _yt_title = (custom_caption or vname).splitlines()[0][:85]
                 r_yt = _tpa.publish_short_official_youtube(vpath, _yt_title, custom_caption or "")
                 print(f"▶️ [Official YouTube Shorts] Result: {r_yt}")
@@ -1788,7 +1788,7 @@ def _publish_specific_video_to_ig(video_file, custom_caption="", allow_repost=Fa
                 print(f"ℹ️ [Official IG API fallback note]: {_ig_res.get('error')} -> falling back to backup session...")
         else:
             # Still cross-post to FB/YT if configured when IG uses backup session
-            if (_tcfg.get("fb_page_id") and _tcfg.get("fb_page_token")) or os.path.exists(_tcfg.get("yt_token_path", "data/youtube_token.json")):
+            if (_tcfg.get("fb_page_id") and _tcfg.get("fb_page_token")) or _tpa.is_youtube_upload_ready():
                 threading.Thread(target=_cross_post_fb_yt, daemon=True).start()
     except Exception as _tri_e:
         print(f"ℹ️ [Tri-Platform Hook] Note: {_tri_e}")
