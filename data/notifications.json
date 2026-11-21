@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795264402715",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 3: Rainy Drill & Meethi Call | Cast: Makra + Meera (Mustard Yellow Rajasthani Bandhani Kur...)",
+    "status": "info",
+    "time_str": "06:03 PM",
+    "date_str": "21 Nov 2026",
+    "timestamp": 1795264402.7158937
+  },
+  {
     "id": "notif_1795258656362",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
