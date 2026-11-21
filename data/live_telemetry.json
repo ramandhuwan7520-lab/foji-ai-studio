@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (1.6 min)",
-  "sub_detail": "Gemini Veo rendering Video_071_BorderNightReality_Part_01_1121_212329.mp4... (98s elapsed)",
+  "step_title": "Stage 6: Rendering 3D Video (2.5 min)",
+  "sub_detail": "Gemini Veo rendering Video_071_BorderNightReality_Part_01_1121_212329.mp4... (149s elapsed)",
   "status": "active",
-  "progress": 80,
-  "updated_at": "09:26:17 PM",
-  "epoch": 1795276577.892241
+  "progress": 83,
+  "updated_at": "09:27:08 PM",
+  "epoch": 1795276628.520942
 }
