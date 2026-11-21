@@ -1,9 +1,9 @@
 {
   "step_num": 3,
-  "step_title": "Stage 3: Create Video & 9:16 Portrait",
-  "sub_detail": "Selecting Create Video + 9:16 + Uploading (Makra + Meera (Magenta Pink Floral Printed Georgette ...))...",
-  "status": "active",
-  "progress": 45,
-  "updated_at": "05:51:33 AM",
-  "epoch": 1795220493.0027835
+  "step_title": "Limit Reached (Account #1)",
+  "sub_detail": "Create Video Not Selected on Account #1 \u2014 video generation limit",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "05:51:41 AM",
+  "epoch": 1795220501.0492609
 }
