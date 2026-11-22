@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795327025025",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 2: Station Ki Baarish Aur Maa Ki Call (Video_077_FaujiDostiBarracks_Part_02_1122_112334.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "11:27 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795327025.0256014
+  },
+  {
     "id": "notif_1795326962231",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "04:26 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795258581.0266244
-  },
-  {
-    "id": "notif_1795258525099",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Agniveer Reality & Pride — Part 2: Sarhad Wali Diwali | Cast: Makra + Meera (Wine Berry Silk Kurti with cream Banar...)",
-    "status": "info",
-    "time_str": "04:25 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795258525.0990624
   }
 ]
