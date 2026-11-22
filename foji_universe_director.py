@@ -2123,14 +2123,387 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     return pkg
 
 
-# === v14 GUARANTEED SOLO MALE SOLDIER CAST GUARD ===
-_V14_SOLO_CAST_ENFORCED = True
-_V14_COUPLE_TRACKS = {"love_meera", "video_call_network"}
-_V14_PREV_BUILD_PKG = build_real_foji_universe_package
+# === V15_TRIPLE_LOCK_SCHEDULE_ENGINE ===
+import base64 as _v15_b64
+import requests as _v15_req
+
+SCHEDULED_LOCK_FILE = "data/scheduled_lock_ledger.json"
+_V15_COUPLE_TRACKS = {"love_meera", "video_call_network"}
+
+
+def _v15_normalize_repo_rel(path_str):
+    p = str(path_str or "").replace("\\", "/")
+    idx = p.find("data/")
+    if idx != -1:
+        return p[idx:]
+    return p.lstrip("./")
+
+
+def _fetch_github_json_zero_cache(rel_path):
+    """
+    TRUE ZERO-CACHE GITHUB CONTENTS API READER (v15):
+    - Reads directly from `api.github.com/repos/{repo}/contents/{rel_path}` (0-second CDN lag!)
+      instead of stale Fastly-cached `raw.githubusercontent.com`.
+    - Works identically on Render AND GitHub Actions (`GITHUB_PAT` / `GH_TOKEN` / `GITHUB_TOKEN`).
+    """
+    rel_clean = _v15_normalize_repo_rel(rel_path)
+    repo = os.getenv("GITHUB_REPO", "ramandhuwan7520-lab/foji-ai-studio").strip()
+    gh_pat = (os.getenv("GITHUB_PAT") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    ts_bust = int(time.time() * 1000)
+
+    if gh_pat:
+        try:
+            r = _v15_req.get(
+                f"https://api.github.com/repos/{repo}/contents/{rel_clean}?ref=main&t={ts_bust}",
+                headers={
+                    "Authorization": f"Bearer {gh_pat}",
+                    "Accept": "application/vnd.github+json",
+                    "Cache-Control": "no-cache"
+                },
+                timeout=12
+            )
+            if r.status_code == 200:
+                j = r.json()
+                raw_b64 = (j.get("content") or "").replace("\n", "")
+                if raw_b64:
+                    return json.loads(_v15_b64.b64decode(raw_b64).decode("utf-8", errors="ignore"))
+        except Exception:
+            pass
+
+    try:
+        r2 = _v15_req.get(
+            f"https://raw.githubusercontent.com/{repo}/main/{rel_clean}?t={ts_bust}",
+            headers={"Cache-Control": "no-cache"},
+            timeout=10
+        )
+        if r2.status_code == 200:
+            return r2.json()
+    except Exception:
+        pass
+    return None
+
+
+def _v15_load_deleted_basenames():
+    out = set()
+    if os.path.exists("data/deleted_ids.json"):
+        try:
+            for x in json.load(open("data/deleted_ids.json", "r", encoding="utf-8")):
+                if x:
+                    out.add(os.path.basename(str(x)))
+        except Exception:
+            pass
+    return out
+
+
+def _v15_load_lock_ledger(fetch_remote=False):
+    ledger = {}
+    if os.path.exists(SCHEDULED_LOCK_FILE):
+        try:
+            d = json.load(open(SCHEDULED_LOCK_FILE, "r", encoding="utf-8"))
+            if isinstance(d, dict):
+                ledger.update(d)
+        except Exception:
+            pass
+    if fetch_remote:
+        rem = _fetch_github_json_zero_cache(SCHEDULED_LOCK_FILE)
+        if isinstance(rem, dict):
+            # Remote lock ledger wins for any locked items not yet on local disk
+            merged = dict(rem)
+            for k, v in ledger.items():
+                if k not in merged or float((v or {}).get("locked_at", 0)) >= float((merged.get(k) or {}).get("locked_at", 0)):
+                    merged[k] = v
+            ledger = merged
+            try:
+                os.makedirs("data", exist_ok=True)
+                tmp = SCHEDULED_LOCK_FILE + ".tmp"
+                with open(tmp, "w", encoding="utf-8") as wf:
+                    json.dump(ledger, wf, indent=2, ensure_ascii=False)
+                os.replace(tmp, SCHEDULED_LOCK_FILE)
+            except Exception:
+                pass
+    return ledger
+
+
+def _v15_save_lock_ledger(ledger, sync_cloud=True):
+    os.makedirs("data", exist_ok=True)
+    tmp = SCHEDULED_LOCK_FILE + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as wf:
+        json.dump(ledger, wf, indent=2, ensure_ascii=False)
+    os.replace(tmp, SCHEDULED_LOCK_FILE)
+    if sync_cloud and "push_json_to_github_instantly" in globals():
+        try:
+            push_json_to_github_instantly(SCHEDULED_LOCK_FILE, "Sync permanent schedule lock ledger", blocking=True)
+        except Exception:
+            pass
+
+
+def _v15_enforce_lock_on_queue(q_data, fetch_remote_lock=False):
+    """
+    GUARANTEE: Any video in `scheduled_lock_ledger.json` (and not published/deleted)
+    MUST stay in `scheduled_posts` and is STRICTLY REMOVED from `unapproved_videos`!
+    """
+    if not isinstance(q_data, dict):
+        return q_data
+
+    del_set = _v15_load_deleted_basenames()
+    pub_keys = set()
+    if "load_posted_ledger" in globals():
+        try:
+            pub_keys |= {os.path.basename(str(x)) for x in load_posted_ledger() if x}
+        except Exception:
+            pass
+    for p in (q_data.get("published_posts") or []):
+        if p.get("video_file"):
+            pub_keys.add(os.path.basename(str(p["video_file"])))
+    for c in (q_data.get("upload_claimed_files") or []):
+        if c:
+            pub_keys.add(os.path.basename(str(c)))
+
+    ledger = _v15_load_lock_ledger(fetch_remote=fetch_remote_lock)
+    sched_map = {}
+
+    # 1. Seed from Permanent Lock Ledger first (indestructible truth!)
+    for vf, item in ledger.items():
+        vb = os.path.basename(str(vf or (item or {}).get("video_file") or ""))
+        if not vb or vb in pub_keys or vb in del_set or not isinstance(item, dict):
+            continue
+        copy_it = dict(item)
+        copy_it["video_file"] = vb
+        copy_it["status"] = "scheduled"
+        sched_map[vb] = copy_it
+
+    # 2. Overlay current scheduled_posts (keep valid entries)
+    for item in (q_data.get("scheduled_posts") or []):
+        if not isinstance(item, dict) or not item.get("video_file"):
+            continue
+        vb = os.path.basename(str(item["video_file"]))
+        if vb in pub_keys or vb in del_set:
+            continue
+        copy_it = dict(item)
+        copy_it["video_file"] = vb
+        copy_it["status"] = "scheduled"
+        sched_map[vb] = copy_it
+
+    sched_keys = set(sched_map.keys())
+
+    # 3. Strictly purge any scheduled, published, or deleted video from unapproved_videos!
+    clean_unapp = []
+    seen_u = set()
+    for item in (q_data.get("unapproved_videos") or []):
+        if not isinstance(item, dict) or not item.get("video_file"):
+            continue
+        vb = os.path.basename(str(item["video_file"]))
+        if vb in pub_keys or vb in sched_keys or vb in del_set or vb in seen_u:
+            continue
+        seen_u.add(vb)
+        clean_unapp.append(item)
+
+    q_data["scheduled_posts"] = sorted(
+        sched_map.values(),
+        key=lambda x: float(x.get("scheduled_epoch", 0) or 0)
+    )
+    q_data["unapproved_videos"] = clean_unapp
+    return q_data
+
+
+def save_scheduled_queue(q_data, sync_cloud=True, allow_unschedule=False):
+    """
+    INDESTRUCTIBLE QUEUE SAVE (v15):
+    - When `allow_unschedule=False` (default — includes ALL GitHub Actions video runs!):
+      1) Pulls live zero-cache GitHub `scheduled_lock_ledger.json` + `scheduled_queue.json`.
+      2) UNION-merges all scheduled & locked videos so NO session can EVER revert a scheduled video to Pending!
+      3) Purges all scheduled/published/deleted videos from `unapproved_videos`.
+    - When `allow_unschedule=True` (explicit user Remove from Schedule / Delete):
+      Updates `scheduled_lock_ledger.json` to match `q_data["scheduled_posts"]` and syncs both files blocking!
+    """
+    global _LOCAL_QUEUE_MODIFIED_TS
+    in_gh_actions = (os.getenv("GITHUB_ACTIONS", "").lower() == "true")
+
+    if sync_cloud and not allow_unschedule:
+        try:
+            rem_q = _fetch_github_json_zero_cache(QUEUE_FILE)
+            if isinstance(rem_q, dict):
+                del_set = _v15_load_deleted_basenames()
+                pub_map = {
+                    os.path.basename(str(x["video_file"])): x
+                    for x in (rem_q.get("published_posts") or [])
+                    if isinstance(x, dict) and x.get("video_file")
+                }
+                for x in (q_data.get("published_posts") or []):
+                    if isinstance(x, dict) and x.get("video_file"):
+                        pub_map[os.path.basename(str(x["video_file"]))] = x
+                pub_keys = set(pub_map.keys())
+                if "load_posted_ledger" in globals():
+                    pub_keys |= {os.path.basename(str(k)) for k in load_posted_ledger() if k}
+
+                # UNION merge scheduled_posts (remote + local)
+                sched_map = {}
+                for x in (rem_q.get("scheduled_posts") or []):
+                    if isinstance(x, dict) and x.get("video_file"):
+                        vb = os.path.basename(str(x["video_file"]))
+                        if vb not in pub_keys and vb not in del_set:
+                            sched_map[vb] = x
+                for x in (q_data.get("scheduled_posts") or []):
+                    if isinstance(x, dict) and x.get("video_file"):
+                        vb = os.path.basename(str(x["video_file"]))
+                        if vb not in pub_keys and vb not in del_set:
+                            sched_map[vb] = x
+
+                # UNION merge unapproved_videos, EXCLUDING anything scheduled/published/deleted
+                unapp_map = {}
+                for x in (q_data.get("unapproved_videos") or []) + (rem_q.get("unapproved_videos") or []):
+                    if isinstance(x, dict) and x.get("video_file"):
+                        vb = os.path.basename(str(x["video_file"]))
+                        if vb not in pub_keys and vb not in sched_map and vb not in del_set and vb not in unapp_map:
+                            unapp_map[vb] = x
+
+                q_data["published_posts"] = list(pub_map.values())[:150]
+                q_data["scheduled_posts"] = list(sched_map.values())
+                q_data["unapproved_videos"] = list(unapp_map.values())
+        except Exception as _me:
+            print(f"Queue pre-save merge note: {_me}")
+
+        # Enforce permanent lock ledger (fetches live remote lock file!)
+        _v15_enforce_lock_on_queue(q_data, fetch_remote_lock=True)
+
+        # If running on Render/local (NOT inside GitHub Actions), also keep lock ledger updated with any newly scheduled items
+        if not in_gh_actions:
+            try:
+                led = _v15_load_lock_ledger(fetch_remote=False)
+                led_changed = False
+                for it in (q_data.get("scheduled_posts") or []):
+                    vb = os.path.basename(str(it.get("video_file") or ""))
+                    if vb and vb not in led:
+                        entry = dict(it)
+                        entry["locked_at"] = time.time()
+                        led[vb] = entry
+                        led_changed = True
+                if led_changed:
+                    _v15_save_lock_ledger(led, sync_cloud=True)
+            except Exception:
+                pass
+    elif allow_unschedule:
+        # Explicit user removal/delete -> update lock ledger to ONLY keep remaining scheduled_posts!
+        try:
+            rem_sched_keys = {
+                os.path.basename(str(x.get("video_file") or ""))
+                for x in (q_data.get("scheduled_posts") or [])
+                if isinstance(x, dict) and x.get("video_file")
+            }
+            led = _v15_load_lock_ledger(fetch_remote=sync_cloud)
+            new_led = {k: v for k, v in led.items() if os.path.basename(str(k)) in rem_sched_keys}
+            _v15_save_lock_ledger(new_led, sync_cloud=sync_cloud)
+        except Exception:
+            pass
+
+    try:
+        enforce_smart_cascade_schedule(q_data)
+    except Exception as e:
+        print(f"Schedule cascade note: {e}")
+
+    q_data["updated_epoch"] = time.time()
+    _LOCAL_QUEUE_MODIFIED_TS = q_data["updated_epoch"]
+    os.makedirs("data", exist_ok=True)
+    tmp_p = QUEUE_FILE + ".tmp"
+    with open(tmp_p, "w", encoding="utf-8") as f:
+        json.dump(q_data, f, indent=2, ensure_ascii=False)
+    os.replace(tmp_p, QUEUE_FILE)
+    if sync_cloud and "push_json_to_github_instantly" in globals():
+        try:
+            push_json_to_github_instantly(QUEUE_FILE, "Sync permanently locked scheduled queue", blocking=True)
+        except Exception:
+            pass
+
+
+_V15_ORIG_GET_QUEUE = get_scheduled_queue
+
+
+def get_scheduled_queue():
+    q = _V15_ORIG_GET_QUEUE()
+    return _v15_enforce_lock_on_queue(q, fetch_remote_lock=False)
+
+
+_V15_ORIG_APPROVE_SCHED = approve_and_schedule_video_item
+
+
+def approve_and_schedule_video_item(video_file=None, custom_caption="", source_label="Frontend"):
+    item = _V15_ORIG_APPROVE_SCHED(video_file=video_file, custom_caption=custom_caption, source_label=source_label)
+    if isinstance(item, dict) and item.get("video_file"):
+        vb = os.path.basename(str(item["video_file"]))
+        led = _v15_load_lock_ledger(fetch_remote=True)
+        entry = dict(item)
+        entry["video_file"] = vb
+        entry["status"] = "scheduled"
+        entry["locked_at"] = time.time()
+        led[vb] = entry
+        _v15_save_lock_ledger(led, sync_cloud=True)
+    return item
+
+
+_V15_ORIG_MARK_PUB = mark_video_as_published_in_vault
+
+
+def mark_video_as_published_in_vault(video_file, caption="", media_pk="PUBLISHED"):
+    vb = os.path.basename(str(video_file or ""))
+    if vb:
+        try:
+            led = _v15_load_lock_ledger(fetch_remote=False)
+            if vb in led:
+                led.pop(vb, None)
+                _v15_save_lock_ledger(led, sync_cloud=True)
+        except Exception:
+            pass
+    return _V15_ORIG_MARK_PUB(video_file, caption=caption, media_pk=media_pk)
+
+
+_V15_ORIG_DEL_MANUAL = delete_video_everywhere_manual
+
+
+def delete_video_everywhere_manual(video_file):
+    vb = os.path.basename(str(video_file or ""))
+    if vb:
+        try:
+            led = _v15_load_lock_ledger(fetch_remote=True)
+            if vb in led:
+                led.pop(vb, None)
+                _v15_save_lock_ledger(led, sync_cloud=True)
+        except Exception:
+            pass
+    return _V15_ORIG_DEL_MANUAL(video_file)
+
+
+_V15_ORIG_PULL_CLOUD = pull_latest_cloud_state_for_frontend
+
+
+def pull_latest_cloud_state_for_frontend():
+    local_q_age = time.time() - float(globals().get("_LOCAL_QUEUE_MODIFIED_TS", 0) or 0)
+    if local_q_age >= 25:
+        try:
+            _v15_load_lock_ledger(fetch_remote=True)
+        except Exception:
+            pass
+    _V15_ORIG_PULL_CLOUD()
+    # Re-enforce permanent lock ledger on local disk queue after cloud pull
+    if os.path.exists(QUEUE_FILE):
+        try:
+            q_loc = json.load(open(QUEUE_FILE, "r", encoding="utf-8"))
+            before_s = len(q_loc.get("scheduled_posts") or [])
+            before_u = len(q_loc.get("unapproved_videos") or [])
+            _v15_enforce_lock_on_queue(q_loc, fetch_remote_lock=False)
+            if len(q_loc.get("scheduled_posts") or []) != before_s or len(q_loc.get("unapproved_videos") or []) != before_u:
+                tmp_p = QUEUE_FILE + ".tmp"
+                with open(tmp_p, "w", encoding="utf-8") as wf:
+                    json.dump(q_loc, wf, indent=2, ensure_ascii=False)
+                os.replace(tmp_p, QUEUE_FILE)
+        except Exception:
+            pass
+
+
+_V15_ORIG_BUILD_PKG = build_real_foji_universe_package
 
 
 def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_idea="", is_preview=False):
-    pkg = _V14_PREV_BUILD_PKG(
+    pkg = _V15_ORIG_BUILD_PKG(
         video_id=video_id,
         force_track_id=force_track_id,
         custom_idea=custom_idea,
@@ -2145,7 +2518,7 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
             str(pkg.get("dialogue_line_2_hinglish") or "")
         ).lower()
         explicit_couple = (
-            tk in _V14_COUPLE_TRACKS
+            tk in _V15_COUPLE_TRACKS
             or any(w in idea_low for w in ("meera", "fojan", "girlfriend", "wife", "couple", "love story", "gulgule", "jalebi"))
         )
         if not explicit_couple:
