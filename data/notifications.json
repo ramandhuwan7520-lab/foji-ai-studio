@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795345123452",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 2: Holi Ka Asli Ragda (Video_081_FestivalOnDuty_Part_02_1122_162608.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "04:28 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795345123.452637
+  },
+  {
     "id": "notif_1795345083201",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "07:22 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795269167.4984653
-  },
-  {
-    "id": "notif_1795269164738",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
-    "status": "error",
-    "time_str": "07:22 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795269164.7386918
   }
 ]
