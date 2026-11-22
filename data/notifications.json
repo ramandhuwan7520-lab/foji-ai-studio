@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795373617921",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Duty, Fatigue & Working Reality — Part 3: Mitti, Mehenat aur Muskurahat (Video_083_DutyFatigue_Part_03_1123_002058.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "12:23 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795373617.9215395
+  },
+  {
     "id": "notif_1795373590089",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "09:13 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795275795.8004985
-  },
-  {
-    "id": "notif_1795275763742",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_069_ChhuttiGharWapsi_Part_01_1121_211030.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "09:12 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795275763.7424765
   }
 ]
