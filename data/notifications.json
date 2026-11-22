@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795373832925",
+    "type": "error",
+    "title": "Create Video Limit (Account #1)",
+    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
+    "status": "error",
+    "time_str": "12:27 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795373832.9257684
+  },
+  {
     "id": "notif_1795373790104",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:24 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795276468.9292665
-  },
-  {
-    "id": "notif_1795276413264",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 1: Border Ka Safed Jhoot | Cast: Makra + Meera (Emerald Green Velvet Haryanvi Daman-Ku...)",
-    "status": "info",
-    "time_str": "09:23 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795276413.2642276
   }
 ]
