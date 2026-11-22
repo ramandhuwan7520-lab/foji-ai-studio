@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795373461636",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Duty, Fatigue & Working Reality — Part 3: Mitti, Mehenat aur Muskurahat | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:21 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795373461.6366534
+  },
+  {
     "id": "notif_1795366077133",
     "type": "schedule",
     "title": "📅 Video Scheduled (Frontend)!",
@@ -788,15 +798,5 @@
     "time_str": "09:10 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795275634.7780793
-  },
-  {
-    "id": "notif_1795272173372",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Chhutti Cancel, Farz Bulaye | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
-    "status": "info",
-    "time_str": "08:12 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795272173.3725553
   }
 ]
