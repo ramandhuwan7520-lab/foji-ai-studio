@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795366077133",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Frontend)!",
+    "message": "Fauji Safar: Train, Trunk & Posting — Part 2: Platform Ka Sabak locked for 29 Nov 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "10:17 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795366077.1335242
+  },
+  {
     "id": "notif_1795363715687",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "08:12 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795272173.3725553
-  },
-  {
-    "id": "notif_1795272169283",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "08:12 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795272169.2837088
   }
 ]
