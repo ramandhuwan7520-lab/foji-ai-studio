@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_080_VideoCallNetwork_Part_02_1122_162314.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 40s \u2014 hovering & downloading Video_080_VideoCallNetwork_Part_02_1122_162314.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "04:24:23 PM",
-  "epoch": 1795344863.0658724
+  "progress": 86,
+  "updated_at": "04:25:04 PM",
+  "epoch": 1795344904.8350062
 }
