@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795326820111",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 2: Station Ki Baarish Aur Maa Ki Call | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
+    "status": "info",
+    "time_str": "11:23 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795326820.1119153
+  },
+  {
     "id": "notif_1795326794534",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "04:24 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795258473.4498155
-  },
-  {
-    "id": "notif_1795258421356",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Duty, Fatigue & Working Reality — Part 2: Ration, Rucksack & Love is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "04:23 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795258421.3562248
   }
 ]
