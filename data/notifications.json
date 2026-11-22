@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795362865195",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (146s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+    "status": "error",
+    "time_str": "09:24 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795362865.1956587
+  },
+  {
     "id": "notif_1795362703172",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "07:29 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795269542.408942
-  },
-  {
-    "id": "notif_1795269241623",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Ghar Ki Khushbu is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "07:24 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795269241.6232111
   }
 ]
