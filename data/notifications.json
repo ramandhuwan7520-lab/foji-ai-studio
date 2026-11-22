@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795344909709",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_080_VideoCallNetwork_Part_02_1122_162314.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "04:25 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795344909.7095218
+  },
+  {
     "id": "notif_1795344854457",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "07:15 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795268754.801088
-  },
-  {
-    "id": "notif_1795268684626",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Gaon Ka Maan | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
-    "status": "info",
-    "time_str": "07:14 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795268684.6266646
   }
 ]
