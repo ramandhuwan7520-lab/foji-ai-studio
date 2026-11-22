@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795309092790",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_075_FaujiSafarTrain_Part_01_1122_062610.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "06:28 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795309092.790809
+  },
+  {
     "id": "notif_1795309030755",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "04:19 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795258197.2370465
-  },
-  {
-    "id": "notif_1795254878791_380",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "03:24 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795254878.7912078
   }
 ]
