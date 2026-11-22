@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795363576939",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_082_FaujiSafarTrain_Part_02_1122_213423.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "09:36 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795363576.939702
+  },
+  {
     "id": "notif_1795363524940",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "07:30 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795269658.192848
-  },
-  {
-    "id": "notif_1795269653728",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "07:30 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795269653.7288783
   }
 ]
