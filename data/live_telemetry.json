@@ -1,9 +1,8 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (0.8 min)",
-  "sub_detail": "Gemini Veo rendering Video_083_DutyFatigue_Part_03_1122_213735.mp4... (49s elapsed)",
-  "status": "active",
-  "progress": 77,
-  "updated_at": "09:39:35 PM",
-  "epoch": 1795363775.927049
+  "step_num": 0,
+  "step_title": "STANDBY",
+  "sub_detail": "Ready",
+  "status": "idle",
+  "progress": 0,
+  "epoch": 1795366096.5385575
 }
