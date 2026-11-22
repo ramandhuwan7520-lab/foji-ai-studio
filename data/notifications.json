@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795344798632",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 2: Signal Ka Asli Asar | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
+    "status": "info",
+    "time_str": "04:23 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795344798.6326282
+  },
+  {
     "id": "notif_1795344778266",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "07:14 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795268680.0939558
-  },
-  {
-    "id": "notif_1795268676977",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
-    "status": "error",
-    "time_str": "07:14 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795268676.977587
   }
 ]
