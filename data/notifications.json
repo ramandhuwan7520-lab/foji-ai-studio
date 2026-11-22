@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795344604093",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Civil Duniya vs Fauji Asli Hakikat — Part 2: Civil vs Fauji: Gulab Jamun Ka Jhoot | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:20 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795344604.0936396
+  },
+  {
     "id": "notif_1795327229843",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "06:06 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795264610.5287466
-  },
-  {
-    "id": "notif_1795264459547",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Masti, Bakwas & Comedy — Part 3: Rainy Drill & Meethi Call is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:04 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795264459.54789
   }
 ]
