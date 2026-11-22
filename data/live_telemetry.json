@@ -1,9 +1,9 @@
 {
-  "step_num": 1,
-  "step_title": "Stage 1: AI Episodic Script",
-  "sub_detail": "Generating fresh connected script & wardrobe...",
+  "step_num": 2,
+  "step_title": "Stage 2: Cookie Sign-In (Account #1)",
+  "sub_detail": "Logging into Gemini & preparing Makra + Meera (Sunset Orange & Red Bridal-Style Heavy...)...",
   "status": "active",
-  "progress": 12,
-  "updated_at": "11:27:19 AM",
-  "epoch": 1795327039.186231
+  "progress": 25,
+  "updated_at": "11:27:20 AM",
+  "epoch": 1795327040.630806
 }
