@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_084_AgniveerReality_Part_03_1123_002357.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 32s \u2014 hovering & downloading Video_084_AgniveerReality_Part_03_1123_002357.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "12:25:04 AM",
-  "epoch": 1795373704.1641567
+  "progress": 86,
+  "updated_at": "12:25:37 AM",
+  "epoch": 1795373737.3995671
 }
