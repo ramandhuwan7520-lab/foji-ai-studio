@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795345083201",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_081_FestivalOnDuty_Part_02_1122_162608.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "04:28 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795345083.201795
+  },
+  {
     "id": "notif_1795345028203",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "07:22 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795269164.7386918
-  },
-  {
-    "id": "notif_1795269122779",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Ghar Ki Khushbu | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
-    "status": "info",
-    "time_str": "07:22 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795269122.7796853
   }
 ]
