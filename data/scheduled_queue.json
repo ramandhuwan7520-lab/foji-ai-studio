@@ -123,27 +123,6 @@
   ],
   "scheduled_posts": [
     {
-      "id": "vid_Video_053_UnitRagda_Part_06_1118_105940.mp4",
-      "video_file": "Video_053_UnitRagda_Part_06_1118_105940.mp4",
-      "title": "🔥 Ustad Ka Ragda & Punishment — Part 6: Tyre Ka Tandav & Kandhon Ka Dum",
-      "track_id": "unit_ragda",
-      "part_number": 6,
-      "dialogue": "Ustad ji, ye tyre mere liye lohe ka chakkar nahi, balki meri zimmedariyon ka pahiya hai, jitna ye bhari hoga, mera vardi pehnne ka hausla utna hi mazboot hoga!",
-      "shayari": "कंधों पर ये टायर नहीं, कल का सुनहरा इतिहास है,\nफौजी के रगड़े में ही छिपा, वर्दी का असली अहसास है।",
-      "caption": "🎖️ Part 6: Tyre Ka Tandav & Kandhon Ka Dum | 🔥 Ustad Ka Ragda & Punishment\n\n🗣️ \"Ustad ji, ye tyre mere liye lohe ka chakkar nahi, balki meri zimmedariyon ka pahiya hai, jitna ye bhari hoga, mera vardi pehnne ka hausla utna hi mazboot hoga!\"\n\n🔥 कंधों पर ये टायर नहीं, कल का सुनहरा इतिहास है,\nफौजी के रगड़े में ही छिपा, वर्दी का असली अहसास है।\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#IndianArmy #FaujiRagda #Agniveer #ArmyTraining #MakraFoji #FojiAIStudio",
-      "created_at": "18 Nov 2026, 11:04 AM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-22_12:30",
-      "scheduled_epoch": 1795330800.0,
-      "scheduled_display": "22 Nov 2026 at 12:30 PM IST",
-      "date_label": "22 Nov 2026",
-      "time_label": "12:30 PM",
-      "scheduled_iso": "2026-11-22T12:30:00+05:30",
-      "scheduled_for": "2026-11-22 12:30:00",
-      "scheduled_full_badge": "22 Nov 2026 • 12:30 PM IST"
-    },
-    {
       "id": "vid_Video_054_TrainingUstad_Part_06_1118_162701.mp4",
       "video_file": "Video_054_TrainingUstad_Part_06_1118_162701.mp4",
       "title": "⚔️ Agniveer Training Center & Drill — Part 6: Pithu Ka Bojh Aur Josh-e-Foji",
@@ -1599,7 +1578,7 @@
       "ig_media_pk": "17894224833453106"
     }
   ],
-  "updated_epoch": 1795327225.6391659,
+  "updated_epoch": 1795331729.7330947,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
@@ -1642,6 +1621,7 @@
     "Video_063_DutyFatigue_Part_01_1121_123320.mp4",
     "Video_063_DutyFatigue_Part_01_1121_131605.mp4",
     "Video_050_TrainingUstad_Part_05_1116_210700.mp4",
-    "Video_053_BorderDuty_Part_05_1117_173209.mp4"
+    "Video_053_BorderDuty_Part_05_1117_173209.mp4",
+    "Video_053_UnitRagda_Part_06_1118_105940.mp4"
   ]
 }
