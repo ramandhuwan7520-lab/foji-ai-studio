@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795363636888",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Fauji Safar: Train, Trunk & Posting — Part 2: Platform Ka Sabak (Video_082_FaujiSafarTrain_Part_02_1122_213423.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "09:37 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795363636.8881607
+  },
+  {
     "id": "notif_1795363576939",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "08:11 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795272119.1370819
-  },
-  {
-    "id": "notif_1795269658192",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Ghar Ki Khushbu Aur Train Ka Safar | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
-    "status": "info",
-    "time_str": "07:30 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795269658.192848
   }
 ]
