@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795327229843",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 2: Trunk Ka Asli Raaz (Video_078_BorderNightReality_Part_02_1122_112717.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "11:30 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795327229.8436189
+  },
+  {
     "id": "notif_1795327163070",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "06:04 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795264459.54789
-  },
-  {
-    "id": "notif_1795264402715",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 3: Rainy Drill & Meethi Call | Cast: Makra + Meera (Mustard Yellow Rajasthani Bandhani Kur...)",
-    "status": "info",
-    "time_str": "06:03 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795264402.7158937
   }
 ]
