@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_074_FestivalOnDuty_Part_01_1122_062315.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 49s \u2014 hovering & downloading Video_074_FestivalOnDuty_Part_01_1122_062315.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "06:24:25 AM",
-  "epoch": 1795308865.7189915
+  "progress": 86,
+  "updated_at": "06:25:16 AM",
+  "epoch": 1795308916.3598642
 }
