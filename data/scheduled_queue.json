@@ -1,6 +1,18 @@
 {
   "unapproved_videos": [
     {
+      "id": "vid_Video_074_FestivalOnDuty_Part_01_1122_062315.mp4",
+      "video_file": "Video_074_FestivalOnDuty_Part_01_1122_062315.mp4",
+      "title": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 1: Sandbag Ki Diwali Aur Tera Tohfa",
+      "track_id": "festival_on_duty",
+      "part_number": 1,
+      "dialogue": "Bawli, duty pe Diwali toh matti ke diye mein hai, par tera yo chupa tohfa tyohar ban gaya!",
+      "shayari": "Vardi pe dhool aur haath mein diye ki bati hai,\nGhar se door fauji ki Diwali toh bas farz ki maati hai.",
+      "caption": "🎖️ Part 1: Sandbag Ki Diwali Aur Tera Tohfa | Tyohar Duty Par (Diwali, Holi & Rakhi)\n\n🗣️ \"Bawli, duty pe Diwali toh matti ke diye mein hai, par tera yo chupa tohfa tyohar ban gaya!\"\n\n🔥 Vardi pe dhool aur haath mein diye ki bati hai,\nGhar se door fauji ki Diwali toh bas farz ki maati hai.\n\n🎵 Vibe: Ghar Aaya Mera Pardesi... soulful lo-fi flute version.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #2!\n\n#faujidivali #armyfestivals #fojifojan #hiddenstory #dutyfirst #indianarmy #viralreels #faujistatus",
+      "created_at": "22 Nov 2026, 06:25 AM IST",
+      "status": "awaiting_approval"
+    },
+    {
       "id": "vid_Video_073_VideoCallNetwork_Part_01_1122_062009.mp4",
       "video_file": "Video_073_VideoCallNetwork_Part_01_1122_062009.mp4",
       "title": "1-Bar Network & Fauji Video Call — Part 1: Signal Ka Sangharsh Aur Captain Ki Report",
@@ -1538,7 +1550,7 @@
       "ig_media_pk": "18117301127149408"
     }
   ],
-  "updated_epoch": 1795308773.6031847,
+  "updated_epoch": 1795308947.3385308,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
