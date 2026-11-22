@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795377082723",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Duty, Fatigue & Working Reality — Part 3: Mitti, Mehenat aur Muskurahat locked for 29 Nov 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "01:21 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795377082.7234297
+  },
+  {
     "id": "notif_1795373899163",
     "type": "error",
     "title": "⚠️ Gemini Video Error",
@@ -788,15 +798,5 @@
     "time_str": "09:32 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795276973.8955612
-  },
-  {
-    "id": "notif_1795276918354",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "LOC Border Raat Ki Asli Pehredari — Part 1: Border Ka Safed Jhoot is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:31 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795276918.3542283
   }
 ]
