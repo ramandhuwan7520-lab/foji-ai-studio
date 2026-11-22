@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795308974916",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Safar: Train, Trunk & Posting — Part 1: Afwahon Ka Safar | Cast: Makra + Meera (Ivory White & Gold Festive Sharara Sui...)",
+    "status": "info",
+    "time_str": "06:26 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795308974.9169414
+  },
+  {
     "id": "notif_1795308951112",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "03:20 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795254620.6575282
-  },
-  {
-    "id": "notif_1795254616674",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "03:20 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795254616.6746397
   }
 ]
