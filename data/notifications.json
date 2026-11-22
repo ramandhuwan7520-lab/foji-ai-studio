@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795373640958",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Agniveer Reality & Pride — Part 3: Station, Sukoon aur Ustad Ka Khauf | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:24 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795373640.9582813
+  },
+  {
     "id": "notif_1795373617921",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "09:20 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795276214.7645848
-  },
-  {
-    "id": "notif_1795275795800",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Ghar Ka Ladla (Video_069_ChhuttiGharWapsi_Part_01_1121_211030.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "09:13 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795275795.8004985
   }
 ]
