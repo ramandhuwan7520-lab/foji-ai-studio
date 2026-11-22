@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795344778266",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 2: Civil vs Fauji: Gulab Jamun Ka Jhoot (Video_079_CivilVsFauji_Part_02_1122_162000.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "04:22 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795344778.266172
+  },
+  {
     "id": "notif_1795344729384",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "07:14 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795268676.977587
-  },
-  {
-    "id": "notif_1795268631196",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Gaon Ka Maan | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
-    "status": "info",
-    "time_str": "07:13 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795268631.1967726
   }
 ]
