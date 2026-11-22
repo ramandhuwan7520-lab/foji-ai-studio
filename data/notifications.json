@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795373839982",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Chhutti Khatam, Maa Ka Call | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:27 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795373839.982948
+  },
+  {
     "id": "notif_1795373835515",
     "type": "warning",
     "title": "Switching to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "09:30 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795276844.5533144
-  },
-  {
-    "id": "notif_1795276841801",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (357s): I couldn't do that because I'm getting a lot of requests right now. Please try again later.",
-    "status": "error",
-    "time_str": "09:30 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795276841.8017607
   }
 ]
