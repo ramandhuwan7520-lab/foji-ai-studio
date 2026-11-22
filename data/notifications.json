@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795363524940",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Safar: Train, Trunk & Posting — Part 2: Platform Ka Sabak is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:35 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795363524.9406457
+  },
+  {
     "id": "notif_1795363467747",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "07:30 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795269653.7288783
-  },
-  {
-    "id": "notif_1795269651025",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
-    "status": "error",
-    "time_str": "07:30 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795269651.0250325
   }
 ]
