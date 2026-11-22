@@ -87,27 +87,6 @@
   ],
   "scheduled_posts": [
     {
-      "id": "vid_Video_053_BorderDuty_Part_05_1117_173209.mp4",
-      "video_file": "Video_053_BorderDuty_Part_05_1117_173209.mp4",
-      "title": "🏔️ LOC Border Patrol & Maa KaPyar — Part 5: Barfani Raat Mein Dil Ki Dhadkan",
-      "track_id": "border_duty",
-      "part_number": 5,
-      "dialogue": "Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.",
-      "shayari": "Sarhad ki ye thandi hawayein ab mujhe darr nahi dikhati, kyunki teri yaadon ki garmahat mere seene mein ek alag hi aag jagati.",
-      "caption": "🎖️ Part 5: Barfani Raat Mein Dil Ki Dhadkan | 🏔️ LOC Border Patrol & Maa KaPyar\n\n🗣️ \"Meera, yahan border ki sannate mein jab thand mere haath-pair sunn kar deti hai, tab tumhari ye tasveer mere dil ki dhadkano ko wapas garam kar deti hai.\"\n\n🔥 Sarhad ki ye thandi hawayein ab mujhe darr nahi dikhati, kyunki teri yaadon ki garmahat mere seene mein ek alag hi aag jagati.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#FojiAI #IndianArmy #MakraAndMeera #SiachenDiaries #AgniveerLife #PixarStyleArmy",
-      "created_at": "17 Nov 2026, 05:40 PM IST",
-      "status": "scheduled",
-      "scheduled_by": "Frontend",
-      "scheduled_slot_key": "2026-11-22_06:30",
-      "scheduled_epoch": 1795309200.0,
-      "scheduled_display": "22 Nov 2026 at 06:30 AM IST",
-      "date_label": "22 Nov 2026",
-      "time_label": "06:30 AM",
-      "scheduled_iso": "2026-11-22T06:30:00+05:30",
-      "scheduled_for": "2026-11-22 06:30:00",
-      "scheduled_full_badge": "22 Nov 2026 • 06:30 AM IST"
-    },
-    {
       "id": "vid_Video_053_UnitRagda_Part_06_1118_105940.mp4",
       "video_file": "Video_053_UnitRagda_Part_06_1118_105940.mp4",
       "title": "🔥 Ustad Ka Ragda & Punishment — Part 6: Tyre Ka Tandav & Kandhon Ka Dum",
@@ -1562,7 +1541,7 @@
       "ig_media_pk": "18117301127149408"
     }
   ],
-  "updated_epoch": 1795309116.3285356,
+  "updated_epoch": 1795309205.2014441,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
@@ -1604,6 +1583,7 @@
     "Video_032_BorderDuty_Part_04_1115_044337.mp4",
     "Video_063_DutyFatigue_Part_01_1121_123320.mp4",
     "Video_063_DutyFatigue_Part_01_1121_131605.mp4",
-    "Video_050_TrainingUstad_Part_05_1116_210700.mp4"
+    "Video_050_TrainingUstad_Part_05_1116_210700.mp4",
+    "Video_053_BorderDuty_Part_05_1117_173209.mp4"
   ]
 }
