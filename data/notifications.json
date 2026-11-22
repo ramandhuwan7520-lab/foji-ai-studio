@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795326749512",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_076_ChhuttiGharWapsi_Part_02_1122_112025.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "11:22 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795326749.5125558
+  },
+  {
     "id": "notif_1795326693985",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "04:22 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795258365.1519554
-  },
-  {
-    "id": "notif_1795258341632",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Fauji Masti, Bakwas & Comedy — Part 2: Mooch Ka Swag & Meera Ki Chhed-Chhad (Video_065_FunnyFauji_Part_02_1121_161953.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "04:22 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795258341.6324914
   }
 ]
