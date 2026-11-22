@@ -1,9 +1,9 @@
 {
-  "step_num": 5,
-  "step_title": "Step 5: Directing Scene (Acc #1)",
-  "sub_detail": "Injecting 3D Fauji scene script, dialogue & lighting cues...",
+  "step_num": 6,
+  "step_title": "Step 6: Rendering 3D Video (Acc #1)",
+  "sub_detail": "Gemini Veo is rendering your vertical 9:16 3D reel (~60-90s)...",
   "status": "active",
-  "progress": 62,
-  "updated_at": "09:38:21 PM",
-  "epoch": 1795363701.7451484
+  "progress": 74,
+  "updated_at": "09:38:28 PM",
+  "epoch": 1795363708.0757685
 }
