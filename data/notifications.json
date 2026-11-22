@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795373741734",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_084_AgniveerReality_Part_03_1123_002357.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:25 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795373741.7343655
+  },
+  {
     "id": "notif_1795373695682",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "09:22 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795276339.2263277
-  },
-  {
-    "id": "notif_1795276283035",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 1: Nashik Ka Viral Jhatka is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:21 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795276283.0355487
   }
 ]
