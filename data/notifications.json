@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795308951112",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 1: Sandbag Ki Diwali Aur Tera Tohfa (Video_074_FestivalOnDuty_Part_01_1122_062315.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:25 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795308951.112473
+  },
+  {
     "id": "notif_1795308921928",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "03:20 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795254616.6746397
-  },
-  {
-    "id": "notif_1795254614283",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
-    "status": "error",
-    "time_str": "03:20 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795254614.2838542
   }
 ]
