@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795345028203",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 2: Holi Ka Asli Ragda is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "04:27 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795345028.2033098
+  },
+  {
     "id": "notif_1795344971977",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "07:22 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795269122.7796853
-  },
-  {
-    "id": "notif_1795269095220",
-    "type": "warning",
-    "title": "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)",
-    "message": "6-Minute Smart Render Timeout (5.5 min) reached for Video_069_ChhuttiGharWapsi_Part_01_1121_191346.mp4. Stopping this attempt to start the next video — Part #1 will be built next run!",
-    "status": "warning",
-    "time_str": "07:21 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795269095.2209475
   }
 ]
