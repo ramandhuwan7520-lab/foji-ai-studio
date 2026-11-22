@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Switching to Account #2",
-  "sub_detail": "Account #1 limit/error (Gemini refused/errored early (146s): I'm sorry, I'm experiencing unusually high traffic right n) \u2014 switching to Account #2!",
+  "step_num": 1,
+  "step_title": "Stage 1: AI Episodic Script",
+  "sub_detail": "Generating fresh connected script & wardrobe...",
   "status": "active",
-  "progress": 22,
-  "updated_at": "09:24:26 PM",
-  "epoch": 1795362866.7162502
+  "progress": 12,
+  "updated_at": "09:24:29 PM",
+  "epoch": 1795362869.922393
 }
