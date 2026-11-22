@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795327163070",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_078_BorderNightReality_Part_02_1122_112717.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "11:29 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795327163.0706112
+  },
+  {
     "id": "notif_1795327097973",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "06:03 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795264402.7158937
-  },
-  {
-    "id": "notif_1795258656362",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Agniveer Reality & Pride — Part 2: Sarhad Wali Diwali (Video_067_AgniveerReality_Part_02_1121_162521.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "04:27 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795258656.3624797
   }
 ]
