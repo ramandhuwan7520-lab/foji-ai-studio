@@ -1,9 +1,9 @@
 {
   "step_num": 2,
-  "step_title": "Step 2: Cloud Batch Running (3x)",
-  "sub_detail": "GitHub Actions generating 3 fresh 3D video(s)...",
+  "step_title": "Batch Video 1/3",
+  "sub_detail": "Starting fresh 3D story 1 of 3...",
   "status": "active",
-  "progress": 24,
-  "updated_at": "04:19:05 PM",
-  "epoch": 1795344545.8133988
+  "progress": 20,
+  "updated_at": "04:19:46 PM",
+  "epoch": 1795344586.678279
 }
