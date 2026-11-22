@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795373881171",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Chhutti Khatam, Maa Ka Call is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:28 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795373881.1714833
+  },
+  {
     "id": "notif_1795373839982",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "09:30 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795276849.383191
-  },
-  {
-    "id": "notif_1795276844553",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (357s): I couldn't do that because I'm getting a lot of requests r) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "09:30 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795276844.5533144
   }
 ]
