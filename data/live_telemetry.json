@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (0.8 min)",
-  "sub_detail": "Gemini Veo rendering Video_082_FaujiSafarTrain_Part_02_1122_212036.mp4... (49s elapsed)",
+  "step_title": "Stage 6: Rendering 3D Video (1.7 min)",
+  "sub_detail": "Gemini Veo rendering Video_082_FaujiSafarTrain_Part_02_1122_212036.mp4... (100s elapsed)",
   "status": "active",
-  "progress": 77,
-  "updated_at": "09:22:43 PM",
-  "epoch": 1795362763.118146
+  "progress": 80,
+  "updated_at": "09:23:33 PM",
+  "epoch": 1795362813.7680683
 }
