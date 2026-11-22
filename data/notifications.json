@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795363715687",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Duty, Fatigue & Working Reality — Part 3: Fatigue, Food & Trunk Ka Tohfa is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:38 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795363715.6872032
+  },
+  {
     "id": "notif_1795363658934",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "08:12 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795272169.2837088
-  },
-  {
-    "id": "notif_1795272166998",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
-    "status": "error",
-    "time_str": "08:12 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795272166.9984388
   }
 ]
