@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795373590089",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_083_DutyFatigue_Part_03_1123_002058.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:23 AM",
+    "date_str": "23 Nov 2026",
+    "timestamp": 1795373590.0893214
+  },
+  {
     "id": "notif_1795373523783",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "09:12 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795275763.7424765
-  },
-  {
-    "id": "notif_1795275701406",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Ghar Ka Ladla is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:11 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795275701.406513
   }
 ]
