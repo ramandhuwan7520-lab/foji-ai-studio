@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795327097973",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 2: Trunk Ka Asli Raaz is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "11:28 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795327097.974018
+  },
+  {
     "id": "notif_1795327041883",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "04:27 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795258656.3624797
-  },
-  {
-    "id": "notif_1795258632183",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_067_AgniveerReality_Part_02_1121_162521.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "04:27 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795258632.1839285
   }
 ]
