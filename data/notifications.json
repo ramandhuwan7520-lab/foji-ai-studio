@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795363658934",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Duty, Fatigue & Working Reality — Part 3: Fatigue, Food & Trunk Ka Tohfa | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:37 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795363658.9346194
+  },
+  {
     "id": "notif_1795363636888",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "08:12 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795272166.9984388
-  },
-  {
-    "id": "notif_1795272119137",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Chhutti Cancel, Farz Bulaye | Cast: Makra + Meera (Royal Crimson Red Punjabi Salwar Kamee...)",
-    "status": "info",
-    "time_str": "08:11 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795272119.1370819
   }
 ]
