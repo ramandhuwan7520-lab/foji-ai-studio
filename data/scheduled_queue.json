@@ -1,18 +1,5 @@
 {
-  "unapproved_videos": [
-    {
-      "id": "vid_Video_082_FaujiSafarTrain_Part_02_1122_213423.mp4",
-      "video_file": "Video_082_FaujiSafarTrain_Part_02_1122_213423.mp4",
-      "title": "Fauji Safar: Train, Trunk & Posting — Part 2: Platform Ka Sabak",
-      "track_id": "fauji_safar_train",
-      "part_number": 2,
-      "dialogue": "Ustad ji, internet aali maafi toh trend hai, par mhari vardi aur yo trunk hi asli hakikat hai!",
-      "shayari": "Internet ki maafi te dil konya bharta,\nAsli izzat toh yo safar aur vardi batave hai.",
-      "caption": "🎖️ Part 2: Platform Ka Sabak | Fauji Safar: Train, Trunk & Posting\n\n🗣️ \"Ustad ji, internet aali maafi toh trend hai, par mhari vardi aur yo trunk hi asli hakikat hai!\"\n\n🔥 Internet ki maafi te dil konya bharta,\nAsli izzat toh yo safar aur vardi batave hai.\n\n🎵 Vibe: Soulful train whistle fading into a deep Haryanvi instrumental beat.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#faujisafar #indianrailways #faujiidiary #haryanvi #armyvibe #genzvsfauji #viralshorts #indianarmy",
-      "created_at": "22 Nov 2026, 09:37 PM IST",
-      "status": "awaiting_approval"
-    }
-  ],
+  "unapproved_videos": [],
   "scheduled_posts": [
     {
       "id": "vid_Video_063_FunnyFauji_Part_01_1121_102545.mp4",
@@ -412,6 +399,27 @@
       "scheduled_iso": "2026-11-29T06:30:00+05:30",
       "scheduled_for": "2026-11-29 06:30:00",
       "scheduled_full_badge": "29 Nov 2026 • 06:30 AM IST"
+    },
+    {
+      "id": "vid_Video_082_FaujiSafarTrain_Part_02_1122_213423.mp4",
+      "video_file": "Video_082_FaujiSafarTrain_Part_02_1122_213423.mp4",
+      "title": "Fauji Safar: Train, Trunk & Posting — Part 2: Platform Ka Sabak",
+      "track_id": "fauji_safar_train",
+      "part_number": 2,
+      "dialogue": "Ustad ji, internet aali maafi toh trend hai, par mhari vardi aur yo trunk hi asli hakikat hai!",
+      "shayari": "Internet ki maafi te dil konya bharta,\nAsli izzat toh yo safar aur vardi batave hai.",
+      "caption": "🎖️ Part 2: Platform Ka Sabak | Fauji Safar: Train, Trunk & Posting\n\n🗣️ \"Ustad ji, internet aali maafi toh trend hai, par mhari vardi aur yo trunk hi asli hakikat hai!\"\n\n🔥 Internet ki maafi te dil konya bharta,\nAsli izzat toh yo safar aur vardi batave hai.\n\n🎵 Vibe: Soulful train whistle fading into a deep Haryanvi instrumental beat.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #3!\n\n#faujisafar #indianrailways #faujiidiary #haryanvi #armyvibe #genzvsfauji #viralshorts #indianarmy",
+      "created_at": "22 Nov 2026, 09:37 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Frontend",
+      "scheduled_slot_key": "2026-11-29_12:30",
+      "scheduled_epoch": 1795935600.0,
+      "scheduled_display": "29 Nov 2026 at 12:30 PM IST",
+      "date_label": "29 Nov 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-11-29T12:30:00+05:30",
+      "scheduled_for": "2026-11-29 12:30:00",
+      "scheduled_full_badge": "29 Nov 2026 • 12:30 PM IST"
     }
   ],
   "published_posts": [
@@ -1766,7 +1774,7 @@
       "ig_media_pk": "18110203018976709"
     }
   ],
-  "updated_epoch": 1795363633.2072368,
+  "updated_epoch": 1795366074.1322496,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
