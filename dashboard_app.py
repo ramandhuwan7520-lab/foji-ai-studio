@@ -1925,6 +1925,14 @@ def _background_master_scheduler_daemon():
 
     while True:
         try:
+            # 0. Hybrid Manual + 1-Hour Auto-Approve for pending videos
+            try:
+                _aa_res = _fud.auto_approve_aged_pending_videos(3600)
+                if _aa_res:
+                    _CACHED_UNIVERSE_TS = 0
+            except Exception:
+                pass
+
             # 1. Sync remote queue from GitHub if newer
             try:
                 rem_q = _fud._fetch_github_json_zero_cache("data/scheduled_queue.json")
@@ -2103,7 +2111,22 @@ def api_universe_status():
 
     _CACHED_UNIVERSE_STATUS = health
     _CACHED_UNIVERSE_TS = now_t
-    return jsonify(health)
+    _v16_out = health
+    if isinstance(_v16_out, dict):
+        _ep_tr = _fud.get_episode_tracker()
+        _v16_out['episode_tracker'] = _ep_tr
+        _v16_tracks = []
+        for _tk_id in _fud.TRACK_ORDER:
+            _td = _fud.FOJI_UNIVERSE_TRACKS.get(_tk_id)
+            if not _td: continue
+            _ti = _ep_tr.get(_tk_id) or {}
+            _t_copy = dict(_td)
+            _t_copy['id'] = _tk_id
+            _t_copy['completed_part'] = int(_ti.get('completed_part') or 0)
+            _t_copy['next_part'] = int(_ti.get('next_part') or (_t_copy['completed_part'] + 1))
+            _v16_tracks.append(_t_copy)
+        _v16_out['tracks'] = _v16_tracks
+    return jsonify(_v16_out)
 
 
 @app.route("/api/universe/select_track", methods=["POST"])

@@ -571,7 +571,7 @@
           <div class="kpi" onclick="switchView('vault','pending')">
             <div class="kpi-lbl">Pending Review</div>
             <div id="kpi-pending" class="kpi-num" style="color:var(--gold-hi);">0</div>
-            <div class="kpi-sub">Review, schedule, or publish</div>
+            <div class="kpi-sub">Manual approve or auto-schedules after 1h</div>
           </div>
           <div class="kpi" onclick="switchView('vault','scheduled')">
             <div class="kpi-lbl">Scheduled</div>
@@ -1291,12 +1291,20 @@
       const activeId = d.active_track_id || d.selected_track || '';
       const autoRot = Boolean(d.auto_rotate);
       document.getElementById('btn-autorotate').className = 'btn3d sm ' + (autoRot ? 'gold' : '');
+      const epMap = d.episode_tracker || {};
       box.innerHTML = tracks.map(t => {
         const tid = t.id || t.track_id;
         const sel = !autoRot && activeId === tid;
+        const trInfo = epMap[tid] || {};
+        const donePart = Number(t.completed_part ?? trInfo.completed_part ?? 0);
+        const nextPart = Number(t.next_part ?? trInfo.next_part ?? (donePart + 1));
         return `<button class="track-btn ${sel ? 'selected' : ''}" onclick="selectTrack('${tid}')">
           <div style="font-size:12.5px;font-weight:800;color:#f8fafc;">${t.name || t.title || tid}</div>
-          <div style="font-size:10.5px;color:var(--text-2);margin-top:4px;">${t.badge || '3D Series'}</div>
+          <div style="font-size:10.5px;color:var(--text-2);margin-top:3px;">${t.badge || 'Series'}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:7px;padding-top:6px;border-top:1px solid rgba(148,163,184,0.14);font-size:10.5px;">
+            <span style="color:#38bdf8;font-weight:800;">Next: Part ${nextPart}</span>
+            <span style="color:var(--text-2);font-weight:600;">${donePart} done</span>
+          </div>
         </button>`;
       }).join('');
     }

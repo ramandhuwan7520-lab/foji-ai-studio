@@ -31,6 +31,7 @@ EPISODE_TRACKER_FILE = "data/episode_tracker.json"
 HISTORY_FILE = "data/history.json"
 TELEMETRY_FILE = "data/live_telemetry.json"
 QUEUE_FILE = "data/scheduled_queue.json"
+SCHEDULED_QUEUE_FILE = QUEUE_FILE
 SCHEDULE_CFG_FILE = "data/schedule_config.json"
 
 _LAST_CLOUD_PULL_TS = 0.0
@@ -2525,3 +2526,98 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
             if not any(w in scene_low for w in ("fojan meera", "wife meera", "girlfriend meera", "meera smiles", "meera holds")):
                 pkg["include_meera"] = False
     return pkg
+
+
+# === V16_AUTO_APPROVE_1H_ENGINE ===
+AUTO_APPROVE_AFTER_SECONDS = int(os.getenv("AUTO_APPROVE_AFTER_SECONDS", "3600"))
+
+
+def _v16_extract_video_created_epoch(item):
+    """Determines exact creation epoch of a pending video (from metadata, filename MMDD_HHMMSS, or file mtime)."""
+    if not isinstance(item, dict):
+        return 0.0
+    for k in ("created_epoch", "generated_epoch", "added_epoch", "timestamp_epoch"):
+        v = item.get(k)
+        if isinstance(v, (int, float)) and v > 1700000000:
+            return float(v)
+    vf = os.path.basename(str(item.get("video_file") or ""))
+    # Pattern: Video_078_BorderNightReality_Part_02_1122_112717.mp4 -> MMDD_HHMMSS (IST)
+    m = re.search(r"_(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})\.mp4$", vf)
+    if m:
+        try:
+            now_ist = datetime.now(IST)
+            mo, dy, hh, mm, ss = map(int, m.groups())
+            dt = datetime(now_ist.year, mo, dy, hh, mm, ss, tzinfo=IST)
+            # Handle year rollover cleanly
+            if dt.timestamp() > now_ist.timestamp() + 86400 * 30:
+                dt = dt.replace(year=now_ist.year - 1)
+            return dt.timestamp()
+        except Exception:
+            pass
+    local_p = os.path.join("output", "raw_videos", vf)
+    if vf and os.path.exists(local_p):
+        try:
+            return float(os.path.getmtime(local_p))
+        except Exception:
+            pass
+    return 0.0
+
+
+def auto_approve_aged_pending_videos(max_age_sec=None):
+    """
+    HYBRID MANUAL + 1-HOUR AUTO-APPROVE:
+    Checks Pending Review videos. If any video has been waiting >= 1 hour (3600s) without
+    manual action, automatically approves & locks it into the next sequential IST posting slot!
+    Returns list of newly auto-scheduled items.
+    """
+    threshold = int(max_age_sec if max_age_sec is not None else AUTO_APPROVE_AFTER_SECONDS)
+    if threshold <= 0:
+        return []
+
+    q = get_scheduled_queue()
+    unapproved = list(q.get("unapproved_videos") or [])
+    if not unapproved:
+        return []
+
+    now_ep = time.time()
+    # Sort oldest first so Part 1 -> Part 2 -> Part 3 schedule in exact chronological order
+    aged_candidates = []
+    for it in unapproved:
+        vf = it.get("video_file")
+        if not vf:
+            continue
+        c_ep = _v16_extract_video_created_epoch(it)
+        if c_ep <= 0:
+            # Stamp first-seen time so unknown-timestamp items wait a full 1 hour before auto-approving
+            it["created_epoch"] = now_ep
+            continue
+        if (now_ep - c_ep) >= threshold:
+            aged_candidates.append((c_ep, vf))
+
+    aged_candidates.sort(key=lambda x: x[0])
+    auto_scheduled = []
+
+    # Process up to 3 per cycle to keep daemon fast & gentle on GitHub API
+    for _, vf in aged_candidates[:3]:
+        try:
+            sched_item = approve_and_schedule_video_item(
+                video_file=vf,
+                custom_caption="",
+                source_label="Auto-Approve (1h)"
+            )
+            auto_scheduled.append(sched_item)
+            print(f"⏰ [Auto-Approve 1h] Scheduled '{vf}' -> {sched_item.get('scheduled_display')}")
+            try:
+                import gemini_bot as _gb_aa
+                _gb_aa.push_app_notification(
+                    "success",
+                    "Auto-Scheduled (1h)",
+                    f"{vf} -> {sched_item.get('scheduled_display')}",
+                    "schedule"
+                )
+            except Exception:
+                pass
+        except Exception as _ae:
+            print(f"⚠️ [Auto-Approve 1h] Note for {vf}: {_ae}")
+
+    return auto_scheduled
