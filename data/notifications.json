@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795308777456",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "1-Bar Network & Fauji Video Call — Part 1: Signal Ka Sangharsh Aur Captain Ki Report (Video_073_VideoCallNetwork_Part_01_1122_062009.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:22 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795308777.4560823
+  },
+  {
     "id": "notif_1795308748481",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "02:45 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795252541.8949778
-  },
-  {
-    "id": "notif_1795252539852",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
-    "status": "error",
-    "time_str": "02:45 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795252539.8521395
   }
 ]
