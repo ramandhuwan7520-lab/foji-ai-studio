@@ -1,12 +1,22 @@
-name: Render Manual Wake Ping (Zero Auto-Minutes)
+name: Keep Render Awake 24x7
 
 on:
+  schedule:
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 jobs:
-  ping:
+  ping-render:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Foji AI Studio Render Server
+      - name: Ping Foji Studio Health Endpoint
         run: |
-          curl -s -L --max-time 15 "https://foji-ai-studio-mgs6.onrender.com/api/ping" || true
+          for i in 1 2 3; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 25 "https://foji-ai-studio-mgs6.onrender.com/ping")
+            echo "Attempt $i -> /ping HTTP $CODE"
+            if [ "$CODE" = "200" ]; then
+              exit 0
+            fi
+            sleep 5
+          done
+          curl -s -o /dev/null -w "Fallback /api/active_session_info -> HTTP %{http_code}\n" --max-time 25 "https://foji-ai-studio-mgs6.onrender.com/api/active_session_info" || true

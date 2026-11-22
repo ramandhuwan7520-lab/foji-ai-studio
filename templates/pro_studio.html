@@ -501,7 +501,7 @@
     <div class="ring r3"></div>
     <img src="/emblem-logo.png" class="intro-logo" alt="Foji AI Studio" onerror="this.style.display='none'" />
     <div class="intro-name">FOJI AI STUDIO</div>
-    <div class="intro-sub">3D CREATOR COMMAND SUITE</div>
+    <div class="intro-sub">CREATOR STUDIO</div>
     <div class="intro-track"><div class="intro-fill"></div></div>
   </div>
 
@@ -512,25 +512,25 @@
         <img src="/emblem-logo.png" class="brand-img" alt="Logo" onerror="this.style.display='none'" />
         <div>
           <div class="brand-h">FOJI AI STUDIO</div>
-          <div class="brand-p">Creator Pro Suite</div>
+          <div class="brand-p">Creator Studio</div>
         </div>
       </div>
 
       <nav class="nav-col">
         <button id="snav-studio" class="nav-item active" onclick="switchView('studio')">
-          <span>🎬 Studio</span><span class="nav-cnt" id="nb-live">LIVE</span>
+          <span>Studio</span><span class="nav-cnt" id="nb-live">LIVE</span>
         </button>
         <button id="snav-vault" class="nav-item" onclick="switchView('vault')">
-          <span>🎞️ Videos & Queue</span><span class="nav-cnt" id="nb-vault">0</span>
+          <span>Videos</span><span class="nav-cnt" id="nb-vault">0</span>
         </button>
         <button id="snav-sessions" class="nav-item" onclick="switchView('sessions')">
-          <span>⚡ Auto Schedule</span><span class="nav-cnt">5</span>
+          <span>Schedule</span><span class="nav-cnt">5</span>
         </button>
         <button id="snav-insights" class="nav-item" onclick="switchView('insights')">
-          <span>📊 Analytics</span><span class="nav-cnt">PRO</span>
+          <span>Analytics</span><span class="nav-cnt">PRO</span>
         </button>
         <button id="snav-system" class="nav-item" onclick="switchView('system')">
-          <span>⚙️ Connections</span><span class="nav-cnt">API</span>
+          <span>Settings</span><span class="nav-cnt">API</span>
         </button>
       </nav>
 
@@ -540,7 +540,7 @@
           <span id="sidebar-clock" style="color:var(--gold-hi);">--:--</span>
         </div>
         <div class="meta-pill" style="font-size:11px;color:var(--text-2);">
-          <span>💾 Active Files</span>
+          <span>Storage</span>
           <span id="sidebar-storage" style="color:#34d399;font-weight:800;">-- MB</span>
         </div>
       </div>
@@ -551,15 +551,15 @@
       <!-- TOP BAR -->
       <header class="topbar">
         <div>
-          <div id="top-title" style="font-size:19px;font-weight:900;letter-spacing:-0.3px;">🎬 Studio</div>
-          <div id="active-session-pill" class="session-pill">🕒 Checking next auto session...</div>
+          <div id="top-title" style="font-size:19px;font-weight:900;letter-spacing:-0.3px;">Studio</div>
+          <div id="active-session-pill" class="session-pill">Checking next session...</div>
         </div>
         <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
           <!-- Dynamic Generate <-> Stop Button -->
-          <button id="primary-gen-btn" class="btn3d gold" onclick="handlePrimaryGenOrStop()">🚀 Generate Video</button>
-          <button id="batch-gen-btn" class="btn3d cyan" onclick="triggerGenerate(3)">⚡ Batch 3</button>
-          <button class="btn3d" onclick="openLiveCam()" title="Live Screen">👁️ Live View</button>
-          <button id="sound-toggle-btn" class="btn3d" onclick="toggleSound()" title="Toggle Studio Sound">🔊 Sound ON</button>
+          <button id="primary-gen-btn" class="btn3d gold" onclick="handlePrimaryGenOrStop()">Generate Video</button>
+          <button id="batch-gen-btn" class="btn3d cyan" onclick="triggerGenerate(3)">Batch (3)</button>
+          <button class="btn3d" onclick="openLiveCam()" title="Live Screen">Live View</button>
+          <button id="sound-toggle-btn" class="btn3d" onclick="toggleSound()" title="Toggle Studio Sound">Sound On</button>
         </div>
       </header>
 
@@ -569,24 +569,24 @@
       <section id="view-studio" class="view active">
         <div class="kpi-row">
           <div class="kpi" onclick="switchView('vault','pending')">
-            <div class="kpi-lbl">⏳ Ready for Review</div>
+            <div class="kpi-lbl">Pending Review</div>
             <div id="kpi-pending" class="kpi-num" style="color:var(--gold-hi);">0</div>
-            <div class="kpi-sub">Approve, Schedule or Post</div>
+            <div class="kpi-sub">Review, schedule, or publish</div>
           </div>
           <div class="kpi" onclick="switchView('vault','scheduled')">
-            <div class="kpi-lbl">📅 Scheduled</div>
+            <div class="kpi-lbl">Scheduled</div>
             <div id="kpi-scheduled" class="kpi-num" style="color:var(--cyan-hi);">0</div>
             <div class="kpi-sub">Next Slot: <span id="kpi-next-slot">--</span></div>
           </div>
           <div class="kpi" onclick="switchView('vault','posted')">
-            <div class="kpi-lbl">✅ Posted Reels</div>
+            <div class="kpi-lbl">Published</div>
             <div id="kpi-posted" class="kpi-num" style="color:#34d399;">0</div>
-            <div class="kpi-sub">Locked & Archived</div>
+            <div class="kpi-sub">Live on platforms</div>
           </div>
           <div class="kpi" onclick="openDeepPlatform('instagram')">
-            <div class="kpi-lbl">👁️ Total Reach</div>
+            <div class="kpi-lbl">Total Views</div>
             <div id="kpi-reach" class="kpi-num" style="color:#c084fc;">--</div>
-            <div class="kpi-sub">Tap for Pro Analytics →</div>
+            <div class="kpi-sub">View analytics →</div>
           </div>
         </div>
 
@@ -599,16 +599,16 @@
                 <span id="mission-pct" style="font-size:12px;color:var(--gold-hi);background:rgba(245,158,11,0.18);padding:3px 10px;border-radius:999px;">0%</span>
                 <span id="mission-state-tag" class="tag-up">STANDBY</span>
               </div>
-              <div id="mission-detail" style="font-size:12px;color:var(--text-2);margin-top:4px;">Commando resting — ready to roll when you start a video or next session begins.</div>
+              <div id="mission-detail" style="font-size:12px;color:var(--text-2);margin-top:4px;">Idle — ready for your next video or scheduled session.</div>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn3d sm" onclick="resetTelemetry()">↺ Reset</button>
-              <button class="btn3d sm violet" onclick="celebrateVictory('Preview Celebration!','Sound & confetti test ready for your next 3D reel!')">🎉 Test Victory</button>
+              <button class="btn3d sm" onclick="resetTelemetry()">Reset</button>
+              <button class="btn3d sm violet" onclick="celebrateVictory('Preview Celebration!','Sound & confetti test ready for your next 3D reel!')">Test Alert</button>
             </div>
           </div>
 
           <div class="runway-arena">
-            <div class="duty-stand-pad">🛡️ DUTY STAND</div>
+            <div class="duty-stand-pad">READY</div>
             <div class="target-beacon">🎯</div>
             <div id="bullet-stream" class="bullet-stream">
               <span class="bullet-round b1"></span>
@@ -703,18 +703,18 @@
           <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
               <div>
-                <div style="font-size:15.5px;font-weight:900;">🎭 Story Series</div>
-                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">Pick a series or leave Auto-Rotate ON</div>
+                <div style="font-size:15.5px;font-weight:900;">Story Categories</div>
+                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">Select a category or keep Auto-Rotate on</div>
               </div>
-              <button id="btn-autorotate" class="btn3d sm" onclick="selectTrack('auto')">🔄 Auto-Rotate</button>
+              <button id="btn-autorotate" class="btn3d sm" onclick="selectTrack('auto')">Auto-Rotate</button>
             </div>
             <div id="tracks-box" class="tracks-grid">Loading series...</div>
 
             <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-              <label style="font-size:11.5px;font-weight:800;color:var(--cyan-hi);display:block;margin-bottom:6px;">💡 Custom Idea (Optional)</label>
+              <label style="font-size:11.5px;font-weight:800;color:var(--cyan-hi);display:block;margin-bottom:6px;">Custom Topic (Optional)</label>
               <div style="display:flex;gap:8px;">
                 <input id="twist-inp" class="inp" placeholder="e.g. Ustad catches Makra eating extra gulab jamun..." />
-                <button class="btn3d gold" onclick="previewScript()">✨ Preview</button>
+                <button class="btn3d gold" onclick="previewScript()">Preview</button>
               </div>
             </div>
           </div>
@@ -722,15 +722,15 @@
           <div class="card" style="display:flex;flex-direction:column;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
               <div>
-                <div style="font-size:15.5px;font-weight:900;">📝 Script Preview & Alerts</div>
-                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">Trending Bollywood BGM auto-matches every mood</div>
+                <div style="font-size:15.5px;font-weight:900;">Script Preview</div>
+                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">Auto-matched background score & script</div>
               </div>
-              <button class="btn3d sm" onclick="previewScript()">🎲 New Script</button>
+              <button class="btn3d sm" onclick="previewScript()">New Script</button>
             </div>
             <div id="script-box" style="background:rgba(3,7,18,0.84);border:1px solid var(--border);border-radius:14px;padding:13px;font-size:12px;line-height:1.58;color:#cbd5e1;min-height:126px;max-height:200px;overflow-y:auto;">
-              Tap <strong>✨ Preview</strong> to test your next episode script and dialogue before generating.
+              Tap <strong>Preview</strong> to test your next episode script and dialogue before generating.
             </div>
-            <div style="margin-top:14px;font-size:11.5px;font-weight:800;color:var(--text-2);margin-bottom:7px;">🔔 Live Updates</div>
+            <div style="margin-top:14px;font-size:11.5px;font-weight:800;color:var(--text-2);margin-bottom:7px;">Activity</div>
             <div id="notif-box" style="display:flex;flex-direction:column;gap:6px;max-height:165px;overflow-y:auto;"></div>
           </div>
         </div>
@@ -742,7 +742,7 @@
       <section id="view-vault" class="view">
         <div class="tabs-bar">
           <button id="vtab-pending" class="tab-btn active" onclick="setVaultTab('pending')">⏳ Review (<span id="vc-pending">0</span>)</button>
-          <button id="vtab-scheduled" class="tab-btn" onclick="setVaultTab('scheduled')">📅 Scheduled (<span id="vc-scheduled">0</span>)</button>
+          <button id="vtab-scheduled" class="tab-btn" onclick="setVaultTab('scheduled')">Scheduled (<span id="vc-scheduled">0</span>)</button>
           <button id="vtab-posted" class="tab-btn" onclick="setVaultTab('posted')">✅ Posted (<span id="vc-posted">0</span>)</button>
           <button id="vtab-all" class="tab-btn" onclick="setVaultTab('all')">🎞️ All Videos (<span id="vc-all">0</span>)</button>
         </div>
@@ -757,8 +757,8 @@
           <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
               <div>
-                <div style="font-size:16px;font-weight:900;">⚡ Daily Creation Sessions (IST)</div>
-                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">3 Videos per session • Failed parts auto-retry next slot</div>
+                <div style="font-size:16px;font-weight:900;">Auto Generation Schedule (IST)</div>
+                <div style="font-size:12px;color:var(--text-2);margin-top:2px;">3 videos per session • Failed runs retry automatically</div>
               </div>
               <button id="master-btn" class="btn3d emerald" onclick="toggleMaster()">AUTO: ON</button>
             </div>
@@ -766,21 +766,21 @@
           </div>
 
           <div class="card">
-            <div style="font-size:16px;font-weight:900;margin-bottom:4px;">⏰ Daily Posting Times (IST)</div>
-            <div style="font-size:12px;color:var(--text-2);margin-bottom:16px;">Edit your 3 posting slots anytime — scheduled videos stay safe.</div>
+            <div style="font-size:16px;font-weight:900;margin-bottom:4px;">Daily Publishing Slots (IST)</div>
+            <div style="font-size:12px;color:var(--text-2);margin-bottom:16px;">Update your 3 daily posting slots anytime.</div>
             <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">
               <div><div style="font-size:11px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Morning</div><input id="slot-1" type="time" class="time-inp" value="06:30" /></div>
               <div><div style="font-size:11px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Midday</div><input id="slot-2" type="time" class="time-inp" value="12:30" /></div>
               <div><div style="font-size:11px;color:var(--text-2);margin-bottom:4px;font-weight:700;">Evening</div><input id="slot-3" type="time" class="time-inp" value="18:30" /></div>
             </div>
-            <button class="btn3d gold" onclick="saveSlots()">💾 Save Posting Times</button>
+            <button class="btn3d gold" onclick="saveSlots()">Save Slots</button>
 
             <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--border);">
-              <div style="font-size:14px;font-weight:800;margin-bottom:10px;">🌐 Auto-Post Platforms</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:10px;">Publishing Platforms</div>
               <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-ig" type="checkbox" checked onchange="savePlats()" /> 📸 Instagram</label>
-                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-fb" type="checkbox" checked onchange="savePlats()" /> 📘 Facebook</label>
-                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-yt" type="checkbox" checked onchange="savePlats()" /> ▶️ YouTube</label>
+                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-ig" type="checkbox" checked onchange="savePlats()" /> Instagram</label>
+                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-fb" type="checkbox" checked onchange="savePlats()" /> Facebook</label>
+                <label class="btn3d sm" style="cursor:pointer;"><input id="chk-yt" type="checkbox" checked onchange="savePlats()" /> YouTube</label>
               </div>
             </div>
           </div>
@@ -794,12 +794,12 @@
         <div class="card" style="margin-bottom:16px;">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
             <div>
-              <div style="font-size:19px;font-weight:900;color:var(--gold-hi);">📊 Multi-Platform Growth Center</div>
+              <div style="font-size:19px;font-weight:900;color:var(--gold-hi);">Performance Overview</div>
               <div style="font-size:12px;color:var(--text-2);margin-top:3px;">Click any platform to open its full-screen executive dashboard with Growth/Downfall gauge, series leaderboard, hourly matrix & reel-by-reel breakdown.</div>
             </div>
             <div style="display:flex;gap:8px;">
-              <button class="btn3d cyan sm" onclick="refreshTri(true)">🔄 Sync Live</button>
-              <button class="btn3d gold sm" onclick="switchView('system')">⚙️ Connections</button>
+              <button class="btn3d cyan sm" onclick="refreshTri(true)">Sync Now</button>
+              <button class="btn3d gold sm" onclick="switchView('system')">Settings</button>
             </div>
           </div>
         </div>
@@ -807,7 +807,7 @@
         <div class="plat-grid">
           <div class="plat-card ig" onclick="openDeepPlatform('instagram')">
             <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div style="font-size:16px;font-weight:900;color:#f472b6;">📸 Instagram Reels</div>
+              <div style="font-size:16px;font-weight:900;color:#f472b6;">Instagram</div>
               <span class="btn3d sm gold">Open Analytics →</span>
             </div>
             <div id="ins-ig-views" style="font-size:32px;font-weight:900;margin:14px 0 6px 0;">--</div>
@@ -816,7 +816,7 @@
 
           <div class="plat-card yt" onclick="openDeepPlatform('youtube')">
             <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div style="font-size:16px;font-weight:900;color:#f87171;">▶️ YouTube Shorts</div>
+              <div style="font-size:16px;font-weight:900;color:#f87171;">YouTube</div>
               <span class="btn3d sm">Open Analytics →</span>
             </div>
             <div id="ins-yt-views" style="font-size:32px;font-weight:900;margin:14px 0 6px 0;">Connect</div>
@@ -825,7 +825,7 @@
 
           <div class="plat-card fb" onclick="openDeepPlatform('facebook')">
             <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div style="font-size:16px;font-weight:900;color:#38bdf8;">📘 Facebook Reels</div>
+              <div style="font-size:16px;font-weight:900;color:#38bdf8;">Facebook</div>
               <span class="btn3d sm">Open Analytics →</span>
             </div>
             <div id="ins-fb-views" style="font-size:32px;font-weight:900;margin:14px 0 6px 0;">Connect</div>
@@ -840,8 +840,8 @@
       <section id="view-system" class="view">
         <div class="two-col">
           <div class="card">
-            <div style="font-size:16px;font-weight:900;color:var(--gold-hi);margin-bottom:4px;">🔐 Official Platform Connections</div>
-            <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;">Connect official Instagram, Facebook & YouTube APIs for live analytics and 1-click multi-platform publishing.</div>
+            <div style="font-size:16px;font-weight:900;color:var(--gold-hi);margin-bottom:4px;">Platform Connections</div>
+            <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;">Connect your Instagram, YouTube, and Facebook APIs for analytics and auto-publishing.</div>
             <div style="display:flex;flex-direction:column;gap:10px;">
               <div><label style="font-size:11px;font-weight:700;color:var(--text-2);">Meta App ID</label><input id="api-meta-id" class="inp" placeholder="App Settings → Basic → App ID" style="margin-top:4px;" /></div>
               <div><label style="font-size:11px;font-weight:700;color:var(--text-2);">Meta App Secret</label><input id="api-meta-secret" type="password" class="inp" placeholder="App Settings → Basic → App Secret" style="margin-top:4px;" /></div>
@@ -856,19 +856,19 @@
                 <div><label style="font-size:11px;font-weight:700;color:#f87171;">YouTube API Key</label><input id="api-yt-key" type="password" class="inp" placeholder="AIzaSy..." style="margin-top:4px;" /></div>
               </div>
               <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
-                <button class="btn3d gold" onclick="saveApis()">✅ Save Connections</button>
+                <button class="btn3d gold" onclick="saveApis()">Save Settings</button>
                 <span id="api-status" style="font-size:12px;color:#34d399;font-weight:700;"></span>
               </div>
             </div>
           </div>
 
           <div class="card">
-            <div style="font-size:16px;font-weight:900;margin-bottom:14px;">🛡️ Studio Health</div>
+            <div style="font-size:16px;font-weight:900;margin-bottom:14px;">System Status</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
               <div class="kpi"><div class="kpi-lbl">Active Storage</div><div id="diag-storage" class="kpi-num" style="font-size:21px;color:#34d399;">-- MB</div><div class="kpi-sub">Auto-Archive Active</div></div>
-              <div class="kpi"><div class="kpi-lbl">Account #1 Session</div><div id="diag-cookies" class="kpi-num" style="font-size:21px;color:var(--gold-hi);">--</div><div class="kpi-sub">2FA Protected</div></div>
-              <div class="kpi"><div class="kpi-lbl">Account #2 Failover</div><div class="kpi-num" style="font-size:21px;color:var(--cyan-hi);">READY</div><div class="kpi-sub">Auto-Switch on Limit</div></div>
-              <div class="kpi"><div class="kpi-lbl">Audio Engine</div><div class="kpi-num" style="font-size:21px;color:#c084fc;">BGM PRO</div><div class="kpi-sub">Trending Viral Cuts</div></div>
+              <div class="kpi"><div class="kpi-lbl">Primary Account</div><div id="diag-cookies" class="kpi-num" style="font-size:21px;color:var(--gold-hi);">--</div><div class="kpi-sub">2FA Protected</div></div>
+              <div class="kpi"><div class="kpi-lbl">Backup Account</div><div class="kpi-num" style="font-size:21px;color:var(--cyan-hi);">READY</div><div class="kpi-sub">Auto-failover</div></div>
+              <div class="kpi"><div class="kpi-lbl">Audio Mix</div><div class="kpi-num" style="font-size:21px;color:#c084fc;">ACTIVE</div><div class="kpi-sub">Auto BGM</div></div>
             </div>
           </div>
         </div>
@@ -890,19 +890,19 @@
     <div class="deep-wrap">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:20px;">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-          <button class="btn3d sm" onclick="closeDeepPlatform()">← Back</button>
+          <button class="btn3d sm" onclick="closeDeepPlatform()">Back</button>
           <div>
-            <div id="deep-title" style="font-size:21px;font-weight:900;color:var(--gold-hi);">📸 Instagram Pro Analytics</div>
-            <div id="deep-sub" style="font-size:12px;color:var(--text-2);">Growth, Downfall, Series Leaderboard & Reel Breakdown</div>
+            <div id="deep-title" style="font-size:21px;font-weight:900;color:var(--gold-hi);">Instagram Analytics</div>
+            <div id="deep-sub" style="font-size:12px;color:var(--text-2);">Performance breakdown and top videos</div>
           </div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn3d sm" onclick="openDeepPlatform('instagram')">📸 Instagram</button>
-          <button class="btn3d sm" onclick="openDeepPlatform('youtube')">▶️ YouTube</button>
-          <button class="btn3d sm" onclick="openDeepPlatform('facebook')">📘 Facebook</button>
+          <button class="btn3d sm" onclick="openDeepPlatform('instagram')">Instagram</button>
+          <button class="btn3d sm" onclick="openDeepPlatform('youtube')">YouTube</button>
+          <button class="btn3d sm" onclick="openDeepPlatform('facebook')">Facebook</button>
         </div>
       </div>
-      <div id="deep-body">Loading executive insights...</div>
+      <div id="deep-body">Loading analytics...</div>
     </div>
   </div>
 
@@ -913,19 +913,19 @@
       <div class="theater-right">
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <span id="th-badge" class="tag-viral">VIDEO</span>
-          <button class="btn3d sm" onclick="closeTheater()">✕ Close</button>
+          <button class="btn3d sm" onclick="closeTheater()">Close</button>
         </div>
         <div id="th-title" style="font-size:16px;font-weight:900;line-height:1.35;">Title</div>
         <div id="th-meta" style="font-size:11.5px;color:var(--text-2);">Info</div>
-        <label style="font-size:11px;font-weight:800;color:var(--cyan-hi);">📝 Caption & Hashtags</label>
+        <label style="font-size:11px;font-weight:800;color:var(--cyan-hi);">Caption</label>
         <textarea id="th-caption" class="inp" rows="6"></textarea>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
-          <button class="btn3d sm" onclick="saveTheaterCaption()">💾 Save Caption</button>
-          <button class="btn3d sm gold" onclick="actReel('post', STATE.thItem)">🚀 Approve & Post</button>
-          <button class="btn3d sm cyan" onclick="actReel('schedule', STATE.thItem)">📅 Schedule</button>
-          <button class="btn3d sm violet" onclick="actReel('regen', STATE.thItem)">🔄 Regenerate</button>
-          <button class="btn3d sm emerald" onclick="actReel('posted', STATE.thItem)">✅ Mark Posted</button>
-          <button class="btn3d sm danger" onclick="actReel('delete', STATE.thItem)">🗑️ Delete</button>
+          <button class="btn3d sm" onclick="saveTheaterCaption()">Save</button>
+          <button class="btn3d sm gold" onclick="actReel('post', STATE.thItem)">Post Now</button>
+          <button class="btn3d sm cyan" onclick="actReel('schedule', STATE.thItem)">Schedule</button>
+          <button class="btn3d sm violet" onclick="actReel('regen', STATE.thItem)">Regenerate</button>
+          <button class="btn3d sm emerald" onclick="actReel('posted', STATE.thItem)">Mark Published</button>
+          <button class="btn3d sm danger" onclick="actReel('delete', STATE.thItem)">Delete</button>
         </div>
       </div>
     </div>
@@ -935,9 +935,9 @@
   <div id="v6-cam" class="modal-bg" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="card" style="width:100%;max-width:780px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div style="font-size:15px;font-weight:900;color:var(--gold-hi);">👁️ Live Generation Screen</div>
+        <div style="font-size:15px;font-weight:900;color:var(--gold-hi);">Live Preview</div>
         <div style="display:flex;gap:8px;">
-          <button class="btn3d sm cyan" onclick="refreshCam()">🔄 Refresh</button>
+          <button class="btn3d sm cyan" onclick="refreshCam()">Refresh</button>
           <button class="btn3d sm" onclick="document.getElementById('v6-cam').classList.remove('open')">✕</button>
         </div>
       </div>
@@ -949,7 +949,7 @@
   <div id="v6-popup" class="modal-bg" onclick="if(event.target===this)closePopup3D()">
     <div class="modal-3d">
       <div id="pop-icon" style="font-size:46px;margin-bottom:10px;">🎉</div>
-      <div id="pop-title" style="font-size:20px;font-weight:900;color:var(--gold-hi);margin-bottom:8px;">Mission Accomplished!</div>
+      <div id="pop-title" style="font-size:20px;font-weight:900;color:var(--gold-hi);margin-bottom:8px;">Done</div>
       <div id="pop-msg" style="font-size:13px;color:#cbd5e1;line-height:1.6;margin-bottom:20px;">Message</div>
       <div id="pop-actions" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"></div>
     </div>
@@ -1001,7 +1001,7 @@
     }
     function toggleSound() {
       STATE.soundOn = !STATE.soundOn;
-      document.getElementById('sound-toggle-btn').textContent = STATE.soundOn ? '🔊 Sound ON' : '🔇 Muted';
+      document.getElementById('sound-toggle-btn').textContent = STATE.soundOn ? 'Sound On' : '🔇 Muted';
       if (STATE.soundOn) sfxStep(3);
     }
     document.addEventListener('click', e => { if (e.target.closest('.btn3d')) sfxClick(); });
@@ -1080,7 +1080,7 @@
     setTimeout(closeIntro, 1850);
 
     // Navigation
-    const TITLES = { studio: '🎬 Studio', vault: '🎞️ Videos & Queue', sessions: '⚡ Auto Schedule', insights: '📊 Analytics', system: '⚙️ Connections' };
+    const TITLES = { studio: 'Studio', vault: 'Videos', sessions: 'Schedule', insights: 'Analytics', system: 'Settings' };
     function switchView(name, subTab) {
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       const tgt = document.getElementById('view-' + name);
@@ -1163,7 +1163,7 @@
         if (bBtn) bBtn.style.display = 'none';
       } else {
         pBtn.className = 'btn3d gold';
-        pBtn.textContent = '🚀 Generate Video';
+        pBtn.textContent = 'Generate Video';
         if (bBtn) bBtn.style.display = 'inline-flex';
       }
 
@@ -1304,7 +1304,7 @@
     async function selectTrack(tid) {
       const body = tid === 'auto' ? {auto_rotate: true} : {track_id: tid, auto_rotate: false};
       await fetch('/api/universe/select_track', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
-      showToast(tid === 'auto' ? '🔄 Auto-Rotate ON' : '🎭 Series Selected!', 'ok');
+      showToast(tid === 'auto' ? 'Auto-Rotate ON' : '🎭 Series Selected!', 'ok');
       pollStatus();
     }
 
@@ -1382,10 +1382,10 @@
             <div class="reel-slot">🕒 ${slot}</div>
             <div class="reel-actions-5">
               ${!isPosted ? `<button class="btn3d sm gold" onclick="actReelIdx('post', ${idx})">🚀 Post Now</button>` : ''}
-              ${!isPosted ? `<button class="btn3d sm cyan" onclick="actReelIdx('schedule', ${idx})">📅 Schedule</button>` : ''}
-              <button class="btn3d sm violet" onclick="actReelIdx('regen', ${idx})">🔄 Regenerate</button>
+              ${!isPosted ? `<button class="btn3d sm cyan" onclick="actReelIdx('schedule', ${idx})">Schedule</button>` : ''}
+              <button class="btn3d sm violet" onclick="actReelIdx('regen', ${idx})">Regenerate</button>
               ${!isPosted ? `<button class="btn3d sm emerald" onclick="actReelIdx('posted', ${idx})">✅ Posted</button>` : ''}
-              <button class="btn3d sm danger ${!isPosted ? 'full-span' : ''}" onclick="actReelIdx('delete', ${idx})">🗑️ Delete</button>
+              <button class="btn3d sm danger ${!isPosted ? 'full-span' : ''}" onclick="actReelIdx('delete', ${idx})">Delete</button>
             </div>
           </div>
         </div>`;
@@ -1416,16 +1416,29 @@
       } else if (kind === 'schedule') {
         (async () => {
           try {
+            showToast('Locking schedule slot...', 'ok');
             const resp = await fetch('/api/universe/approve_and_schedule', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, caption: cap})});
             const jd = await resp.json();
             if (jd && jd.ok) {
-              showToast(jd.message || '📅 Approved & Scheduled!', 'ok');
-              closeTheater(); pollStatus();
+              const slotTxt = (jd.scheduled_item && jd.scheduled_item.scheduled_display) || jd.message || 'Next available slot';
+              closeTheater();
+              pollStatus();
+              openPopup3D({
+                icon: '✓',
+                title: 'Video Scheduled',
+                msg: 'Locked for ' + slotTxt + '. It will auto-publish to Instagram Reels & YouTube Shorts on time.',
+                buttons: [{label: 'Done', cls: 'emerald', onClick: () => { pollStatus(); }}]
+              });
             } else {
-              showToast('⚠️ ' + ((jd && jd.error) || 'Could not schedule'), 'err');
+              openPopup3D({
+                icon: '!',
+                title: 'Schedule Failed',
+                msg: (jd && jd.error) || 'Could not schedule this video. Please try again.',
+                buttons: [{label: 'OK'}]
+              });
             }
           } catch (err) {
-            showToast('⚠️ Schedule request failed', 'err');
+            showToast('Schedule request failed. Please retry.', 'err');
           }
         })();
       } else if (kind === 'posted') {
@@ -1446,7 +1459,7 @@
           icon: '🔄', title: 'Regenerate This Video?',
           msg: 'The current video will be discarded and a fresh version will be generated immediately.',
           buttons: [
-            {label: '🔄 Regenerate Now', cls: 'violet', onClick: async () => {
+            {label: 'Regenerate Now', cls: 'violet', onClick: async () => {
               showToast('🔄 Regenerating fresh video...', 'ok');
               await fetch('/api/universe/regenerate_reel', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf})});
               closeTheater(); switchView('studio'); pollStatus();
@@ -1459,7 +1472,7 @@
           icon: '🗑️', title: 'Delete Video Permanently?',
           msg: `Remove "${vf}" from the studio?`,
           buttons: [
-            {label: '🗑️ Delete', cls: 'danger', onClick: async () => {
+            {label: 'Delete', cls: 'danger', onClick: async () => {
               await fetch('/api/universe/delete_video', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({video_file: vf, id: item.id || ''})});
               showToast('🗑️ Video deleted');
               closeTheater(); pollStatus();
@@ -1680,7 +1693,7 @@
     }
 
     async function openDeepPlatform(plat) {
-      const titles = {instagram:'📸 Instagram Pro Analytics', youtube:'▶️ YouTube Shorts Analytics', facebook:'📘 Facebook Reels Analytics'};
+      const titles = {instagram:'Instagram Analytics', youtube:'YouTube Analytics', facebook:'Facebook Analytics'};
       document.getElementById('deep-title').textContent = titles[plat] || 'Pro Analytics';
       document.getElementById('v6-deep-page').classList.add('open');
       const body = document.getElementById('deep-body');

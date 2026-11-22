@@ -2288,7 +2288,7 @@ def api_universe_approve_and_schedule():
         item = _fud.approve_and_schedule_video_item(video_file=vfile, custom_caption=cap)
         return jsonify({
             "ok": True,
-            "message": f"📅 Video ({item['video_file']}) Permanently Locked into Schedule Slot: {item['scheduled_display']}!",
+            "message": f"Scheduled for {item['scheduled_display']}",
             "scheduled_item": item
         })
     except Exception as e:
@@ -3335,6 +3335,18 @@ def auth_instagram_unified_callback():
       <p style="margin-top:18px;"><a href="/" style="background:#10b981;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">Open Foji AI Studio Dashboard</a></p>
     </body></html>
     """
+
+@app.route("/ping", methods=["GET", "HEAD"])
+@app.route("/health", methods=["GET", "HEAD"])
+@app.route("/healthz", methods=["GET", "HEAD"])
+def api_fast_health_ping():
+    from flask import jsonify
+    return jsonify({"ok": True, "service": "foji-studio", "ts": int(time.time())}), 200
+
+
+
+
+
 
 
 

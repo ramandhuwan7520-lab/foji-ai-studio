@@ -396,11 +396,11 @@ def _call_pure_gemini_api_writer(track_id, track, ep_num, continuity_context, us
     dress_idx = (ep_num + len(used_dialogues)) % len(MEERA_WARDROBE_CATALOG)
     assigned_meera_dress = MEERA_WARDROBE_CATALOG[dress_idx]
 
-    solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti", "border_duty"}
+    solo_army_tracks = {"training_ustad", "unit_ragda", "funny_fauji", "fauji_masti", "duty_fatigue", "agniveer_reality", "border_duty", "border_night_reality", "fauji_dosti_barracks", "civil_vs_fauji", "festival_on_duty", "fauji_safar_train", "chhutti_ghar_wapsi"}
     if track_id == "viral_trend":
         default_needs_meera = (ep_num % 2 == 0)
     else:
-        default_needs_meera = (track_id not in solo_army_tracks)
+        default_needs_meera = (track_id in {"love_meera", "video_call_network"})
 
     weekday_idx = datetime.now(IST).weekday()
     daily_tags = globals().get("DAILY_VIRAL_HASHTAGS", {}).get(
@@ -607,7 +607,7 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     if "#indianarmy" not in hashtags.lower():
         hashtags = f"{hashtags} {default_daily_tags}".strip()
 
-    solo_army_tracks = {"training_ustad", "unit_ragda", "fauji_masti", "border_duty"}
+    solo_army_tracks = {"training_ustad", "unit_ragda", "funny_fauji", "fauji_masti", "duty_fatigue", "agniveer_reality", "border_duty", "border_night_reality", "fauji_dosti_barracks", "civil_vs_fauji", "festival_on_duty", "fauji_safar_train", "chhutti_ghar_wapsi"}
     raw_inc = ai_story.get("include_meera", chosen_key not in solo_army_tracks)
     if isinstance(raw_inc, str):
         include_meera = raw_inc.strip().lower() in ("true", "yes", "1")
@@ -615,7 +615,12 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
         include_meera = bool(raw_inc)
 
     combined_low = (visual_scene + " " + dialogue_line).lower()
-    if chosen_key in solo_army_tracks and not any(w in combined_low for w in ["meera", "fojan", "kuchu puchu", "laado", "girlfriend", "wife"]):
+    if chosen_key in solo_army_tracks:
+        explicit_couple_in_idea = any(w in (idea_to_use or "").lower() for w in ["meera", "fojan", "girlfriend", "wife", "couple", "love story"])
+        explicit_meera_in_scene = any(w in combined_low for w in ["meera", "fojan", "kuchu puchu", "girlfriend", "wife"])
+        if not (explicit_couple_in_idea or explicit_meera_in_scene):
+            include_meera = False
+    if False:
         include_meera = False
 
     dress_idx = (ep_num + len(used_dialogues)) % len(MEERA_WARDROBE_CATALOG)
@@ -904,17 +909,61 @@ def enforce_smart_cascade_schedule(q_data, force_shift_video_file=None):
     return q_data
 
 
-def save_scheduled_queue(q_data, sync_cloud=True):
+def save_scheduled_queue(q_data, sync_cloud=True, allow_unschedule=False):
     """
-    PERMANENT QUEUE SAVE:
-    Runs Smart Domino Cascade Scheduler, writes atomically to disk, locks `_LOCAL_QUEUE_MODIFIED_TS`,
-    and performs a BLOCKING 5x-retry push to GitHub so scheduled videos NEVER revert to Pending!
+    RACE-PROOF PERMANENT QUEUE SAVE (v14):
+    - Before saving/pushing, merges latest remote GitHub `scheduled_posts` & `published_posts`
+      so GitHub Actions video generation runs NEVER revert a Render-scheduled video back to Pending!
+    - Only removes a video from `scheduled_posts` when `allow_unschedule=True` (explicit Remove/Delete)
+      or when the video has been published!
     """
     global _LOCAL_QUEUE_MODIFIED_TS
+    try:
+        if sync_cloud and not allow_unschedule and "_fetch_github_json_zero_cache" in globals():
+            rem_q = _fetch_github_json_zero_cache(QUEUE_FILE)
+            if isinstance(rem_q, dict):
+                del_set = set()
+                if os.path.exists("data/deleted_ids.json"):
+                    try:
+                        del_set.update(os.path.basename(str(x)) for x in json.load(open("data/deleted_ids.json", "r", encoding="utf-8")))
+                    except Exception:
+                        pass
+
+                pub_map = {x.get("video_file"): x for x in (rem_q.get("published_posts") or []) if x.get("video_file")}
+                for x in (q_data.get("published_posts") or []):
+                    if x.get("video_file"):
+                        pub_map[x["video_file"]] = x
+                pub_keys = set(pub_map.keys()) | load_posted_ledger()
+
+                # UNION merge of scheduled_posts so scheduled videos NEVER revert to Pending
+                sched_map = {}
+                for x in (rem_q.get("scheduled_posts") or []):
+                    vf = x.get("video_file")
+                    if vf and vf not in pub_keys and os.path.basename(vf) not in del_set:
+                        sched_map[vf] = x
+                for x in (q_data.get("scheduled_posts") or []):
+                    vf = x.get("video_file")
+                    if vf and vf not in pub_keys and os.path.basename(vf) not in del_set:
+                        sched_map[vf] = x
+                sched_keys = set(sched_map.keys())
+
+                unapp_map = {}
+                for x in (q_data.get("unapproved_videos") or []) + (rem_q.get("unapproved_videos") or []):
+                    vf = x.get("video_file")
+                    if vf and vf not in pub_keys and vf not in sched_keys and os.path.basename(vf) not in del_set and vf not in unapp_map:
+                        unapp_map[vf] = x
+
+                q_data["published_posts"] = list(pub_map.values())[:150]
+                q_data["scheduled_posts"] = sorted(sched_map.values(), key=lambda x: float(x.get("scheduled_epoch", 0)))
+                q_data["unapproved_videos"] = list(unapp_map.values())
+    except Exception as _me:
+        print(f"Queue pre-save merge note: {_me}")
+
     try:
         enforce_smart_cascade_schedule(q_data)
     except Exception as e:
         print(f"Schedule cascade note: {e}")
+
     q_data["updated_epoch"] = time.time()
     _LOCAL_QUEUE_MODIFIED_TS = q_data["updated_epoch"]
     os.makedirs("data", exist_ok=True)
@@ -927,6 +976,8 @@ def save_scheduled_queue(q_data, sync_cloud=True):
             push_json_to_github_instantly(QUEUE_FILE, "Sync permanently locked scheduled queue", blocking=True)
         except Exception:
             pass
+
+
 
 
 
@@ -2069,4 +2120,35 @@ def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_ide
     )
     if not is_preview and isinstance(pkg, dict):
         _record_used_story_hook(pkg)
+    return pkg
+
+
+# === v14 GUARANTEED SOLO MALE SOLDIER CAST GUARD ===
+_V14_SOLO_CAST_ENFORCED = True
+_V14_COUPLE_TRACKS = {"love_meera", "video_call_network"}
+_V14_PREV_BUILD_PKG = build_real_foji_universe_package
+
+
+def build_real_foji_universe_package(video_id=1, force_track_id=None, custom_idea="", is_preview=False):
+    pkg = _V14_PREV_BUILD_PKG(
+        video_id=video_id,
+        force_track_id=force_track_id,
+        custom_idea=custom_idea,
+        is_preview=is_preview
+    )
+    if isinstance(pkg, dict):
+        tk = str(pkg.get("track_id") or "").strip().lower()
+        idea_low = str(custom_idea or "").lower()
+        scene_low = (
+            str(pkg.get("gemini_video_prompt") or "") + " " +
+            str(pkg.get("dialogue_line_1_hinglish") or "") + " " +
+            str(pkg.get("dialogue_line_2_hinglish") or "")
+        ).lower()
+        explicit_couple = (
+            tk in _V14_COUPLE_TRACKS
+            or any(w in idea_low for w in ("meera", "fojan", "girlfriend", "wife", "couple", "love story", "gulgule", "jalebi"))
+        )
+        if not explicit_couple:
+            if not any(w in scene_low for w in ("fojan meera", "wife meera", "girlfriend meera", "meera smiles", "meera holds")):
+                pkg["include_meera"] = False
     return pkg
