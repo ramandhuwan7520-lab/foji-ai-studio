@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795326962231",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_077_FaujiDostiBarracks_Part_02_1122_112334.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "11:26 AM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795326962.2310405
+  },
+  {
     "id": "notif_1795326876587",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "04:25 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795258525.0990624
-  },
-  {
-    "id": "notif_1795258499288",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Duty, Fatigue & Working Reality — Part 2: Ration, Rucksack & Love (Video_066_DutyFatigue_Part_02_1121_162240.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "04:24 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795258499.28845
   }
 ]
