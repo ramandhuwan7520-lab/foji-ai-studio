@@ -1,9 +1,9 @@
 {
-  "step_num": 5,
-  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
-  "sub_detail": "Gemini Veo is rendering Video_074_FestivalOnDuty_Part_01_1122_062315.mp4...",
+  "step_num": 6,
+  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
+  "sub_detail": "Rendering Video_074_FestivalOnDuty_Part_01_1122_062315.mp4 in Gemini (Zero Timeout)...",
   "status": "active",
-  "progress": 68,
-  "updated_at": "06:24:14 AM",
-  "epoch": 1795308854.7564056
+  "progress": 75,
+  "updated_at": "06:24:25 AM",
+  "epoch": 1795308865.7189915
 }
