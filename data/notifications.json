@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795362872335",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Safar: Train, Trunk & Posting — Part 2: Matti Ka Namaste | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:24 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795362872.3359838
+  },
+  {
     "id": "notif_1795362867836",
     "type": "warning",
     "title": "Switching to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "07:30 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795269606.7897732
-  },
-  {
-    "id": "notif_1795269577952",
-    "type": "warning",
-    "title": "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)",
-    "message": "6-Minute Smart Render Timeout (5.4 min) reached for Video_069_ChhuttiGharWapsi_Part_01_1121_192158.mp4. Stopping this attempt to start the next video — Part #1 will be built next run!",
-    "status": "warning",
-    "time_str": "07:29 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795269577.9524589
   }
 ]
