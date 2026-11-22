@@ -11,18 +11,6 @@
       "caption": "🎖️ Part 3: Station, Sukoon aur Ustad Ka Khauf | Agniveer Reality & Pride\n\n🗣️ \"Bawli, station ki baarish aur garam chai mein sukoon hai, par Ustad piche khade hain, bachiyo!\"\n\n🔥 Vardi ki shaan aur matti ka moh, baarish mein bhi garam hai chai,\nGhar se door hoke bhi, tere fikar ne meri har thakaan mitaai.\n\n🎵 Vibe: Slow soulful Haryanvi flute mix with rain sounds and rhythmic train clatter.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#mondaymotivation #agniveerbharti #indianarmy #haryanvishayari #faujilife #armyreels #desifauji #viralreels",
       "created_at": "23 Nov 2026, 12:26 AM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_083_DutyFatigue_Part_03_1123_002058.mp4",
-      "video_file": "Video_083_DutyFatigue_Part_03_1123_002058.mp4",
-      "title": "Duty, Fatigue & Working Reality — Part 3: Mitti, Mehenat aur Muskurahat",
-      "track_id": "duty_fatigue",
-      "part_number": 3,
-      "dialogue": "Ustad ji, duniya afwahon pe nache, par mhara sukoon is vardi ki mitti aur mehenat mein hai!",
-      "shayari": "थकावट तो बस इस शरीर की है लाडले, म्हारै दिल में तो आज भी वर्दी की चमक बसै है।",
-      "caption": "🎖️ Part 3: Mitti, Mehenat aur Muskurahat | Duty, Fatigue & Working Reality\n\n🗣️ \"Ustad ji, duniya afwahon pe nache, par mhara sukoon is vardi ki mitti aur mehenat mein hai!\"\n\n🔥 थकावट तो बस इस शरीर की है लाडले, म्हारै दिल में तो आज भी वर्दी की चमक बसै है।\n\n🎵 Vibe: O Desh Mere Teri Shaan Pe Sadke... Instrumental Flute\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#mondaymotivation #agniveerbharti #indianarmy #haryanvishayari #faujilife #armyreels #desifauji #viralreels",
-      "created_at": "23 Nov 2026, 12:23 AM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -445,6 +433,27 @@
       "scheduled_iso": "2026-11-29T12:30:00+05:30",
       "scheduled_for": "2026-11-29 12:30:00",
       "scheduled_full_badge": "29 Nov 2026 • 12:30 PM IST"
+    },
+    {
+      "id": "vid_Video_083_DutyFatigue_Part_03_1123_002058.mp4",
+      "video_file": "Video_083_DutyFatigue_Part_03_1123_002058.mp4",
+      "title": "Duty, Fatigue & Working Reality — Part 3: Mitti, Mehenat aur Muskurahat",
+      "track_id": "duty_fatigue",
+      "part_number": 3,
+      "dialogue": "Ustad ji, duniya afwahon pe nache, par mhara sukoon is vardi ki mitti aur mehenat mein hai!",
+      "shayari": "थकावट तो बस इस शरीर की है लाडले, म्हारै दिल में तो आज भी वर्दी की चमक बसै है।",
+      "caption": "🎖️ Part 3: Mitti, Mehenat aur Muskurahat | Duty, Fatigue & Working Reality\n\n🗣️ \"Ustad ji, duniya afwahon pe nache, par mhara sukoon is vardi ki mitti aur mehenat mein hai!\"\n\n🔥 थकावट तो बस इस शरीर की है लाडले, म्हारै दिल में तो आज भी वर्दी की चमक बसै है।\n\n🎵 Vibe: O Desh Mere Teri Shaan Pe Sadke... Instrumental Flute\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#mondaymotivation #agniveerbharti #indianarmy #haryanvishayari #faujilife #armyreels #desifauji #viralreels",
+      "created_at": "23 Nov 2026, 12:23 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-11-29_18:30",
+      "scheduled_epoch": 1795957200.0,
+      "scheduled_display": "29 Nov 2026 at 06:30 PM IST",
+      "date_label": "29 Nov 2026",
+      "time_label": "06:30 PM",
+      "scheduled_iso": "2026-11-29T18:30:00+05:30",
+      "scheduled_for": "2026-11-29 18:30:00",
+      "scheduled_full_badge": "29 Nov 2026 • 06:30 PM IST"
     }
   ],
   "published_posts": [
@@ -1799,7 +1808,7 @@
       "ig_media_pk": "18110203018976709"
     }
   ],
-  "updated_epoch": 1795373765.2036242,
+  "updated_epoch": 1795377079.8326306,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
