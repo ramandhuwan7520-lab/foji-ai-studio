@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795344950416",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "1-Bar Network & Fauji Video Call — Part 2: Signal Ka Asli Asar (Video_080_VideoCallNetwork_Part_02_1122_162314.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "04:25 PM",
+    "date_str": "22 Nov 2026",
+    "timestamp": 1795344950.4162054
+  },
+  {
     "id": "notif_1795344909709",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "07:20 PM",
     "date_str": "21 Nov 2026",
     "timestamp": 1795269058.4188735
-  },
-  {
-    "id": "notif_1795268754801",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 1: Gaon Ka Maan is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "07:15 PM",
-    "date_str": "21 Nov 2026",
-    "timestamp": 1795268754.801088
   }
 ]
