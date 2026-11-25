@@ -20,7 +20,7 @@
       "display": "12:19 AM",
       "enabled": true,
       "skip_date": "2026-11-20",
-      "last_triggered_date": "2026-11-23"
+      "last_triggered_date": "2026-11-26"
     },
     {
       "id": "S2",
@@ -29,7 +29,7 @@
       "display": "06:19 AM",
       "enabled": true,
       "skip_date": "",
-      "last_triggered_date": "2026-11-22"
+      "last_triggered_date": "2026-11-25"
     },
     {
       "id": "S3",
@@ -38,7 +38,7 @@
       "display": "11:19 AM",
       "enabled": true,
       "skip_date": "",
-      "last_triggered_date": "2026-11-22"
+      "last_triggered_date": "2026-11-25"
     },
     {
       "id": "S4",
@@ -47,7 +47,7 @@
       "display": "04:19 PM",
       "enabled": true,
       "skip_date": "",
-      "last_triggered_date": "2026-11-22"
+      "last_triggered_date": "2026-11-25"
     },
     {
       "id": "S5",
@@ -56,7 +56,7 @@
       "display": "09:19 PM",
       "enabled": true,
       "skip_date": "2026-11-20",
-      "last_triggered_date": "2026-11-22"
+      "last_triggered_date": "2026-11-25"
     }
   ],
   "updated_at_ist": "20 Nov 2026, 11:59 PM IST"
