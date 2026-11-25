@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795636225589",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet locked for 13 Dec 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "01:20 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795636225.5893993
+  },
+  {
     "id": "notif_1795633015900",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
