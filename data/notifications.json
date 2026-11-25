@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795633009330",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+    "status": "error",
+    "time_str": "12:26 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795633009.3305945
+  },
+  {
     "id": "notif_1795632991680",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
