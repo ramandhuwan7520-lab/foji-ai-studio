@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795632611429",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:20 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795632611.4292045
+  },
+  {
     "id": "notif_1795625382876_735",
     "type": "stopped",
     "title": "Generation Stopped",
