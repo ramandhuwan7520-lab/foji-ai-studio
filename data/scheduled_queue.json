@@ -1,6 +1,18 @@
 {
   "unapproved_videos": [
     {
+      "id": "vid_Video_086_FaujiDostiBarracks_Part_03_1126_002251.mp4",
+      "video_file": "Video_086_FaujiDostiBarracks_Part_03_1126_002251.mp4",
+      "title": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 3: Paratha, PT aur Ustad ki Nazar",
+      "track_id": "fauji_dosti_barracks",
+      "part_number": 3,
+      "dialogue": "Ustad ji, yo extra paratha toh bas backup hai, PT mein engine garam rakhan khatir zaroori se!",
+      "shayari": "Dosti mhari pital te bhi gehri, paratha sanjha hoya kare,\nVardi ki shaan mein yo pasina, har subah naya josh bharya kare!",
+      "caption": "🎖️ Part 3: Paratha, PT aur Ustad ki Nazar | Fauji Dosti & Barracks Ki Asli Zindagi\n\n🗣️ \"Ustad ji, yo extra paratha toh bas backup hai, PT mein engine garam rakhan khatir zaroori se!\"\n\n🔥 Dosti mhari pital te bhi gehri, paratha sanjha hoya kare,\nVardi ki shaan mein yo pasina, har subah naya josh bharya kare!\n\n🎵 Vibe: Haryanvi mashup with heavy bass and traditional dhol beats.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#indianarmy #faujidosti #agniveer #haryanviswag #morningmotivation #barrackslife #ustad #desijosh #faujihumor #brothersinarms",
+      "created_at": "26 Nov 2026, 12:25 AM IST",
+      "status": "awaiting_approval"
+    },
+    {
       "id": "vid_Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4",
       "video_file": "Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4",
       "title": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet",
@@ -2477,7 +2489,7 @@
       "ig_media_pk": "18085534361359561"
     }
   ],
-  "updated_epoch": 1795632765.550966,
+  "updated_epoch": 1795632911.5482686,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
