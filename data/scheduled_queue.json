@@ -11,18 +11,6 @@
       "caption": "🎖️ Part 3: Paratha, PT aur Ustad ki Nazar | Fauji Dosti & Barracks Ki Asli Zindagi\n\n🗣️ \"Ustad ji, yo extra paratha toh bas backup hai, PT mein engine garam rakhan khatir zaroori se!\"\n\n🔥 Dosti mhari pital te bhi gehri, paratha sanjha hoya kare,\nVardi ki shaan mein yo pasina, har subah naya josh bharya kare!\n\n🎵 Vibe: Haryanvi mashup with heavy bass and traditional dhol beats.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#indianarmy #faujidosti #agniveer #haryanviswag #morningmotivation #barrackslife #ustad #desijosh #faujihumor #brothersinarms",
       "created_at": "26 Nov 2026, 12:25 AM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4",
-      "video_file": "Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4",
-      "title": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet",
-      "track_id": "chhutti_ghar_wapsi",
-      "part_number": 3,
-      "dialogue": "Ustad ji, chhutti ki khushi mein yo bet lagayi thi, ib ragda mat dena, kasam se!",
-      "shayari": "Ghar ki yaadein aur vardi ka junoon, dono dil mein saath baste hain, Ustad ka danda aur Maa ki lori, dono hi humein mard banate hain.",
-      "caption": "🎖️ Part 3: Barracks Mein Chhutti Ka Bet | Chhutti, Maa-Baap & Ghar Ki Yaadein\n\n🗣️ \"Ustad ji, chhutti ki khushi mein yo bet lagayi thi, ib ragda mat dena, kasam se!\"\n\n🔥 Ghar ki yaadein aur vardi ka junoon, dono dil mein saath baste hain, Ustad ka danda aur Maa ki lori, dono hi humein mard banate hain.\n\n🎵 Vibe: Soulful Haryanvi tune with deep drums and emotional flute.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#locborder #siachenheroes #indianarmy #maakapyar #faujiduty #tiranga #armybrotherhood #goosebumps",
-      "created_at": "26 Nov 2026, 12:22 AM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -937,6 +925,27 @@
       "scheduled_for": "2026-12-12 18:30:00",
       "scheduled_full_badge": "12 Dec 2026 • 06:30 PM IST",
       "locked_at": 1795587015.3806148
+    },
+    {
+      "id": "vid_Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4",
+      "video_file": "Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4",
+      "title": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet",
+      "track_id": "chhutti_ghar_wapsi",
+      "part_number": 3,
+      "dialogue": "Ustad ji, chhutti ki khushi mein yo bet lagayi thi, ib ragda mat dena, kasam se!",
+      "shayari": "Ghar ki yaadein aur vardi ka junoon, dono dil mein saath baste hain, Ustad ka danda aur Maa ki lori, dono hi humein mard banate hain.",
+      "caption": "🎖️ Part 3: Barracks Mein Chhutti Ka Bet | Chhutti, Maa-Baap & Ghar Ki Yaadein\n\n🗣️ \"Ustad ji, chhutti ki khushi mein yo bet lagayi thi, ib ragda mat dena, kasam se!\"\n\n🔥 Ghar ki yaadein aur vardi ka junoon, dono dil mein saath baste hain, Ustad ka danda aur Maa ki lori, dono hi humein mard banate hain.\n\n🎵 Vibe: Soulful Haryanvi tune with deep drums and emotional flute.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#locborder #siachenheroes #indianarmy #maakapyar #faujiduty #tiranga #armybrotherhood #goosebumps",
+      "created_at": "26 Nov 2026, 12:22 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-13_06:30",
+      "scheduled_epoch": 1797123600.0,
+      "scheduled_display": "13 Dec 2026 at 06:30 AM IST",
+      "date_label": "13 Dec 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-12-13T06:30:00+05:30",
+      "scheduled_for": "2026-12-13 06:30:00",
+      "scheduled_full_badge": "13 Dec 2026 • 06:30 AM IST"
     }
   ],
   "published_posts": [
@@ -2489,7 +2498,7 @@
       "ig_media_pk": "18085534361359561"
     }
   ],
-  "updated_epoch": 1795632911.5482686,
+  "updated_epoch": 1795636222.7764132,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
