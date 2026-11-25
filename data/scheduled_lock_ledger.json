@@ -1142,5 +1142,27 @@
     "scheduled_for": "2026-12-13 06:30:00",
     "scheduled_full_badge": "13 Dec 2026 • 06:30 AM IST",
     "locked_at": 1795636226.6764696
+  },
+  "Video_086_FaujiDostiBarracks_Part_03_1126_002251.mp4": {
+    "id": "vid_Video_086_FaujiDostiBarracks_Part_03_1126_002251.mp4",
+    "video_file": "Video_086_FaujiDostiBarracks_Part_03_1126_002251.mp4",
+    "title": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 3: Paratha, PT aur Ustad ki Nazar",
+    "track_id": "fauji_dosti_barracks",
+    "part_number": 3,
+    "dialogue": "Ustad ji, yo extra paratha toh bas backup hai, PT mein engine garam rakhan khatir zaroori se!",
+    "shayari": "Dosti mhari pital te bhi gehri, paratha sanjha hoya kare,\nVardi ki shaan mein yo pasina, har subah naya josh bharya kare!",
+    "caption": "🎖️ Part 3: Paratha, PT aur Ustad ki Nazar | Fauji Dosti & Barracks Ki Asli Zindagi\n\n🗣️ \"Ustad ji, yo extra paratha toh bas backup hai, PT mein engine garam rakhan khatir zaroori se!\"\n\n🔥 Dosti mhari pital te bhi gehri, paratha sanjha hoya kare,\nVardi ki shaan mein yo pasina, har subah naya josh bharya kare!\n\n🎵 Vibe: Haryanvi mashup with heavy bass and traditional dhol beats.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#indianarmy #faujidosti #agniveer #haryanviswag #morningmotivation #barrackslife #ustad #desijosh #faujihumor #brothersinarms",
+    "created_at": "26 Nov 2026, 12:25 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-13_12:30",
+    "scheduled_epoch": 1797145200.0,
+    "scheduled_display": "13 Dec 2026 at 12:30 PM IST",
+    "date_label": "13 Dec 2026",
+    "time_label": "12:30 PM",
+    "scheduled_iso": "2026-12-13T12:30:00+05:30",
+    "scheduled_for": "2026-12-13 12:30:00",
+    "scheduled_full_badge": "13 Dec 2026 • 12:30 PM IST",
+    "locked_at": 1795636393.280824
   }
 }
