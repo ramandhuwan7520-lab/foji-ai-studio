@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_116_BorderNightReality_Part_03_1126_002533.mp4 in Gemini (Zero Timeout)...",
-  "status": "active",
-  "progress": 75,
-  "updated_at": "12:26:39 AM",
-  "epoch": 1795632999.947366
+  "step_title": "\u26a0\ufe0f Gemini Video Refused/Error",
+  "sub_detail": "Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "12:26:47 AM",
+  "epoch": 1795633007.948819
 }
