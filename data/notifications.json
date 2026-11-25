@@ -1,13 +1,83 @@
 [
   {
-    "id": "notif_1795624799180_315",
+    "id": "notif_1795625382876_735",
     "type": "stopped",
     "title": "Generation Stopped",
     "message": "Video generation cancelled by user.",
     "status": "warning",
-    "time_str": "10:09 PM",
+    "time_str": "10:19 PM",
     "date_str": "25 Nov 2026",
-    "timestamp": 1795624799.1804967
+    "timestamp": 1795625382.8769417
+  },
+  {
+    "id": "notif_1795625328880_791",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "10:18 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795625328.880696
+  },
+  {
+    "id": "notif_1795625022059",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "10:13 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795625022.059713
+  },
+  {
+    "id": "notif_1795624979699",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624979.6994116
+  },
+  {
+    "id": "notif_1795624975573",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624975.5739028
+  },
+  {
+    "id": "notif_1795624973059",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+    "status": "error",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624973.059444
+  },
+  {
+    "id": "notif_1795624954727",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624954.7270682
+  },
+  {
+    "id": "notif_1795624888302",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "10:11 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624888.3029265
   },
   {
     "id": "notif_1795624570037",
@@ -528,75 +598,5 @@
     "time_str": "09:21 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795535478.6858168
-  },
-  {
-    "id": "notif_1795535418626",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:20 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795535418.6269438
-  },
-  {
-    "id": "notif_1795521473227",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_105_ChhuttiGharWapsi_Part_05_1124_162733.mp4 -> 07 Dec 2026 at 06:30 AM IST",
-    "status": "schedule",
-    "time_str": "05:27 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795521473.2271473
-  },
-  {
-    "id": "notif_1795521469359",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 5: Maa Se Meetha Jhooth locked for 07 Dec 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "05:27 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795521469.359545
-  },
-  {
-    "id": "notif_1795521308903",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_104_AgniveerReality_Part_05_1124_162445.mp4 -> 06 Dec 2026 at 06:30 PM IST",
-    "status": "schedule",
-    "time_str": "05:25 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795521308.903094
-  },
-  {
-    "id": "notif_1795521305518",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Agniveer Reality & Pride — Part 5: Signal Ka Ragda Aur Maa Ka Bharosa locked for 06 Dec 2026 at 06:30 PM IST!",
-    "status": "success",
-    "time_str": "05:25 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795521305.518397
-  },
-  {
-    "id": "notif_1795518005023",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 5: Maa Se Meetha Jhooth (Video_105_ChhuttiGharWapsi_Part_05_1124_162733.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "04:30 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795518005.023532
-  },
-  {
-    "id": "notif_1795517975362",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_105_ChhuttiGharWapsi_Part_05_1124_162733.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "04:29 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795517975.3624213
   }
 ]
