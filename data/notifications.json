@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795632727525",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:22 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795632727.525124
+  },
+  {
     "id": "notif_1795632681324",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
