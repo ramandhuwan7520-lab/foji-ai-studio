@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 32s \u2014 hovering & downloading Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "11:24:32 AM",
-  "epoch": 1795672472.9552217
+  "progress": 86,
+  "updated_at": "11:25:06 AM",
+  "epoch": 1795672506.5173738
 }
