@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795694017679",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Agniveer Reality & Pride — Part 4: Maa Ki Chitthi Aur Iron Trunk locked for 15 Dec 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "05:23 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795694017.6792128
+  },
+  {
     "id": "notif_1795693847053",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "11:24 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795586087.7875662
-  },
-  {
-    "id": "notif_1795586030758",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: CHM / BHM Se Ladai & Mazak — Part 2: BHM Ki VIP Kursi Aur Makra | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "11:23 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795586030.758588
   }
 ]
