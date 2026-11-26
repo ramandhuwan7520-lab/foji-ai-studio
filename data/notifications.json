@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795711820583",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 4: Bajra Roti vs Viral Afwah locked for 15 Dec 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "10:20 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795711820.5837624
+  },
+  {
     "id": "notif_1795708825574",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "04:34 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795604659.0262823
-  },
-  {
-    "id": "notif_1795604653502",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (6-Minute Smart Render Timeout (12.0 min) reached for Video_114_DostoKiBackchodi_Part_02_1125_16) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "04:34 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795604653.5029058
   }
 ]
