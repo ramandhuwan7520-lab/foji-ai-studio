@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795708347543",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "09:22 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708347.5435176
+  },
+  {
     "id": "notif_1795708284430",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "11:26 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795586217.9153287
-  },
-  {
-    "id": "notif_1795586185193",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "CHM / BHM Se Ladai & Mazak — Part 2: BHM Ki VIP Kursi Aur Makra (Video_112_ChmBhmClash_Part_02_1125_112346.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "11:26 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795586185.1937447
   }
 ]
