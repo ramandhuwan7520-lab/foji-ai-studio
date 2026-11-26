@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795690221697",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Duty, Fatigue & Working Reality — Part 4: Maa, Duty aur Meethi Afwah | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:20 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795690221.6977222
+  },
+  {
     "id": "notif_1795676198277",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "12:55 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795548326.5507138
-  },
-  {
-    "id": "notif_1795541746189",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Frontend)!",
-    "message": "CHM / BHM Se Ladai & Mazak — Part 1: CHM Ka Shaka Aur Makra Ka Jawab locked for 07 Dec 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "11:05 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795541746.1895695
   }
 ]
