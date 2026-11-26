@@ -1208,5 +1208,27 @@
     "scheduled_for": "2026-12-14 06:30:00",
     "scheduled_full_badge": "14 Dec 2026 • 06:30 AM IST",
     "locked_at": 1795658041.6642127
+  },
+  "Video_118_VideoCallNetwork_Part_03_1126_062630.mp4": {
+    "id": "vid_Video_118_VideoCallNetwork_Part_03_1126_062630.mp4",
+    "video_file": "Video_118_VideoCallNetwork_Part_03_1126_062630.mp4",
+    "title": "1-Bar Network & Fauji Video Call — Part 3: Mess Ka Signal Aur Gulab Jamun Twist",
+    "track_id": "video_call_network",
+    "part_number": 3,
+    "dialogue": "Laado, Nashik aali report ki darr koni, par yo signal aur tatta gulab jamun dimaag dahi kare hain!",
+    "shayari": "Signal ki dandi aur vardi ki shaan,\nTere mukhde pe atki mhari fauji jaan.",
+    "caption": "🎖️ Part 3: Mess Ka Signal Aur Gulab Jamun Twist | 1-Bar Network & Fauji Video Call\n\n🗣️ \"Laado, Nashik aali report ki darr koni, par yo signal aur tatta gulab jamun dimaag dahi kare hain!\"\n\n🔥 Signal ki dandi aur vardi ki shaan,\nTere mukhde pe atki mhari fauji jaan.\n\n🎵 Vibe: Haryanvi Mashup 10 - Soulful Folk Flute\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#faujiyakishaan #haryanvi #indianarmy #messcomedy #fauji_love #trendingreels #signalstruggle #desihakikat",
+    "created_at": "26 Nov 2026, 06:28 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-14_12:30",
+    "scheduled_epoch": 1797231600.0,
+    "scheduled_display": "14 Dec 2026 at 12:30 PM IST",
+    "date_label": "14 Dec 2026",
+    "time_label": "12:30 PM",
+    "scheduled_iso": "2026-12-14T12:30:00+05:30",
+    "scheduled_for": "2026-12-14 12:30:00",
+    "scheduled_full_badge": "14 Dec 2026 • 12:30 PM IST",
+    "locked_at": 1795658204.58706
   }
 }
