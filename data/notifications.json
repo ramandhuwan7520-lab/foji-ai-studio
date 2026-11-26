@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795712251690",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot locked for 16 Dec 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "10:27 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795712251.6903408
+  },
+  {
     "id": "notif_1795711824360",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "10:04 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624492.8145697
-  },
-  {
-    "id": "notif_1795604705074",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Trunk Ke Peeche PT Ka Tyag is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "04:35 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795604705.0748363
   }
 ]
