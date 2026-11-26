@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795676028815",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4 -> 14 Dec 2026 at 06:30 PM IST",
+    "status": "schedule",
+    "time_str": "12:23 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795676028.8159866
+  },
+  {
     "id": "notif_1795676025235",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "11:04 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795541653.7480485
-  },
-  {
-    "id": "notif_1795541591450",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "CHM / BHM Se Ladai & Mazak — Part 1: CHM Ka Shaka Aur Makra Ka Jawab is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "11:03 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795541591.450885
   }
 ]
