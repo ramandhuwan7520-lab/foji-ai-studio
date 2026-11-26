@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795690379429",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Duty, Fatigue & Working Reality — Part 4: Maa, Duty aur Meethi Afwah (Video_122_DutyFatigue_Part_04_1126_162017.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "04:22 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795690379.4295242
+  },
+  {
     "id": "notif_1795690348674",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "07:24 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795571648.2262914
-  },
-  {
-    "id": "notif_1795571462225",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_108_DostoKiBackchodi_Part_01_1125_062035.mp4 -> 08 Dec 2026 at 06:30 AM IST",
-    "status": "schedule",
-    "time_str": "07:21 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795571462.2251096
   }
 ]
