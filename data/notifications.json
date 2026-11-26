@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795712259777",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_125_FaujiDostiBarracks_Part_04_1126_212724.mp4 -> 16 Dec 2026 at 06:30 AM IST",
+    "status": "schedule",
+    "time_str": "10:27 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795712259.7776437
+  },
+  {
     "id": "notif_1795712251690",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "10:05 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624510.2228308
-  },
-  {
-    "id": "notif_1795624492814",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Raju Ka Machardani Ragda | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "10:04 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624492.8145697
   }
 ]
