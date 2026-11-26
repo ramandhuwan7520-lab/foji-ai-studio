@@ -1230,5 +1230,27 @@
     "scheduled_for": "2026-12-14 12:30:00",
     "scheduled_full_badge": "14 Dec 2026 • 12:30 PM IST",
     "locked_at": 1795658204.58706
+  },
+  "Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4": {
+    "id": "vid_Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4",
+    "video_file": "Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4",
+    "title": "Fauji Safar: Train, Trunk & Posting — Part 3: Reel vs Real Hakikat",
+    "track_id": "fauji_safar_train",
+    "part_number": 3,
+    "dialogue": "Ustad ji, reels banane se vardi ki izzat nahi badhti, mhari mitti ki mehenat hi asli viral hai!",
+    "shayari": "Vardi ki chamak internet te koni aandi laadle,\nYo toh pashine te seenchi hui kismat se!",
+    "caption": "🎖️ Part 3: Reel vs Real Hakikat | Fauji Safar: Train, Trunk & Posting\n\n🗣️ \"Ustad ji, reels banane se vardi ki izzat nahi badhti, mhari mitti ki mehenat hi asli viral hai!\"\n\n🔥 Vardi ki chamak internet te koni aandi laadle,\nYo toh pashine te seenchi hui kismat se!\n\n🎵 Vibe: Mitti mein mil jawaan, gul ban ke khil jawaan...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #4!\n\n#indianarmy #faujisafar #ustadji #reelsvsreality #haryanvistatus #faujibandey #desitouch #goosebumps",
+    "created_at": "26 Nov 2026, 11:25 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-14_18:30",
+    "scheduled_epoch": 1797253200.0,
+    "scheduled_display": "14 Dec 2026 at 06:30 PM IST",
+    "date_label": "14 Dec 2026",
+    "time_label": "06:30 PM",
+    "scheduled_iso": "2026-12-14T18:30:00+05:30",
+    "scheduled_for": "2026-12-14 18:30:00",
+    "scheduled_full_badge": "14 Dec 2026 • 06:30 PM IST",
+    "locked_at": 1795676026.07918
   }
 }
