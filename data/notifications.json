@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795719207404",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 4: Signal, Chai aur Asli Jazba (Video_126_BorderNightReality_Part_04_1127_002016.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "12:23 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795719207.404045
+  },
+  {
     "id": "notif_1795719151630",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "10:12 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624954.7270682
-  },
-  {
-    "id": "notif_1795624888302",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "10:11 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624888.3029265
   }
 ]
