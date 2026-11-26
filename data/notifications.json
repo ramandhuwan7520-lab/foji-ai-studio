@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795719019673",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 4: Signal, Chai aur Asli Jazba | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:20 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795719019.6736078
+  },
+  {
     "id": "notif_1795712259777",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "10:05 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624515.136618
-  },
-  {
-    "id": "notif_1795624510222",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Chrome port 9225 did not respond.) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "10:05 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624510.2228308
   }
 ]
