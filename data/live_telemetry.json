@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
-  "sub_detail": "Rendered in 45s \u2014 hovering & downloading Video_127_CivilVsFauji_Part_04_1127_002347.mp4...",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "12:25:45 AM",
-  "epoch": 1795719345.8255374
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "Video_127_CivilVsFauji_Part_04_1127_002347.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "12:26:30 AM",
+  "epoch": 1795719390.4574943
 }
