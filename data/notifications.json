@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795690592125",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 4: Vardi, Viral aur Baarish | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:26 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795690592.125337
+  },
+  {
     "id": "notif_1795690566048",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "11:20 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795585857.4601302
-  },
-  {
-    "id": "notif_1795585793126",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Shayari, Desi Songs & Chutkule — Part 1: Steel Tiffin Jam & Fauji Swag | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "11:19 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795585793.1267464
   }
 ]
