@@ -1362,5 +1362,27 @@
     "scheduled_for": "2026-12-16 12:30:00",
     "scheduled_full_badge": "16 Dec 2026 • 12:30 PM IST",
     "locked_at": 1795722643.9989545
+  },
+  "Video_127_CivilVsFauji_Part_04_1127_002347.mp4": {
+    "id": "vid_Video_127_CivilVsFauji_Part_04_1127_002347.mp4",
+    "video_file": "Video_127_CivilVsFauji_Part_04_1127_002347.mp4",
+    "title": "Civil Duniya vs Fauji Asli Hakikat — Part 4: Garam Chai Aur Asli Sukoon",
+    "track_id": "civil_vs_fauji",
+    "part_number": 4,
+    "dialogue": "Ustad ji, shehar aale AC ki thand maange hain, mhara sukoon toh gaam ki is garam chai mein base se!",
+    "shayari": "Shehar aale sukoon naram bistaron mein dhoondhte hain,\nMhara sukoon toh maa ke haath ki chai aur vardi ki mitti mein se.",
+    "caption": "🎖️ Part 4: Garam Chai Aur Asli Sukoon | Civil Duniya vs Fauji Asli Hakikat\n\n🗣️ \"Ustad ji, shehar aale AC ki thand maange hain, mhara sukoon toh gaam ki is garam chai mein base se!\"\n\n🔥 Shehar aale sukoon naram bistaron mein dhoondhte hain,\nMhara sukoon toh maa ke haath ki chai aur vardi ki mitti mein se.\n\n🎵 Vibe: Soulful earthy flute melody with a soft Haryanvi folk beat.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
+    "created_at": "27 Nov 2026, 12:26 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-16_18:30",
+    "scheduled_epoch": 1797426000.0,
+    "scheduled_display": "16 Dec 2026 at 06:30 PM IST",
+    "date_label": "16 Dec 2026",
+    "time_label": "06:30 PM",
+    "scheduled_iso": "2026-12-16T18:30:00+05:30",
+    "scheduled_for": "2026-12-16 18:30:00",
+    "scheduled_full_badge": "16 Dec 2026 • 06:30 PM IST",
+    "locked_at": 1795722833.571457
   }
 }
