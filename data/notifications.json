@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795719414202",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 4: Monsoon Mist Aur Network Ka Khel | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
+    "status": "info",
+    "time_str": "12:26 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795719414.2020535
+  },
+  {
     "id": "notif_1795719391715",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "10:18 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795625328.880696
-  },
-  {
-    "id": "notif_1795625022059",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "10:13 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795625022.059713
   }
 ]
