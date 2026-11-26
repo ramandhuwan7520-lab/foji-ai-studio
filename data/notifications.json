@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795690348674",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_122_DutyFatigue_Part_04_1126_162017.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "04:22 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795690348.674137
+  },
+  {
     "id": "notif_1795690295525",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "07:21 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795571462.2251096
-  },
-  {
-    "id": "notif_1795571455887",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Dosto Ki Backchodi & Army Fun — Part 1: Dosto Ki Backchodi — Helmet Jamun Mission locked for 08 Dec 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "07:20 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795571455.887636
   }
 ]
