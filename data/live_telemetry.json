@@ -1,9 +1,9 @@
 {
-  "step_num": 2,
-  "step_title": "Batch Video 3/3",
-  "sub_detail": "Starting fresh 3D story 3 of 3...",
+  "step_num": 1,
+  "step_title": "Stage 1: AI Episodic Script",
+  "sub_detail": "Generating fresh connected script & wardrobe...",
   "status": "active",
-  "progress": 20,
-  "updated_at": "12:26:40 AM",
-  "epoch": 1795719400.76946
+  "progress": 12,
+  "updated_at": "12:26:51 AM",
+  "epoch": 1795719411.7343318
 }
