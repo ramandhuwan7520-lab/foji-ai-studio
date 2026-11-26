@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795719291169",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 4: Garam Chai Aur Asli Sukoon is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:24 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795719291.170021
+  },
+  {
     "id": "notif_1795719230757",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "10:12 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624975.5739028
-  },
-  {
-    "id": "notif_1795624973059",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
-    "status": "error",
-    "time_str": "10:12 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624973.059444
   }
 ]
