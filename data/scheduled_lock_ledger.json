@@ -1318,5 +1318,27 @@
     "scheduled_for": "2026-12-15 18:30:00",
     "scheduled_full_badge": "15 Dec 2026 • 06:30 PM IST",
     "locked_at": 1795711821.8758178
+  },
+  "Video_125_FaujiDostiBarracks_Part_04_1126_212724.mp4": {
+    "id": "vid_Video_125_FaujiDostiBarracks_Part_04_1126_212724.mp4",
+    "video_file": "Video_125_FaujiDostiBarracks_Part_04_1126_212724.mp4",
+    "title": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot",
+    "track_id": "fauji_dosti_barracks",
+    "part_number": 4,
+    "dialogue": "Maa, yahan toh bas AC chale hai aur makkhan mil raha, tu fikar na kariye meri laadli!",
+    "shayari": "Barracks ki yaari aur lohe ke bed pe sukoon milta hai,\nbhai ka saath ho toh har dard makkhan lagta hai.",
+    "caption": "🎖️ Part 4: Barracks Ka Safed Jhoot | Fauji Dosti & Barracks Ki Asli Zindagi\n\n🗣️ \"Maa, yahan toh bas AC chale hai aur makkhan mil raha, tu fikar na kariye meri laadli!\"\n\n🔥 Barracks ki yaari aur lohe ke bed pe sukoon milta hai,\nbhai ka saath ho toh har dard makkhan lagta hai.\n\n🎵 Vibe: Soulful instrumental flute with a rhythmic Haryanvi folk beat.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#faujidosti #barrackslife #indianarmy #maakapyar #haryanafauji #brotherhood #jawan #desijazba",
+    "created_at": "26 Nov 2026, 09:30 PM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-16_06:30",
+    "scheduled_epoch": 1797382800.0,
+    "scheduled_display": "16 Dec 2026 at 06:30 AM IST",
+    "date_label": "16 Dec 2026",
+    "time_label": "06:30 AM",
+    "scheduled_iso": "2026-12-16T06:30:00+05:30",
+    "scheduled_for": "2026-12-16 06:30:00",
+    "scheduled_full_badge": "16 Dec 2026 • 06:30 AM IST",
+    "locked_at": 1795712253.175658
   }
 }
