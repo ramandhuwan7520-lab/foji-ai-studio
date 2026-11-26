@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795654571669",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 3: Afwah vs Asli Mess (The Fake News Check) (Video_117_CivilVsFauji_Part_03_1126_062351.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:26 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795654571.669795
+  },
+  {
     "id": "notif_1795654541011",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "09:35 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795536304.733097
-  },
-  {
-    "id": "notif_1795535569818",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:22 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795535569.818072
   }
 ]
