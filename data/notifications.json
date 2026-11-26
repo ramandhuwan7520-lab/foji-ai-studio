@@ -1,123 +1,13 @@
 [
   {
-    "id": "notif_1795654731716",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "1-Bar Network & Fauji Video Call — Part 3: Mess Ka Signal Aur Gulab Jamun Twist (Video_118_VideoCallNetwork_Part_03_1126_062630.mp4) is live on Telegram & Frontend Vault!",
+    "id": "notif_1795657823474",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 3: Seema Ki Raat Aur Sacchi Pehredari locked for 13 Dec 2026 at 06:30 PM IST!",
     "status": "success",
-    "time_str": "06:28 AM",
+    "time_str": "07:20 AM",
     "date_str": "26 Nov 2026",
-    "timestamp": 1795654731.7167165
-  },
-  {
-    "id": "notif_1795654704059",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_118_VideoCallNetwork_Part_03_1126_062630.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:28 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654704.059368
-  },
-  {
-    "id": "notif_1795654651949",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "1-Bar Network & Fauji Video Call — Part 3: Mess Ka Signal Aur Gulab Jamun Twist is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:27 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654651.9492283
-  },
-  {
-    "id": "notif_1795654594862",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 3: Mess Ka Signal Aur Gulab Jamun Twist | Cast: Makra + Meera (Sunset Orange & Red Bridal-Style Heavy...)",
-    "status": "info",
-    "time_str": "06:26 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654594.8622262
-  },
-  {
-    "id": "notif_1795654571669",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 3: Afwah vs Asli Mess (The Fake News Check) (Video_117_CivilVsFauji_Part_03_1126_062351.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "06:26 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654571.669795
-  },
-  {
-    "id": "notif_1795654541011",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_117_CivilVsFauji_Part_03_1126_062351.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:25 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654541.011086
-  },
-  {
-    "id": "notif_1795654492799",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 3: Afwah vs Asli Mess (The Fake News Check) is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:24 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654492.799948
-  },
-  {
-    "id": "notif_1795654435967",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Civil Duniya vs Fauji Asli Hakikat — Part 3: Afwah vs Asli Mess (The Fake News Check) | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:23 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654435.9680128
-  },
-  {
-    "id": "notif_1795654414514",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "LOC Border Raat Ki Asli Pehredari — Part 3: Seema Ki Raat Aur Sacchi Pehredari (Video_116_BorderNightReality_Part_03_1126_062013.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "06:23 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654414.514287
-  },
-  {
-    "id": "notif_1795654361415",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_116_BorderNightReality_Part_03_1126_062013.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:22 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654361.4155226
-  },
-  {
-    "id": "notif_1795654282673",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "LOC Border Raat Ki Asli Pehredari — Part 3: Seema Ki Raat Aur Sacchi Pehredari is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:21 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654282.6734679
-  },
-  {
-    "id": "notif_1795654217227",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 3: Seema Ki Raat Aur Sacchi Pehredari | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:20 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795654217.2274148
+    "timestamp": 1795657823.4749813
   },
   {
     "id": "notif_1795636395747",
@@ -798,5 +688,95 @@
     "time_str": "09:38 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795536508.45026
+  },
+  {
+    "id": "notif_1795536454626",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_106_FaujiDostiBarracks_Part_05_1124_213543.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "09:37 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795536454.6267233
+  },
+  {
+    "id": "notif_1795536409446",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:36 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795536409.446598
+  },
+  {
+    "id": "notif_1795536348645",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:35 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795536348.6456149
+  },
+  {
+    "id": "notif_1795536304733",
+    "type": "warning",
+    "title": "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)",
+    "message": "6-Minute Smart Render Timeout (12.0 min) reached for Video_106_FaujiDostiBarracks_Part_05_1124_212013.mp4. Stopping this attempt to start the next video — Part #5 will be built next run!",
+    "status": "warning",
+    "time_str": "09:35 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795536304.733097
+  },
+  {
+    "id": "notif_1795535569818",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:22 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795535569.818072
+  },
+  {
+    "id": "notif_1795535524264",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:22 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795535524.264813
+  },
+  {
+    "id": "notif_1795535518382",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (20s): I'm sorry, I'm experiencing unusually high traffic right no) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "09:21 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795535518.3829694
+  },
+  {
+    "id": "notif_1795535514827",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (20s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+    "status": "error",
+    "time_str": "09:21 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795535514.8276837
+  },
+  {
+    "id": "notif_1795535478685",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:21 PM",
+    "date_str": "24 Nov 2026",
+    "timestamp": 1795535478.6858168
   }
 ]
