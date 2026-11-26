@@ -1,123 +1,13 @@
 [
   {
-    "id": "notif_1795719468474",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 4: Monsoon Mist Aur Network Ka Khel | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
-    "status": "info",
-    "time_str": "12:27 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719468.4747214
-  },
-  {
-    "id": "notif_1795719464761",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not a) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "12:27 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719464.7618437
-  },
-  {
-    "id": "notif_1795719462419",
-    "type": "error",
-    "title": "Create Video Limit (Account #1)",
-    "message": "Create Video Not Active on Account #1 — Create video composer ('Describe your video') did not activate (Limit Full)",
-    "status": "error",
-    "time_str": "12:27 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719462.4190905
-  },
-  {
-    "id": "notif_1795719414202",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 4: Monsoon Mist Aur Network Ka Khel | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
-    "status": "info",
-    "time_str": "12:26 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719414.2020535
-  },
-  {
-    "id": "notif_1795719391715",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 4: Garam Chai Aur Asli Sukoon (Video_127_CivilVsFauji_Part_04_1127_002347.mp4) is live on Telegram & Frontend Vault!",
+    "id": "notif_1795722643539",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 4: Signal, Chai aur Asli Jazba locked for 16 Dec 2026 at 12:30 PM IST!",
     "status": "success",
-    "time_str": "12:26 AM",
+    "time_str": "01:20 AM",
     "date_str": "27 Nov 2026",
-    "timestamp": 1795719391.7159288
-  },
-  {
-    "id": "notif_1795719349546",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_127_CivilVsFauji_Part_04_1127_002347.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "12:25 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719349.5464709
-  },
-  {
-    "id": "notif_1795719291169",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 4: Garam Chai Aur Asli Sukoon is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "12:24 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719291.170021
-  },
-  {
-    "id": "notif_1795719230757",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Civil Duniya vs Fauji Asli Hakikat — Part 4: Garam Chai Aur Asli Sukoon | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:23 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719230.7571409
-  },
-  {
-    "id": "notif_1795719207404",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "LOC Border Raat Ki Asli Pehredari — Part 4: Signal, Chai aur Asli Jazba (Video_126_BorderNightReality_Part_04_1127_002016.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "12:23 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719207.404045
-  },
-  {
-    "id": "notif_1795719151630",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_126_BorderNightReality_Part_04_1127_002016.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "12:22 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719151.6303048
-  },
-  {
-    "id": "notif_1795719088807",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "LOC Border Raat Ki Asli Pehredari — Part 4: Signal, Chai aur Asli Jazba is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "12:21 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719088.8071191
-  },
-  {
-    "id": "notif_1795719019673",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 4: Signal, Chai aur Asli Jazba | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:20 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795719019.6736078
+    "timestamp": 1795722643.5397494
   },
   {
     "id": "notif_1795712259777",
@@ -798,5 +688,115 @@
     "time_str": "12:21 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795632681.3242075
+  },
+  {
+    "id": "notif_1795632611429",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:20 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795632611.4292045
+  },
+  {
+    "id": "notif_1795625382876_735",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "10:19 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795625382.8769417
+  },
+  {
+    "id": "notif_1795625328880_791",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "10:18 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795625328.880696
+  },
+  {
+    "id": "notif_1795625022059",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "10:13 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795625022.059713
+  },
+  {
+    "id": "notif_1795624979699",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624979.6994116
+  },
+  {
+    "id": "notif_1795624975573",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624975.5739028
+  },
+  {
+    "id": "notif_1795624973059",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+    "status": "error",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624973.059444
+  },
+  {
+    "id": "notif_1795624954727",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624954.7270682
+  },
+  {
+    "id": "notif_1795624888302",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "10:11 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624888.3029265
+  },
+  {
+    "id": "notif_1795624570037",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Raju Ka Machardani Ragda is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "10:06 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624570.0377579
+  },
+  {
+    "id": "notif_1795624515136",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Raju Ka Machardani Ragda | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "10:05 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624515.136618
   }
 ]
