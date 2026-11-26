@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795654414514",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 3: Seema Ki Raat Aur Sacchi Pehredari (Video_116_BorderNightReality_Part_03_1126_062013.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:23 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795654414.514287
+  },
+  {
     "id": "notif_1795654361415",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "09:21 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795535514.8276837
-  },
-  {
-    "id": "notif_1795535478685",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:21 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795535478.6858168
   }
 ]
