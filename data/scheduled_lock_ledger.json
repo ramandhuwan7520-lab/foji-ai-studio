@@ -1296,5 +1296,27 @@
     "scheduled_for": "2026-12-15 12:30:00",
     "scheduled_full_badge": "15 Dec 2026 • 12:30 PM IST",
     "locked_at": 1795693843.7797358
+  },
+  "Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4": {
+    "id": "vid_Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4",
+    "video_file": "Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4",
+    "title": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 4: Bajra Roti vs Viral Afwah",
+    "track_id": "chhutti_ghar_wapsi",
+    "part_number": 4,
+    "dialogue": "Ustad ji, TTE ki afwahon se darr koni laage, mhare gaam ki bajra roti ne asli loha banaya se!",
+    "shayari": "Maa ke haath ki roti aur baap ka garv saath laya hoon,\nVardi ki khatir main phir se apna sukoon chhod aaya hoon.",
+    "caption": "🎖️ Part 4: Bajra Roti vs Viral Afwah | Chhutti, Maa-Baap & Ghar Ki Yaadein\n\n🗣️ \"Ustad ji, TTE ki afwahon se darr koni laage, mhare gaam ki bajra roti ne asli loha banaya se!\"\n\n🔥 Maa ke haath ki roti aur baap ka garv saath laya hoon,\nVardi ki khatir main phir se apna sukoon chhod aaya hoon.\n\n🎵 Vibe: Sandese Aate Hain (Lofi Instrumental)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#faujistatus #haryanvi #agniveer #indianarmy #maakapyar #desijazba #armytraning #viralreels",
+    "created_at": "26 Nov 2026, 09:22 PM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-15_18:30",
+    "scheduled_epoch": 1797339600.0,
+    "scheduled_display": "15 Dec 2026 at 06:30 PM IST",
+    "date_label": "15 Dec 2026",
+    "time_label": "06:30 PM",
+    "scheduled_iso": "2026-12-15T18:30:00+05:30",
+    "scheduled_for": "2026-12-15 18:30:00",
+    "scheduled_full_badge": "15 Dec 2026 • 06:30 PM IST",
+    "locked_at": 1795711821.8758178
   }
 }
