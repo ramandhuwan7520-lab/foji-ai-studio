@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795693840480",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Duty, Fatigue & Working Reality — Part 4: Maa, Duty aur Meethi Afwah locked for 15 Dec 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "05:20 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795693840.48072
+  },
+  {
     "id": "notif_1795690652474",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "11:23 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795586007.7140055
-  },
-  {
-    "id": "notif_1795585937270",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_111_FaujiShayariChutkule_Part_01_1125_111948.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "11:22 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795585937.2709248
   }
 ]
