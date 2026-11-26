@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795711824360",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4 -> 15 Dec 2026 at 06:30 PM IST",
+    "status": "schedule",
+    "time_str": "10:20 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795711824.3609304
+  },
+  {
     "id": "notif_1795711820583",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "04:35 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795604705.0748363
-  },
-  {
-    "id": "notif_1795604659026",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Trunk Ke Peeche PT Ka Tyag | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "04:34 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795604659.0262823
   }
 ]
