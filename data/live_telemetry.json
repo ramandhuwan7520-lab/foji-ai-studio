@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "Video_122_DutyFatigue_Part_04_1126_162017.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "04:22:58 PM",
-  "epoch": 1795690378.069894
+  "step_num": 2,
+  "step_title": "Batch Video 2/3",
+  "sub_detail": "Starting fresh 3D story 2 of 3...",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "04:23:08 PM",
+  "epoch": 1795690388.7747183
 }
