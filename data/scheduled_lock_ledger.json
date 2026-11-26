@@ -1252,5 +1252,27 @@
     "scheduled_for": "2026-12-14 18:30:00",
     "scheduled_full_badge": "14 Dec 2026 • 06:30 PM IST",
     "locked_at": 1795676026.07918
+  },
+  "Video_121_FunnyFauji_Part_04_1126_112601.mp4": {
+    "id": "vid_Video_121_FunnyFauji_Part_04_1126_112601.mp4",
+    "video_file": "Video_121_FunnyFauji_Part_04_1126_112601.mp4",
+    "title": "Fauji Masti, Bakwas & Comedy — Part 4: Afwah vs Asli Jazba",
+    "track_id": "funny_fauji",
+    "part_number": 4,
+    "dialogue": "Ustad ji, internet ki afwahon pe na jayo, asli fauji toh mhari vardi aur mitti mein base se!",
+    "shayari": "Log afwahon mein mhara naam dhoondhte hain,\nHum mitti ki khushbu mein apna kaam dhoondhte hain.",
+    "caption": "🎖️ Part 4: Afwah vs Asli Jazba | Fauji Masti, Bakwas & Comedy\n\n🗣️ \"Ustad ji, internet ki afwahon pe na jayo, asli fauji toh mhari vardi aur mitti mein base se!\"\n\n🔥 Log afwahon mein mhara naam dhoondhte hain,\nHum mitti ki khushbu mein apna kaam dhoondhte hain.\n\n🎵 Vibe: Desh mere desh mere meri jaan hai tu...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#locborder #indianarmy #faujimasti #desishayar #armyvibe #fakestorycheck #faujiduty #tiranga",
+    "created_at": "26 Nov 2026, 11:28 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-15_06:30",
+    "scheduled_epoch": 1797296400.0,
+    "scheduled_display": "15 Dec 2026 at 06:30 AM IST",
+    "date_label": "15 Dec 2026",
+    "time_label": "06:30 AM",
+    "scheduled_iso": "2026-12-15T06:30:00+05:30",
+    "scheduled_for": "2026-12-15 06:30:00",
+    "scheduled_full_badge": "15 Dec 2026 • 06:30 AM IST",
+    "locked_at": 1795676191.5797858
   }
 }
