@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795719230757",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Civil Duniya vs Fauji Asli Hakikat — Part 4: Garam Chai Aur Asli Sukoon | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:23 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795719230.7571409
+  },
+  {
     "id": "notif_1795719207404",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "10:12 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624973.059444
-  },
-  {
-    "id": "notif_1795624954727",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "10:12 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624954.7270682
   }
 ]
