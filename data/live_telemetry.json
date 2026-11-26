@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Step 6: Rendering 3D Video (Acc #1)",
-  "sub_detail": "Gemini Veo is rendering your vertical 9:16 3D reel (~60-90s)...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4...",
   "status": "active",
-  "progress": 74,
-  "updated_at": "11:24:17 AM",
-  "epoch": 1795672457.2980518
+  "progress": 68,
+  "updated_at": "11:24:22 AM",
+  "epoch": 1795672462.864599
 }
