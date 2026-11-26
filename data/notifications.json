@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795708404407",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Mess Ki Chori Aur Asli Yaari | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:23 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708404.4079266
+  },
+  {
     "id": "notif_1795708379418",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "11:28 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795586339.1122944
-  },
-  {
-    "id": "notif_1795586273956",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Seniors & Ustad Ki Mimicry — Part 2: Ustad Ki Whistle Aur Papad Ka Chura is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "11:27 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795586273.9566908
   }
 ]
