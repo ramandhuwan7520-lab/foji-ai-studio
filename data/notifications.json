@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795654361415",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_116_BorderNightReality_Part_03_1126_062013.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "06:22 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795654361.4155226
+  },
+  {
     "id": "notif_1795654282673",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
