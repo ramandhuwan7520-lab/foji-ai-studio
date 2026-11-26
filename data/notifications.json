@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795658203809",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "1-Bar Network & Fauji Video Call — Part 3: Mess Ka Signal Aur Gulab Jamun Twist locked for 14 Dec 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "07:26 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795658203.8096092
+  },
+  {
     "id": "notif_1795658044066",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "09:21 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795535518.3829694
-  },
-  {
-    "id": "notif_1795535514827",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (20s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
-    "status": "error",
-    "time_str": "09:21 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795535514.8276837
   }
 ]
