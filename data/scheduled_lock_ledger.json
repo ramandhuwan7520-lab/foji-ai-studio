@@ -1340,5 +1340,27 @@
     "scheduled_for": "2026-12-16 06:30:00",
     "scheduled_full_badge": "16 Dec 2026 • 06:30 AM IST",
     "locked_at": 1795712253.175658
+  },
+  "Video_126_BorderNightReality_Part_04_1127_002016.mp4": {
+    "id": "vid_Video_126_BorderNightReality_Part_04_1127_002016.mp4",
+    "video_file": "Video_126_BorderNightReality_Part_04_1127_002016.mp4",
+    "title": "LOC Border Raat Ki Asli Pehredari — Part 4: Signal, Chai aur Asli Jazba",
+    "track_id": "border_night_reality",
+    "part_number": 4,
+    "dialogue": "Ustad ji, duniya viral proposal pe nache, par mhare liye yo ek danda signal hi asli sukoon se!",
+    "shayari": "Sard raatan mein mhari aankhan ka yo jaagra,\nDesh ne sukoon ki neend sulaan khatir kaafi se!",
+    "caption": "🎖️ Part 4: Signal, Chai aur Asli Jazba | LOC Border Raat Ki Asli Pehredari\n\n🗣️ \"Ustad ji, duniya viral proposal pe nache, par mhare liye yo ek danda signal hi asli sukoon se!\"\n\n🔥 Sard raatan mein mhari aankhan ka yo jaagra,\nDesh ne sukoon ki neend sulaan khatir kaafi se!\n\n🎵 Vibe: O Desh Mere Teri Shaan Pe Sadke... instrumental flute\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
+    "created_at": "27 Nov 2026, 12:23 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-16_12:30",
+    "scheduled_epoch": 1797404400.0,
+    "scheduled_display": "16 Dec 2026 at 12:30 PM IST",
+    "date_label": "16 Dec 2026",
+    "time_label": "12:30 PM",
+    "scheduled_iso": "2026-12-16T12:30:00+05:30",
+    "scheduled_for": "2026-12-16 12:30:00",
+    "scheduled_full_badge": "16 Dec 2026 • 12:30 PM IST",
+    "locked_at": 1795722643.9989545
   }
 }
