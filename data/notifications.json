@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795708825574",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot (Video_125_FaujiDostiBarracks_Part_04_1126_212724.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "09:30 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708825.5748181
+  },
+  {
     "id": "notif_1795708772562",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "04:34 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795604653.5029058
-  },
-  {
-    "id": "notif_1795604650328",
-    "type": "warning",
-    "title": "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)",
-    "message": "6-Minute Smart Render Timeout (12.0 min) reached for Video_114_DostoKiBackchodi_Part_02_1125_162043.mp4. Stopping this attempt to start the next video — Part #2 will be built next run!",
-    "status": "warning",
-    "time_str": "04:34 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795604650.3288157
   }
 ]
