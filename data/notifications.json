@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795690472112",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Agniveer Reality & Pride — Part 4: Maa Ki Chitthi Aur Iron Trunk is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "04:24 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795690472.1129522
+  },
+  {
     "id": "notif_1795690408751",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "07:27 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795571864.6389222
-  },
-  {
-    "id": "notif_1795571651559",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_109_FiringOpsReality_Part_01_1125_062354.mp4 -> 08 Dec 2026 at 12:30 PM IST",
-    "status": "schedule",
-    "time_str": "07:24 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795571651.5594983
   }
 ]
