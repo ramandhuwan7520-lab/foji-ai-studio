@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_122_DutyFatigue_Part_04_1126_162017.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 36s \u2014 hovering & downloading Video_122_DutyFatigue_Part_04_1126_162017.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "04:21:45 PM",
-  "epoch": 1795690305.201991
+  "progress": 86,
+  "updated_at": "04:22:22 PM",
+  "epoch": 1795690342.6815429
 }
