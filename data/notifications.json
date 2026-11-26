@@ -1,13 +1,13 @@
 [
   {
-    "id": "notif_1795694017679",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Agniveer Reality & Pride — Part 4: Maa Ki Chitthi Aur Iron Trunk locked for 15 Dec 2026 at 06:30 PM IST!",
-    "status": "success",
+    "id": "notif_1795694025314",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_123_AgniveerReality_Part_04_1126_162324.mp4 -> 15 Dec 2026 at 06:30 PM IST",
+    "status": "schedule",
     "time_str": "05:23 PM",
     "date_str": "26 Nov 2026",
-    "timestamp": 1795694017.6792128
+    "timestamp": 1795694025.3143961
   },
   {
     "id": "notif_1795693847053",
