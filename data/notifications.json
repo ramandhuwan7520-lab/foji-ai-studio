@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795654541011",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_117_CivilVsFauji_Part_03_1126_062351.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "06:25 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795654541.011086
+  },
+  {
     "id": "notif_1795654492799",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "09:22 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795535569.818072
-  },
-  {
-    "id": "notif_1795535524264",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:22 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795535524.264813
   }
 ]
