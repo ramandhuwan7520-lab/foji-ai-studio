@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795654594862",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 3: Mess Ka Signal Aur Gulab Jamun Twist | Cast: Makra + Meera (Sunset Orange & Red Bridal-Style Heavy...)",
+    "status": "info",
+    "time_str": "06:26 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795654594.8622262
+  },
+  {
     "id": "notif_1795654571669",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "09:35 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795536348.6456149
-  },
-  {
-    "id": "notif_1795536304733",
-    "type": "warning",
-    "title": "⏱️ 6-Minute Smart Timeout (Part Saved for Next Run)",
-    "message": "6-Minute Smart Render Timeout (12.0 min) reached for Video_106_FaujiDostiBarracks_Part_05_1124_212013.mp4. Stopping this attempt to start the next video — Part #5 will be built next run!",
-    "status": "warning",
-    "time_str": "09:35 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795536304.733097
   }
 ]
