@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795654492799",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 3: Afwah vs Asli Mess (The Fake News Check) is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "06:24 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795654492.799948
+  },
+  {
     "id": "notif_1795654435967",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:22 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795535524.264813
-  },
-  {
-    "id": "notif_1795535518382",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (20s): I'm sorry, I'm experiencing unusually high traffic right no) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "09:21 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795535518.3829694
   }
 ]
