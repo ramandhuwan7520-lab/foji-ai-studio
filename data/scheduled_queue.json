@@ -11,18 +11,6 @@
       "caption": "🎖️ Part 4: Maa Ki Chitthi Aur Iron Trunk | Agniveer Reality & Pride\n\n🗣️ \"Ustad ji, pehli salary toh ghar bhej di, par maa ka yo khat asli khazana mil gaya!\"\n\n🔥 Kamaai toh ghar bhej di maa, tera ashirwad saath laya hoon,\nVardi pahan ke aaj main tera asli sher banke aaya hoon.\n\n🎵 Vibe: Maa teri yaad satave se, par vardi farz nibhave se...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#agniveerlife #indianarmy #maakapyar #faujijazba #viralreel #desishayar #armypride #vibhav",
       "created_at": "26 Nov 2026, 04:25 PM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_122_DutyFatigue_Part_04_1126_162017.mp4",
-      "video_file": "Video_122_DutyFatigue_Part_04_1126_162017.mp4",
-      "title": "Duty, Fatigue & Working Reality — Part 4: Maa, Duty aur Meethi Afwah",
-      "track_id": "duty_fatigue",
-      "part_number": 4,
-      "dialogue": "Maa, yahan toh bas halwa-puri mil rahi hai, tu fikar na kar, tera chhora mauj mein hai!",
-      "shayari": "Vardi ki dhool aur badan ka pasina Maa se chhupana padta hai,\nUski mamta na tadpe, isliye jhooth bhi muskurakar sunana padta hai.",
-      "caption": "🎖️ Part 4: Maa, Duty aur Meethi Afwah | Duty, Fatigue & Working Reality\n\n🗣️ \"Maa, yahan toh bas halwa-puri mil rahi hai, tu fikar na kar, tera chhora mauj mein hai!\"\n\n🔥 Vardi ki dhool aur badan ka pasina Maa se chhupana padta hai,\nUski mamta na tadpe, isliye jhooth bhi muskurakar sunana padta hai.\n\n🎵 Vibe: Maa meri kyu fikar kare tu, tera laadla fauji ban gaya...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#locborder #siachenheroes #indianarmy #maakapyar #faujiduty #tiranga #armybrotherhood #goosebumps",
-      "created_at": "26 Nov 2026, 04:22 PM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -1084,6 +1072,27 @@
       "scheduled_iso": "2026-12-15T06:30:00+05:30",
       "scheduled_for": "2026-12-15 06:30:00",
       "scheduled_full_badge": "15 Dec 2026 • 06:30 AM IST"
+    },
+    {
+      "id": "vid_Video_122_DutyFatigue_Part_04_1126_162017.mp4",
+      "video_file": "Video_122_DutyFatigue_Part_04_1126_162017.mp4",
+      "title": "Duty, Fatigue & Working Reality — Part 4: Maa, Duty aur Meethi Afwah",
+      "track_id": "duty_fatigue",
+      "part_number": 4,
+      "dialogue": "Maa, yahan toh bas halwa-puri mil rahi hai, tu fikar na kar, tera chhora mauj mein hai!",
+      "shayari": "Vardi ki dhool aur badan ka pasina Maa se chhupana padta hai,\nUski mamta na tadpe, isliye jhooth bhi muskurakar sunana padta hai.",
+      "caption": "🎖️ Part 4: Maa, Duty aur Meethi Afwah | Duty, Fatigue & Working Reality\n\n🗣️ \"Maa, yahan toh bas halwa-puri mil rahi hai, tu fikar na kar, tera chhora mauj mein hai!\"\n\n🔥 Vardi ki dhool aur badan ka pasina Maa se chhupana padta hai,\nUski mamta na tadpe, isliye jhooth bhi muskurakar sunana padta hai.\n\n🎵 Vibe: Maa meri kyu fikar kare tu, tera laadla fauji ban gaya...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#locborder #siachenheroes #indianarmy #maakapyar #faujiduty #tiranga #armybrotherhood #goosebumps",
+      "created_at": "26 Nov 2026, 04:22 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-15_12:30",
+      "scheduled_epoch": 1797318000.0,
+      "scheduled_display": "15 Dec 2026 at 12:30 PM IST",
+      "date_label": "15 Dec 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-12-15T12:30:00+05:30",
+      "scheduled_for": "2026-12-15 12:30:00",
+      "scheduled_full_badge": "15 Dec 2026 • 12:30 PM IST"
     }
   ],
   "published_posts": [
@@ -2658,7 +2667,7 @@
       "ig_media_pk": "17883628368554340"
     }
   ],
-  "updated_epoch": 1795690562.3550906,
+  "updated_epoch": 1795693833.8778467,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
