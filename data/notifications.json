@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795676189872",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Fauji Masti, Bakwas & Comedy — Part 4: Afwah vs Asli Jazba locked for 15 Dec 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "12:26 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795676189.8722916
+  },
+  {
     "id": "notif_1795676028815",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "11:04 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795541688.5613337
-  },
-  {
-    "id": "notif_1795541653748",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_106_ChmBhmClash_Part_01_1124_230034.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "11:04 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795541653.7480485
   }
 ]
