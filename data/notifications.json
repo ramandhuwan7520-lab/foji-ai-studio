@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795672538201",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Fauji Safar: Train, Trunk & Posting — Part 3: Reel vs Real Hakikat (Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "11:25 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795672538.20108
+  },
+  {
     "id": "notif_1795672510949",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "11:00 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795541438.9916382
-  },
-  {
-    "id": "notif_1795536563789",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 5: Subah Ki Chai Aur Fauji Swag | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:39 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795536563.7892067
   }
 ]
