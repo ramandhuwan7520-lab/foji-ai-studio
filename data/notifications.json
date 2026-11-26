@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795693847053",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_122_DutyFatigue_Part_04_1126_162017.mp4 -> 15 Dec 2026 at 12:30 PM IST",
+    "status": "schedule",
+    "time_str": "05:20 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795693847.0531929
+  },
+  {
     "id": "notif_1795693840480",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "11:23 AM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795586030.758588
-  },
-  {
-    "id": "notif_1795586007713",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Shayari, Desi Songs & Chutkule — Part 1: Steel Tiffin Jam & Fauji Swag (Video_111_FaujiShayariChutkule_Part_01_1125_111948.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "11:23 AM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795586007.7140055
   }
 ]
