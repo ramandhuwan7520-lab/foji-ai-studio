@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795654217227",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 3: Seema Ki Raat Aur Sacchi Pehredari | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:20 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795654217.2274148
+  },
+  {
     "id": "notif_1795636395747",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
