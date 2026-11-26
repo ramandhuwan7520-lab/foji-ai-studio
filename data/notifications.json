@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795658209685",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_118_VideoCallNetwork_Part_03_1126_062630.mp4 -> 14 Dec 2026 at 12:30 PM IST",
+    "status": "schedule",
+    "time_str": "07:26 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795658209.685945
+  },
+  {
     "id": "notif_1795658203809",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "09:22 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795535524.264813
-  },
-  {
-    "id": "notif_1795535518382",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (20s): I'm sorry, I'm experiencing unusually high traffic right no) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "09:21 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795535518.3829694
   }
 ]
