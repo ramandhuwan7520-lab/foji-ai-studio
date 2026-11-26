@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 46s \u2014 hovering & downloading Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "09:21:33 PM",
-  "epoch": 1795708293.8579345
+  "progress": 86,
+  "updated_at": "09:22:21 PM",
+  "epoch": 1795708341.5747478
 }
