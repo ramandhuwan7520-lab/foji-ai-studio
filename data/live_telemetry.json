@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Mission Complete! 3D Reel Ready",
-  "sub_detail": "3/3 new 3D video(s) ready in Review Queue!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "06:28:53 AM",
-  "epoch": 1795654733.0810094
+  "step_num": 1,
+  "step_title": "Step 1: Launching Cloud Studio (3x)",
+  "sub_detail": "Auto Session: Midday Session (11:19 AM IST) \u2014 Dispatching 3 video(s) to GitHub Actions...",
+  "status": "active",
+  "progress": 15,
+  "updated_at": "11:19:19 AM",
+  "epoch": 1795672159.1431684
 }
