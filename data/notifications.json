@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795722836228",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_127_CivilVsFauji_Part_04_1127_002347.mp4 -> 16 Dec 2026 at 06:30 PM IST",
+    "status": "schedule",
+    "time_str": "01:23 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795722836.2284749
+  },
+  {
     "id": "notif_1795722832302",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "10:12 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624954.7270682
-  },
-  {
-    "id": "notif_1795624888302",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "10:11 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624888.3029265
   }
 ]
