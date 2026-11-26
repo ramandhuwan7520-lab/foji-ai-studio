@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795672565612",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 4: Afwah vs Asli Jazba | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "11:26 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795672565.6127708
+  },
+  {
     "id": "notif_1795672538201",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "11:01 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795541515.1789384
-  },
-  {
-    "id": "notif_1795541438991",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: CHM / BHM Se Ladai & Mazak — Part 1: CHM Ka Shaka Aur Makra Ka Jawab | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "11:00 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795541438.9916382
   }
 ]
