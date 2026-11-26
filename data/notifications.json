@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795654651949",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "1-Bar Network & Fauji Video Call — Part 3: Mess Ka Signal Aur Gulab Jamun Twist is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "06:27 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795654651.9492283
+  },
+  {
     "id": "notif_1795654594862",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:36 PM",
     "date_str": "24 Nov 2026",
     "timestamp": 1795536409.446598
-  },
-  {
-    "id": "notif_1795536348645",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: Subah Ki Chai Aur Fauji Swag | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:35 PM",
-    "date_str": "24 Nov 2026",
-    "timestamp": 1795536348.6456149
   }
 ]
