@@ -1560,5 +1560,27 @@
     "scheduled_for": "2026-12-19 12:30:00",
     "scheduled_full_badge": "19 Dec 2026 • 12:30 PM IST",
     "locked_at": 1795798437.6861784
+  },
+  "Video_137_CivilVsFauji_Part_05_1127_212700.mp4": {
+    "id": "vid_Video_137_CivilVsFauji_Part_05_1127_212700.mp4",
+    "video_file": "Video_137_CivilVsFauji_Part_05_1127_212700.mp4",
+    "title": "Civil Duniya vs Fauji Asli Hakikat — Part 5: Chhutti Radd, Duty Shuru",
+    "track_id": "civil_vs_fauji",
+    "part_number": 5,
+    "dialogue": "Ustad ji, duniya afwahon mein istife ginte rahe, par mhara asli sukoon toh is radd ticket mein se!",
+    "shayari": "Ghar jaana toh bas ek khwaab tha mere bhai, \nVardi ki kasam ne aaj phir rasta mod diya.",
+    "caption": "🎖️ Part 5: Chhutti Radd, Duty Shuru | Civil Duniya vs Fauji Asli Hakikat\n\n🗣️ \"Ustad ji, duniya afwahon mein istife ginte rahe, par mhara asli sukoon toh is radd ticket mein se!\"\n\n🔥 Ghar jaana toh bas ek khwaab tha mere bhai, \nVardi ki kasam ne aaj phir rasta mod diya.\n\n🎵 Vibe: Mitti di khushboo... (Sad yet Proud Flute Instrumental)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
+    "created_at": "27 Nov 2026, 09:29 PM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-19_18:30",
+    "scheduled_epoch": 1797685200.0,
+    "scheduled_display": "19 Dec 2026 at 06:30 PM IST",
+    "date_label": "19 Dec 2026",
+    "time_label": "06:30 PM",
+    "scheduled_iso": "2026-12-19T18:30:00+05:30",
+    "scheduled_for": "2026-12-19 18:30:00",
+    "scheduled_full_badge": "19 Dec 2026 • 06:30 PM IST",
+    "locked_at": 1795798630.1015306
   }
 }
