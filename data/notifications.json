@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795740759238",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "1-Bar Network & Fauji Video Call — Part 4: Signal, Sakkar Aur Bawli Ka Pyaar (Video_128_VideoCallNetwork_Part_04_1127_062010.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:22 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795740759.2389421
+  },
+  {
     "id": "notif_1795740730530",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "10:13 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795625022.059713
-  },
-  {
-    "id": "notif_1795624979699",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "10:12 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624979.6994116
   }
 ]
