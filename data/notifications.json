@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795806068532",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Safar: Train, Trunk & Posting — Part 5: Afwah vs Asli Ragda | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:31 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795806068.53228
+  },
+  {
     "id": "notif_1795806043442",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "09:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708503.5553012
-  },
-  {
-    "id": "notif_1795708471461",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Mess Ki Chori Aur Asli Yaari is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:24 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708471.461896
   }
 ]
