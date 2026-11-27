@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795805806913",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_138_VideoCallNetwork_Part_05_1128_002031.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:26 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795805806.913838
+  },
+  {
     "id": "notif_1795805509754",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "09:20 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708209.664401
-  },
-  {
-    "id": "notif_1795694025314",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_123_AgniveerReality_Part_04_1126_162324.mp4 -> 15 Dec 2026 at 06:30 PM IST",
-    "status": "schedule",
-    "time_str": "05:23 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795694025.3143961
   }
 ]
