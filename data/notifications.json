@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795740678875",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "1-Bar Network & Fauji Video Call — Part 4: Signal, Sakkar Aur Bawli Ka Pyaar is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "06:21 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795740678.8755696
+  },
+  {
     "id": "notif_1795740614280",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "10:12 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624975.5739028
-  },
-  {
-    "id": "notif_1795624973059",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
-    "status": "error",
-    "time_str": "10:12 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624973.059444
   }
 ]
