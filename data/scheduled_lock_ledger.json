@@ -1604,5 +1604,27 @@
     "scheduled_for": "2026-12-20 06:30:00",
     "scheduled_full_badge": "20 Dec 2026 • 06:30 AM IST",
     "locked_at": 1795809045.2621994
+  },
+  "Video_139_FestivalOnDuty_Part_05_1128_002737.mp4": {
+    "id": "vid_Video_139_FestivalOnDuty_Part_05_1128_002737.mp4",
+    "video_file": "Video_139_FestivalOnDuty_Part_05_1128_002737.mp4",
+    "title": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 5: Diwali Duty Aur Radd Ticket Ka Sach",
+    "track_id": "festival_on_duty",
+    "part_number": 5,
+    "dialogue": "Ustad ji, chhutti radd hui toh kya, afwahon pe nahi, mhara bharosa toh is mitti ke diye pe hai!",
+    "shayari": "Ghar ki dehleez sunehari ho na ho,\nVardi pe mitti ka ye diya hi sabse bada sukoon se.",
+    "caption": "🎖️ Part 5: Diwali Duty Aur Radd Ticket Ka Sach | Tyohar Duty Par (Diwali, Holi & Rakhi)\n\n🗣️ \"Ustad ji, chhutti radd hui toh kya, afwahon pe nahi, mhara bharosa toh is mitti ke diye pe hai!\"\n\n🔥 Ghar ki dehleez sunehari ho na ho,\nVardi pe mitti ka ye diya hi sabse bada sukoon se.\n\n🎵 Vibe: Sandese Aate Hain emotional instrumental flute\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#faujidivali #dutypardyohar #indianarmy #chhutti #factcheck #armypride #realfauji #haryanvistatus",
+    "created_at": "28 Nov 2026, 12:30 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-20_12:30",
+    "scheduled_epoch": 1797750000.0,
+    "scheduled_display": "20 Dec 2026 at 12:30 PM IST",
+    "date_label": "20 Dec 2026",
+    "time_label": "12:30 PM",
+    "scheduled_iso": "2026-12-20T12:30:00+05:30",
+    "scheduled_for": "2026-12-20 12:30:00",
+    "scheduled_full_badge": "20 Dec 2026 • 12:30 PM IST",
+    "locked_at": 1795809471.5780268
   }
 }
