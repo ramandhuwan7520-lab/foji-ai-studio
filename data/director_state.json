@@ -1,6 +1,6 @@
 {
   "active_mode": "auto_rotate",
-  "selected_track_id": "border_night_reality",
+  "selected_track_id": "civil_vs_fauji",
   "last_rotated_index": 1,
   "custom_idea": "",
   "bgm_volume": 20,
@@ -13,5 +13,5 @@
   ],
   "night_batch_time": "02:30",
   "night_batch_count": 3,
-  "updated_epoch": 1795794800.0343282
+  "updated_epoch": 1795795011.7940922
 }
