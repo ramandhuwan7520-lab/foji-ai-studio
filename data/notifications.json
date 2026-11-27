@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795777010984",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_133_AgniveerReality_Part_05_1127_162431.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "04:26 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795777010.9845266
+  },
+  {
     "id": "notif_1795776945303",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "07:26 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795658209.685945
-  },
-  {
-    "id": "notif_1795658203809",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "1-Bar Network & Fauji Video Call — Part 3: Mess Ka Signal Aur Gulab Jamun Twist locked for 14 Dec 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "07:26 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795658203.8096092
   }
 ]
