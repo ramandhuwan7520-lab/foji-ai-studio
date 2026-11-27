@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795758707158",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 5: Muddy Masti & Ustad Ka Darr | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "11:21 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758707.1580331
+  },
+  {
     "id": "notif_1795758702464",
     "type": "warning",
     "title": "Switching to Account #2",
@@ -788,15 +798,5 @@
     "time_str": "12:22 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795632775.1898625
-  },
-  {
-    "id": "notif_1795632754439",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet (Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "12:22 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795632754.439497
   }
 ]
