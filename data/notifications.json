@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795777160991",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Agniveer Reality & Pride — Part 5: Ragda, Roti aur Bharti ka Josh (Video_133_AgniveerReality_Part_05_1127_162431.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "04:29 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795777160.9913137
+  },
+  {
     "id": "notif_1795777010984",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "11:20 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795672211.2904952
-  },
-  {
-    "id": "notif_1795658209685",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_118_VideoCallNetwork_Part_03_1126_062630.mp4 -> 14 Dec 2026 at 12:30 PM IST",
-    "status": "schedule",
-    "time_str": "07:26 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795658209.685945
   }
 ]
