@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795758607000",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 5: Muddy Masti & Ustad Ka Darr | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "11:20 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758607.0007682
+  },
+  {
     "id": "notif_1795744577710",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "12:20 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795632611.4292045
-  },
-  {
-    "id": "notif_1795625382876_735",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "10:19 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795625382.8769417
   }
 ]
