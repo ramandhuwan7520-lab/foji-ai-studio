@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_131_FunnyFauji_Part_05_1127_112002.mp4 in Gemini (Zero Timeout)...",
-  "status": "active",
-  "progress": 75,
-  "updated_at": "11:21:25 AM",
-  "epoch": 1795758685.7694705
+  "step_title": "\u26a0\ufe0f Gemini Video Refused/Error",
+  "sub_detail": "Gemini refused/errored early (8s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "11:21:38 AM",
+  "epoch": 1795758698.668361
 }
