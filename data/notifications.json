@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795776731272",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (20s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+    "status": "error",
+    "time_str": "04:22 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795776731.2724156
+  },
+  {
     "id": "notif_1795776695127",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "07:20 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795657823.4749813
-  },
-  {
-    "id": "notif_1795636395747",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_086_FaujiDostiBarracks_Part_03_1126_002251.mp4 -> 13 Dec 2026 at 12:30 PM IST",
-    "status": "schedule",
-    "time_str": "01:23 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795636395.7471583
   }
 ]
