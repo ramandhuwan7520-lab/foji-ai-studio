@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795744385653",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 4: Diwali, Duty aur Ustad Ki Daant locked for 17 Dec 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "07:23 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795744385.6539629
+  },
+  {
     "id": "notif_1795744225954",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "10:12 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624979.6994116
-  },
-  {
-    "id": "notif_1795624975573",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "10:12 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624975.5739028
   }
 ]
