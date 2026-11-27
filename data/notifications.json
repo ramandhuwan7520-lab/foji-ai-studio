@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795805861821",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 5: Diwali Duty Aur Radd Ticket Ka Sach | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:27 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795805861.8215303
+  },
+  {
     "id": "notif_1795805837371",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "09:22 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708347.5435176
-  },
-  {
-    "id": "notif_1795708284430",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 4: Bajra Roti vs Viral Afwah is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:21 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708284.4305415
   }
 ]
