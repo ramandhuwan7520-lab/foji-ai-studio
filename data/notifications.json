@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795780479441",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_133_AgniveerReality_Part_05_1127_162431.mp4 -> 18 Dec 2026 at 12:30 PM IST",
+    "status": "schedule",
+    "time_str": "05:24 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795780479.4413166
+  },
+  {
     "id": "notif_1795780475807",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "11:25 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795672510.9494758
-  },
-  {
-    "id": "notif_1795672464122",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Safar: Train, Trunk & Posting — Part 3: Reel vs Real Hakikat is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "11:24 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795672464.1225512
   }
 ]
