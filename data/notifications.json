@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795776734099",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (20s): I'm sorry, I'm experiencing unusually high traffic right no) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "04:22 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795776734.0994368
+  },
+  {
     "id": "notif_1795776731272",
     "type": "error",
     "title": "⚠️ Gemini Video Error",
@@ -788,15 +798,5 @@
     "time_str": "07:20 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795657826.952564
-  },
-  {
-    "id": "notif_1795657823474",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "LOC Border Raat Ki Asli Pehredari — Part 3: Seema Ki Raat Aur Sacchi Pehredari locked for 13 Dec 2026 at 06:30 PM IST!",
-    "status": "success",
-    "time_str": "07:20 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795657823.4749813
   }
 ]
