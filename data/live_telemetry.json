@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
-  "sub_detail": "Rendered in 49s \u2014 hovering & downloading Video_133_AgniveerReality_Part_05_1127_162431.mp4...",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "04:26:45 PM",
-  "epoch": 1795777005.4697313
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "Video_133_AgniveerReality_Part_05_1127_162431.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "04:29:19 PM",
+  "epoch": 1795777159.7899728
 }
