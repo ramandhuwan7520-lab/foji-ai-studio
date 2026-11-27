@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795798629147",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 5: Chhutti Radd, Duty Shuru locked for 19 Dec 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "10:27 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795798629.1473088
+  },
+  {
     "id": "notif_1795798440184",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "04:27 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795690652.4745436
-  },
-  {
-    "id": "notif_1795690592125",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 4: Vardi, Viral aur Baarish | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "04:26 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795690592.125337
   }
 ]
