@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795795025117",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Civil Duniya vs Fauji Asli Hakikat — Part 5: Chhutti Radd, Duty Shuru | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:27 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795795025.1174684
+  },
+  {
     "id": "notif_1795795000755",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "04:21 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795690295.525846
-  },
-  {
-    "id": "notif_1795690221697",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Duty, Fatigue & Working Reality — Part 4: Maa, Duty aur Meethi Afwah | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "04:20 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795690221.6977222
   }
 ]
