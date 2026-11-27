@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_133_AgniveerReality_Part_05_1127_162016.mp4 in Gemini (Zero Timeout)...",
-  "status": "active",
-  "progress": 75,
-  "updated_at": "04:21:44 PM",
-  "epoch": 1795776704.5304875
+  "step_title": "\u26a0\ufe0f Gemini Video Refused/Error",
+  "sub_detail": "Gemini refused/errored early (20s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+  "status": "error",
+  "progress": 0,
+  "updated_at": "04:22:10 PM",
+  "epoch": 1795776730.0500534
 }
