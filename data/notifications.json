@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795794816340",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 5: Train Ka Safar Aur Ustad Ka Swag | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:23 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795794816.3403096
+  },
+  {
     "id": "notif_1795794788641",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "12:23 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795676028.8159866
-  },
-  {
-    "id": "notif_1795676025235",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Fauji Safar: Train, Trunk & Posting — Part 3: Reel vs Real Hakikat locked for 14 Dec 2026 at 06:30 PM IST!",
-    "status": "success",
-    "time_str": "12:23 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795676025.235698
   }
 ]
