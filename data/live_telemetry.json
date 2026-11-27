@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "Video_128_VideoCallNetwork_Part_04_1127_062010.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "06:22:37 AM",
-  "epoch": 1795740757.907601
+  "step_num": 2,
+  "step_title": "Batch Video 2/3",
+  "sub_detail": "Starting fresh 3D story 2 of 3...",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "06:22:48 AM",
+  "epoch": 1795740768.4891827
 }
