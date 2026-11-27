@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795805435961",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 5: Mess Ka Jhooth Aur Garam Gulab Jamun | Cast: Makra + Meera (Lavender Purple Contemporary Kurti wit...)",
+    "status": "info",
+    "time_str": "12:20 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795805435.961455
+  },
+  {
     "id": "notif_1795798632682",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "05:20 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795693847.0531929
-  },
-  {
-    "id": "notif_1795693840480",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Duty, Fatigue & Working Reality — Part 4: Maa, Duty aur Meethi Afwah locked for 15 Dec 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "05:20 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795693840.48072
   }
 ]
