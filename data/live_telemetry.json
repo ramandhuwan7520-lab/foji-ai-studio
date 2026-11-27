@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
-  "sub_detail": "Rendered in 139s \u2014 hovering & downloading Video_134_ChhuttiGharWapsi_Part_05_1127_162940.mp4...",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "04:33:19 PM",
-  "epoch": 1795777399.4007943
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "Video_134_ChhuttiGharWapsi_Part_05_1127_162940.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "04:33:52 PM",
+  "epoch": 1795777432.7835515
 }
