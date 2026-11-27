@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795740908106",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_129_FestivalOnDuty_Part_04_1127_062301.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "06:25 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795740908.1068954
+  },
+  {
     "id": "notif_1795740848234",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "12:20 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795632611.4292045
-  },
-  {
-    "id": "notif_1795625382876_735",
-    "type": "stopped",
-    "title": "Generation Stopped",
-    "message": "Video generation cancelled by user.",
-    "status": "warning",
-    "time_str": "10:19 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795625382.8769417
   }
 ]
