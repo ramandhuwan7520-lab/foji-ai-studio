@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795758702464",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (8s): I'm sorry, I'm experiencing unusually high traffic right now) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "11:21 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758702.464134
+  },
+  {
     "id": "notif_1795758700000",
     "type": "error",
     "title": "⚠️ Gemini Video Error",
@@ -788,15 +798,5 @@
     "time_str": "12:22 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795632754.439497
-  },
-  {
-    "id": "notif_1795632727525",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "12:22 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795632727.525124
   }
 ]
