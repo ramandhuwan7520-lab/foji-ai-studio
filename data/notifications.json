@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795809474322",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_139_FestivalOnDuty_Part_05_1128_002737.mp4 -> 20 Dec 2026 at 12:30 PM IST",
+    "status": "schedule",
+    "time_str": "01:27 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795809474.322397
+  },
+  {
     "id": "notif_1795809470326",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "09:21 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708284.4305415
-  },
-  {
-    "id": "notif_1795708209664",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 4: Bajra Roti vs Viral Afwah | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:20 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708209.664401
   }
 ]
