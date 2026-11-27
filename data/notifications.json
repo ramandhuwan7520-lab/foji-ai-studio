@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795794878433",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 5: Train Ka Safar Aur Ustad Ka Swag is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:24 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795794878.433325
+  },
+  {
     "id": "notif_1795794816340",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "12:26 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795676189.8722916
-  },
-  {
-    "id": "notif_1795676028815",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4 -> 14 Dec 2026 at 06:30 PM IST",
-    "status": "schedule",
-    "time_str": "12:23 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795676028.8159866
   }
 ]
