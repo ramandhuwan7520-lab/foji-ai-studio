@@ -1494,5 +1494,27 @@
     "scheduled_for": "2026-12-18 12:30:00",
     "scheduled_full_badge": "18 Dec 2026 • 12:30 PM IST",
     "locked_at": 1795780476.976058
+  },
+  "Video_134_ChhuttiGharWapsi_Part_05_1127_162940.mp4": {
+    "id": "vid_Video_134_ChhuttiGharWapsi_Part_05_1127_162940.mp4",
+    "video_file": "Video_134_ChhuttiGharWapsi_Part_05_1127_162940.mp4",
+    "title": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 5: Train ki Chai aur Ghar ki Yaadein",
+    "track_id": "chhutti_ghar_wapsi",
+    "part_number": 5,
+    "dialogue": "Ustad ji, viral proposal chhodo, mhara sukoon toh train ki chai aur maa ki yaadan mein se!",
+    "shayari": "Maa ki mamta aur baap ka dular gelya leke chalyan su,\nIs mitti ki khushbu mein hi asli sukoon paaya su.",
+    "caption": "🎖️ Part 5: Train ki Chai aur Ghar ki Yaadein | Chhutti, Maa-Baap & Ghar Ki Yaadein\n\n🗣️ \"Ustad ji, viral proposal chhodo, mhara sukoon toh train ki chai aur maa ki yaadan mein se!\"\n\n🔥 Maa ki mamta aur baap ka dular gelya leke chalyan su,\nIs mitti ki khushbu mein hi asli sukoon paaya su.\n\n🎵 Vibe: Ghar Aaja Pardesi Tera Des Bulaye Re (Soulful Instrumental)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
+    "created_at": "27 Nov 2026, 04:33 PM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-18_18:30",
+    "scheduled_epoch": 1797598800.0,
+    "scheduled_display": "18 Dec 2026 at 06:30 PM IST",
+    "date_label": "18 Dec 2026",
+    "time_label": "06:30 PM",
+    "scheduled_iso": "2026-12-18T18:30:00+05:30",
+    "scheduled_for": "2026-12-18 18:30:00",
+    "scheduled_full_badge": "18 Dec 2026 • 06:30 PM IST",
+    "locked_at": 1795780797.4650424
   }
 }
