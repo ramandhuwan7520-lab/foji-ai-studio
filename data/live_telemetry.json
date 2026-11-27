@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "Video_135_FaujiDostiBarracks_Part_05_1127_212003.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "09:23:07 PM",
-  "epoch": 1795794787.4130807
+  "step_num": 2,
+  "step_title": "Batch Video 2/3",
+  "sub_detail": "Starting fresh 3D story 2 of 3...",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "09:23:18 PM",
+  "epoch": 1795794798.1066096
 }
