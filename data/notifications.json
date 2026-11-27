@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795798217358",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_135_FaujiDostiBarracks_Part_05_1127_212003.mp4 -> 19 Dec 2026 at 06:30 AM IST",
+    "status": "schedule",
+    "time_str": "10:20 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795798217.3586907
+  },
+  {
     "id": "notif_1795798213977",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "04:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795690537.3820634
-  },
-  {
-    "id": "notif_1795690472112",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Agniveer Reality & Pride — Part 4: Maa Ki Chitthi Aur Iron Trunk is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "04:24 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795690472.1129522
   }
 ]
