@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795809692377",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_140_FaujiSafarTrain_Part_05_1128_003104.mp4 -> 20 Dec 2026 at 06:30 PM IST",
+    "status": "schedule",
+    "time_str": "01:31 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795809692.3777695
+  },
+  {
     "id": "notif_1795809688841",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "09:22 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708379.4188466
-  },
-  {
-    "id": "notif_1795708347543",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "09:22 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708347.5435176
   }
 ]
