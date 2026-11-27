@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795744388648",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_129_FestivalOnDuty_Part_04_1127_062301.mp4 -> 17 Dec 2026 at 12:30 PM IST",
+    "status": "schedule",
+    "time_str": "07:23 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795744388.6482816
+  },
+  {
     "id": "notif_1795744385653",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "10:13 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795625022.059713
-  },
-  {
-    "id": "notif_1795624979699",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "10:12 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624979.6994116
   }
 ]
