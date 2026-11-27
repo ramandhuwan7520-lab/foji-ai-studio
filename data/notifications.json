@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795740935414",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 4: Diwali, Duty aur Ustad Ki Daant (Video_129_FestivalOnDuty_Part_04_1127_062301.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:25 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795740935.4144166
+  },
+  {
     "id": "notif_1795740908106",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "12:21 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795632681.3242075
-  },
-  {
-    "id": "notif_1795632611429",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:20 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795632611.4292045
   }
 ]
