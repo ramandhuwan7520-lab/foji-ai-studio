@@ -23,18 +23,6 @@
       "caption": "🎖️ Part 5: Diwali Duty Aur Radd Ticket Ka Sach | Tyohar Duty Par (Diwali, Holi & Rakhi)\n\n🗣️ \"Ustad ji, chhutti radd hui toh kya, afwahon pe nahi, mhara bharosa toh is mitti ke diye pe hai!\"\n\n🔥 Ghar ki dehleez sunehari ho na ho,\nVardi pe mitti ka ye diya hi sabse bada sukoon se.\n\n🎵 Vibe: Sandese Aate Hain emotional instrumental flute\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#faujidivali #dutypardyohar #indianarmy #chhutti #factcheck #armypride #realfauji #haryanvistatus",
       "created_at": "28 Nov 2026, 12:30 AM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_138_VideoCallNetwork_Part_05_1128_002031.mp4",
-      "video_file": "Video_138_VideoCallNetwork_Part_05_1128_002031.mp4",
-      "title": "1-Bar Network & Fauji Video Call — Part 5: Mess Ka Jhooth Aur Garam Gulab Jamun",
-      "track_id": "video_call_network",
-      "part_number": 5,
-      "dialogue": "Bawli, yahan toh bas AC mein baith ke gulab jamun pel rahe hain, tu fikar na kar!",
-      "shayari": "Vardi ki shaan mein yo jhooth bhi sukoon deve se,\nLaado teri ek muskaan khatir yo chhora har dukh sahe se.",
-      "caption": "🎖️ Part 5: Mess Ka Jhooth Aur Garam Gulab Jamun | 1-Bar Network & Fauji Video Call\n\n🗣️ \"Bawli, yahan toh bas AC mein baith ke gulab jamun pel rahe hain, tu fikar na kar!\"\n\n🔥 Vardi ki shaan mein yo jhooth bhi sukoon deve se,\nLaado teri ek muskaan khatir yo chhora har dukh sahe se.\n\n🎵 Vibe: Tera mukhda dikhe toh mhare dil mein signal aave se...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#faujimasti #messcomedy #signalstruggle #indianarmy #haryanviculture #faujicouple #reelsindia #agniveer",
-      "created_at": "28 Nov 2026, 12:27 AM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -1390,6 +1378,27 @@
       "scheduled_iso": "2026-12-19T18:30:00+05:30",
       "scheduled_for": "2026-12-19 18:30:00",
       "scheduled_full_badge": "19 Dec 2026 • 06:30 PM IST"
+    },
+    {
+      "id": "vid_Video_138_VideoCallNetwork_Part_05_1128_002031.mp4",
+      "video_file": "Video_138_VideoCallNetwork_Part_05_1128_002031.mp4",
+      "title": "1-Bar Network & Fauji Video Call — Part 5: Mess Ka Jhooth Aur Garam Gulab Jamun",
+      "track_id": "video_call_network",
+      "part_number": 5,
+      "dialogue": "Bawli, yahan toh bas AC mein baith ke gulab jamun pel rahe hain, tu fikar na kar!",
+      "shayari": "Vardi ki shaan mein yo jhooth bhi sukoon deve se,\nLaado teri ek muskaan khatir yo chhora har dukh sahe se.",
+      "caption": "🎖️ Part 5: Mess Ka Jhooth Aur Garam Gulab Jamun | 1-Bar Network & Fauji Video Call\n\n🗣️ \"Bawli, yahan toh bas AC mein baith ke gulab jamun pel rahe hain, tu fikar na kar!\"\n\n🔥 Vardi ki shaan mein yo jhooth bhi sukoon deve se,\nLaado teri ek muskaan khatir yo chhora har dukh sahe se.\n\n🎵 Vibe: Tera mukhda dikhe toh mhare dil mein signal aave se...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#faujimasti #messcomedy #signalstruggle #indianarmy #haryanviculture #faujicouple #reelsindia #agniveer",
+      "created_at": "28 Nov 2026, 12:27 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-20_06:30",
+      "scheduled_epoch": 1797728400.0,
+      "scheduled_display": "20 Dec 2026 at 06:30 AM IST",
+      "date_label": "20 Dec 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-12-20T06:30:00+05:30",
+      "scheduled_for": "2026-12-20 06:30:00",
+      "scheduled_full_badge": "20 Dec 2026 • 06:30 AM IST"
     }
   ],
   "published_posts": [
@@ -3008,7 +3017,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795806211.8893967,
+  "updated_epoch": 1795809040.7837887,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
