@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795798440184",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_136_BorderNightReality_Part_05_1127_212332.mp4 -> 19 Dec 2026 at 12:30 PM IST",
+    "status": "schedule",
+    "time_str": "10:24 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795798440.1843572
+  },
+  {
     "id": "notif_1795798437068",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "04:26 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795690592.125337
-  },
-  {
-    "id": "notif_1795690566048",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Agniveer Reality & Pride — Part 4: Maa Ki Chitthi Aur Iron Trunk (Video_123_AgniveerReality_Part_04_1126_162324.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "04:26 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795690566.048423
   }
 ]
