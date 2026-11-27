@@ -1,6 +1,6 @@
 {
   "active_mode": "auto_rotate",
-  "selected_track_id": "video_call_network",
+  "selected_track_id": "festival_on_duty",
   "last_rotated_index": 1,
   "custom_idea": "",
   "bgm_volume": 20,
@@ -13,5 +13,5 @@
   ],
   "night_batch_time": "02:30",
   "night_batch_count": 3,
-  "updated_epoch": 1795740604.297973
+  "updated_epoch": 1795740770.0578396
 }
