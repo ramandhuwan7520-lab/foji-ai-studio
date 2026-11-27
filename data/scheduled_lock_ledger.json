@@ -1450,5 +1450,27 @@
     "scheduled_for": "2026-12-17 18:30:00",
     "scheduled_full_badge": "17 Dec 2026 • 06:30 PM IST",
     "locked_at": 1795744575.2777855
+  },
+  "Video_132_DutyFatigue_Part_05_1127_113026.mp4": {
+    "id": "vid_Video_132_DutyFatigue_Part_05_1127_113026.mp4",
+    "video_file": "Video_132_DutyFatigue_Part_05_1127_113026.mp4",
+    "title": "Duty, Fatigue & Working Reality — Part 5: Station, Barish aur Maa ki Dua",
+    "track_id": "duty_fatigue",
+    "part_number": 5,
+    "dialogue": "Ustad ji, duniya viral proposal pe nache, mhara sukoon toh is thakan aur maa ke ashirwad mein hai!",
+    "shayari": "Vardi gilli se par dil mein aag se,\nYo thakaan bhi mithi laage maa ke ashirwad se.",
+    "caption": "🎖️ Part 5: Station, Barish aur Maa ki Dua | Duty, Fatigue & Working Reality\n\n🗣️ \"Ustad ji, duniya viral proposal pe nache, mhara sukoon toh is thakan aur maa ke ashirwad mein hai!\"\n\n🔥 Vardi gilli se par dil mein aag se,\nYo thakaan bhi mithi laage maa ke ashirwad se.\n\n🎵 Vibe: Mitti di Khushboo - Soulful Version\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
+    "created_at": "27 Nov 2026, 11:33 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-18_06:30",
+    "scheduled_epoch": 1797555600.0,
+    "scheduled_display": "18 Dec 2026 at 06:30 AM IST",
+    "date_label": "18 Dec 2026",
+    "time_label": "06:30 AM",
+    "scheduled_iso": "2026-12-18T06:30:00+05:30",
+    "scheduled_for": "2026-12-18 06:30:00",
+    "scheduled_full_badge": "18 Dec 2026 • 06:30 AM IST",
+    "locked_at": 1795762834.939847
   }
 }
