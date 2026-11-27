@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795805924511",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 5: Diwali Duty Aur Radd Ticket Ka Sach is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:28 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795805924.5110362
+  },
+  {
     "id": "notif_1795805861821",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:22 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708379.4188466
-  },
-  {
-    "id": "notif_1795708347543",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "09:22 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708347.5435176
   }
 ]
