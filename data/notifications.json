@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795780796779",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 5: Train ki Chai aur Ghar ki Yaadein locked for 18 Dec 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "05:29 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795780796.779829
+  },
+  {
     "id": "notif_1795780479441",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "11:25 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795672538.20108
-  },
-  {
-    "id": "notif_1795672510949",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_120_FaujiSafarTrain_Part_03_1126_112322.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "11:25 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795672510.9494758
   }
 ]
