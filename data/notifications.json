@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795795000755",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 5: Train Ka Safar Aur Ustad Ka Swag (Video_136_BorderNightReality_Part_05_1127_212332.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "09:26 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795795000.7556164
+  },
+  {
     "id": "notif_1795794952155",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "04:20 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795690221.6977222
-  },
-  {
-    "id": "notif_1795676198277",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_121_FunnyFauji_Part_04_1126_112601.mp4 -> 15 Dec 2026 at 06:30 AM IST",
-    "status": "schedule",
-    "time_str": "12:26 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795676198.2773278
   }
 ]
