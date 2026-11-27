@@ -1,18 +1,5 @@
 {
-  "unapproved_videos": [
-    {
-      "id": "vid_Video_140_FaujiSafarTrain_Part_05_1128_003104.mp4",
-      "video_file": "Video_140_FaujiSafarTrain_Part_05_1128_003104.mp4",
-      "title": "Fauji Safar: Train, Trunk & Posting — Part 5: Afwah vs Asli Ragda",
-      "track_id": "fauji_safar_train",
-      "part_number": 5,
-      "dialogue": "Ustad ji, log afwahon ki roti seken hain, par mhara asli dum toh is mess ki roti mein se!",
-      "shayari": "Jhoothi afwahon ka shor duniya mein hon de laadle,\nMhara toh asli sukoon is mess ki roti aur maa ki dua mein se!",
-      "caption": "🎖️ Part 5: Afwah vs Asli Ragda | Fauji Safar: Train, Trunk & Posting\n\n🗣️ \"Ustad ji, log afwahon ki roti seken hain, par mhara asli dum toh is mess ki roti mein se!\"\n\n🔥 Jhoothi afwahon ka shor duniya mein hon de laadle,\nMhara toh asli sukoon is mess ki roti aur maa ki dua mein se!\n\n🎵 Vibe: Soulful rustic flute beat with energetic Haryanvi folk undertones.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #messkakhana",
-      "created_at": "28 Nov 2026, 12:33 AM IST",
-      "status": "awaiting_approval"
-    }
-  ],
+  "unapproved_videos": [],
   "scheduled_posts": [
     {
       "id": "vid_Video_072_CivilVsFauji_Part_01_1122_001949.mp4",
@@ -1408,6 +1395,27 @@
       "scheduled_iso": "2026-12-20T12:30:00+05:30",
       "scheduled_for": "2026-12-20 12:30:00",
       "scheduled_full_badge": "20 Dec 2026 • 12:30 PM IST"
+    },
+    {
+      "id": "vid_Video_140_FaujiSafarTrain_Part_05_1128_003104.mp4",
+      "video_file": "Video_140_FaujiSafarTrain_Part_05_1128_003104.mp4",
+      "title": "Fauji Safar: Train, Trunk & Posting — Part 5: Afwah vs Asli Ragda",
+      "track_id": "fauji_safar_train",
+      "part_number": 5,
+      "dialogue": "Ustad ji, log afwahon ki roti seken hain, par mhara asli dum toh is mess ki roti mein se!",
+      "shayari": "Jhoothi afwahon ka shor duniya mein hon de laadle,\nMhara toh asli sukoon is mess ki roti aur maa ki dua mein se!",
+      "caption": "🎖️ Part 5: Afwah vs Asli Ragda | Fauji Safar: Train, Trunk & Posting\n\n🗣️ \"Ustad ji, log afwahon ki roti seken hain, par mhara asli dum toh is mess ki roti mein se!\"\n\n🔥 Jhoothi afwahon ka shor duniya mein hon de laadle,\nMhara toh asli sukoon is mess ki roti aur maa ki dua mein se!\n\n🎵 Vibe: Soulful rustic flute beat with energetic Haryanvi folk undertones.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #messkakhana",
+      "created_at": "28 Nov 2026, 12:33 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-20_18:30",
+      "scheduled_epoch": 1797771600.0,
+      "scheduled_display": "20 Dec 2026 at 06:30 PM IST",
+      "date_label": "20 Dec 2026",
+      "time_label": "06:30 PM",
+      "scheduled_iso": "2026-12-20T18:30:00+05:30",
+      "scheduled_for": "2026-12-20 18:30:00",
+      "scheduled_full_badge": "20 Dec 2026 • 06:30 PM IST"
     }
   ],
   "published_posts": [
@@ -3026,7 +3034,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795809466.9794939,
+  "updated_epoch": 1795809685.7965188,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
