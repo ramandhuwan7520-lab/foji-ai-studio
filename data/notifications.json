@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795776695127",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Agniveer Reality & Pride — Part 5: Subah Ki Chai Aur Fauji Swag is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "04:21 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795776695.1279306
+  },
+  {
     "id": "notif_1795776620624",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "01:23 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795636395.7471583
-  },
-  {
-    "id": "notif_1795636392254",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 3: Paratha, PT aur Ustad ki Nazar locked for 13 Dec 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "01:23 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795636392.2540486
   }
 ]
