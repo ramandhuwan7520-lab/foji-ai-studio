@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795780475807",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Agniveer Reality & Pride — Part 5: Ragda, Roti aur Bharti ka Josh locked for 18 Dec 2026 at 12:30 PM IST!",
+    "status": "success",
+    "time_str": "05:24 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795780475.8071494
+  },
+  {
     "id": "notif_1795777434042",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "11:24 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795672464.1225512
-  },
-  {
-    "id": "notif_1795672406960",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Safar: Train, Trunk & Posting — Part 3: Reel vs Real Hakikat | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "11:23 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795672406.9607005
   }
 ]
