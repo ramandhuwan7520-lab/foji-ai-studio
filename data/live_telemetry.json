@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
-  "sub_detail": "Rendered in 59s \u2014 hovering & downloading Video_136_BorderNightReality_Part_05_1127_212332.mp4...",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "09:25:47 PM",
-  "epoch": 1795794947.4486973
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "Video_136_BorderNightReality_Part_05_1127_212332.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "09:26:39 PM",
+  "epoch": 1795794999.3056664
 }
