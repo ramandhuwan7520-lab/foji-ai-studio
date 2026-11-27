@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795806131806",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Safar: Train, Trunk & Posting — Part 5: Afwah vs Asli Ragda is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:32 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795806131.8069916
+  },
+  {
     "id": "notif_1795806068532",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708506.615731
-  },
-  {
-    "id": "notif_1795708503555",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (16s): I seem to be encountering an error. Can I try something else for you?",
-    "status": "error",
-    "time_str": "09:25 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708503.5553012
   }
 ]
