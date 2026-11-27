@@ -1,18 +1,5 @@
 {
-  "unapproved_videos": [
-    {
-      "id": "vid_Video_130_FaujiSafarTrain_Part_04_1127_062555.mp4",
-      "video_file": "Video_130_FaujiSafarTrain_Part_04_1127_062555.mp4",
-      "title": "Fauji Safar: Train, Trunk & Posting — Part 4: Afwah vs Asli Ragda",
-      "track_id": "fauji_safar_train",
-      "part_number": 4,
-      "dialogue": "Ustad ji, duniya afwahon ke shor mein nache, par mhara asli dum toh is paseene mein se!",
-      "shayari": "किस्मत की लकीरों पै नहीं, मेहनत के पसीने पै ऐतबार है,\nफौजी की वर्दी और यो लोहे का ट्रंक ही म्हार संसार है।",
-      "caption": "🎖️ Part 4: Afwah vs Asli Ragda | Fauji Safar: Train, Trunk & Posting\n\n🗣️ \"Ustad ji, duniya afwahon ke shor mein nache, par mhara asli dum toh is paseene mein se!\"\n\n🔥 किस्मत की लकीरों पै नहीं, मेहनत के पसीने पै ऐतबार है,\nफौजी की वर्दी और यो लोहे का ट्रंक ही म्हार संसार है।\n\n🎵 Vibe: Sadda Chidiyan Da Chamba (High Energy Desi Beats Remix)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
-      "created_at": "27 Nov 2026, 06:28 AM IST",
-      "status": "awaiting_approval"
-    }
-  ],
+  "unapproved_videos": [],
   "scheduled_posts": [
     {
       "id": "vid_Video_072_CivilVsFauji_Part_01_1122_001949.mp4",
@@ -1219,6 +1206,27 @@
       "scheduled_iso": "2026-12-17T12:30:00+05:30",
       "scheduled_for": "2026-12-17 12:30:00",
       "scheduled_full_badge": "17 Dec 2026 • 12:30 PM IST"
+    },
+    {
+      "id": "vid_Video_130_FaujiSafarTrain_Part_04_1127_062555.mp4",
+      "video_file": "Video_130_FaujiSafarTrain_Part_04_1127_062555.mp4",
+      "title": "Fauji Safar: Train, Trunk & Posting — Part 4: Afwah vs Asli Ragda",
+      "track_id": "fauji_safar_train",
+      "part_number": 4,
+      "dialogue": "Ustad ji, duniya afwahon ke shor mein nache, par mhara asli dum toh is paseene mein se!",
+      "shayari": "किस्मत की लकीरों पै नहीं, मेहनत के पसीने पै ऐतबार है,\nफौजी की वर्दी और यो लोहे का ट्रंक ही म्हार संसार है।",
+      "caption": "🎖️ Part 4: Afwah vs Asli Ragda | Fauji Safar: Train, Trunk & Posting\n\n🗣️ \"Ustad ji, duniya afwahon ke shor mein nache, par mhara asli dum toh is paseene mein se!\"\n\n🔥 किस्मत की लकीरों पै नहीं, मेहनत के पसीने पै ऐतबार है,\nफौजी की वर्दी और यो लोहे का ट्रंक ही म्हार संसार है।\n\n🎵 Vibe: Sadda Chidiyan Da Chamba (High Energy Desi Beats Remix)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
+      "created_at": "27 Nov 2026, 06:28 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-17_18:30",
+      "scheduled_epoch": 1797512400.0,
+      "scheduled_display": "17 Dec 2026 at 06:30 PM IST",
+      "date_label": "17 Dec 2026",
+      "time_label": "06:30 PM",
+      "scheduled_iso": "2026-12-17T18:30:00+05:30",
+      "scheduled_for": "2026-12-17 18:30:00",
+      "scheduled_full_badge": "17 Dec 2026 • 06:30 PM IST"
     }
   ],
   "published_posts": [
@@ -2815,7 +2823,7 @@
       "ig_media_pk": "18204920728377583"
     }
   ],
-  "updated_epoch": 1795744383.0864313,
+  "updated_epoch": 1795744571.590886,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
