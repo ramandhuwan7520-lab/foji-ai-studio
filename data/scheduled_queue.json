@@ -23,18 +23,6 @@
       "caption": "🎖️ Part 5: Train Ka Safar Aur Ustad Ka Swag | LOC Border Raat Ki Asli Pehredari\n\n🗣️ \"Ustad ji, chopper proposal viral hone do, mhara asli ishq toh yo vardi ki kasam se!\"\n\n🔥 Log nache hain viral trend pe, mhara sukoon toh desh ki pehredari mein se,\nChopper-vopper shehar aale rakhen, mhari jaan toh vardi ki wafadari mein se!\n\n🎵 Vibe: Sare Jahan Se Achha (Lo-fi Instrumental Trap Mix)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
       "created_at": "27 Nov 2026, 09:26 PM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_135_FaujiDostiBarracks_Part_05_1127_212003.mp4",
-      "video_file": "Video_135_FaujiDostiBarracks_Part_05_1127_212003.mp4",
-      "title": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: AI vs Asli Ragda",
-      "track_id": "fauji_dosti_barracks",
-      "part_number": 5,
-      "dialogue": "Ustad ji, bawli duniya nakli video pe nache, par mhara asli loha toh is tatti dhoop mein tappe se!",
-      "shayari": "Nakli afwahon se vardi ki shaan nahi ghat’ti,\nFauji ki asli pehchan toh uski paseene wali mitti se hoti hai.",
-      "caption": "🎖️ Part 5: AI vs Asli Ragda | Fauji Dosti & Barracks Ki Asli Zindagi\n\n🗣️ \"Ustad ji, bawli duniya nakli video pe nache, par mhara asli loha toh is tatti dhoop mein tappe se!\"\n\n🔥 Nakli afwahon se vardi ki shaan nahi ghat’ti,\nFauji ki asli pehchan toh uski paseene wali mitti se hoti hai.\n\n🎵 Vibe: Challa mera ji dhola... (Gritty high-energy Haryanvi remix)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
-      "created_at": "27 Nov 2026, 09:23 PM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -1327,6 +1315,27 @@
       "scheduled_iso": "2026-12-18T18:30:00+05:30",
       "scheduled_for": "2026-12-18 18:30:00",
       "scheduled_full_badge": "18 Dec 2026 • 06:30 PM IST"
+    },
+    {
+      "id": "vid_Video_135_FaujiDostiBarracks_Part_05_1127_212003.mp4",
+      "video_file": "Video_135_FaujiDostiBarracks_Part_05_1127_212003.mp4",
+      "title": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 5: AI vs Asli Ragda",
+      "track_id": "fauji_dosti_barracks",
+      "part_number": 5,
+      "dialogue": "Ustad ji, bawli duniya nakli video pe nache, par mhara asli loha toh is tatti dhoop mein tappe se!",
+      "shayari": "Nakli afwahon se vardi ki shaan nahi ghat’ti,\nFauji ki asli pehchan toh uski paseene wali mitti se hoti hai.",
+      "caption": "🎖️ Part 5: AI vs Asli Ragda | Fauji Dosti & Barracks Ki Asli Zindagi\n\n🗣️ \"Ustad ji, bawli duniya nakli video pe nache, par mhara asli loha toh is tatti dhoop mein tappe se!\"\n\n🔥 Nakli afwahon se vardi ki shaan nahi ghat’ti,\nFauji ki asli pehchan toh uski paseene wali mitti se hoti hai.\n\n🎵 Vibe: Challa mera ji dhola... (Gritty high-energy Haryanvi remix)\n\n🇮🇳 Follow @ai_foji_lovelife for Part #6!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #reelsindia #viralshorts",
+      "created_at": "27 Nov 2026, 09:23 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-19_06:30",
+      "scheduled_epoch": 1797642000.0,
+      "scheduled_display": "19 Dec 2026 at 06:30 AM IST",
+      "date_label": "19 Dec 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-12-19T06:30:00+05:30",
+      "scheduled_for": "2026-12-19 06:30:00",
+      "scheduled_full_badge": "19 Dec 2026 • 06:30 AM IST"
     }
   ],
   "published_posts": [
@@ -2945,7 +2954,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795795158.6763408,
+  "updated_epoch": 1795798211.78112,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
