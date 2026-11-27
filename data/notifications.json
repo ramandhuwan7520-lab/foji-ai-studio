@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795762833338",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Duty, Fatigue & Working Reality — Part 5: Station, Barish aur Maa ki Dua locked for 18 Dec 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "12:30 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795762833.33873
+  },
+  {
     "id": "notif_1795759399222",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "01:20 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795636225.5893993
-  },
-  {
-    "id": "notif_1795633015900",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 3: Muffler Aur Maafi Ka Sacch | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "12:26 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795633015.9005158
   }
 ]
