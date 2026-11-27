@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795776620624",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Agniveer Reality & Pride — Part 5: Subah Ki Chai Aur Fauji Swag | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:20 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795776620.6246123
+  },
+  {
     "id": "notif_1795762837624",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "01:23 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795636392.2540486
-  },
-  {
-    "id": "notif_1795636231668",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4 -> 13 Dec 2026 at 06:30 AM IST",
-    "status": "schedule",
-    "time_str": "01:20 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795636231.6685107
   }
 ]
