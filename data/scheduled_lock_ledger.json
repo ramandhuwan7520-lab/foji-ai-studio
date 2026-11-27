@@ -1406,5 +1406,27 @@
     "scheduled_for": "2026-12-17 06:30:00",
     "scheduled_full_badge": "17 Dec 2026 • 06:30 AM IST",
     "locked_at": 1795744223.5414844
+  },
+  "Video_129_FestivalOnDuty_Part_04_1127_062301.mp4": {
+    "id": "vid_Video_129_FestivalOnDuty_Part_04_1127_062301.mp4",
+    "video_file": "Video_129_FestivalOnDuty_Part_04_1127_062301.mp4",
+    "title": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 4: Diwali, Duty aur Ustad Ki Daant",
+    "track_id": "festival_on_duty",
+    "part_number": 4,
+    "dialogue": "Ustad ji, bawli maa call pe rove thi, yo diya jalte hi vaa hansne laagi, maaf kar do!",
+    "shayari": "Wardi pe dhool hai, par dil mein Diwali ki chamak rakhte hain,\nHum fauji mitti ke diye mein bhi poora desh jagmagate hain.",
+    "caption": "🎖️ Part 4: Diwali, Duty aur Ustad Ki Daant | Tyohar Duty Par (Diwali, Holi & Rakhi)\n\n🗣️ \"Ustad ji, bawli maa call pe rove thi, yo diya jalte hi vaa hansne laagi, maaf kar do!\"\n\n🔥 Wardi pe dhool hai, par dil mein Diwali ki chamak rakhte hain,\nHum fauji mitti ke diye mein bhi poora desh jagmagate hain.\n\n🎵 Vibe: Soulful Haryanvi sarangi theme with a soft festive dhol beat.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #5!\n\n#haryanvishayar #fojishayari #desifauji #indianarmy #attitudestatus #faujireality #diwalionduty #viralshorts",
+    "created_at": "27 Nov 2026, 06:25 AM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-17_12:30",
+    "scheduled_epoch": 1797490800.0,
+    "scheduled_display": "17 Dec 2026 at 12:30 PM IST",
+    "date_label": "17 Dec 2026",
+    "time_label": "12:30 PM",
+    "scheduled_iso": "2026-12-17T12:30:00+05:30",
+    "scheduled_for": "2026-12-17 12:30:00",
+    "scheduled_full_badge": "17 Dec 2026 • 12:30 PM IST",
+    "locked_at": 1795744386.1953702
   }
 }
