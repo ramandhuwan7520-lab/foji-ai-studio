@@ -1,123 +1,13 @@
 [
   {
-    "id": "notif_1795741102970",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Fauji Safar: Train, Trunk & Posting — Part 4: Afwah vs Asli Ragda (Video_130_FaujiSafarTrain_Part_04_1127_062555.mp4) is live on Telegram & Frontend Vault!",
+    "id": "notif_1795744222147",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "1-Bar Network & Fauji Video Call — Part 4: Signal, Sakkar Aur Bawli Ka Pyaar locked for 17 Dec 2026 at 06:30 AM IST!",
     "status": "success",
-    "time_str": "06:28 AM",
+    "time_str": "07:20 AM",
     "date_str": "27 Nov 2026",
-    "timestamp": 1795741102.9705443
-  },
-  {
-    "id": "notif_1795741076750",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_130_FaujiSafarTrain_Part_04_1127_062555.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:27 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795741076.7502928
-  },
-  {
-    "id": "notif_1795741021297",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Safar: Train, Trunk & Posting — Part 4: Afwah vs Asli Ragda is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:27 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795741021.2970898
-  },
-  {
-    "id": "notif_1795740959134",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Safar: Train, Trunk & Posting — Part 4: Afwah vs Asli Ragda | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:25 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740959.1348982
-  },
-  {
-    "id": "notif_1795740935414",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 4: Diwali, Duty aur Ustad Ki Daant (Video_129_FestivalOnDuty_Part_04_1127_062301.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "06:25 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740935.4144166
-  },
-  {
-    "id": "notif_1795740908106",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_129_FestivalOnDuty_Part_04_1127_062301.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:25 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740908.1068954
-  },
-  {
-    "id": "notif_1795740848234",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 4: Diwali, Duty aur Ustad Ki Daant is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:24 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740848.2341452
-  },
-  {
-    "id": "notif_1795740785482",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 4: Diwali, Duty aur Ustad Ki Daant | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:23 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740785.4822102
-  },
-  {
-    "id": "notif_1795740759238",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "1-Bar Network & Fauji Video Call — Part 4: Signal, Sakkar Aur Bawli Ka Pyaar (Video_128_VideoCallNetwork_Part_04_1127_062010.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "06:22 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740759.2389421
-  },
-  {
-    "id": "notif_1795740730530",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_128_VideoCallNetwork_Part_04_1127_062010.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:22 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740730.5307903
-  },
-  {
-    "id": "notif_1795740678875",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "1-Bar Network & Fauji Video Call — Part 4: Signal, Sakkar Aur Bawli Ka Pyaar is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:21 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740678.8755696
-  },
-  {
-    "id": "notif_1795740614280",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 4: Signal, Sakkar Aur Bawli Ka Pyaar | Cast: Makra + Meera (Turquoise Cyan Cotton Village Suit wit...)",
-    "status": "info",
-    "time_str": "06:20 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795740614.280677
+    "timestamp": 1795744222.1473787
   },
   {
     "id": "notif_1795722836228",
@@ -798,5 +688,115 @@
     "time_str": "12:23 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795632829.2637043
+  },
+  {
+    "id": "notif_1795632775189",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 3: Paratha, PT aur Ustad ki Nazar | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:22 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795632775.1898625
+  },
+  {
+    "id": "notif_1795632754439",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet (Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "12:22 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795632754.439497
+  },
+  {
+    "id": "notif_1795632727525",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_085_ChhuttiGharWapsi_Part_03_1126_002007.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:22 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795632727.525124
+  },
+  {
+    "id": "notif_1795632681324",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "12:21 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795632681.3242075
+  },
+  {
+    "id": "notif_1795632611429",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 3: Barracks Mein Chhutti Ka Bet | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "12:20 AM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795632611.4292045
+  },
+  {
+    "id": "notif_1795625382876_735",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "10:19 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795625382.8769417
+  },
+  {
+    "id": "notif_1795625328880_791",
+    "type": "stopped",
+    "title": "Generation Stopped",
+    "message": "Video generation cancelled by user.",
+    "status": "warning",
+    "time_str": "10:18 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795625328.880696
+  },
+  {
+    "id": "notif_1795625022059",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "10:13 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795625022.059713
+  },
+  {
+    "id": "notif_1795624979699",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Dosto Ki Backchodi & Army Fun — Part 2: Barracks Ka Desi AC Jugaad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624979.6994116
+  },
+  {
+    "id": "notif_1795624975573",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624975.5739028
+  },
+  {
+    "id": "notif_1795624973059",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+    "status": "error",
+    "time_str": "10:12 PM",
+    "date_str": "25 Nov 2026",
+    "timestamp": 1795624973.059444
   }
 ]
