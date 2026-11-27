@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795744225954",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_128_VideoCallNetwork_Part_04_1127_062010.mp4 -> 17 Dec 2026 at 06:30 AM IST",
+    "status": "schedule",
+    "time_str": "07:20 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795744225.9546258
+  },
+  {
     "id": "notif_1795744222147",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "10:12 PM",
     "date_str": "25 Nov 2026",
     "timestamp": 1795624975.5739028
-  },
-  {
-    "id": "notif_1795624973059",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (4s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
-    "status": "error",
-    "time_str": "10:12 PM",
-    "date_str": "25 Nov 2026",
-    "timestamp": 1795624973.059444
   }
 ]
