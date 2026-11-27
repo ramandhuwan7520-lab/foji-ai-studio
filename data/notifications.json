@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795776876052",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Agniveer Reality & Pride — Part 5: Ragda, Roti aur Bharti ka Josh | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:24 PM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795776876.0528972
+  },
+  {
     "id": "notif_1795776740060",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #2)",
@@ -788,15 +798,5 @@
     "time_str": "07:24 AM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795658044.0663037
-  },
-  {
-    "id": "notif_1795658040300",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 3: Afwah vs Asli Mess (The Fake News Check) locked for 14 Dec 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "07:24 AM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795658040.3000355
   }
 ]
