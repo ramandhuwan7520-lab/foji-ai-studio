@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795806188014",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_140_FaujiSafarTrain_Part_05_1128_003104.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "12:33 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795806188.0148795
+  },
+  {
     "id": "notif_1795806131806",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "09:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708511.9474623
-  },
-  {
-    "id": "notif_1795708506615",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (16s): I seem to be encountering an error. Can I try something els) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "09:25 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708506.615731
   }
 ]
