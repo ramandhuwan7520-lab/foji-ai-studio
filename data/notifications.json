@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795827191936",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Fauji Masti, Bakwas & Comedy — Part 6: Afwah vs Asli Paseena (Video_141_FunnyFauji_Part_06_1128_062028.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:23 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795827191.9363825
+  },
+  {
     "id": "notif_1795827162895",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "09:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708506.615731
-  },
-  {
-    "id": "notif_1795708503555",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (16s): I seem to be encountering an error. Can I try something else for you?",
-    "status": "error",
-    "time_str": "09:25 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708503.5553012
   }
 ]
