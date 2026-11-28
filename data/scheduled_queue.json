@@ -1,6 +1,18 @@
 {
   "unapproved_videos": [
     {
+      "id": "vid_Video_149_TrainingUstad_Part_07_1128_212404.mp4",
+      "video_file": "Video_149_TrainingUstad_Part_07_1128_212404.mp4",
+      "title": "Academy Training & Morning Drill — Part 7: Ticket Radd Aur Tyohar Ka Jazba",
+      "track_id": "training_ustad",
+      "part_number": 7,
+      "dialogue": "Ustad ji, ticket radd hogi toh ke hoya, vardi ki khatir duty pe rehna hi mhara tyohar se!",
+      "shayari": "Chhutti radd hone ka dukh na hai laadle, \nVardi pehn ke tyohar manana hi fauji ki asli shaan se!",
+      "caption": "🎖️ Part 7: Ticket Radd Aur Tyohar Ka Jazba | Academy Training & Morning Drill\n\n🗣️ \"Ustad ji, ticket radd hogi toh ke hoya, vardi ki khatir duty pe rehna hi mhara tyohar se!\"\n\n🔥 Chhutti radd hone ka dukh na hai laadle, \nVardi pehn ke tyohar manana hi fauji ki asli shaan se!\n\n🎵 Vibe: Sandese Aate Hain instrumental emotional flute version.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #8!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+      "created_at": "28 Nov 2026, 09:26 PM IST",
+      "status": "awaiting_approval"
+    },
+    {
       "id": "vid_Video_148_FaujiSafarTrain_Part_06_1128_212025.mp4",
       "video_file": "Video_148_FaujiSafarTrain_Part_06_1128_212025.mp4",
       "title": "Fauji Safar: Train, Trunk & Posting — Part 6: Train, Trunk Aur Bawli Ki Yaad",
@@ -3194,7 +3206,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795881219.9098988,
+  "updated_epoch": 1795881394.609474,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
