@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795827162895",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_141_FunnyFauji_Part_06_1128_062028.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "06:22 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795827162.8957949
+  },
+  {
     "id": "notif_1795827107372",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "09:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708503.5553012
-  },
-  {
-    "id": "notif_1795708471461",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Mess Ki Chori Aur Asli Yaari is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:24 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708471.461896
   }
 ]
