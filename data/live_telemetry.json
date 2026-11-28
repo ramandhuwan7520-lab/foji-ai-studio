@@ -1,9 +1,9 @@
 {
-  "step_num": 8,
-  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
-  "sub_detail": "Video_141_FunnyFauji_Part_06_1128_062028.mp4 delivered to Telegram & Studio Vault!",
-  "status": "completed",
-  "progress": 100,
-  "updated_at": "06:23:10 AM",
-  "epoch": 1795827190.6776457
+  "step_num": 2,
+  "step_title": "Batch Video 2/3",
+  "sub_detail": "Starting fresh 3D story 2 of 3...",
+  "status": "active",
+  "progress": 20,
+  "updated_at": "06:23:21 AM",
+  "epoch": 1795827201.19326
 }
