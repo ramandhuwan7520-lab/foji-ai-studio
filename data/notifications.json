@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795863467652",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "1-Bar Network & Fauji Video Call — Part 6: Radd Ticket Aur Signal Ki Jung (Video_146_VideoCallNetwork_Part_06_1128_162330.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "04:27 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795863467.652812
+  },
+  {
     "id": "notif_1795863440287",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "11:21 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795758707.1580331
-  },
-  {
-    "id": "notif_1795758702464",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (8s): I'm sorry, I'm experiencing unusually high traffic right now) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "11:21 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795758702.464134
   }
 ]
