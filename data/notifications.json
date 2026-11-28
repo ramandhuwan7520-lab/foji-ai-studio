@@ -1,123 +1,13 @@
 [
   {
-    "id": "notif_1795863802403",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 6: Nakli Afwah vs Asli Diwali (Video_147_FestivalOnDuty_Part_06_1128_162804.mp4) is live on Telegram & Frontend Vault!",
+    "id": "notif_1795866631847",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check locked for 22 Dec 2026 at 12:30 PM IST!",
     "status": "success",
-    "time_str": "04:33 PM",
+    "time_str": "05:20 PM",
     "date_str": "28 Nov 2026",
-    "timestamp": 1795863802.403595
-  },
-  {
-    "id": "notif_1795863774631",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_147_FestivalOnDuty_Part_06_1128_162804.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "04:32 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863774.6311493
-  },
-  {
-    "id": "notif_1795863551906",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 6: Nakli Afwah vs Asli Diwali is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "04:29 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863551.9070237
-  },
-  {
-    "id": "notif_1795863488932",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 6: Nakli Afwah vs Asli Diwali | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "04:28 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863488.932605
-  },
-  {
-    "id": "notif_1795863467652",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "1-Bar Network & Fauji Video Call — Part 6: Radd Ticket Aur Signal Ki Jung (Video_146_VideoCallNetwork_Part_06_1128_162330.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "04:27 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863467.652812
-  },
-  {
-    "id": "notif_1795863440287",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_146_VideoCallNetwork_Part_06_1128_162330.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "04:27 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863440.287552
-  },
-  {
-    "id": "notif_1795863277591",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "1-Bar Network & Fauji Video Call — Part 6: Radd Ticket Aur Signal Ki Jung is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "04:24 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863277.591978
-  },
-  {
-    "id": "notif_1795863214531",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 6: Radd Ticket Aur Signal Ki Jung | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
-    "status": "info",
-    "time_str": "04:23 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863214.5312855
-  },
-  {
-    "id": "notif_1795863186504",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check (Video_145_CivilVsFauji_Part_06_1128_162025.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "04:23 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863186.5046446
-  },
-  {
-    "id": "notif_1795863157674",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_145_CivilVsFauji_Part_06_1128_162025.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "04:22 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863157.6748173
-  },
-  {
-    "id": "notif_1795863101603",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "04:21 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863101.6034899
-  },
-  {
-    "id": "notif_1795863029576",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "04:20 PM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795863029.5761383
+    "timestamp": 1795866631.8476822
   },
   {
     "id": "notif_1795848612469",
@@ -798,5 +688,115 @@
     "time_str": "11:30 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795759205.490738
+  },
+  {
+    "id": "notif_1795759159641",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_131_FunnyFauji_Part_05_1127_112358.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "11:29 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795759159.641445
+  },
+  {
+    "id": "notif_1795758906947",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Masti, Bakwas & Comedy — Part 5: Station Ka Ragda Aur Jazba is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "11:25 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758906.9472623
+  },
+  {
+    "id": "notif_1795758843616",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 5: Station Ka Ragda Aur Jazba | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "11:24 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758843.616639
+  },
+  {
+    "id": "notif_1795758707158",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 5: Muddy Masti & Ustad Ka Darr | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "11:21 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758707.1580331
+  },
+  {
+    "id": "notif_1795758702464",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (8s): I'm sorry, I'm experiencing unusually high traffic right now) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "11:21 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758702.464134
+  },
+  {
+    "id": "notif_1795758700000",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (8s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
+    "status": "error",
+    "time_str": "11:21 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758700.0010018
+  },
+  {
+    "id": "notif_1795758676534",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Masti, Bakwas & Comedy — Part 5: Muddy Masti & Ustad Ka Darr is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "11:21 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758676.5344052
+  },
+  {
+    "id": "notif_1795758607000",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 5: Muddy Masti & Ustad Ka Darr | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "11:20 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795758607.0007682
+  },
+  {
+    "id": "notif_1795744577710",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_130_FaujiSafarTrain_Part_04_1127_062555.mp4 -> 17 Dec 2026 at 06:30 PM IST",
+    "status": "schedule",
+    "time_str": "07:26 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795744577.7108326
+  },
+  {
+    "id": "notif_1795744574616",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Fauji Safar: Train, Trunk & Posting — Part 4: Afwah vs Asli Ragda locked for 17 Dec 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "07:26 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795744574.6164017
+  },
+  {
+    "id": "notif_1795744388648",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_129_FestivalOnDuty_Part_04_1127_062301.mp4 -> 17 Dec 2026 at 12:30 PM IST",
+    "status": "schedule",
+    "time_str": "07:23 AM",
+    "date_str": "27 Nov 2026",
+    "timestamp": 1795744388.6482816
   }
 ]
