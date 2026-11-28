@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795845358070",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: LOC Border Raat Ki Asli Pehredari — Part 6: AI ki Afwah aur Asli Ragda | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "11:25 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795845358.0704103
+  },
+  {
     "id": "notif_1795845335431",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "01:20 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795722646.4109619
-  },
-  {
-    "id": "notif_1795722643539",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "LOC Border Raat Ki Asli Pehredari — Part 4: Signal, Chai aur Asli Jazba locked for 16 Dec 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "01:20 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795722643.5397494
   }
 ]
