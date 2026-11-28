@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795827528089",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Agniveer Reality & Pride — Part 6: 2 AM Chai aur Afwah ka Fact-Check (Video_143_AgniveerReality_Part_06_1128_062613.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:28 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795827528.08932
+  },
+  {
     "id": "notif_1795827500345",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "10:27 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795712251.6903408
-  },
-  {
-    "id": "notif_1795711824360",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4 -> 15 Dec 2026 at 06:30 PM IST",
-    "status": "schedule",
-    "time_str": "10:20 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795711824.3609304
   }
 ]
