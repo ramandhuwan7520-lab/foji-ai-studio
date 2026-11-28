@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795845511472",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "LOC Border Raat Ki Asli Pehredari — Part 6: AI ki Afwah aur Asli Ragda (Video_146_BorderNightReality_Part_06_1128_112554.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "11:28 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795845511.4727342
+  },
+  {
     "id": "notif_1795845468196",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "07:20 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795744222.1473787
-  },
-  {
-    "id": "notif_1795722836228",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_127_CivilVsFauji_Part_04_1127_002347.mp4 -> 16 Dec 2026 at 06:30 PM IST",
-    "status": "schedule",
-    "time_str": "01:23 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795722836.2284749
   }
 ]
