@@ -11,18 +11,6 @@
       "caption": "🎖️ Part 6: 2 AM Chai aur Afwah ka Fact-Check | Agniveer Reality & Pride\n\n🗣️ \"Ustad ji, log kahe resign kar diya, main toh bas chai pee ke apna 'josh' check kar raha tha!\"\n\n🔥 Afwahon ke shor mein hum apna farz nahi bhoolte,\nVardi ki shaan mein hum neend aur chain nahi tolte!\n\n🎵 Vibe: O desh mere, teri shaan pe sadke...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#agniveer #factcheck #indianarmy #haryana #faujimasti #viralreel #fauji #desitashan",
       "created_at": "28 Nov 2026, 06:28 AM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_142_DutyFatigue_Part_06_1128_062331.mp4",
-      "video_file": "Video_142_DutyFatigue_Part_06_1128_062331.mp4",
-      "title": "Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh",
-      "track_id": "duty_fatigue",
-      "part_number": 6,
-      "dialogue": "Bawli, 25 hazaar ki bharti aali khabar viral hai, par mhara yo subah aala ragda koni dikhe!",
-      "shayari": "Vardi ki chamak toh sabne dikhe se mere bhai,\nPar iske peeche ka ragda aur maa ki yaadan koni dikhe.",
-      "caption": "🎖️ Part 6: Gaam Ki Chai Aur Bharti Ka Josh | Duty, Fatigue & Working Reality\n\n🗣️ \"Bawli, 25 hazaar ki bharti aali khabar viral hai, par mhara yo subah aala ragda koni dikhe!\"\n\n🔥 Vardi ki chamak toh sabne dikhe se mere bhai,\nPar iske peeche ka ragda aur maa ki yaadan koni dikhe.\n\n🎵 Vibe: Mitti di khushboo... slow lo-fi version background.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #agniveer2026 #armyrecruitment #haryanvi #faujiyaari #desilifestyle #indianarmy #bhartialert",
-      "created_at": "28 Nov 2026, 06:25 AM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -1462,6 +1450,27 @@
       "scheduled_iso": "2026-12-21T06:30:00+05:30",
       "scheduled_for": "2026-12-21 06:30:00",
       "scheduled_full_badge": "21 Dec 2026 • 06:30 AM IST"
+    },
+    {
+      "id": "vid_Video_142_DutyFatigue_Part_06_1128_062331.mp4",
+      "video_file": "Video_142_DutyFatigue_Part_06_1128_062331.mp4",
+      "title": "Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh",
+      "track_id": "duty_fatigue",
+      "part_number": 6,
+      "dialogue": "Bawli, 25 hazaar ki bharti aali khabar viral hai, par mhara yo subah aala ragda koni dikhe!",
+      "shayari": "Vardi ki chamak toh sabne dikhe se mere bhai,\nPar iske peeche ka ragda aur maa ki yaadan koni dikhe.",
+      "caption": "🎖️ Part 6: Gaam Ki Chai Aur Bharti Ka Josh | Duty, Fatigue & Working Reality\n\n🗣️ \"Bawli, 25 hazaar ki bharti aali khabar viral hai, par mhara yo subah aala ragda koni dikhe!\"\n\n🔥 Vardi ki chamak toh sabne dikhe se mere bhai,\nPar iske peeche ka ragda aur maa ki yaadan koni dikhe.\n\n🎵 Vibe: Mitti di khushboo... slow lo-fi version background.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #agniveer2026 #armyrecruitment #haryanvi #faujiyaari #desilifestyle #indianarmy #bhartialert",
+      "created_at": "28 Nov 2026, 06:25 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-21_12:30",
+      "scheduled_epoch": 1797836400.0,
+      "scheduled_display": "21 Dec 2026 at 12:30 PM IST",
+      "date_label": "21 Dec 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-12-21T12:30:00+05:30",
+      "scheduled_for": "2026-12-21 12:30:00",
+      "scheduled_full_badge": "21 Dec 2026 • 12:30 PM IST"
     }
   ],
   "published_posts": [
@@ -3080,7 +3089,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795830632.3805754,
+  "updated_epoch": 1795830823.1791892,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
