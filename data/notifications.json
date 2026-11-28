@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795863029576",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "04:20 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795863029.5761383
+  },
+  {
     "id": "notif_1795848612469",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "07:23 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795744388.6482816
-  },
-  {
-    "id": "notif_1795744385653",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 4: Diwali, Duty aur Ustad Ki Daant locked for 17 Dec 2026 at 12:30 PM IST!",
-    "status": "success",
-    "time_str": "07:23 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795744385.6539629
   }
 ]
