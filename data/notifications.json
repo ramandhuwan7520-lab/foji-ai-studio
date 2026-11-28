@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795830989095",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Agniveer Reality & Pride — Part 6: 2 AM Chai aur Afwah ka Fact-Check locked for 21 Dec 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "07:26 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795830989.0953674
+  },
+  {
     "id": "notif_1795830829795",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "09:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708511.9474623
-  },
-  {
-    "id": "notif_1795708506615",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (16s): I seem to be encountering an error. Can I try something els) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "09:25 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708506.615731
   }
 ]
