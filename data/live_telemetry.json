@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_146_BorderNightReality_Part_06_1128_112554.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 36s \u2014 hovering & downloading Video_146_BorderNightReality_Part_06_1128_112554.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "11:27:06 AM",
-  "epoch": 1795845426.7020366
+  "progress": 86,
+  "updated_at": "11:27:44 AM",
+  "epoch": 1795845464.0631232
 }
