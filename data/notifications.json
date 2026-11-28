@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795827355902",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh (Video_142_DutyFatigue_Part_06_1128_062331.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "06:25 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795827355.9028625
+  },
+  {
     "id": "notif_1795827327679",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "09:29 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708772.5623379
-  },
-  {
-    "id": "notif_1795708715350",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "09:28 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708715.3507493
   }
 ]
