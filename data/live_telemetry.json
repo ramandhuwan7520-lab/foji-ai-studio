@@ -1,9 +1,9 @@
 {
   "step_num": 6,
-  "step_title": "Stage 6: Rendering 3D Video (1.6 min)",
-  "sub_detail": "Gemini Veo rendering Video_147_FestivalOnDuty_Part_06_1128_162804.mp4... (99s elapsed)",
+  "step_title": "Stage 6: Rendering 3D Video (2.5 min)",
+  "sub_detail": "Gemini Veo rendering Video_147_FestivalOnDuty_Part_06_1128_162804.mp4... (150s elapsed)",
   "status": "active",
-  "progress": 80,
-  "updated_at": "04:31:01 PM",
-  "epoch": 1795863661.9349227
+  "progress": 83,
+  "updated_at": "04:31:53 PM",
+  "epoch": 1795863713.1471074
 }
