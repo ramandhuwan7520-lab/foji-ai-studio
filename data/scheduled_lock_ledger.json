@@ -1780,5 +1780,27 @@
     "scheduled_for": "2026-12-22 18:30:00",
     "scheduled_full_badge": "22 Dec 2026 • 06:30 PM IST",
     "locked_at": 1795866822.0773597
+  },
+  "Video_147_FestivalOnDuty_Part_06_1128_162804.mp4": {
+    "id": "vid_Video_147_FestivalOnDuty_Part_06_1128_162804.mp4",
+    "video_file": "Video_147_FestivalOnDuty_Part_06_1128_162804.mp4",
+    "title": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 6: Nakli Afwah vs Asli Diwali",
+    "track_id": "festival_on_duty",
+    "part_number": 6,
+    "dialogue": "Ustad ji, log afwahon pe nache, par mhari asli Diwali toh is mitti ke diye mein se!",
+    "shayari": "Ghar te door han par mhare dil mein tyohar base se,\nMitti ka yo diya mhari duty ki shaan kahe se.",
+    "caption": "🎖️ Part 6: Nakli Afwah vs Asli Diwali | Tyohar Duty Par (Diwali, Holi & Rakhi)\n\n🗣️ \"Ustad ji, log afwahon pe nache, par mhari asli Diwali toh is mitti ke diye mein se!\"\n\n🔥 Ghar te door han par mhare dil mein tyohar base se,\nMitti ka yo diya mhari duty ki shaan kahe se.\n\n🎵 Vibe: Sandese aate hain, hame tadpate hain, jo chitthi aati hai...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #diwalionduty #armyfestival #indianarmy #faujiyaari #desicomedy #agniveerlife #realhero",
+    "created_at": "28 Nov 2026, 04:33 PM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-23_06:30",
+    "scheduled_epoch": 1797987600.0,
+    "scheduled_display": "23 Dec 2026 at 06:30 AM IST",
+    "date_label": "23 Dec 2026",
+    "time_label": "06:30 AM",
+    "scheduled_iso": "2026-12-23T06:30:00+05:30",
+    "scheduled_for": "2026-12-23 06:30:00",
+    "scheduled_full_badge": "23 Dec 2026 • 06:30 AM IST",
+    "locked_at": 1795867091.5851307
   }
 }
