@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795827214592",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "06:23 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795827214.592937
+  },
+  {
     "id": "notif_1795827191936",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "09:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708511.9474623
-  },
-  {
-    "id": "notif_1795708506615",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (16s): I seem to be encountering an error. Can I try something els) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "09:25 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708506.615731
   }
 ]
