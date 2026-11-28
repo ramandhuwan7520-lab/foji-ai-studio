@@ -1,5 +1,18 @@
 {
-  "unapproved_videos": [],
+  "unapproved_videos": [
+    {
+      "id": "vid_Video_145_CivilVsFauji_Part_06_1128_162025.mp4",
+      "video_file": "Video_145_CivilVsFauji_Part_06_1128_162025.mp4",
+      "title": "Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check",
+      "track_id": "civil_vs_fauji",
+      "part_number": 6,
+      "dialogue": "Ustad ji, duniya AI aali afwahon mein nache, mhara asli sukoon toh is garam chai mein se!",
+      "shayari": "Duniya nakli afwahon mein nache, mhara sukoon toh is vardi ki dhoop mein se,\nSamosa toh bas bahana hai ustad, asli dum toh mhari ragda aali mehnat mein se.",
+      "caption": "🎖️ Part 6: Rain, Railway Station & AI Check | Civil Duniya vs Fauji Asli Hakikat\n\n🗣️ \"Ustad ji, duniya AI aali afwahon mein nache, mhara asli sukoon toh is garam chai mein se!\"\n\n🔥 Duniya nakli afwahon mein nache, mhara sukoon toh is vardi ki dhoop mein se,\nSamosa toh bas bahana hai ustad, asli dum toh mhari ragda aali mehnat mein se.\n\n🎵 Vibe: Soulful patriotic flute melody mixed with rhythmic rain sounds.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #stationvibes",
+      "created_at": "28 Nov 2026, 04:23 PM IST",
+      "status": "awaiting_approval"
+    }
+  ],
   "scheduled_posts": [
     {
       "id": "vid_Video_072_CivilVsFauji_Part_01_1122_001949.mp4",
@@ -3118,7 +3131,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795848716.3821046,
+  "updated_epoch": 1795863183.0198812,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
