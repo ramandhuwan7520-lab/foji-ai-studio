@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Step 6: Rendering 3D Video (Acc #1)",
-  "sub_detail": "Gemini Veo is rendering your vertical 9:16 3D reel (~60-90s)...",
+  "step_num": 5,
+  "step_title": "Stage 5: Prompt Sent -> Rendering Started!",
+  "sub_detail": "Gemini Veo is rendering Video_143_AgniveerReality_Part_06_1128_062613.mp4...",
   "status": "active",
-  "progress": 74,
-  "updated_at": "06:27:12 AM",
-  "epoch": 1795827432.7877066
+  "progress": 68,
+  "updated_at": "06:27:18 AM",
+  "epoch": 1795827438.5933588
 }
