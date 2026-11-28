@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795863101603",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "04:21 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795863101.6034899
+  },
+  {
     "id": "notif_1795863029576",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "07:26 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795744574.6164017
-  },
-  {
-    "id": "notif_1795744388648",
-    "type": "success",
-    "title": "Auto-Scheduled (1h)",
-    "message": "Video_129_FestivalOnDuty_Part_04_1127_062301.mp4 -> 17 Dec 2026 at 12:30 PM IST",
-    "status": "schedule",
-    "time_str": "07:23 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795744388.6482816
   }
 ]
