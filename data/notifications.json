@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881308455",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Academy Training & Morning Drill — Part 7: Ticket Radd Aur Tyohar Ka Jazba is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:25 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881308.4558618
+  },
+  {
     "id": "notif_1795881247912",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "11:30 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795759205.490738
-  },
-  {
-    "id": "notif_1795759159641",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_131_FunnyFauji_Part_05_1127_112358.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "11:29 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795759159.641445
   }
 ]
