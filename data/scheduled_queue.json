@@ -23,18 +23,6 @@
       "caption": "🎖️ Part 6: Radd Ticket Aur Signal Ki Jung | 1-Bar Network & Fauji Video Call\n\n🗣️ \"Bawli, emergency duty ne ticket radd kari, par yo ek danda signal mhari mulaqat karva gaya!\"\n\n🔥 Duty ne roki raah ghar ki, par is signal ne dil jod diya,\nTeri ek jhalak ne Jaan, mhara saara dard pichhe chhod diya.\n\n🎵 Vibe: Slow, emotional Haryanvi flute melody with a soft dholak beat.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#fauji_love #signal_struggle #haryana #faujizindagi #dutyfirst #reelsindia #3danimation #desishayari #faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
       "created_at": "28 Nov 2026, 04:27 PM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_145_CivilVsFauji_Part_06_1128_162025.mp4",
-      "video_file": "Video_145_CivilVsFauji_Part_06_1128_162025.mp4",
-      "title": "Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check",
-      "track_id": "civil_vs_fauji",
-      "part_number": 6,
-      "dialogue": "Ustad ji, duniya AI aali afwahon mein nache, mhara asli sukoon toh is garam chai mein se!",
-      "shayari": "Duniya nakli afwahon mein nache, mhara sukoon toh is vardi ki dhoop mein se,\nSamosa toh bas bahana hai ustad, asli dum toh mhari ragda aali mehnat mein se.",
-      "caption": "🎖️ Part 6: Rain, Railway Station & AI Check | Civil Duniya vs Fauji Asli Hakikat\n\n🗣️ \"Ustad ji, duniya AI aali afwahon mein nache, mhara asli sukoon toh is garam chai mein se!\"\n\n🔥 Duniya nakli afwahon mein nache, mhara sukoon toh is vardi ki dhoop mein se,\nSamosa toh bas bahana hai ustad, asli dum toh mhari ragda aali mehnat mein se.\n\n🎵 Vibe: Soulful patriotic flute melody mixed with rhythmic rain sounds.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #stationvibes",
-      "created_at": "28 Nov 2026, 04:23 PM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -1537,6 +1525,27 @@
       "scheduled_iso": "2026-12-22T06:30:00+05:30",
       "scheduled_for": "2026-12-22 06:30:00",
       "scheduled_full_badge": "22 Dec 2026 • 06:30 AM IST"
+    },
+    {
+      "id": "vid_Video_145_CivilVsFauji_Part_06_1128_162025.mp4",
+      "video_file": "Video_145_CivilVsFauji_Part_06_1128_162025.mp4",
+      "title": "Civil Duniya vs Fauji Asli Hakikat — Part 6: Rain, Railway Station & AI Check",
+      "track_id": "civil_vs_fauji",
+      "part_number": 6,
+      "dialogue": "Ustad ji, duniya AI aali afwahon mein nache, mhara asli sukoon toh is garam chai mein se!",
+      "shayari": "Duniya nakli afwahon mein nache, mhara sukoon toh is vardi ki dhoop mein se,\nSamosa toh bas bahana hai ustad, asli dum toh mhari ragda aali mehnat mein se.",
+      "caption": "🎖️ Part 6: Rain, Railway Station & AI Check | Civil Duniya vs Fauji Asli Hakikat\n\n🗣️ \"Ustad ji, duniya AI aali afwahon mein nache, mhara asli sukoon toh is garam chai mein se!\"\n\n🔥 Duniya nakli afwahon mein nache, mhara sukoon toh is vardi ki dhoop mein se,\nSamosa toh bas bahana hai ustad, asli dum toh mhari ragda aali mehnat mein se.\n\n🎵 Vibe: Soulful patriotic flute melody mixed with rhythmic rain sounds.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #stationvibes",
+      "created_at": "28 Nov 2026, 04:23 PM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-22_12:30",
+      "scheduled_epoch": 1797922800.0,
+      "scheduled_display": "22 Dec 2026 at 12:30 PM IST",
+      "date_label": "22 Dec 2026",
+      "time_label": "12:30 PM",
+      "scheduled_iso": "2026-12-22T12:30:00+05:30",
+      "scheduled_for": "2026-12-22 12:30:00",
+      "scheduled_full_badge": "22 Dec 2026 • 12:30 PM IST"
     }
   ],
   "published_posts": [
@@ -3155,7 +3164,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795863798.935652,
+  "updated_epoch": 1795866629.4791322,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
