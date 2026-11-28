@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795867090801",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Tyohar Duty Par (Diwali, Holi & Rakhi) — Part 6: Nakli Afwah vs Asli Diwali locked for 23 Dec 2026 at 06:30 AM IST!",
+    "status": "success",
+    "time_str": "05:28 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795867090.8014724
+  },
+  {
     "id": "notif_1795866824457",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "11:21 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795758676.5344052
-  },
-  {
-    "id": "notif_1795758607000",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 5: Muddy Masti & Ustad Ka Darr | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "11:20 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795758607.0007682
   }
 ]
