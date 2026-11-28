@@ -1,9 +1,9 @@
 {
-  "step_num": 7,
-  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
-  "sub_detail": "Rendered in 36s \u2014 hovering & downloading Video_149_TrainingUstad_Part_07_1128_212404.mp4...",
-  "status": "active",
-  "progress": 86,
-  "updated_at": "09:25:53 PM",
-  "epoch": 1795881353.6179247
+  "step_num": 8,
+  "step_title": "Stage 8: Video Ready on Telegram & Frontend!",
+  "sub_detail": "Video_149_TrainingUstad_Part_07_1128_212404.mp4 delivered to Telegram & Studio Vault!",
+  "status": "completed",
+  "progress": 100,
+  "updated_at": "09:26:36 PM",
+  "epoch": 1795881396.6888392
 }
