@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881028584",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Safar: Train, Trunk & Posting — Part 6: Train, Trunk Aur Bawli Ki Yaad | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:20 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881028.5842953
+  },
+  {
     "id": "notif_1795867093882",
     "type": "success",
     "title": "Auto-Scheduled (1h)",
@@ -788,15 +798,5 @@
     "time_str": "11:21 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795758702.464134
-  },
-  {
-    "id": "notif_1795758700000",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (8s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
-    "status": "error",
-    "time_str": "11:21 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795758700.0010018
   }
 ]
