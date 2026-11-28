@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881774956",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_150_UnitRagda_Part_07_1128_212654.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "09:32 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881774.9566588
+  },
+  {
     "id": "notif_1795881477580",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "12:30 PM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795762833.33873
-  },
-  {
-    "id": "notif_1795759399222",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Duty, Fatigue & Working Reality — Part 5: Station, Barish aur Maa ki Dua (Video_132_DutyFatigue_Part_05_1127_113026.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "11:33 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795759399.2229466
   }
 ]
