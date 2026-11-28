@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881101413",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Safar: Train, Trunk & Posting — Part 6: Train, Trunk Aur Bawli Ki Yaad is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:21 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881101.4140148
+  },
+  {
     "id": "notif_1795881028584",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "11:21 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795758707.1580331
-  },
-  {
-    "id": "notif_1795758702464",
-    "type": "warning",
-    "title": "Switching to Account #2",
-    "message": "Account #1 limit/error (Gemini refused/errored early (8s): I'm sorry, I'm experiencing unusually high traffic right now) — switching to Account #2!",
-    "status": "warning",
-    "time_str": "11:21 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795758702.464134
   }
 ]
