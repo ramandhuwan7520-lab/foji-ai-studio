@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795867093882",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_147_FestivalOnDuty_Part_06_1128_162804.mp4 -> 23 Dec 2026 at 06:30 AM IST",
+    "status": "schedule",
+    "time_str": "05:28 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795867093.8820465
+  },
+  {
     "id": "notif_1795867090801",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "11:21 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795758700.0010018
-  },
-  {
-    "id": "notif_1795758676534",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Masti, Bakwas & Comedy — Part 5: Muddy Masti & Ustad Ka Darr is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "11:21 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795758676.5344052
   }
 ]
