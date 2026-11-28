@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881357186",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_149_TrainingUstad_Part_07_1128_212404.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "09:25 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881357.1867714
+  },
+  {
     "id": "notif_1795881308455",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "11:30 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795759230.30158
-  },
-  {
-    "id": "notif_1795759205490",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Fauji Masti, Bakwas & Comedy — Part 5: Station Ka Ragda Aur Jazba (Video_131_FunnyFauji_Part_05_1127_112358.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "11:30 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795759205.490738
   }
 ]
