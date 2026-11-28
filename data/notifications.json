@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795845293012",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_145_FaujiDostiBarracks_Part_06_1128_112248.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "11:24 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795845293.0125077
+  },
+  {
     "id": "notif_1795845233639",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "10:27 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795712259.7776437
-  },
-  {
-    "id": "notif_1795712251690",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot locked for 16 Dec 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "10:27 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795712251.6903408
   }
 ]
