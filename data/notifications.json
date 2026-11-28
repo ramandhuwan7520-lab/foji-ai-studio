@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795845172391",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 6: Afwah vs Asli Chai | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "11:22 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795845172.3912616
+  },
+  {
     "id": "notif_1795845149553",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "10:20 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795711824.3609304
-  },
-  {
-    "id": "notif_1795711820583",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 4: Bajra Roti vs Viral Afwah locked for 15 Dec 2026 at 06:30 PM IST!",
-    "status": "success",
-    "time_str": "10:20 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795711820.5837624
   }
 ]
