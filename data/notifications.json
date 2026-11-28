@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795863214531",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: 1-Bar Network & Fauji Video Call — Part 6: Radd Ticket Aur Signal Ki Jung | Cast: Makra + Meera (Maroon & Teal Embroidered Festive Lehe...)",
+    "status": "info",
+    "time_str": "04:23 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795863214.5312855
+  },
+  {
     "id": "notif_1795863186504",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "11:21 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795758676.5344052
-  },
-  {
-    "id": "notif_1795758607000",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 5: Muddy Masti & Ustad Ka Darr | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "11:20 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795758607.0007682
   }
 ]
