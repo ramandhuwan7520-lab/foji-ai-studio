@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795827276985",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "06:24 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795827276.985425
+  },
+  {
     "id": "notif_1795827214592",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "09:27 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708649.1582537
-  },
-  {
-    "id": "notif_1795708511947",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #2)",
-    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Mess Ki Chori Aur Asli Yaari | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:25 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708511.9474623
   }
 ]
