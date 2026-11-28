@@ -1,6 +1,18 @@
 {
   "unapproved_videos": [
     {
+      "id": "vid_Video_142_DutyFatigue_Part_06_1128_062331.mp4",
+      "video_file": "Video_142_DutyFatigue_Part_06_1128_062331.mp4",
+      "title": "Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh",
+      "track_id": "duty_fatigue",
+      "part_number": 6,
+      "dialogue": "Bawli, 25 hazaar ki bharti aali khabar viral hai, par mhara yo subah aala ragda koni dikhe!",
+      "shayari": "Vardi ki chamak toh sabne dikhe se mere bhai,\nPar iske peeche ka ragda aur maa ki yaadan koni dikhe.",
+      "caption": "🎖️ Part 6: Gaam Ki Chai Aur Bharti Ka Josh | Duty, Fatigue & Working Reality\n\n🗣️ \"Bawli, 25 hazaar ki bharti aali khabar viral hai, par mhara yo subah aala ragda koni dikhe!\"\n\n🔥 Vardi ki chamak toh sabne dikhe se mere bhai,\nPar iske peeche ka ragda aur maa ki yaadan koni dikhe.\n\n🎵 Vibe: Mitti di khushboo... slow lo-fi version background.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #agniveer2026 #armyrecruitment #haryanvi #faujiyaari #desilifestyle #indianarmy #bhartialert",
+      "created_at": "28 Nov 2026, 06:25 AM IST",
+      "status": "awaiting_approval"
+    },
+    {
       "id": "vid_Video_141_FunnyFauji_Part_06_1128_062028.mp4",
       "video_file": "Video_141_FunnyFauji_Part_06_1128_062028.mp4",
       "title": "Fauji Masti, Bakwas & Comedy — Part 6: Afwah vs Asli Paseena",
@@ -3047,7 +3059,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795827188.405851,
+  "updated_epoch": 1795827352.5988538,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
