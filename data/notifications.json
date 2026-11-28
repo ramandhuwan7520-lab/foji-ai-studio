@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881814253",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Ustad Ka Ragda & Punishment — Part 7: Mess Mein Ragda & Garam Jamun (Video_150_UnitRagda_Part_07_1128_212654.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "09:33 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881814.2530844
+  },
+  {
     "id": "notif_1795881774956",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "12:30 PM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795762837.6242282
-  },
-  {
-    "id": "notif_1795762833338",
-    "type": "schedule",
-    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
-    "message": "Duty, Fatigue & Working Reality — Part 5: Station, Barish aur Maa ki Dua locked for 18 Dec 2026 at 06:30 AM IST!",
-    "status": "success",
-    "time_str": "12:30 PM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795762833.33873
   }
 ]
