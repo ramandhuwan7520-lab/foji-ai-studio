@@ -23,18 +23,6 @@
       "caption": "🎖️ Part 6: Gaam Ki Chai Aur Bharti Ka Josh | Duty, Fatigue & Working Reality\n\n🗣️ \"Bawli, 25 hazaar ki bharti aali khabar viral hai, par mhara yo subah aala ragda koni dikhe!\"\n\n🔥 Vardi ki chamak toh sabne dikhe se mere bhai,\nPar iske peeche ka ragda aur maa ki yaadan koni dikhe.\n\n🎵 Vibe: Mitti di khushboo... slow lo-fi version background.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #agniveer2026 #armyrecruitment #haryanvi #faujiyaari #desilifestyle #indianarmy #bhartialert",
       "created_at": "28 Nov 2026, 06:25 AM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_141_FunnyFauji_Part_06_1128_062028.mp4",
-      "video_file": "Video_141_FunnyFauji_Part_06_1128_062028.mp4",
-      "title": "Fauji Masti, Bakwas & Comedy — Part 6: Afwah vs Asli Paseena",
-      "track_id": "funny_fauji",
-      "part_number": 6,
-      "dialogue": "Ustad ji, nakli video aali afwahon pe na jayo, mhari vardi ka rang dhoop mein hi tappe se!",
-      "shayari": "AI aali afwahon mein dum kitna bhi ho laadle,\nMhari vardi ki chamak is paseene te hi aaya kare.",
-      "caption": "🎖️ Part 6: Afwah vs Asli Paseena | Fauji Masti, Bakwas & Comedy\n\n🗣️ \"Ustad ji, nakli video aali afwahon pe na jayo, mhari vardi ka rang dhoop mein hi tappe se!\"\n\n🔥 AI aali afwahon mein dum kitna bhi ho laadle,\nMhari vardi ki chamak is paseene te hi aaya kare.\n\n🎵 Vibe: Desi dhol beats with a high-energy Haryanvi folk whistle.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
-      "created_at": "28 Nov 2026, 06:23 AM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -1453,6 +1441,27 @@
       "scheduled_iso": "2026-12-20T18:30:00+05:30",
       "scheduled_for": "2026-12-20 18:30:00",
       "scheduled_full_badge": "20 Dec 2026 • 06:30 PM IST"
+    },
+    {
+      "id": "vid_Video_141_FunnyFauji_Part_06_1128_062028.mp4",
+      "video_file": "Video_141_FunnyFauji_Part_06_1128_062028.mp4",
+      "title": "Fauji Masti, Bakwas & Comedy — Part 6: Afwah vs Asli Paseena",
+      "track_id": "funny_fauji",
+      "part_number": 6,
+      "dialogue": "Ustad ji, nakli video aali afwahon pe na jayo, mhari vardi ka rang dhoop mein hi tappe se!",
+      "shayari": "AI aali afwahon mein dum kitna bhi ho laadle,\nMhari vardi ki chamak is paseene te hi aaya kare.",
+      "caption": "🎖️ Part 6: Afwah vs Asli Paseena | Fauji Masti, Bakwas & Comedy\n\n🗣️ \"Ustad ji, nakli video aali afwahon pe na jayo, mhari vardi ka rang dhoop mein hi tappe se!\"\n\n🔥 AI aali afwahon mein dum kitna bhi ho laadle,\nMhari vardi ki chamak is paseene te hi aaya kare.\n\n🎵 Vibe: Desi dhol beats with a high-energy Haryanvi folk whistle.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+      "created_at": "28 Nov 2026, 06:23 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-21_06:30",
+      "scheduled_epoch": 1797814800.0,
+      "scheduled_display": "21 Dec 2026 at 06:30 AM IST",
+      "date_label": "21 Dec 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-12-21T06:30:00+05:30",
+      "scheduled_for": "2026-12-21 06:30:00",
+      "scheduled_full_badge": "21 Dec 2026 • 06:30 AM IST"
     }
   ],
   "published_posts": [
@@ -3071,7 +3080,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795827524.4760852,
+  "updated_epoch": 1795830632.3805754,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
