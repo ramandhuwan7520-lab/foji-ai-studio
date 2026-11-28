@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881417562",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Ustad Ka Ragda & Punishment — Part 7: Mess Mein Ragda & Garam Jamun | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:26 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881417.5621724
+  },
+  {
     "id": "notif_1795881397726",
     "type": "success",
     "title": "🎉 New 3D Reel Ready!",
@@ -788,15 +798,5 @@
     "time_str": "11:32 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795759356.362105
-  },
-  {
-    "id": "notif_1795759293483",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Duty, Fatigue & Working Reality — Part 5: Station, Barish aur Maa ki Dua is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "11:31 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795759293.4835413
   }
 ]
