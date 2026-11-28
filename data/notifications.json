@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795830639301",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_141_FunnyFauji_Part_06_1128_062028.mp4 -> 21 Dec 2026 at 06:30 AM IST",
+    "status": "schedule",
+    "time_str": "07:20 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795830639.3015652
+  },
+  {
     "id": "notif_1795830635736",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "09:24 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708471.461896
-  },
-  {
-    "id": "notif_1795708404407",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Mess Ki Chori Aur Asli Yaari | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "09:23 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708404.4079266
   }
 ]
