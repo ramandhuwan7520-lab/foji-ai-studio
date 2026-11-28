@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881397726",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Academy Training & Morning Drill — Part 7: Ticket Radd Aur Tyohar Ka Jazba (Video_149_TrainingUstad_Part_07_1128_212404.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "09:26 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881397.7267656
+  },
+  {
     "id": "notif_1795881357186",
     "type": "info",
     "title": "📥 Step 7: Downloading Reel",
@@ -788,15 +798,5 @@
     "time_str": "11:31 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795759293.4835413
-  },
-  {
-    "id": "notif_1795759230301",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Duty, Fatigue & Working Reality — Part 5: Station, Barish aur Maa ki Dua | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "11:30 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795759230.30158
   }
 ]
