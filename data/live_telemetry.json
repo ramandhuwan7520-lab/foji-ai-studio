@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_149_TrainingUstad_Part_07_1128_212404.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 36s \u2014 hovering & downloading Video_149_TrainingUstad_Part_07_1128_212404.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "09:25:16 PM",
-  "epoch": 1795881316.4165459
+  "progress": 86,
+  "updated_at": "09:25:53 PM",
+  "epoch": 1795881353.6179247
 }
