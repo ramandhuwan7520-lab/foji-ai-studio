@@ -23,18 +23,6 @@
       "caption": "🎖️ Part 6: Afwah vs Asli Chai | Fauji Dosti & Barracks Ki Asli Zindagi\n\n🗣️ \"Ustad ji, bawli duniya afwahon pe nache, mhara istifa toh bas is garam chai mein duba se!\"\n\n🔥 Jhoothi khabron pe na jao laadle, mhari vardi ka rang paseene ki kamayi hai,\nMaut bhi peeche hat jaave, jab ek fauji ne dosti ki kasam nibhayi hai.\n\n🎵 Vibe: Soulful acoustic guitar riff of 'Teri Mitti' with a Haryanvi folk flute.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #factcheck",
       "created_at": "28 Nov 2026, 11:25 AM IST",
       "status": "awaiting_approval"
-    },
-    {
-      "id": "vid_Video_144_ChhuttiGharWapsi_Part_06_1128_111958.mp4",
-      "video_file": "Video_144_ChhuttiGharWapsi_Part_06_1128_111958.mp4",
-      "title": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 6: Maa ki Potli aur Bharti ka Josh",
-      "track_id": "chhutti_ghar_wapsi",
-      "part_number": 6,
-      "dialogue": "Ustad ji, 25 hazaar ki bharti ka shor hai, par maa ki yo choorma aali potli hi asli taqat se!",
-      "shayari": "Vardi ki chamak aur maa ka dulaar,\nMhara gaam kare se agniveer ka intezaar.",
-      "caption": "🎖️ Part 6: Maa ki Potli aur Bharti ka Josh | Chhutti, Maa-Baap & Ghar Ki Yaadein\n\n🗣️ \"Ustad ji, 25 hazaar ki bharti ka shor hai, par maa ki yo choorma aali potli hi asli taqat se!\"\n\n🔥 Vardi ki chamak aur maa ka dulaar,\nMhara gaam kare se agniveer ka intezaar.\n\n🎵 Vibe: Maa ke hathan ki roti, bapu ka vishwas...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
-      "created_at": "28 Nov 2026, 11:22 AM IST",
-      "status": "awaiting_approval"
     }
   ],
   "scheduled_posts": [
@@ -1516,6 +1504,27 @@
       "scheduled_iso": "2026-12-21T18:30:00+05:30",
       "scheduled_for": "2026-12-21 18:30:00",
       "scheduled_full_badge": "21 Dec 2026 • 06:30 PM IST"
+    },
+    {
+      "id": "vid_Video_144_ChhuttiGharWapsi_Part_06_1128_111958.mp4",
+      "video_file": "Video_144_ChhuttiGharWapsi_Part_06_1128_111958.mp4",
+      "title": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 6: Maa ki Potli aur Bharti ka Josh",
+      "track_id": "chhutti_ghar_wapsi",
+      "part_number": 6,
+      "dialogue": "Ustad ji, 25 hazaar ki bharti ka shor hai, par maa ki yo choorma aali potli hi asli taqat se!",
+      "shayari": "Vardi ki chamak aur maa ka dulaar,\nMhara gaam kare se agniveer ka intezaar.",
+      "caption": "🎖️ Part 6: Maa ki Potli aur Bharti ka Josh | Chhutti, Maa-Baap & Ghar Ki Yaadein\n\n🗣️ \"Ustad ji, 25 hazaar ki bharti ka shor hai, par maa ki yo choorma aali potli hi asli taqat se!\"\n\n🔥 Vardi ki chamak aur maa ka dulaar,\nMhara gaam kare se agniveer ka intezaar.\n\n🎵 Vibe: Maa ke hathan ki roti, bapu ka vishwas...\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+      "created_at": "28 Nov 2026, 11:22 AM IST",
+      "status": "scheduled",
+      "scheduled_by": "Auto-Approve (1h)",
+      "scheduled_slot_key": "2026-12-22_06:30",
+      "scheduled_epoch": 1797901200.0,
+      "scheduled_display": "22 Dec 2026 at 06:30 AM IST",
+      "date_label": "22 Dec 2026",
+      "time_label": "06:30 AM",
+      "scheduled_iso": "2026-12-22T06:30:00+05:30",
+      "scheduled_for": "2026-12-22 06:30:00",
+      "scheduled_full_badge": "22 Dec 2026 • 06:30 AM IST"
     }
   ],
   "published_posts": [
@@ -3134,7 +3143,7 @@
       "ig_media_pk": "17873651595658465"
     }
   ],
-  "updated_epoch": 1795845508.705893,
+  "updated_epoch": 1795848605.9872053,
   "upload_claimed_files": [
     "raw_video_1109_055706_p4.mp4",
     "raw_video_1110_023120_p1.mp4",
