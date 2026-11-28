@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795881477580",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Ustad Ka Ragda & Punishment — Part 7: Mess Mein Ragda & Garam Jamun is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:27 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795881477.5805416
+  },
+  {
     "id": "notif_1795881417562",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "11:33 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795759399.2229466
-  },
-  {
-    "id": "notif_1795759356362",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_132_DutyFatigue_Part_05_1127_113026.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "11:32 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795759356.362105
   }
 ]
