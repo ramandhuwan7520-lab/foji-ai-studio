@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795830829795",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_142_DutyFatigue_Part_06_1128_062331.mp4 -> 21 Dec 2026 at 12:30 PM IST",
+    "status": "schedule",
+    "time_str": "07:23 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795830829.795805
+  },
+  {
     "id": "notif_1795830826435",
     "type": "schedule",
     "title": "📅 Video Scheduled (Auto-Approve (1h))!",
@@ -788,15 +798,5 @@
     "time_str": "09:25 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795708506.615731
-  },
-  {
-    "id": "notif_1795708503555",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (16s): I seem to be encountering an error. Can I try something else for you?",
-    "status": "error",
-    "time_str": "09:25 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708503.5553012
   }
 ]
