@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795863440287",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_146_VideoCallNetwork_Part_06_1128_162330.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "04:27 PM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795863440.287552
+  },
+  {
     "id": "notif_1795863277591",
     "type": "info",
     "title": "🚀 Step 5: 3D Video Rendering Started!",
@@ -788,15 +798,5 @@
     "time_str": "11:21 AM",
     "date_str": "27 Nov 2026",
     "timestamp": 1795758702.464134
-  },
-  {
-    "id": "notif_1795758700000",
-    "type": "error",
-    "title": "⚠️ Gemini Video Error",
-    "message": "Gemini refused/errored early (8s): I'm sorry, I'm experiencing unusually high traffic right now generating videos and am at full capacity. Please try again later.",
-    "status": "error",
-    "time_str": "11:21 AM",
-    "date_str": "27 Nov 2026",
-    "timestamp": 1795758700.0010018
   }
 ]
