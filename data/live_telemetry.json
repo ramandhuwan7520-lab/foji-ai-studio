@@ -1,9 +1,9 @@
 {
-  "step_num": 6,
-  "step_title": "Stage 6: 3D Video Rendering (0.1 min)",
-  "sub_detail": "Rendering Video_145_FaujiDostiBarracks_Part_06_1128_112248.mp4 in Gemini (Zero Timeout)...",
+  "step_num": 7,
+  "step_title": "\ud83c\udf89 Video Ready! Downloading HD Reel...",
+  "sub_detail": "Rendered in 46s \u2014 hovering & downloading Video_145_FaujiDostiBarracks_Part_06_1128_112248.mp4...",
   "status": "active",
-  "progress": 75,
-  "updated_at": "11:24:01 AM",
-  "epoch": 1795845241.699931
+  "progress": 86,
+  "updated_at": "11:24:49 AM",
+  "epoch": 1795845289.1708884
 }
