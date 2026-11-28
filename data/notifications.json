@@ -1,5 +1,15 @@
 [
   {
+    "id": "notif_1795827439765",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Agniveer Reality & Pride — Part 6: 2 AM Chai aur Afwah ka Fact-Check is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "06:27 AM",
+    "date_str": "28 Nov 2026",
+    "timestamp": 1795827439.765595
+  },
+  {
     "id": "notif_1795827377483",
     "type": "info",
     "title": "🎬 Step 2: Gemini Login (Acc #1)",
@@ -788,15 +798,5 @@
     "time_str": "10:20 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795711820.5837624
-  },
-  {
-    "id": "notif_1795708825574",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot (Video_125_FaujiDostiBarracks_Part_04_1126_212724.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "09:30 PM",
-    "date_str": "26 Nov 2026",
-    "timestamp": 1795708825.5748181
   }
 ]
