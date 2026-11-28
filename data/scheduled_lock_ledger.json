@@ -1758,5 +1758,27 @@
     "scheduled_for": "2026-12-22 12:30:00",
     "scheduled_full_badge": "22 Dec 2026 • 12:30 PM IST",
     "locked_at": 1795866632.6040096
+  },
+  "Video_146_VideoCallNetwork_Part_06_1128_162330.mp4": {
+    "id": "vid_Video_146_VideoCallNetwork_Part_06_1128_162330.mp4",
+    "video_file": "Video_146_VideoCallNetwork_Part_06_1128_162330.mp4",
+    "title": "1-Bar Network & Fauji Video Call — Part 6: Radd Ticket Aur Signal Ki Jung",
+    "track_id": "video_call_network",
+    "part_number": 6,
+    "dialogue": "Bawli, emergency duty ne ticket radd kari, par yo ek danda signal mhari mulaqat karva gaya!",
+    "shayari": "Duty ne roki raah ghar ki, par is signal ne dil jod diya,\nTeri ek jhalak ne Jaan, mhara saara dard pichhe chhod diya.",
+    "caption": "🎖️ Part 6: Radd Ticket Aur Signal Ki Jung | 1-Bar Network & Fauji Video Call\n\n🗣️ \"Bawli, emergency duty ne ticket radd kari, par yo ek danda signal mhari mulaqat karva gaya!\"\n\n🔥 Duty ne roki raah ghar ki, par is signal ne dil jod diya,\nTeri ek jhalak ne Jaan, mhara saara dard pichhe chhod diya.\n\n🎵 Vibe: Slow, emotional Haryanvi flute melody with a soft dholak beat.\n\n🇮🇳 Follow @ai_foji_lovelife for Part #7!\n\n#fauji_love #signal_struggle #haryana #faujizindagi #dutyfirst #reelsindia #3danimation #desishayari #faujimasti #barracklife #armycomedy #indianarmy #faujiyaari #desicomedy #agniveerlife #funnymoments",
+    "created_at": "28 Nov 2026, 04:27 PM IST",
+    "status": "scheduled",
+    "scheduled_by": "Auto-Approve (1h)",
+    "scheduled_slot_key": "2026-12-22_18:30",
+    "scheduled_epoch": 1797944400.0,
+    "scheduled_display": "22 Dec 2026 at 06:30 PM IST",
+    "date_label": "22 Dec 2026",
+    "time_label": "06:30 PM",
+    "scheduled_iso": "2026-12-22T18:30:00+05:30",
+    "scheduled_for": "2026-12-22 18:30:00",
+    "scheduled_full_badge": "22 Dec 2026 • 06:30 PM IST",
+    "locked_at": 1795866822.0773597
   }
 }
