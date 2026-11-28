@@ -1,123 +1,13 @@
 [
   {
-    "id": "notif_1795827528089",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Agniveer Reality & Pride — Part 6: 2 AM Chai aur Afwah ka Fact-Check (Video_143_AgniveerReality_Part_06_1128_062613.mp4) is live on Telegram & Frontend Vault!",
+    "id": "notif_1795830635736",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Fauji Masti, Bakwas & Comedy — Part 6: Afwah vs Asli Paseena locked for 21 Dec 2026 at 06:30 AM IST!",
     "status": "success",
-    "time_str": "06:28 AM",
+    "time_str": "07:20 AM",
     "date_str": "28 Nov 2026",
-    "timestamp": 1795827528.08932
-  },
-  {
-    "id": "notif_1795827500345",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_143_AgniveerReality_Part_06_1128_062613.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:28 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827500.3453257
-  },
-  {
-    "id": "notif_1795827439765",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Agniveer Reality & Pride — Part 6: 2 AM Chai aur Afwah ka Fact-Check is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:27 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827439.765595
-  },
-  {
-    "id": "notif_1795827377483",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Agniveer Reality & Pride — Part 6: 2 AM Chai aur Afwah ka Fact-Check | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:26 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827377.4835114
-  },
-  {
-    "id": "notif_1795827355902",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh (Video_142_DutyFatigue_Part_06_1128_062331.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "06:25 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827355.9028625
-  },
-  {
-    "id": "notif_1795827327679",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_142_DutyFatigue_Part_06_1128_062331.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:25 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827327.6800008
-  },
-  {
-    "id": "notif_1795827276985",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:24 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827276.985425
-  },
-  {
-    "id": "notif_1795827214592",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Duty, Fatigue & Working Reality — Part 6: Gaam Ki Chai Aur Bharti Ka Josh | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:23 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827214.592937
-  },
-  {
-    "id": "notif_1795827191936",
-    "type": "success",
-    "title": "🎉 New 3D Reel Ready!",
-    "message": "Fauji Masti, Bakwas & Comedy — Part 6: Afwah vs Asli Paseena (Video_141_FunnyFauji_Part_06_1128_062028.mp4) is live on Telegram & Frontend Vault!",
-    "status": "success",
-    "time_str": "06:23 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827191.9363825
-  },
-  {
-    "id": "notif_1795827162895",
-    "type": "info",
-    "title": "📥 Step 7: Downloading Reel",
-    "message": "Downloading Video_141_FunnyFauji_Part_06_1128_062028.mp4 from Gemini...",
-    "status": "info",
-    "time_str": "06:22 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827162.8957949
-  },
-  {
-    "id": "notif_1795827107372",
-    "type": "info",
-    "title": "🚀 Step 5: 3D Video Rendering Started!",
-    "message": "Fauji Masti, Bakwas & Comedy — Part 6: Afwah vs Asli Paseena is now rendering in Gemini!",
-    "status": "info",
-    "time_str": "06:21 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827107.372895
-  },
-  {
-    "id": "notif_1795827032806",
-    "type": "info",
-    "title": "🎬 Step 2: Gemini Login (Acc #1)",
-    "message": "Episode: Fauji Masti, Bakwas & Comedy — Part 6: Afwah vs Asli Paseena | Cast: Makra Only (Solo Army Scene)",
-    "status": "info",
-    "time_str": "06:20 AM",
-    "date_str": "28 Nov 2026",
-    "timestamp": 1795827032.8069682
+    "timestamp": 1795830635.737008
   },
   {
     "id": "notif_1795809692377",
@@ -798,5 +688,115 @@
     "time_str": "10:27 PM",
     "date_str": "26 Nov 2026",
     "timestamp": 1795712251.6903408
+  },
+  {
+    "id": "notif_1795711824360",
+    "type": "success",
+    "title": "Auto-Scheduled (1h)",
+    "message": "Video_124_ChhuttiGharWapsi_Part_04_1126_212004.mp4 -> 15 Dec 2026 at 06:30 PM IST",
+    "status": "schedule",
+    "time_str": "10:20 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795711824.3609304
+  },
+  {
+    "id": "notif_1795711820583",
+    "type": "schedule",
+    "title": "📅 Video Scheduled (Auto-Approve (1h))!",
+    "message": "Chhutti, Maa-Baap & Ghar Ki Yaadein — Part 4: Bajra Roti vs Viral Afwah locked for 15 Dec 2026 at 06:30 PM IST!",
+    "status": "success",
+    "time_str": "10:20 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795711820.5837624
+  },
+  {
+    "id": "notif_1795708825574",
+    "type": "success",
+    "title": "🎉 New 3D Reel Ready!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot (Video_125_FaujiDostiBarracks_Part_04_1126_212724.mp4) is live on Telegram & Frontend Vault!",
+    "status": "success",
+    "time_str": "09:30 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708825.5748181
+  },
+  {
+    "id": "notif_1795708772562",
+    "type": "info",
+    "title": "📥 Step 7: Downloading Reel",
+    "message": "Downloading Video_125_FaujiDostiBarracks_Part_04_1126_212724.mp4 from Gemini...",
+    "status": "info",
+    "time_str": "09:29 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708772.5623379
+  },
+  {
+    "id": "notif_1795708715350",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:28 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708715.3507493
+  },
+  {
+    "id": "notif_1795708649158",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Barracks Ka Safed Jhoot | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:27 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708649.1582537
+  },
+  {
+    "id": "notif_1795708511947",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #2)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Mess Ki Chori Aur Asli Yaari | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:25 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708511.9474623
+  },
+  {
+    "id": "notif_1795708506615",
+    "type": "warning",
+    "title": "Switching to Account #2",
+    "message": "Account #1 limit/error (Gemini refused/errored early (16s): I seem to be encountering an error. Can I try something els) — switching to Account #2!",
+    "status": "warning",
+    "time_str": "09:25 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708506.615731
+  },
+  {
+    "id": "notif_1795708503555",
+    "type": "error",
+    "title": "⚠️ Gemini Video Error",
+    "message": "Gemini refused/errored early (16s): I seem to be encountering an error. Can I try something else for you?",
+    "status": "error",
+    "time_str": "09:25 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708503.5553012
+  },
+  {
+    "id": "notif_1795708471461",
+    "type": "info",
+    "title": "🚀 Step 5: 3D Video Rendering Started!",
+    "message": "Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Mess Ki Chori Aur Asli Yaari is now rendering in Gemini!",
+    "status": "info",
+    "time_str": "09:24 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708471.461896
+  },
+  {
+    "id": "notif_1795708404407",
+    "type": "info",
+    "title": "🎬 Step 2: Gemini Login (Acc #1)",
+    "message": "Episode: Fauji Dosti & Barracks Ki Asli Zindagi — Part 4: Mess Ki Chori Aur Asli Yaari | Cast: Makra Only (Solo Army Scene)",
+    "status": "info",
+    "time_str": "09:23 PM",
+    "date_str": "26 Nov 2026",
+    "timestamp": 1795708404.4079266
   }
 ]
